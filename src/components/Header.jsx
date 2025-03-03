@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 function Header({ text }) {
   return (
-    <h1 className="text-4xl font-bold text-center text-indigo-900 mb-10">
+    <h1 className="text-3xl font-bold text-center text-[#3B82F6] mb-10">
       {text}
     </h1>
   );

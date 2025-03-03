@@ -8,20 +8,35 @@ import Header from "../Header";
 import { Link } from "react-router-dom";
 import FormContainer from "../FormContainer";
 import FormWrapper from "../FormWrapper";
-
+const inputFields = [
+  {
+    type: "email",
+    placeholder: "Enter your email",
+    name: "email",
+    icon: <FaEnvelope />,
+  },
+  {
+    type: "password",
+    placeholder: "Enter your password",
+    name: "password",
+    icon: <FaLock />,
+  },
+];
+const schema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+});
 function Login() {
   // Define the Zod schema for login
-  const schema = z.object({
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema), // Integrate Zod with react-hook-form
+    mode:'onChange'
   });
 
   const onSubmit = (data) => {
@@ -29,20 +44,6 @@ function Login() {
   };
 
   // Input fields for login
-  const inputFields = [
-    {
-      type: "email",
-      placeholder: "Enter your email",
-      name: "email",
-      icon: <FaEnvelope />,
-    },
-    {
-      type: "password",
-      placeholder: "Enter your password",
-      name: "password",
-      icon: <FaLock />,
-    },
-  ];
 
   return (
     <FormContainer>
@@ -68,7 +69,7 @@ function Login() {
           </Link> */}
         </div>
         {/* Sign Up Link */}
-        {/*need modify after routing ") */ }
+        {/*need modify after routing ") */}
         <div className="mt-4 text-center">
           <span className="text-gray-600">Don't have an account? </span>
           {/* <Link to="/signup" className="text-indigo-500 hover:text-indigo-700">

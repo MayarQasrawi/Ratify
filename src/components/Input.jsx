@@ -13,9 +13,9 @@ const Input = ({ register, errors, ...props }) => {
         <input
           type={props.type}
           placeholder={props.placeholder}
-          name={props.name}
+          // name={props.name}
           className={`
-            w-80 px-4 py-2 border rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-shadow duration-200
+            w-80 px-4 py-2 border rounded-lg shadow-sm hover:shadow-md outline-none   transition-shadow duration-200
             ${props.icon ? 'pl-10' : ''}
             ${errors[props.name] ? 'border-red-500' : 'border-gray-300'}
           `}
