@@ -8,13 +8,11 @@ import Header from "../Header";
 import { Link } from "react-router-dom";
 import FormContainer from "../FormContainer";
 import FormWrapper from "../FormWrapper";
-
-function ForgotPassword() {
   // Define the Zod schema for forgot password
-  const schema = z.object({
-    email: z.string().email({ message: "Invalid email address" }),
-  });
-
+const schema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+});
+function ForgotPassword() {
   const {
     register,
     handleSubmit,

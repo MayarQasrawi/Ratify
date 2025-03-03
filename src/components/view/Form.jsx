@@ -7,27 +7,52 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Header from "../Header";
 import FormContainer from "../FormContainer";
 import FormWrapper from "../FormWrapper";
-
+ // Define the Zod schema
+const schema = z
+.object({
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
+  confirmPassword: z
+    .string()
+    .min(6, { message: "Confirm password must be at least 6 characters" }),
+})
+.refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"], // This associates the error with the confirmPassword field
+});
+// input fields
+const inputFields = [
+  {
+    type: "text",
+    placeholder: "Enter your name",
+    name: "username",
+    icon: <FaUser />,
+  },
+  {
+    type: "email",
+    placeholder: "Enter your email",
+    name: "email",
+    icon: <FaEnvelope />,
+  },
+  {
+    type: "password",
+    placeholder: "Enter your password",
+    name: "password",
+    icon: <FaLock />,
+  },
+  {
+    type: "password",
+    placeholder: "Confirm your password",
+    name: "confirmPassword",
+    icon: <FaLock />,
+  },
+];
 function Form() {
-  // Define the Zod schema
-  const schema = z
-    .object({
-      username: z
-        .string()
-        .min(3, { message: "Username must be at least 3 characters" }),
-      email: z.string().email({ message: "Invalid email address" }),
-      password: z
-        .string()
-        .min(6, { message: "Password must be at least 6 characters" }),
-      confirmPassword: z
-        .string()
-        .min(6, { message: "Confirm password must be at least 6 characters" }),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
-      path: ["confirmPassword"], // This associates the error with the confirmPassword field
-    });
-
   const {
     register,
     handleSubmit,
@@ -40,33 +65,7 @@ function Form() {
     console.log(data);
   };
 
-  // input fields
-  const inputFields = [
-    {
-      type: "text",
-      placeholder: "Enter your name",
-      name: "username",
-      icon: <FaUser />,
-    },
-    {
-      type: "email",
-      placeholder: "Enter your email",
-      name: "email",
-      icon: <FaEnvelope />,
-    },
-    {
-      type: "password",
-      placeholder: "Enter your password",
-      name: "password",
-      icon: <FaLock />,
-    },
-    {
-      type: "password",
-      placeholder: "Confirm your password",
-      name: "confirmPassword",
-      icon: <FaLock />,
-    },
-  ];
+  
 
   return (
     <FormContainer>
