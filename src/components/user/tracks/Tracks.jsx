@@ -1,0 +1,24 @@
+import Title from "../shared/Title";
+import TrackCard from "./TrackCard";
+
+export default function Tracks() {
+  return (
+    <section className="w-[90%] mx-auto  flex flex-col md:flex-row gap-4 mt-9 relative items-center">
+      <div className=" relative md:w-[40%]  flex flex-col gap-2 lg:gap-3 items-start">
+        <div className="mb-2">
+          <Title first="Our Most " last="Popular Tracks" />
+        </div>
+        <p className="text-[#263238] text-[14px] lg:text-[18px] w-[80%] hidden sm:block">
+          Find the path that matches your ambition and start your journey to
+          excellence.
+        </p>
+        <button className="text-white hidden md:block text-sm bg-[#3B82F6] px-6 py-1 lg:py-2 rounded-full font-semibold cursor-pointer">
+          Explore all Tracks
+        </button>
+      </div>
+      <div className="flex-1 ">
+        <TrackCard />
+      </div>
+    </section>
+  );
+}
