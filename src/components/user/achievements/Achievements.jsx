@@ -1,5 +1,5 @@
 import Title from "../shared/Title";
-import { FaUserTie, FaBookOpen } from "react-icons/fa";
+import { FaUserTie, FaBookOpen,FaRocket  } from "react-icons/fa";
 import img from '../../../assets/img/home/achievements.svg'
 export default function Achievements() {
   return (
@@ -18,7 +18,11 @@ export default function Achievements() {
              <span className="text-[#3B82F6] font-bold  text-2xl sm:text-4xl">50</span>
              <div className="flex gap-2 items-center text-[#303030]"> <FaBookOpen size={30} /> <span className="text-[16px] font-medium">Track <br />Available</span> </div>
           </div>
-          <div className="w-full bg-white rounded-2xl  p-6 text-center shadow text-[#3B82F6] text-[20px] sm:text-2xl font-bold">Start your journey <span className='text-[#003F7D]'>now</span> </div>
+          <div className="w-full bg-white rounded-2xl  p-6 text-center shadow text-[#3B82F6] text-[20px] sm:text-2xl font-bold">
+           <span> Start your journey </span>
+            <span className='text-[#003F7D]'>now</span>
+            <FaRocket className="mt-1.5"/>
+            </div>
        </div>
        
       </div>

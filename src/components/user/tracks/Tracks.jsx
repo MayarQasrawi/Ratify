@@ -1,3 +1,4 @@
+import Button from "../shared/Button";
 import Title from "../shared/Title";
 import TrackCard from "./TrackCard";
 
@@ -12,9 +13,7 @@ export default function Tracks() {
           Find the path that matches your ambition and start your journey to
           excellence.
         </p>
-        <button className="text-white hidden md:block text-sm bg-[#3B82F6] px-6 py-1 lg:py-2 rounded-full font-semibold cursor-pointer">
-          Explore all Tracks
-        </button>
+        <Button>Explore all Tracks</Button>
       </div>
       <div className="flex-1 ">
         <TrackCard />
