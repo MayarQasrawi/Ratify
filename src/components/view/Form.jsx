@@ -1,12 +1,6 @@
-import { useForm } from "react-hook-form";
-import Input from "../Input";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
-import Button from "../Button";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Header from "../Header";
-import FormContainer from "../FormContainer";
-import FormWrapper from "../FormWrapper";
+import {useForm,FaEnvelope,FaLock,z,zodResolver,Link,Input,Button,Header,FormContainer,FaUser,} from "../sharedImports";
+
+
  // Define the Zod schema
 const schema = z
 .object({
@@ -68,24 +62,32 @@ function Form() {
   
 
   return (
-    <FormContainer>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <Header text="Create Account" />
-        {/* Map over the inputFields array to render Input components */}
-        {inputFields.map((field, index) => (
-          <Input
-            key={index}
-            type={field.type}
-            placeholder={field.placeholder}
-            name={field.name}
-            icon={field.icon}
-            register={register}
-            errors={errors}
-          />
-        ))}
-        <Button btnText="Sign Up" />
-      </FormWrapper>
-    </FormContainer>
+   
+     <FormContainer onSubmit={handleSubmit(onSubmit)} 
+     
+     children={
+      <div>
+      <Header text="Create Account" />
+      {/* Map over the inputFields array to render Input components */}
+      {inputFields.map((field, index) => (
+        <Input
+          key={index}
+          type={field.type}
+          placeholder={field.placeholder}
+          name={field.name}
+          icon={field.icon}
+          register={register}
+          errors={errors}
+        />
+      ))}
+      <Button btnText="Sign Up" />
+      </div>
+     } />
+  
+      
+  
+  
+   
   );
 }
 

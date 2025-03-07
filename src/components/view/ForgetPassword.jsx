@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Header from "../Header";
 import { Link } from "react-router-dom";
 import FormContainer from "../FormContainer";
-import FormWrapper from "../FormWrapper";
+
   // Define the Zod schema for forgot password
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -26,9 +26,8 @@ function ForgotPassword() {
   };
 
   return (
-    <FormContainer>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <Header text="Forgot Password" />
+    <FormContainer onSubmit={handleSubmit(onSubmit)} image={false} children={ <div>
+      <Header text="Forgot Password" />
         <Input
           type="email"
           placeholder="Enter your email"
@@ -43,9 +42,15 @@ function ForgotPassword() {
           {/* <Link to="/login" className="text-indigo-500 hover:text-indigo-700">
             Back to Login
           </Link> */}
-        </div>
-      </FormWrapper>
-    </FormContainer>
+        </div> 
+        </div> } 
+        
+        />
+     
+     
+        
+   
+  
   );
 }
 

@@ -1,21 +1,125 @@
-import { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
-import {HiOutlineLogout} from "react-icons/hi";
-export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
+
+
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Array of navigation links
+  const navLinks = [
+    { name: "HOME", to: "/" },
+    { name: "OUR TRACKS", to: "/our-tracks" },
+    { name: "ABOUT", to: "/about" },
+    { name: "DASHBOARD", to: "/dashboard" },
+    { name: "CONTACT US", to: "/contact-us" },
+  ];
 
   return (
-    <nav className="py-2.5 w-[100%] flex justify-end px-6  relative border-b  border-b-[#E7ECFF]">
-      <FaUserCircle size={30} color="#EAECFF" onClick={() => setIsOpen(!isOpen)} className="cursor-pointer" />
-      {isOpen && (
-          <div className="absolute z-3 right-2.5 top-6 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow">
+    <nav className="bg-white shadow-sm fixed    text-sm  z-2 absolute mt-[1%] mx-[1%] w-[98%] min-h-18 rounded-xl">
+      <div className="container mx-auto px-4  sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link to="/" className="text-2xl font-bold text-[#003F7DDE]">
+              CredHub
+            </Link>
+          </div>
+
+          {/* Hamburger Menu (Mobile) */}
+          <div className="md:hidden">
             <button
-              className="block w-full text-left px-4 py-2 hover:bg-[#E7ECFF] cursor-pointer group"
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-gray-700 hover:text-blue-600 focus:outline-none"
             >
-             <div className="text-gray-400 flex gap-2 items-center text-[14px] group-hover:text-[#3B82F6]"><HiOutlineLogout size={20}/> Logout</div>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {isOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                )}
+              </svg>
             </button>
           </div>
+
+          {/* Navigation Links (Desktop) */}
+          <div className="hidden md:flex space-x-8 ">
+            {navLinks.map((link, index) => (
+              <NavLink key={index} to={link.to} name={link.name} />
+            ))}
+          </div>
+
+          {/* Action Buttons (Desktop) */}
+          <div className="hidden md:flex items-center text-md  font-bold space-x-4">
+          <Link
+              to="/auth/login"
+               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
+            >
+              Login
+            </Link>
+            <Link
+              to="/auth/signup"
+              className="bg-[#3B82F6] text-white   px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
+            >
+              Create Account
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Menu (Dropdown) */}
+        {isOpen && (
+          <div className="md:hidden">
+            <div className="flex flex-col space-y-4 mt-4 pb-4 ">
+              {navLinks.map((link, index) => (
+                <NavLink key={index} to={link.to} name={link.name} />
+              ))}
+                 <Link
+              to="/auth/login"
+              className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
+            >
+              Login
+            </Link>
+            <Link
+              to="/auth/signup"
+              className="bg-[#3B82F6] text-white font-bold  text-center px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
+            >
+              Create Account
+            </Link>
+            </div>
+          </div>
         )}
+      </div>
     </nav>
-  )
+  );
 }
+
+
+
+function NavLink({ to, name }) {
+  return (
+    <Link
+      to={to}
+      className="text-gray-700 hover:text-blue-600 transition duration-300"
+    >
+      {name}
+    </Link>
+  );
+}
+
+
+export default Navbar;
