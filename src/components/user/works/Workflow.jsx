@@ -39,7 +39,7 @@ export default function Workflow() {
       <div className=" flex-wrap lg:flex-nowrap justify-center sm:justify-between md:justify-center flex items-center gap-x-2 gap-y-4 p-2 ">
         {steps.map((step, index) => (
           <React.Fragment key={index}>
-            <div className="flex  min-w-[85px] flex-col items-center w-[16%] cursor-pointer">
+            <div className="flex  min-w-[85px] flex-col items-center w-[16%] cursor-pointer hover:translate-y-[-10px] transition duration-300">
               <div className="border-2 border-[#3B82F6] text-white rounded-lg  p-3  ">
                 <span className="text-2xl text-white mb-2">{step.icon}</span>
               </div>

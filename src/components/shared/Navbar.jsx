@@ -6,7 +6,6 @@ export default function Navbar() {
 
   return (
     <nav className="py-2.5 w-[100%] flex justify-end px-6  relative border-b  border-b-[#E7ECFF]">
-      
       <FaUserCircle size={30} color="#EAECFF" onClick={() => setIsOpen(!isOpen)} className="cursor-pointer" />
       {isOpen && (
           <div className="absolute z-3 right-2.5 top-6 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow">

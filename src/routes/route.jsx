@@ -1,21 +1,27 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../layouts/Dashboard";
-import AdminHome from "../pages/AdminHome";
+import AdminHome from "../pages/admin/AdminHome";
 import SeniorHome from "../pages/SeniorHome";
 import { AuthProvider } from "../contexts/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthLayout from "../layouts/AuthLayout";
-import AdminTrack from "../pages/AdminTrack";
-import Team from "../pages/Team";
+import AdminTrack from "../pages/admin/AdminTrack";
+import Team from "../pages/admin/Team";
 import Login from "../components/view/Login";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
+import Tracks from "../pages/user/Tracks";
+import Experts from "../pages/user/Experts";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: "Tracks", element: <Tracks /> },
+      { path: "Experts", element: <Experts /> },
+    ],
   },
   {
     path: "/auth",

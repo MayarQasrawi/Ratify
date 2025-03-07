@@ -9,11 +9,10 @@ const traks = [
 ];
 export default function TrackCard() {
   const [currentIndex, setCurrentIndex] = useState(1);
-
   return (
     <>
       <div className=" gap-2 relative hidden md:flex  lg:hidden">
-        <div className="bg-[#E7ECFF] flex items-center gap-4 h-full rounded-xl w-[320px] px-3">
+        <div className="bg-[#E7ECFF] flex cursor-pointer items-center gap-4 h-full rounded-xl w-[320px] px-3">
           <h3 className="text-[18px] font-semibold">
             <span className="text-[#3B82F6]">{traks[currentIndex].title} </span>
             <br />
@@ -57,7 +56,7 @@ export default function TrackCard() {
       </div>
 
       {/* Desktop Grid: Visible on md and larger screens */}
-      <div className="md:hidden grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4">
+      <div className="md:hidden grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4 cursor-pointer">
         {traks.slice(0, 4).map((track, index) => (
           <div
             key={index}

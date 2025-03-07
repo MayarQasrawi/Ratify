@@ -2,7 +2,7 @@ import { RiArrowRightLine,RiArrowRightSLine } from "react-icons/ri";
 
 export default function ExpertCard({ img, name }) {
   return (
-    <div className="border-4 border-[#2A5C8A] rounded-lg w-fit mx-auto sm:mx-0  ">
+    <div className="border-4 border-[#2A5C8A] rounded-lg cursor-pointer w-fit mx-auto sm:mx-0  hover:translate-y-[-10px] transition duration-300 ">
       <div className="relative overflow-hidden">
         {" "}
         <img src={img} alt={name} className="w-[180px] " />
