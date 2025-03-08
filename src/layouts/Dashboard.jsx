@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from '../components/shared/sidbar/Sidebar'
-import Navbar from '../components/shared/Navbar'
+import Navbar from '../components/user/shared/Navbar'
 
 export default function Dashboard() {
   return (

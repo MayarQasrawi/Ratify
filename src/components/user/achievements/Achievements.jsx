@@ -3,7 +3,7 @@ import { FaUserTie, FaBookOpen,FaRocket  } from "react-icons/fa";
 import img from '../../../assets/img/home/achievements.svg'
 export default function Achievements() {
   return (
-    <section className="bg-[#F3F3F3] p-6 text-center mt-12">
+    <section className="bg-[#F3F3F3] p-6 text-center mt-22">
       <Title  first='Our ' last='Achievements'/>
       <div className="flex  mt-5 flex-wrap  justify-center gap-6 items-center">
        <div className="mt-3" >

@@ -7,7 +7,7 @@ export default function Tracks() {
   const navigate=useNavigate();
 
   return (
-    <section className="w-[90%] mx-auto  flex flex-col md:flex-row gap-4 mt-12 relative items-center">
+    <section className="w-[90%] mx-auto  flex flex-col md:flex-row gap-4 mt-22 relative items-center">
       <div className=" relative md:w-[40%]  flex flex-col gap-2 lg:gap-3 items-start">
         <div className="mb-2">
           <Title first="Our Most " last="Popular Tracks" />

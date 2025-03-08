@@ -13,7 +13,7 @@ const experts = [
 export default function Experts() {
   const navigate=useNavigate()
   return (
-    <section className="w-[90%] mx-auto mt-12 relative">
+    <section className="w-[90%] mx-auto mt-22 relative">
       <div className="flex flex-wrap lg:flex-nowrap gap-8 items-center justify-center bg-radial-[at_100%_75%]   from-[rgba(0,63,125,0.5)] to-[rgba(161,186,239,0.5) px-8 py-6 lg:rounded-full">
        <div className="flex flex-col gap-3 items-start"><Title first="Meet Our " last="Experts" />  <Button onClick={()=>navigate('/Experts')}>Explore all Experts</Button></div> 
         <div className=" w-[70%] grid  sm:grid-cols-2 xl:grid-cols-4 gap-3">

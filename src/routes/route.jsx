@@ -19,8 +19,8 @@ export const routes = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: "Tracks", element: <Tracks /> },
-      { path: "Experts", element: <Experts /> },
+      { path: "our-tracks", element: <Tracks /> },
+      { path: "our-experts", element: <Experts /> },
     ],
   },
   {

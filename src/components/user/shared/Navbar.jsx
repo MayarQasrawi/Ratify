@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+   const location=useLocation();
+   console.log(location.pathname)
   // Array of navigation links
   const navLinks = [
     { name: "HOME", to: "/" },
@@ -16,7 +15,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-white shadow-sm fixed    text-sm  z-2 absolute mt-[1%] mx-[1%] w-[98%] min-h-18 rounded-xl">
+    <nav className={` bg-white shadow-sm fixed    text-sm  z-30 ${location.pathname=='/' ? 'absolute mt-[1%] mx-[1%] w-[98%]':'w-full'}  min-h-18 rounded-xl`}>
       <div className="container mx-auto px-4  sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -66,9 +65,9 @@ function Navbar() {
 
           {/* Action Buttons (Desktop) */}
           <div className="hidden md:flex items-center text-md  font-bold space-x-4">
-          <Link
+            <Link
               to="/auth/login"
-               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
+              className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
             >
               Login
             </Link>
@@ -88,18 +87,18 @@ function Navbar() {
               {navLinks.map((link, index) => (
                 <NavLink key={index} to={link.to} name={link.name} />
               ))}
-                 <Link
-              to="/auth/login"
-              className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
-            >
-              Login
-            </Link>
-            <Link
-              to="/auth/signup"
-              className="bg-[#3B82F6] text-white font-bold  text-center px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
-            >
-              Create Account
-            </Link>
+              <Link
+                to="/auth/login"
+                className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
+              >
+                Login
+              </Link>
+              <Link
+                to="/auth/signup"
+                className="bg-[#3B82F6] text-white font-bold  text-center px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
+              >
+                Create Account
+              </Link>
             </div>
           </div>
         )}
@@ -107,8 +106,6 @@ function Navbar() {
     </nav>
   );
 }
-
-
 
 function NavLink({ to, name }) {
   return (
@@ -120,6 +117,5 @@ function NavLink({ to, name }) {
     </Link>
   );
 }
-
 
 export default Navbar;
