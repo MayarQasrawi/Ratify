@@ -66,8 +66,22 @@ export default function Expert({ searchParams ,setSearchParams }) {
   const specialtyFilter = searchParams.get("specialty");
   const searchFilter=searchParams.get('query')
   console.log(specialtyFilter);
+  const loading=false;
+  if(loading){
+    return (
+      <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
+        {Array.from({length:8},(_,ind)=>
+        (
+          <div key={ind} className="max-w-[320px] relative bg-slate-200  h-[200px] rounded-xl animate-pulse  ">
+          <h2 className='absolute w-full py-2 rounded-tl-xl rounded-tr-none h-[70px] bg-slate-200 border border-gray-300  bottom-0 left-0    
+         '
+        >
+        </h2></div>))}
+      </div>
+    )
+  }
   let expertsFilter = experts.slice();
-  if (specialtyFilter) {
+  if ( specialtyFilter) {
     expertsFilter = expertsFilter.filter(
       (expert) => expert.trackId == specialtyFilter
     );
@@ -77,7 +91,7 @@ export default function Expert({ searchParams ,setSearchParams }) {
       (expert) => expert.name.toLowerCase().includes(searchFilter.toLowerCase())
     );
   }
-  if(expertsFilter.length==0){
+  if(searchFilter && expertsFilter.length==0){
     return <div className="">
        <Search   setsearchQuery={setsearchQuery} setSearchParams={setSearchParams} />
       <div className="mt-6 b h-[50vh] justify-center flex flex-col items-center gap-3 text-gray-500">

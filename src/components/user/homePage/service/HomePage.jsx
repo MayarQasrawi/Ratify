@@ -25,10 +25,10 @@ function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 m-0 overflow-x-hidden">
+    <div className="min-h-screen  m-0 overflow-x-hidden">
       <div className="min-h-screen   items-center">
         <h1
-          className="text-4xl md:text-5xl font-bold text-[#003F7DDE] mb-20 text-center" // Animation duration and delay
+          className="text-3xl lg:text-5xl font-bold text-[#003F7DDE] mb-20 text-center" // Animation duration and delay
         >
           Why Choose Our Platform?
         </h1>

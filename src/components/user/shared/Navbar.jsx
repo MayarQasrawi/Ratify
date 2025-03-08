@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,NavLink } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ function Navbar() {
   const navLinks = [
     { name: "HOME", to: "/" },
     { name: "OUR TRACKS", to: "/our-tracks" },
-    { name: "ABOUT", to: "/about" },
+    { name: "OUR Experts", to: "/our-experts" },
     { name: "DASHBOARD", to: "/dashboard" },
     { name: "CONTACT US", to: "/contact-us" },
   ];
@@ -59,12 +59,12 @@ function Navbar() {
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex space-x-8 ">
             {navLinks.map((link, index) => (
-              <NavLink key={index} to={link.to} name={link.name} />
+              <NavLinks key={index} to={link.to} name={link.name}    />
             ))}
           </div>
 
           {/* Action Buttons (Desktop) */}
-          <div className="hidden md:flex items-center text-md  font-bold space-x-4">
+          <div className="hidden lg:flex items-center text-md  font-bold space-x-4">
             <Link
               to="/auth/login"
               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
@@ -82,7 +82,7 @@ function Navbar() {
 
         {/* Mobile Menu (Dropdown) */}
         {isOpen && (
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <div className="flex flex-col space-y-4 mt-4 pb-4 ">
               {navLinks.map((link, index) => (
                 <NavLink key={index} to={link.to} name={link.name} />
@@ -107,14 +107,14 @@ function Navbar() {
   );
 }
 
-function NavLink({ to, name }) {
+function NavLinks({ to, name }) {
   return (
-    <Link
+    <NavLink end
       to={to}
-      className="text-gray-700 hover:text-blue-600 transition duration-300"
+      className={({ isActive }) => isActive ?'pb-1 border-b-2 border-blue-600':'text-gray-700 hover:text-blue-600 transition duration-300'}
     >
       {name}
-    </Link>
+    </NavLink>
   );
 }
 
