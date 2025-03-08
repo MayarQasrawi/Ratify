@@ -1,15 +1,13 @@
-import HeroSection from "../../components/HeroSection";
-import Achievements from "../../components/user/achievements/Achievements";
-import Experts from "../../components/user/experts/Experts";
-import Navbar from "../../components/user/shared/Navbar";
-import Tracks from "../../components/user/tracks/Tracks";
-import Work from "../../components/user/works/Work";
-import HomePage from "../../components/user/service/HomePage";
+import HeroSection from "../../components/user/homePage/HeroSection";
+import Achievements from "../../components/user/homePage/achievements/Achievements";
+import Experts from "../../components/user/homePage/experts/Experts";
+import Tracks from "../../components/user/homePage/tracks/Tracks";
+import Work from "../../components/user/homePage/works/Work";
+import HomePage from "../../components/user/homePage/service/HomePage";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <HeroSection />
       <HomePage />
       <Tracks />

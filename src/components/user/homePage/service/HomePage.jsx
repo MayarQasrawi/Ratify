@@ -1,8 +1,8 @@
 import React from "react";
 import Card from "./Card";
-import why1 from "../../../assets/img/why1.png";
-import why2 from "../../../assets/img/why2.png";
-import why3 from "../../../assets/img/why3.png";
+import why1 from "../../../../assets/img/why1.png";
+import why2 from "../../../../assets/img/why2.png";
+import why3 from "../../../../assets/img/why3.png";
 import { motion } from "framer-motion";
 
 function HomePage() {

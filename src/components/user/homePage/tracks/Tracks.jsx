@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../shared/Button";
-import Title from "../shared/Title";
+import Button from "../../shared/Button";
+import Title from '../../shared/Title'
 import TrackCard from "./TrackCard";
 
 export default function Tracks() {
@@ -16,7 +16,7 @@ export default function Tracks() {
           Find the path that matches your ambition and start your journey to
           excellence.
         </p>
-        <Button onClick={()=>{navigate('/Tracks')}}>Explore all Tracks</Button>
+        <Button onClick={()=>{navigate('/our-tracks')}}>Explore all Tracks</Button>
       </div>
       <div className="flex-1 ">
         <TrackCard />

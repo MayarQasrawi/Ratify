@@ -1,5 +1,5 @@
 import React from "react";
-import myImg1 from "../../../assets/img/home/work_end.svg";
+import myImg1 from "../../../../assets/img/home/work_end.svg";
 import {
   FaUserGraduate,
   FaCalendarAlt,

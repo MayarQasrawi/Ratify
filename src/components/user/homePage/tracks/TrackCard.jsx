@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import myImg from "../../../assets/img/Frame.svg";
+import myImg from "../../../../assets/img/Frame.svg";
 const traks = [
   { id: 1, title: "Front-End", img: myImg },
   { id: 2, title: "back-End", img: myImg },

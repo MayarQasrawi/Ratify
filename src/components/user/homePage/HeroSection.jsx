@@ -1,7 +1,7 @@
 import React from "react";
 import Lottie from "lottie-react";
-import person from "../assets/img/animation/person.json";
-import { motion } from "framer-motion";
+import person from "../../../assets/img/animation/person.json";
+import { motion } from "motion/react";
 
 function HeroSection() {
   return (

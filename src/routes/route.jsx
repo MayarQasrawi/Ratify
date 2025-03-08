@@ -11,7 +11,7 @@ import Login from "../components/view/Login";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
 import Tracks from "../pages/user/Tracks";
-import Experts from "../pages/user/Experts";
+import ExpertsPage from "../pages/user/ExpertsPage";
 
 export const routes = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ export const routes = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "our-tracks", element: <Tracks /> },
-      { path: "our-experts", element: <Experts /> },
+      { path: "our-experts", element: <ExpertsPage /> },
     ],
   },
   {
