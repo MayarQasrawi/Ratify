@@ -5,12 +5,14 @@ import { motion } from "motion/react";
 
 function HeroSection() {
   return (
-    <>
-      <div className="absolute h-screen w-[100%] rotate-[-8deg] mt-[-180px] z-0  rounded-[80px] overflow-x-hidden bg-blue-50 "></div>
-      <section className="flex  justify-between w-screen  items-center min-h-screen mx-8 z-1 pt-19 p-9 ">
-        <article className="flex1   md:w-2/3 text-center md:text-left z-1 ">
+    <div>
+
+
+    <div className="absolute h-screen   w-[105%] rotate-[-5deg] mt-[-200px] z-0  ml-2  rounded-[80px] overflow-hidden bg-blue-50 "></div> 
+      <section className="flex   justify-between w-screen  items-center min-h-screen mx-8 z-1  md:p-9 ">
+        <article className="flex1 w-[100%]   md:w-2/3 text-center md:text-left z-1 ">
           <motion.h1
-            className="text-4xl  md:text-5xl font-bold text-[#003F7DDE] mb-6"
+            className="text-3xl  lg:text-5xl font-bold text-[#003F7DDE] mb-6"
             initial={{ opacity: 0, y: -50 }} // Start hidden and 50px above
             animate={{ opacity: 1, y: 0 }} // Animate to visible and original position
             transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }} // Smooth easing
@@ -37,7 +39,7 @@ function HeroSection() {
           />
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

@@ -26,7 +26,7 @@ function Navbar() {
           </div>
 
           {/* Hamburger Menu (Mobile) */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-blue-600 focus:outline-none"
@@ -57,14 +57,14 @@ function Navbar() {
           </div>
 
           {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex space-x-8 ">
+          <div className="hidden lg:flex space-x-8 ">
             {navLinks.map((link, index) => (
               <NavLink key={index} to={link.to} name={link.name} />
             ))}
           </div>
 
           {/* Action Buttons (Desktop) */}
-          <div className="hidden md:flex items-center text-md  font-bold space-x-4">
+          <div className="hidden lg:flex items-center text-md  font-bold space-x-4">
             <Link
               to="/auth/login"
               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
@@ -82,7 +82,7 @@ function Navbar() {
 
         {/* Mobile Menu (Dropdown) */}
         {isOpen && (
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <div className="flex flex-col space-y-4 mt-4 pb-4 ">
               {navLinks.map((link, index) => (
                 <NavLink key={index} to={link.to} name={link.name} />

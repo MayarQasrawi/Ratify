@@ -4,7 +4,7 @@ import Navbar from "../components/user/shared/Navbar";
 export default function RootLayout() {
   return (
     <>
-      <Navbar />
+      <Navbar  />
       <Outlet />
     </>
   )
