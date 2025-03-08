@@ -26,7 +26,7 @@ function Navbar() {
           </div>
 
           {/* Hamburger Menu (Mobile) */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-blue-600 focus:outline-none"
@@ -57,7 +57,7 @@ function Navbar() {
           </div>
 
           {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex space-x-8 ">
+          <div className="hidden lg:flex space-x-8 ">
             {navLinks.map((link, index) => (
               <NavLinks key={index} to={link.to} name={link.name}    />
             ))}
