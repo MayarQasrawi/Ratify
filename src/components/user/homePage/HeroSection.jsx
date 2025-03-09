@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 
 function HeroSection() {
   return (
+
     <div>
 
 
@@ -40,6 +41,7 @@ function HeroSection() {
         </div>
       </section>
     </div>
+
   );
 }
 

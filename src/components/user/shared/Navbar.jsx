@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,NavLink } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ function Navbar() {
   const navLinks = [
     { name: "HOME", to: "/" },
     { name: "OUR TRACKS", to: "/our-tracks" },
-    { name: "ABOUT", to: "/about" },
+    { name: "OUR Experts", to: "/our-experts" },
     { name: "DASHBOARD", to: "/dashboard" },
     { name: "CONTACT US", to: "/contact-us" },
   ];
@@ -59,7 +59,7 @@ function Navbar() {
           {/* Navigation Links (Desktop) */}
           <div className="hidden lg:flex space-x-8 ">
             {navLinks.map((link, index) => (
-              <NavLink key={index} to={link.to} name={link.name} />
+              <NavLinks key={index} to={link.to} name={link.name}    />
             ))}
           </div>
 
@@ -107,14 +107,14 @@ function Navbar() {
   );
 }
 
-function NavLink({ to, name }) {
+function NavLinks({ to, name }) {
   return (
-    <Link
+    <NavLink end
       to={to}
-      className="text-gray-700 hover:text-blue-600 transition duration-300"
+      className={({ isActive }) => isActive ?'pb-1 border-b-2 border-blue-600':'text-gray-700 hover:text-blue-600 transition duration-300'}
     >
       {name}
-    </Link>
+    </NavLink>
   );
 }
 
