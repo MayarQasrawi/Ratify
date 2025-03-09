@@ -12,6 +12,9 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
 import Tracks from "../pages/user/Tracks";
 import ExpertsPage from "../pages/user/ExpertsPage";
+import TrackPage from '../components/user/TrackPage/TrackPage';
+import Form from "../components/view/Form";
+import ForgetPassword from "../components/view/ForgetPassword";
 
 export const routes = createBrowserRouter([
   {
@@ -19,15 +22,19 @@ export const routes = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: "our-tracks", element: <Tracks /> },
+      { path: "our-tracks", element: <TrackPage />  },
       { path: "our-experts", element: <ExpertsPage /> },
+     
     ],
   },
   {
     path: "/auth",
     elment: <div>AuthLayout</div>,
-    children: [{ path: "login", element: <Login /> }],
+    children: [{ path: "login", element: <Login /> }
+      ,{ path: "signup", element: <Form /> },{ path: "forgetpassword", element: <ForgetPassword /> }
+    ],
   },
+  
   {
     path: "/dashboard",
     element: (
@@ -35,6 +42,7 @@ export const routes = createBrowserRouter([
         <Dashboard />
       </AuthProvider>
     ),
+    
     children: [
       {
         path: "admin",
@@ -50,6 +58,7 @@ export const routes = createBrowserRouter([
         element: <ProtectedRoute allowRole="seniorExaminer" />,
         children: [{ index: true, element: <SeniorHome /> }],
       },
+
     ],
   },
 ]);

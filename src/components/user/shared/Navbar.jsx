@@ -15,7 +15,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className={` bg-white shadow-sm sticky top-0   text-sm  z-30 ${location.pathname=='/' ? 'absolute mt-[1%] mx-[1%] w-[98%]':'w-full'}  min-h-18 rounded-xl`}>
+    <nav className={` bg-white shadow-sm  sticky top-[1%]  text-sm  z-30 absolute  mx-[1%] w-[98%] rounded-xl  min-h-18 `}>
       <div className="container mx-auto px-4  sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
