@@ -4,7 +4,8 @@ import { Link, useLocation,NavLink } from "react-router-dom";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
    const location=useLocation();
-   console.log(location.pathname)
+   const style=location.pathname.includes('track-details') && {backgroundColor:'transparent',boxShadow:'none',position:'static'};
+   console.log(style)
   // Array of navigation links
   const navLinks = [
     { name: "HOME", to: "/" },
@@ -15,12 +16,12 @@ function Navbar() {
   ];
 
   return (
-    <nav className={` bg-white shadow-sm  sticky top-[1%]  text-sm  z-30 absolute  mx-[1%] w-[98%] rounded-xl  min-h-18 `}>
+    <nav className={` bg-white  shadow-sm  sticky top-[1%]  text-sm  z-30 absolute  mx-[1%] w-[98%] rounded-xl  min-h-18 `} style={style?style:{}} >
       <div className="container mx-auto px-4  sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-[#003F7DDE]">
+            <Link to="/" className="text-2xl font-bold text-[#003F7DDE]" style={style?{color:'white'}:{}}>
               CredHub
             </Link>
           </div>
@@ -66,12 +67,14 @@ function Navbar() {
           {/* Action Buttons (Desktop) */}
           <div className="hidden lg:flex items-center text-md  font-bold space-x-4">
             <Link
+            style={style?{border:'2px solid #fff',color:'#fff'}:{}}
               to="/auth/login"
               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
             >
               Login
             </Link>
             <Link
+            style={style?{backgroundColor:'#fff',color:'black'}:{}}
               to="/auth/signup"
               className="bg-[#3B82F6] text-white   px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
             >
@@ -88,12 +91,14 @@ function Navbar() {
                 <NavLink key={index} to={link.to} name={link.name} />
               ))}
               <Link
+               style={style?{border:'2px solid #fff',color:'#fff'}:{}}
                 to="/auth/login"
                 className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
               >
                 Login
               </Link>
               <Link
+              style={style?{backgroundColor:'#fff',color:'black'}:{}}
                 to="/auth/signup"
                 className="bg-[#3B82F6] text-white font-bold  text-center px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
               >
@@ -109,7 +114,7 @@ function Navbar() {
 
 function NavLinks({ to, name }) {
   return (
-    <NavLink end
+    <NavLink end style={location.pathname.includes('track-details')?{color:'white'}:{}}
       to={to}
       className={({ isActive }) => isActive ?'pb-1 border-b-2 border-blue-600':'text-gray-700 hover:text-blue-600 transition duration-300'}
     >
