@@ -10,7 +10,7 @@ function Navbar() {
     { name: "HOME", to: "/" },
     { name: "OUR TRACKS", to: "/our-tracks" },
     { name: "OUR Experts", to: "/our-experts" },
-    { name: "DASHBOARD", to: "/dashboard" },
+    { name: "DASHBOARD", to: "/my-tracks" },
     { name: "CONTACT US", to: "/contact-us" },
   ];
 
