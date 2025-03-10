@@ -1,10 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/user/shared/Navbar";
 
 export default function RootLayout() {
+  const location=useLocation()
   return (
     <>
-      <Navbar  />
+   { !location.pathname.includes('track-details') &&  <Navbar  />}
       <Outlet />
     </>
   )

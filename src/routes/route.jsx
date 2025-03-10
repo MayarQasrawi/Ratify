@@ -10,11 +10,12 @@ import Team from "../pages/admin/Team";
 import Login from "../components/view/Login";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
-import Tracks from "../pages/user/Tracks";
 import ExpertsPage from "../pages/user/ExpertsPage";
 import TrackPage from '../components/user/TrackPage/TrackPage';
 import Form from "../components/view/Form";
 import ForgetPassword from "../components/view/ForgetPassword";
+import MyTracksPage from "../pages/applicant/MyTracksPage";
+import TrackDetailsPage from "../pages/user/TrackDetailsPage";
 
 export const routes = createBrowserRouter([
   {
@@ -24,6 +25,8 @@ export const routes = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "our-tracks", element: <TrackPage />  },
       { path: "our-experts", element: <ExpertsPage /> },
+      { path: "my-tracks", element: <MyTracksPage/> },
+      { path: "track-details", element: <TrackDetailsPage /> },
      
     ],
   },

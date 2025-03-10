@@ -1,7 +1,6 @@
 import React from 'react'
-
-import { MdOutlinePushPin } from "react-icons/md";
 import { BiShowAlt } from "react-icons/bi";
+import Button from '../trackDetailsPage/shared/Button';
 
 function TracksCard({header, description,img}) {
   return (
@@ -26,9 +25,7 @@ function TracksCard({header, description,img}) {
         
       </a>
       <div class="mt-4">
-      <a href="#" class="inline-block  bg-blue-500 text-white text-sm py-1 px-16 rounded-3xl hover:bg-[#2A5C8A]">
-      <MdOutlinePushPin  className='inline text-lg'/> Enroll Now
-      </a>
+      <Button />
     </div>
     </div>
 
