@@ -4,7 +4,8 @@ import why1 from "../../../../assets/img/why1.png";
 import why2 from "../../../../assets/img/why2.png";
 import why3 from "../../../../assets/img/why3.png";
 import { motion } from "framer-motion";
-
+import Button from "../../shared/Button";
+import Title from "../../shared/Title";
 function HomePage() {
   const why = [
     {
@@ -25,13 +26,14 @@ function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen  m-0 overflow-x-hidden">
-      <div className="min-h-screen   items-center">
-        <h1
-          className="text-3xl lg:text-5xl font-bold text-[#003F7DDE] mb-20 text-center" // Animation duration and delay
+    <div className="min-h-[70%]  m-0 overflow-x-hidden">
+      <div className="   items-center">
+        
+        <div
+          className=" mb-20 text-center" // Animation duration and delay
         >
-          Why Choose Our Platform?
-        </h1>
+         <Title first="  Why Choose Our Platform?"/>
+        </div>
 
         <section className="flex flex-wrap items-center justify-center gap-20 p-6 mb-8">
           {why.map((item, index) => (
@@ -45,10 +47,13 @@ function HomePage() {
         </section>
 
         <div className="text-center">
-          <button className="bg-[#3B82F6] text-white cursor-pointer px-8 py-3 m-20 rounded-4xl  font-bold text-sm hover:bg-[#003F7DDE] transition duration-300 shadow-lg hover:shadow-xl">
+
+       
+          <button className="hover:bg-[var(--main-color)] text-white cursor-pointer px-8 py-3 m-20 rounded-4xl  font-bold text-sm bg-[var(--secondary-color)] transition duration-300 shadow-lg hover:shadow-xl">
             Start your journey to success today!
           </button>
         </div>
+        
       </div>
     </div>
   );

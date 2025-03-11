@@ -3,7 +3,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import myImg from "../../../../assets/img/Frame.svg";
 const traks = [
   { id: 1, title: "Front-End", img: myImg },
-  { id: 2, title: "back-End", img: myImg },
+  { id: 2, title: "Back-End", img: myImg },
   { id: 3, title: "Front-End", img: myImg },
   { id: 3, title: "Front-End", img: myImg },
 ];
@@ -60,7 +60,7 @@ export default function TrackCard() {
         {traks.slice(0, 4).map((track, index) => (
           <div
             key={index}
-            className="bg-[#E7ECFF] flex items-center gap-4 rounded-xl px-3 py-2"
+            className="bg-[#E7ECFF] flex items-center gap-4 rounded-xl px-3 py-2 hover:scale-105 transition-transform duration-300"
           >
             <div className="">
               <h3 className="text-[18px] font-semibold">

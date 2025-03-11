@@ -9,7 +9,7 @@ function HeroSection() {
     <div>
 
 
-    <div className="absolute h-screen   w-[105%] rotate-[-5deg] mt-[-200px] z-0  ml-2  rounded-[80px] overflow-hidden bg-blue-50 "></div> 
+    <div className="absolute h-screen   w-[105%] rotate-[-5deg] mt-[-200px] z-0  ml-2  rounded-[80px] overflow-hidden  bg-radial-[at_100%_75%]   from-blue-50 to-blue-100 "></div> 
       <section className="flex   justify-between w-screen  items-center min-h-screen mx-8 z-1  md:p-9 ">
         <article className="flex1 w-[100%]   md:w-2/3 text-center md:text-left z-1 ">
           <motion.h1

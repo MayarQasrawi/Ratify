@@ -10,7 +10,7 @@ function Navbar() {
   const navLinks = [
     { name: "HOME", to: "/" },
     { name: "OUR TRACKS", to: "/our-tracks" },
-    { name: "OUR Experts", to: "/our-experts" },
+    { name: "OUR TEAMS", to: "/our-experts" },
     { name: "DASHBOARD", to: "/my-tracks" },
     { name: "CONTACT US", to: "/contact-us" },
   ];
@@ -30,7 +30,7 @@ function Navbar() {
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-blue-600 focus:outline-none"
+              className="text-gray-700 hover:text-blue-600 focus:text-blue-600"
             >
               <svg
                 className="h-6 w-6"
@@ -116,7 +116,7 @@ function NavLinks({ to, name }) {
   return (
     <NavLink end style={location.pathname.includes('track-details')?{color:'white'}:{}}
       to={to}
-      className={({ isActive }) => isActive ?'pb-1 border-b-2 border-blue-600':'text-gray-700 hover:text-blue-600 transition duration-300'}
+      className={({ isActive }) => isActive ?' text-[#3B82F6]   transition duration-300':'text-gray-700 hover:text-[#3B82F6] transition duration-300'}
     >
       {name}
     </NavLink>

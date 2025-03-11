@@ -10,8 +10,8 @@ export default function Home() {
     <>
       <HeroSection />
       <HomePage />
-      <Tracks />
       <Work />
+      <Tracks />
       <Achievements />
       <Experts />
     </>
