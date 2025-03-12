@@ -1,4 +1,4 @@
-import welcomeImg from '../../assets/img/Group.svg'
+import welcomeImg from '../../../assets/img/Group.svg'
 export default function Welcome() {
   return (
     <div className='bg-[#E7ECFF] sm:py-12 py-8 sm:mt-5 md:mt-8 rounded-lg  relative'>
