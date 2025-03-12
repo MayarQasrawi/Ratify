@@ -4,6 +4,7 @@ import Experts from "../../components/user/homePage/experts/Experts";
 import Tracks from "../../components/user/homePage/tracks/Tracks";
 import Work from "../../components/user/homePage/works/Work";
 import HomePage from "../../components/user/homePage/service/HomePage";
+import Contact from '../../components/user/homePage/Contact';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Tracks />
       <Achievements />
       <Experts />
+      <Contact/>
     </>
   );
 }
