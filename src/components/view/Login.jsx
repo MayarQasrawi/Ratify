@@ -12,6 +12,7 @@ import {
   FormContainer,
 } from "../sharedImports";
 import useSignin from "../../hooks/useLogin";
+import login from '../../assets/img/animation/loginA.json'
 
 // Zod schema for form validation
 const schema = z.object({
@@ -65,7 +66,7 @@ function Login() {
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit(onSubmit)}>
+    <FormContainer onSubmit={handleSubmit(onSubmit)} image={login}>
       <div>
         <Header text="Login" />
         {/* Display server error message */}

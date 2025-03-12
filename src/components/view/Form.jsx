@@ -12,7 +12,7 @@ import {
   FormContainer,
   FaUser,
 } from "../sharedImports";
-
+import signup from '../../assets/img/animation/signup.json'
 import useSignup from "../../hooks/useSignUp";
 
 // Define the Zod schema
@@ -100,6 +100,8 @@ function Form() {
   return (
     <FormContainer
       onSubmit={handleSubmit(onSubmit)}
+      image={signup}
+      size={{ width: "550px", height: "auto" }}
       children={
         <div>
           <Header text="Create Account" />
