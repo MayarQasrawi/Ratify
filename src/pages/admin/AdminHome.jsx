@@ -1,4 +1,4 @@
-import Welcome from "../../components/shared/Welcome";
+import Welcome from "../../components/admin/shared/Welcome";
 
 export default function AdminHome() {
   return (

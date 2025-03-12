@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation,NavLink } from "react-router-dom";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 
 function Navbar() {
+  const {auth,logout}=useAuthContext();
+  console.log(auth)
   const [isOpen, setIsOpen] = useState(false);
    const location=useLocation();
    const style=location.pathname.includes('track-details') && {backgroundColor:'transparent',boxShadow:'none',position:'static'};
@@ -65,22 +68,22 @@ function Navbar() {
           </div>
 
           {/* Action Buttons (Desktop) */}
-          <div className="hidden lg:flex items-center text-md  font-bold space-x-4">
+         {auth ?<button onClick={()=>logout()} className="hidden lg:block cursor-pointer rounded-xl px-4 py-2 font-medium bg-[#3B82F6] hover:bg-[#003F7DDE] transition duration-300 text-white">Logout</button>: <div className="hidden lg:flex items-center text-md  font-bold space-x-4">
             <Link
             style={style?{border:'2px solid #fff',color:'#fff'}:{}}
-              to="/auth/login"
+              to="/login"
               className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
             >
               Login
             </Link>
             <Link
             style={style?{backgroundColor:'#fff',color:'black'}:{}}
-              to="/auth/signup"
+              to="/signup"
               className="bg-[#3B82F6] text-white   px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
             >
               Create Account
             </Link>
-          </div>
+          </div>}
         </div>
 
         {/* Mobile Menu (Dropdown) */}
@@ -88,22 +91,23 @@ function Navbar() {
           <div className="lg:hidden">
             <div className="flex flex-col space-y-4 mt-4 pb-4 ">
               {navLinks.map((link, index) => (
-                <NavLink key={index} to={link.to} name={link.name} />
+                <NavLinks key={index} to={link.to} name={link.name} />
               ))}
-              <Link
+            {auth?<button onClick={()=>logout()} className="cursor-pointer rounded-xl px-4 py-2 font-medium bg-[#3B82F6] hover:bg-[#003F7DDE] transition duration-300 text-white">Logout</button>: <><Link
                style={style?{border:'2px solid #fff',color:'#fff'}:{}}
-                to="/auth/login"
+                to="login"
                 className="border-2 border-[#3B82F6] text-[#3B82F6] font-bold text-center px-4 py-2 rounded-xl hover:bg-[#3B82F6] hover:text-white transition duration-300"
               >
                 Login
               </Link>
               <Link
               style={style?{backgroundColor:'#fff',color:'black'}:{}}
-                to="/auth/signup"
+                to="signup"
                 className="bg-[#3B82F6] text-white font-bold  text-center px-4 py-2 rounded-xl hover:bg-[#003F7DDE] transition duration-300"
               >
                 Create Account
               </Link>
+              </>}
             </div>
           </div>
         )}

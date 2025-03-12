@@ -1,5 +1,5 @@
-import DashboredTitle from "../../components/shared/DashboredTitle";
-import Table from "../../components/shared/Table";
+import DashboredTitle from "../../components/admin/shared/DashboredTitle";
+import Table from "../../components/admin/shared/Table";
 
 const tracks = [
   {
