@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   useForm,
   FaEnvelope,
@@ -12,8 +11,9 @@ import {
   FormContainer,
   FaUser,
 } from "../sharedImports";
-import signup from '../../assets/img/animation/signup.json'
-import useSignup from "../../hooks/useSignUp";
+import signup from "../../assets/img/animation/signup.json";
+import useSignup from "../../hooks/auth/useSignUp";
+import { useEffect, useRef } from "react";
 
 // Define the Zod schema
 const schema = z
@@ -24,10 +24,10 @@ const schema = z
     email: z.string().email({ message: "Invalid email address" }),
     password: z
       .string()
-      .min(6, { message: "Password must be at least 6 characters" }),
+      .min(8, { message: "Password must be at least 8 characters" }),
     confirmPassword: z
       .string()
-      .min(6, { message: "Confirm password must be at least 6 characters" }),
+      .min(8, { message: "Confirm password must be at least 8 characters" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -65,37 +65,21 @@ function Form() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: zodResolver(schema), // Integrate Zod with react-hook-form
   });
-  // const { isError, isSuccess, error, mutateAsync, isLoading } = useMutation({
-  //   mutationFn: async (userData) =>
-  //     fetch(
-  //       "https://9db9-139-190-139-146.ngrok-free.app/api/Auth/register/applicant",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(userData),
-  //       }
-  //     ),
+  const { isError, error, mutate } = useSignup();
+  const ref = useRef();
+  console.log(ref);
+  useEffect(() => {
+    ref.current.focus()
+    console.log(ref.current, "iiii");
+  }, []);
 
-  //   onSuccess: () => {
-  //     // navigate("/login");
-
-  //     // MUST UPDATE TO: show a success message or perform other actions
-  //     console.log("Data posted successfully!");
-  //   },
-  //   onError: (error) => {
-  //     console.error("Error posting data:", error);
-  //   },
-  // });
- const {isLoading,isError,error,mutate}=useSignup()
   const onSubmit = ({ email, password, fullName }) => {
     mutate({ email, password, fullName });
-    console.log({ email, password, fullName })
+    console.log({ email, password, fullName });
   };
   return (
     <FormContainer
@@ -106,12 +90,8 @@ function Form() {
         <div>
           <Header text="Create Account" />
           {isError && <div className="text-red-400">{error.message}</div>}
-
-          {/* {isSuccess && (
-            <div className="text-green-400">Success Registeration</div>
-          )} */}
           {/* Map over the inputFields array to render Input components */}
-          {inputFields.map((field, index) => (
+          {/* {inputFields.map((field, index) => (
             <Input
               key={index}
               type={field.type}
@@ -120,8 +100,38 @@ function Form() {
               icon={field.icon}
               register={register}
               errors={errors}
+              element={index === 0 ? ref : null}
             />
-          ))}
+          ))} */}
+          {inputFields.map((field, index) => {
+            // For the first field, capture the ref after registration
+            const fieldRegister =
+              index === 0
+                ? (name) => {
+                  console.log(name)
+                    const registration = register(name);
+                    return {
+                      ...registration,
+                      ref: (el) => {
+                        registration.ref(el);
+                        ref.current = el;
+                      },
+                    };
+                  }
+                : register;
+
+            return (
+              <Input
+                key={index}
+                type={field.type}
+                placeholder={field.placeholder}
+                name={field.name}
+                icon={field.icon}
+                register={fieldRegister}
+                errors={errors}
+              />
+            );
+          })}
 
           <div className="mt-1 text-center text-sm">
             <span className="text-gray-500">already have an account? </span>
@@ -133,8 +143,8 @@ function Form() {
             </Link>
           </div>
           <Button
-            btnText={isLoading ? "Signing Up..." : "Sign Up"}
-            disabled={isLoading}
+            btnText={isSubmitting ? "Signing Up..." : "Sign Up"}
+            disabled={isSubmitting || !isValid}
           />
         </div>
       }

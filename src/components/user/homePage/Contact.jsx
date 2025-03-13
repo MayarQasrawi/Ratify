@@ -101,7 +101,7 @@ export default function Contact() {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full mt-4  font-bold rounded-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
+        className="w-full mt-4  font-bold px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
       >
         Send <FiSend  className="inline" size={20}/>
       </button>

@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useEffect, useRef, useState } from "react"; 
 import {
   useForm,
   FaEnvelope,
@@ -11,7 +11,7 @@ import {
   Header,
   FormContainer,
 } from "../sharedImports";
-import useSignin from "../../hooks/useLogin";
+import useSignin from "../../hooks/auth/useLogin";
 import login from '../../assets/img/animation/loginA.json'
 
 // Zod schema for form validation
@@ -58,7 +58,11 @@ function Login() {
     mode: "onChange",
   });
   const [serverError, setServerError] = useState([]); // State for server errors
-  const{mutate,isLoading}=useSignin();
+  const{mutate,isLoading,isSuccess}=useSignin();
+  const ref=useRef();
+  useEffect(()=>{
+    ref.current.focus();
+  },[])
   const onSubmit =  ({ email, password }) => {
     setServerError([]);
     console.log({ email, password })
@@ -66,6 +70,7 @@ function Login() {
   };
 
   return (
+  <>
     <FormContainer onSubmit={handleSubmit(onSubmit)} image={login}>
       <div>
         <Header text="Login" />
@@ -74,18 +79,29 @@ function Login() {
           <div className="text-red-500 text-sm mb-4">{serverError}</div>
         )}
         {/* Map over the inputFields array to render Input components */}
-        {inputFields.map((field, index) => (
-          <div key={index}>
+        {inputFields.map((field, index) => 
+         {const fieldRegister=index==0?(name) => {
+          console.log(name)
+            const registration = register(name);
+            return {
+              ...registration,
+              ref: (el) => {
+                registration.ref(el);
+                ref.current = el;
+              },
+            };
+          }: register;
+         return <div key={index}>
             <Input
               type={field.type}
               placeholder={field.placeholder}
               name={field.name}
               icon={field.icon}
-              register={register}
+              register={fieldRegister}
               errors={errors}
             />
           </div>
-        ))}
+})}
 
         {/* Remember Me Checkbox */}
         <div className="flex items-center mb-4">
@@ -127,7 +143,9 @@ function Login() {
         </div>
       </div>
     </FormContainer>
+    </>
   );
+  
 }
 
 export default Login;

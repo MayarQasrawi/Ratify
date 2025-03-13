@@ -3,14 +3,13 @@ import classNames from "classnames";
 
 const Input = ({ register, errors, select = "input", ...props }) => {
   const inputClass = classNames(
-    "w-80 px-4 py-2 bg-gray-100 rounded-3xl shadow-sm hover:shadow-md focus:shadow-lg outline-none transition-shadow duration-200 border",
+    "w-80 px-4 py-2 bg-gray-100 rounded-3xl  focus:caret-blue-500 shadow-sm hover:shadow-md focus:shadow-lg outline-none transition-shadow duration-200 border",
     {
       "pl-10": props.icon,
       "border-red-500": errors[props.name],
       "border-gray-300": !errors[props.name],
     }
   );
-
   return (
     <div className="mb-4">
       <div className="relative">

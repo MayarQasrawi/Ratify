@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ExtractRole from "../utils/ExtractRole";
+import ExtractRole from "../../utils/ExtractRole";
 
 async function signin(data){
     const response = await axios.post(
@@ -12,7 +12,6 @@ async function signin(data){
 }
 export default function useSignin(){
     const navigate=useNavigate()
-   console.log(`${import.meta.env.VITE_BAPI}/Auth/login`,'test')
     return useMutation({
         mutationFn:(data)=> signin(data),
         retry: false,

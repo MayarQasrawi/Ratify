@@ -103,8 +103,8 @@ export default function Expert({ searchParams ,setSearchParams }) {
   }
   return (
     <section>
-      <Search   setsearchQuery={setsearchQuery} setSearchParams={setSearchParams} />
-      {searchQuery && <div onClick={()=>setsearchQuery('')} className="text-white mt-2 cursor-pointer bg-[#003F7D] w-fit px-6 rounded py-1 t text-center">{searchQuery}</div>}
+      <Search  setsearchQuery={setsearchQuery} setSearchParams={setSearchParams} />
+      {searchQuery && <div onClick={()=>{setsearchQuery(''),setSearchParams('query',null)}} className="text-white mt-2 cursor-pointer bg-[#003F7D] w-fit px-6 rounded-full py-1 t text-center">{searchQuery}</div>}
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
         {expertsFilter.length>0 && expertsFilter.map((expert, index) => (
           <ExpertCard key={expert.id} expert={expert} index={index} />

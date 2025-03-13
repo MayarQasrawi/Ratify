@@ -4,7 +4,7 @@ import { useAuthContext } from "../../../contexts/AuthProvider";
 
 function Navbar() {
   const {auth,logout}=useAuthContext();
-  console.log(auth)
+  console.log(auth,'nabbbb')
   const [isOpen, setIsOpen] = useState(false);
    const location=useLocation();
    const style=location.pathname.includes('track-details') && {backgroundColor:'transparent',boxShadow:'none',position:'static'};

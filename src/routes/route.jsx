@@ -11,17 +11,22 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
 import ExpertsPage from "../pages/user/ExpertsPage";
 import TrackPage from "../components/user/TrackPage/TrackPage";
-import Form from "../components/view/Form";
-import ForgetPassword from "../components/view/ForgetPassword";
+import Register from "../components/view/Register";
+import ForgetPassword from "../pages/general/ForgetPassword";
 import MyTracksPage from "../pages/applicant/MyTracksPage";
 import TrackDetailsPage from "../pages/user/TrackDetailsPage";
 import UnAuthorized from "../pages/general/UnAuthorized";
 import NotFoundPage from "../pages/general/NotFoundPage";
+import ResetPassword from "../pages/general/ResetPassword";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element:<AuthProvider><RootLayout /></AuthProvider>,
+    element: (
+      <AuthProvider>
+        <RootLayout />
+      </AuthProvider>
+    ),
     children: [
       { index: true, element: <Home /> },
       { path: "our-tracks", element: <TrackPage /> },
@@ -34,9 +39,10 @@ export const routes = createBrowserRouter([
     path: "login",
     element: <Login />,
   },
-  { path: "signup", element: <Form /> },
-  { path: "forgetpassword", element: <ForgetPassword /> },
-  {path:'unAuthorized',element:<UnAuthorized />},
+  { path: "signup", element: <Register /> },
+  { path: "forgetPassword", element: <ForgetPassword /> },
+  { path: "resetPassword", element: <ResetPassword /> },
+  { path: "unAuthorized", element: <UnAuthorized /> },
   {
     path: "/dashboard",
     element: (
@@ -68,7 +74,7 @@ export const routes = createBrowserRouter([
     ],
   },
   {
-    path: "*", 
+    path: "*",
     element: <NotFoundPage />,
   },
 ]);

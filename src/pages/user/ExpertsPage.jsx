@@ -16,7 +16,7 @@ export default function ExpertsPage() {
   return (
     <main className="mt-10 w-[90%] mx-auto">
       <div className="text-center">
-        <Title first="OUR " last="Experts" />
+        <Title first="OUR " last="Teams" />
       </div>
       <div className=" flex flex-col sm:flex-row mt-8 gap-4 ">
         <div className=" w-full sm:w-1/4 min-w-[220px]">
