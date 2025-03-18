@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaPhone } from "react-icons/fa";
-
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaPhone,
+} from "react-icons/fa";
+import ScrollLink from "./ScrollLink";
 // Reusable QuickLinks Component
-const QuickLinks = ({ links, scrollToComponent }) => {
+const QuickLinks = ({ links }) => {
   return (
     <div className="text-center">
       <h3 className="text-lg font-bold mb-4">Quick Links</h3>
       <ul className="space-y-2">
         {links.map((link, index) => (
           <li key={index}>
-            <button
-              onClick={() => scrollToComponent(link.target)}
-              className="text-sm text-white hover:text-gray-500"
-            >
-              {link.text}
-            </button>
+            <ScrollLink
+              to={link.target}
+              children={link.text}
+              className="text-sm cursor-pointer text-white hover:text-gray-500"
+            />
           </li>
         ))}
       </ul>
@@ -45,7 +50,7 @@ const SocialIcons = ({ socialLinks }) => {
 };
 
 // Main Footer Component
-function Footer({ scrollToComponent }) {
+function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   // Update the year if the component mounts in a new year
@@ -55,15 +60,15 @@ function Footer({ scrollToComponent }) {
 
   // Quick Links Data
   const quickLinks = [
-    { text: "Home", target: "heroSection" },
-    { text: "Services", target: "homePage" },
-    { text: "About", target: "work" },
-    { text: "Contact", target: "contact" },
+    { text: "Home", target: "/#" },
+    { text: "Tracks", target: "/our-tracks#" },
+    { text: "About", target: "/#about" },
+    { text: "Contact", target: "/#contact" },
   ];
 
   // Social Links Data
   const socialLinks = [
-    { url: "#", icon: <FaFacebook className="text-xl" /> },
+    { url: "/", icon: <FaFacebook className="text-xl" /> },
     { url: "#", icon: <FaTwitter className="text-xl" /> },
     { url: "#", icon: <FaInstagram className="text-xl" /> },
     { url: "#", icon: <FaLinkedin className="text-xl" /> },
@@ -72,7 +77,7 @@ function Footer({ scrollToComponent }) {
 
   return (
     <>
-      <footer className="bg-[var(--secondary-color)] text-white py-8">
+      <footer className="bg-[var(--secondary-color)] text-white py-8 ">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* About Section */}
@@ -84,7 +89,7 @@ function Footer({ scrollToComponent }) {
             </div>
 
             {/* Quick Links Section */}
-            <QuickLinks links={quickLinks} scrollToComponent={scrollToComponent} />
+            <QuickLinks links={quickLinks} />
 
             {/* Social Media Section */}
             <SocialIcons socialLinks={socialLinks} />

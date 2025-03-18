@@ -1,18 +1,11 @@
 import React from "react";
-import { Link } from "react-scroll";
+import { HashLink } from 'react-router-hash-link';
 
-const ScrollLink = ({ to, children, offset = -50, duration = 500, className }) => {
+
+const ScrollLink = ({ to, children, className }) => {
   return (
-    <Link
-      to={to}
-      smooth={true}
-      duration={duration}
-      offset={offset}
-      className={className}
-    >
-      {children}
-    </Link>
-  );
+    <HashLink smooth to={to} className={className} > {children} </HashLink>
+  )
 };
 
 export default ScrollLink;
