@@ -1,4 +1,4 @@
-import DashboredTitle from "../../components/admin/shared/DashboredTitle";
+import Action from "../../components/admin/shared/Action";
 import Table from "../../components/admin/shared/Table";
 
 const tracks = [
@@ -25,19 +25,18 @@ const tracks = [
     price: 180,
   },
 ];
-const cols = ["Title", "Price", "Action"];
+const cols = ["Title", "Price", ];
 
 export default function AdminTrack() {
   const renderRow = (track) => (
-    <tr className="border-b odd:bg-slate-50 even:bg-[#f9f9f9] border-b-[#BBBBBB] hover:bg-[#E7ECFF] text-[#263238] ">
-      <td className="px-3 py-3.5">{track.trackName}</td>
-      <td className="px-3 py-3.5">{track.price}</td>
-      <td className="px-3 py-3.5">action</td>
+    <tr className="border border-[#EAECF0] text-sm ">
+      <td className="p-3">{track.trackName}</td>
+      <td className="p-3">{track.price}</td>
+      <td className="p-3"><Action /></td>
     </tr>
   );
   return (
-    <div className="bg-white pl-4 pt-4 pb-6">
-      <DashboredTitle>All Tracks</DashboredTitle>
+    <div className="pl-4 pt-4 pb-6">
       <Table data={tracks} cols={cols} row={renderRow} />
     </div>
   );

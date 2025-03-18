@@ -1,13 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-async function signup(data){
-    const response=await axios.post(`${import.meta.env.VITE_BAPI}/Auth/register/applicant`,data);
+async function ChangeEmail(data){
+    const response=await axios.put(`${import.meta.env.VITE_BAPI}/Auth/updateuseremail`,data);
     return response;
 }
-export default function useSignup(){
-
+export default function useChangeEmail(){
     return useMutation({
-        mutationFn:(data)=> signup(data),
+        mutationFn:(data)=> ChangeEmail(data),
         retry: false,
         onError: (error) => {
             if (error.response) 
@@ -15,7 +14,8 @@ export default function useSignup(){
             
         },
         onSuccess: (data) => {
-            console.log("Signup successful:", data);
+            console.log('update email done')
+            console.log("ChangeEmail successful:", data);
         }
     })
 }

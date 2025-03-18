@@ -9,7 +9,7 @@ import {
   HiOutlineCheckCircle,
   HiOutlinePlusCircle,
   HiOutlineCog,
-  HiOutlineLogout,
+  HiUserGroup
 } from "react-icons/hi";
 
 const menue = [
@@ -19,7 +19,12 @@ const menue = [
     link: "",
     visible: ["Admin", "SeniorExaminer", "Examiner"],
   },
-  { title: "Team", icon: <HiOutlineUsers />, link: "teams", visible: ["admin"] },
+  {
+    title: "Team Management",
+    icon: <HiUserGroup />,
+    link: "teams",
+    visible: ["Admin"],
+  },
   {
     title: "Track",
     icon: <HiOutlineCollection />,
@@ -74,12 +79,7 @@ const menue = [
     link: "setting",
     visible: ["SeniorExaminer", "Examiner"],
   },
-  {
-    title: "Logout",
-    icon: <HiOutlineLogout />,
-    link: "/auth/signin",
-    visible: ["Admin", "SeniorExaminer", "Examiner"],
-  },
+ 
 ];
 
 export default menue;

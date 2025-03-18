@@ -1,24 +1,59 @@
 import { useState } from "react";
- import { FaUserCircle } from "react-icons/fa";
- import {HiOutlineLogout} from "react-icons/hi";
+import { FaUserCircle } from "react-icons/fa";
+import { MdPassword, MdEmail } from "react-icons/md";
+import { HiOutlineLogout } from "react-icons/hi";
 import { useAuthContext } from "../../../contexts/AuthProvider";
- export default function Navbar() {
-     const {logout}= useAuthContext();
-     const [isOpen, setIsOpen] = useState(false);
- 
-   return (
-     <nav className="py-2.5 w-[100%] flex justify-end px-6  relative border-b  border-b-[#E7ECFF]">
-       
-       <FaUserCircle size={30} color="#EAECFF" onClick={() => setIsOpen(!isOpen)} className="cursor-pointer" />
-       {isOpen && (
-           <div className="absolute z-3 right-2.5 top-6 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow">
-             <button
-               className="block w-full text-left px-4 py-2 hover:bg-[#E7ECFF] cursor-pointer group"
-             >
-              <div onClick={()=>{logout()}} className="text-gray-400 flex gap-2 items-center text-[14px] group-hover:text-[#3B82F6]"><HiOutlineLogout size={20}/> Logout</div>
-             </button>
-           </div>
-         )}
-     </nav>
-   )
- }
+import Modal from '../../shared/Modal'
+import EmailChangeModal from '../../shared/EmailChangeModal'
+import PasswordChangeModel from "../../shared/PasswordChangeModal";
+
+export default function Navbar() {
+  const { logout } = useAuthContext();
+  const [isOpen, setIsOpen] = useState(false);
+  const [changePasswordModel,setShowChangePasswordModal]=useState(false);
+  const [changeEmailModel,setShowChangeEmailModal]=useState(false);
+  return (
+  <>
+       <nav className="py-3 px-6 w-full flex justify-end border-b border-[#E7ECFF] bg-white relative">
+        <FaUserCircle
+          size={32}
+          color="#E7ECFF"
+          onClick={() => setIsOpen(!isOpen)}
+          className="cursor-pointer hover:text-gray-600 transition"
+        />
+        {isOpen && (
+          <div className="absolute z-20 right-6 top-14 w-44 bg-white shadow-lg rounded-lg border border-gray-200">
+            <button
+              className="cursor-pointer w-full px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 flex items-center gap-2"
+              onClick={() => {
+                setShowChangePasswordModal(true);
+                setIsOpen(false);
+              }}
+            >
+              <MdPassword size={18} /> Change Password
+            </button>
+            <button
+              className="w-full cursor-pointer px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 flex items-center gap-2"
+              onClick={() => {
+                setShowChangeEmailModal(true);
+                setIsOpen(false);
+              }}
+            >
+              <MdEmail size={18} /> Change Email
+            </button>
+            <hr className="border-gray-200" />
+            <button
+              className="w-full cursor-pointer px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 flex items-center gap-2"
+              onClick={logout}
+            >
+              <HiOutlineLogout size={18} /> Logout
+            </button>
+          </div>
+        )}
+    </nav>
+
+   {changePasswordModel && <Modal><PasswordChangeModel /></Modal>}
+   {changeEmailModel && <Modal><EmailChangeModal setShowChangeEmailModal={setShowChangeEmailModal} /></Modal>}
+    </>
+  );
+}

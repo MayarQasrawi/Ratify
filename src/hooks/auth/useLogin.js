@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ExtractRole from "../../utils/ExtractRole";
+import Extract from "../../utils/Extract";
 
 async function signin(data){
     const response = await axios.post(
@@ -20,8 +20,8 @@ export default function useSignin(){
         },
         onSuccess: (data) => {
             console.log("Signup successful:", data)
-            localStorage.setItem('token', data);
-           const role= ExtractRole(data)
+            localStorage.setItem('token', data.data);
+           const role= Extract(data.data,'role')
            console.log(role)
             switch(role){
                 case 'Applicant':

@@ -24,10 +24,25 @@ const schema = z
     email: z.string().email({ message: "Invalid email address" }),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" }),
+      .min(8, { message: "Password must be at least 8 characters" })
+      .refine(
+        (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
+        { message: "Password must include at least one unique character like @" }
+      )
+      .refine(
+        (value) => /\d/.test(value), 
+        { message: "Password must include at least one digit" }
+      ),
     confirmPassword: z
       .string()
-      .min(8, { message: "Confirm password must be at least 8 characters" }),
+      .min(8, { message: "Confirm password must be at least 8 characters" }) .refine(
+        (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
+        { message: "Password must include at least one unique character like @" }
+      )
+      .refine(
+        (value) => /\d/.test(value), 
+        { message: "Password must include at least one digit" }
+      ),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -61,20 +76,18 @@ const inputFields = [
     icon: <FaLock />,
   },
 ];
-function Form() {
+function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors},
   } = useForm({
     resolver: zodResolver(schema), // Integrate Zod with react-hook-form
   });
-  const { isError, error, mutate } = useSignup();
+  const { isError, error,isPending, mutate } = useSignup();
   const ref = useRef();
-  console.log(ref);
   useEffect(() => {
     ref.current.focus()
-    console.log(ref.current, "iiii");
   }, []);
 
   const onSubmit = ({ email, password, fullName }) => {
@@ -90,21 +103,7 @@ function Form() {
         <div>
           <Header text="Create Account" />
           {isError && <div className="text-red-400">{error.message}</div>}
-          {/* Map over the inputFields array to render Input components */}
-          {/* {inputFields.map((field, index) => (
-            <Input
-              key={index}
-              type={field.type}
-              placeholder={field.placeholder}
-              name={field.name}
-              icon={field.icon}
-              register={register}
-              errors={errors}
-              element={index === 0 ? ref : null}
-            />
-          ))} */}
           {inputFields.map((field, index) => {
-            // For the first field, capture the ref after registration
             const fieldRegister =
               index === 0
                 ? (name) => {
@@ -143,8 +142,8 @@ function Form() {
             </Link>
           </div>
           <Button
-            btnText={isSubmitting ? "Signing Up..." : "Sign Up"}
-            disabled={isSubmitting || !isValid}
+            btnText={ "Sign Up"}
+            disabled={isPending }
           />
         </div>
       }
@@ -152,4 +151,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default  Register;

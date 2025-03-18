@@ -1,11 +1,11 @@
 
 export default function Table({cols,data,row}) {
   return (
-    <table className="mt-8 w-full border-collapse">
-    <thead>
-      <tr className="border-y-1  border-y-[#BBBBBB] text-gray-900 ">
+    <table className='w-full bg-white shadow-md  rounded-lg '>
+    <thead className="bg-[#FCFCFD] text-[16px]">
+      <tr className="text-[#101828] border border-[#EAECF0]">
         {cols.map((col, index) => (
-          <th key={index} className="text-left px-4 py-3 font-semibold">
+          <th key={index} className="p-3 text-left ">
             {col}
           </th>
         ))}

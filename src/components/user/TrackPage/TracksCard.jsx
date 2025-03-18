@@ -20,7 +20,7 @@ function TracksCard({ header, description, img }) {
         </div>
 
         <div className="mt-4">
-          <a href="#" className="text-[#3B82F6] text-base text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]">
+          <a href="#" className="text-[#3B82F6]  text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]">
             Details <BiShowAlt className="inline text-xl" />
           </a>
           <div className="mt-4">

@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-export default function ExtractRole(token){
+export default function Extract(token,key){
     const decode=jwtDecode(token);
-    return decode.role;
+    return decode[key];
 }

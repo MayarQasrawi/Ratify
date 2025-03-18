@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-async function signup(data){
-    const response=await axios.post(`${import.meta.env.VITE_BAPI}/Auth/register/applicant`,data);
+async function addEmployee(data){
+    const response=await axios.post(`${import.meta.env.VITE_BAPI}/Auth/register/examiner`,data);
     return response;
 }
-export default function useSignup(){
+export default function useAddEmployee(){
 
     return useMutation({
-        mutationFn:(data)=> signup(data),
+        mutationFn:(data)=> addEmployee(data),
         retry: false,
         onError: (error) => {
             if (error.response) 
@@ -15,7 +15,8 @@ export default function useSignup(){
             
         },
         onSuccess: (data) => {
-            console.log("Signup successful:", data);
+            console.log("addEmployee successful:", data);
+            
         }
     })
 }

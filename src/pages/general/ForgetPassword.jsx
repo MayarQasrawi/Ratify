@@ -8,8 +8,9 @@ import   useSendEmail from "../../hooks/auth/forgetpassword/useSendEmail";
 import Header from "../../components/Header";
 import FormContainer from "../../components/FormContainer";
 import useAutoFocus from '../../hooks/useAutoFocus'
+import PasswordResetStepper from "../../components/shared/PasswordResetStepper";
 const schema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.string().email({ message: "Invalid email " }),
 });
 function ForgotPassword() {
   const {
@@ -19,7 +20,7 @@ function ForgotPassword() {
   } = useForm({
     resolver: zodResolver(schema), // Integrate Zod with react-hook-form
   });
-  const { mutate } =  useSendEmail();
+  const { mutate,isPending } =  useSendEmail();
   const emailRef=useAutoFocus()
   
   const onSubmit = (data) => {
@@ -28,6 +29,8 @@ function ForgotPassword() {
   };
 
   return (
+  <div className="flex items-center gap-30 bg-gray-100 justify-center">
+   <PasswordResetStepper />
     <FormContainer
       onSubmit={handleSubmit(onSubmit)}
       image={false}
@@ -50,11 +53,12 @@ function ForgotPassword() {
             }}
             errors={errors}
           />
-          <Button btnText="Reset Password" />
+          <Button btnText="Reset Password" disabled={isPending} />
           <div className="mt-4 text-center"></div>
         </div>
       }
     />
+    </div>  
   );
 }
 

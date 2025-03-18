@@ -52,13 +52,13 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid },
+    formState: {errors },
   } = useForm({
     resolver: zodResolver(schema), // Integrate Zod with react-hook-form
     mode: "onChange",
   });
   const [serverError, setServerError] = useState([]); // State for server errors
-  const{mutate,isLoading,isSuccess}=useSignin();
+  const{mutate,isPending}=useSignin();
   const ref=useRef();
   useEffect(()=>{
     ref.current.focus();
@@ -117,8 +117,8 @@ function Login() {
         </div>
 
         <Button
-          btnText={isLoading ? "Logging in..." : "Login"}
-          disabled={!isValid || isLoading}
+          btnText={"Login"}
+          disabled={isPending}
         />
 
         {/* Forgot Password Link */}

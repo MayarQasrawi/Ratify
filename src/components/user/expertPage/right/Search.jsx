@@ -18,7 +18,7 @@ export default function Search({ setsearchQuery,setSearchParams }) {
       <form onSubmit={(e)=>{e.preventDefault()}} className="bg-[#F1F1F5] w-1/2 min-w-[220px]  flex items-center rounded-sm pl-2">
       <FaSearch size={20} className="text-[#696974]"  />
         <input
-          className="w-1/2 py-2 pl-3 focus:caret-sky-600 min-w-[240px] placeholder:text-[#696974] placeholder:text-[16px] outline-none"
+          className="w-1/2 py-2 pl-3 focus:caret-sky-700 min-w-[240px] placeholder:text-[#696974] placeholder:text-[16px] outline-none"
           type="text"
           onKeyDown={handleKeyDown}
           placeholder="search by expert name"
