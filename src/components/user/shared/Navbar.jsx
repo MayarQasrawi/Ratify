@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation,NavLink } from "react-router-dom";
 import { useAuthContext } from "../../../contexts/AuthProvider";
-
+import { HashLink } from 'react-router-hash-link';
 function Navbar() {
   const {auth,logout}=useAuthContext();
   console.log(auth,'nabbbb')
@@ -15,7 +15,7 @@ function Navbar() {
     { name: "OUR TRACKS", to: "/our-tracks" },
     { name: "OUR TEAMS", to: "/our-experts" },
     { name: "DASHBOARD", to: "/my-tracks" },
-    { name: "CONTACT US", to: "/contact-us" },
+  
   ];
 
   return (
@@ -65,6 +65,7 @@ function Navbar() {
             {navLinks.map((link, index) => (
               <NavLinks key={index} to={link.to} name={link.name}    />
             ))}
+            <HashLink to='/#contact'  className="text-gray-700 hover:text-[#3B82F6] transition duration-300"> CONTACT US</HashLink>
           </div>
 
           {/* Action Buttons (Desktop) */}
@@ -92,7 +93,9 @@ function Navbar() {
             <div className="flex flex-col space-y-4 mt-4 pb-4 ">
               {navLinks.map((link, index) => (
                 <NavLinks key={index} to={link.to} name={link.name} />
+                
               ))}
+              <HashLink to='/#contact' className="text-gray-700 hover:text-[#3B82F6] transition duration-300"> CONTACT US</HashLink>
             {auth?<button onClick={()=>logout()} className="cursor-pointer rounded-xl px-4 py-2 font-medium bg-[#3B82F6] hover:bg-[#003F7DDE] transition duration-300 text-white">Logout</button>: <><Link
                style={style?{border:'2px solid #fff',color:'#fff'}:{}}
                 to="login"

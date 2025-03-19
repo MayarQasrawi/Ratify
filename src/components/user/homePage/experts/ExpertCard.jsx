@@ -2,7 +2,7 @@ import { RiArrowRightLine,RiArrowRightSLine } from "react-icons/ri";
 
 export default function ExpertCard({ img, name,role }) {
   return (
-    <div className="rounded-lg cursor-pointer w-fit mx-auto sm:mx-0   hover:scale-105 transition duration-300 ">
+    <div className="rounded-lg cursor-pointer w-fit mx-auto sm:mx-0  border border-3 border-white    hover:scale-105 transition duration-300 ">
       <div className="relative overflow-hidden">
         {" "}
         <img src={img} alt={name} className="w-[180px] " />
@@ -12,7 +12,7 @@ export default function ExpertCard({ img, name,role }) {
           <div className="mt-1">
           <p className="text-sm">{role}</p>
             <div className="bg-[var(--main-color)] w-5 h-5 rounded-full flex items-center ml-auto cursor-pointer">
-              <RiArrowRightLine className="-ml-1 " />
+              <RiArrowRightLine className="-ml-1 font- " />
             </div>
           </div>
         </div>
