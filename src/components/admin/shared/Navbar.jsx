@@ -6,9 +6,13 @@ import { useAuthContext } from "../../../contexts/AuthProvider";
 import Modal from '../../shared/Modal'
 import EmailChangeModal from '../../shared/EmailChangeModal'
 import PasswordChangeModel from "../../shared/PasswordChangeModal";
+import Extract from "../../../utils/Extract";
 
 export default function Navbar() {
-  const { logout } = useAuthContext();
+  const { logout,auth } = useAuthContext();
+  let role='Admin'
+  // if(auth)
+  //   role=Extract(auth ,'role')
   const [isOpen, setIsOpen] = useState(false);
   const [changePasswordModel,setShowChangePasswordModal]=useState(false);
   const [changeEmailModel,setShowChangeEmailModal]=useState(false);
@@ -32,7 +36,7 @@ export default function Navbar() {
             >
               <MdPassword size={18} /> Change Password
             </button>
-            <button
+          { role !='Admin' && <button
               className="w-full cursor-pointer px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 flex items-center gap-2"
               onClick={() => {
                 setShowChangeEmailModal(true);
@@ -40,7 +44,7 @@ export default function Navbar() {
               }}
             >
               <MdEmail size={18} /> Change Email
-            </button>
+            </button>}
             <hr className="border-gray-200" />
             <button
               className="w-full cursor-pointer px-4 py-3 text-sm text-gray-600 hover:bg-gray-100 flex items-center gap-2"

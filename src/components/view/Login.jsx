@@ -13,6 +13,7 @@ import {
 } from "../sharedImports";
 import useSignin from "../../hooks/auth/useLogin";
 import login from '../../assets/img/animation/loginA.json'
+import Alert from "../shared/Alert";
 
 // Zod schema for form validation
 const schema = z.object({
@@ -58,7 +59,7 @@ function Login() {
     mode: "onChange",
   });
   const [serverError, setServerError] = useState([]); // State for server errors
-  const{mutate,isPending}=useSignin();
+  const{mutate,isPending,isError,error}=useSignin();
   const ref=useRef();
   useEffect(()=>{
     ref.current.focus();
@@ -71,6 +72,7 @@ function Login() {
 
   return (
   <>
+  {isError && <Alert type='error' message={error.message}/>}
     <FormContainer onSubmit={handleSubmit(onSubmit)} image={login}>
       <div>
         <Header text="Login" />

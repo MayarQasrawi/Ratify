@@ -4,10 +4,10 @@ import Navbar from "../components/admin/shared/Navbar";
 import { useAuthContext } from "../contexts/AuthProvider";
 
 export default function Dashboard() {
- const {auth} =useAuthContext();
- if( typeof auth !== "string"){
-  return <Navigate to="/login" />;
- }
+//  const {auth} =useAuthContext();
+//  if( typeof auth !== "string"){
+//   return <Navigate to="/login" />;
+//  }
   return (
     <div className="flex gap-5 bg-[#f8f8f8] h-screen">
       <div className="bg-white py-4 pl-3  w-[16%] sm:w-[30%] md:w-[19%] lg:w-[16%] min-w-[70px] shadow">

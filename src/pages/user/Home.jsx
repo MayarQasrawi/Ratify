@@ -18,7 +18,6 @@ export default function Home() {
   const achievementsRef = useRef(null);
   const expertsRef = useRef(null);
   const contactRef = useRef(null);
-
   // Function to scroll to a specific component
   const scrollToComponent = (target) => {
     const refs = {

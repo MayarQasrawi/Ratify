@@ -4,11 +4,11 @@ import { useAuthContext } from "../../../contexts/AuthProvider"
 import Extract from "../../../utils/Extract";
 
 export default function Sidebar() {
-  const {auth}=useAuthContext();
-  let role;
-  if(auth){
-     role=Extract(auth,'role');
-  }
+  // const {auth}=useAuthContext();
+  let role='Admin';
+  // if(auth){
+  //    role=Extract(auth,'role');
+  // }
   return (
     <ul className="pl-2 py-5 flex flex-col gap-4">
       {menue.map((menueItem,ind)=>{

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Input from "../../components/Input";
-import { FaEnvelope } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import FormContainer from "../../components/FormContainer";
@@ -45,15 +45,20 @@ export default function ResetPassword() {
     resolver: zodResolver(schema),
   });
   const { mutate,isPending } = useResetPassword();
-  const onSubmit = ({ password }) => {
-    console.log({ password, token, email });
-    mutate({ password, token, email });
-  };
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
+  const fullUrl = window.location.href;
+  console.log()
+  const decode1=fullUrl.split('token=')[1].trim()
+  console.log(decode1)
+  // const decode = encodeURIComponent(encodeURIComponent(token));
   const password = useAutoFocus();
-  console.log(email, token);
+  const onSubmit = ({ password }) => {
+    console.log({ password, token:decode1, email },'data send');
+    mutate({ password, email,token:token});
+  };
+  
   return (
   <div className="flex items-center gap-30 bg-gray-100 justify-center">
   <PasswordResetStepper currentStep={2} />
@@ -67,7 +72,7 @@ export default function ResetPassword() {
             type="password"
             placeholder="Enter your password"
             name="password"
-            icon={<FaEnvelope />}
+            icon={<FaLock /> }
             register={() => {
               const registeration = register("password");
               return {
@@ -84,7 +89,7 @@ export default function ResetPassword() {
             type="password"
             placeholder="Confirm your password"
             name="confirmPassword"
-            icon={<FaEnvelope />}
+            icon={<FaLock />}
             register={register}
             errors={errors}
           />

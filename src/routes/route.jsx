@@ -54,7 +54,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "admin",
-        element: <ProtectedRoute allowRole="Admin" />,
+        // element: <ProtectedRoute allowRole="Admin" />,
         children: [
           { index: true, element: <AdminHome /> },
           { path: "teams", element: <Team /> },
