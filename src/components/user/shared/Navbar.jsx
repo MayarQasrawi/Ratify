@@ -3,13 +3,14 @@ import useDelteAccount from "../../../hooks/auth/useDelteAccount";
 import { Link, useLocation, NavLink } from "react-router-dom";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import { HashLink } from "react-router-hash-link";
-import { MdPassword, MdEmail,MdDelete  } from "react-icons/md";
+import { MdPassword, MdEmail, MdDelete } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaArrowRight, FaCog, FaArrowDown } from "react-icons/fa";
-import Modal from '../../shared/modal/Modal'
-import EmailChangeModal from '../../shared/modal/EmailChangeModal'
-import PasswordChangeModal from '../../shared/modal/PasswordChangeModal'
+import Modal from "../../shared/modal/Modal";
+import EmailChangeModal from "../../shared/modal/EmailChangeModal";
+import PasswordChangeModal from "../../shared/modal/PasswordChangeModal";
 import ConfirmationModal from "../../shared/modal/ConfirmationModal";
+import Extract from "../../../utils/Extract";
 function Navbar() {
   const { auth, logout } = useAuthContext();
   console.log(auth, "nabbbb");
@@ -18,8 +19,10 @@ function Navbar() {
   const [isSettingsOpen, setSettings] = useState(false);
   const [selectedModal, setselectedModal] = useState(null);
   const location = useLocation();
-  const {mutate:deleteAccount,isPending}=useDelteAccount();
-  const id='jj'
+  const { mutate: deleteAccount, isPending ,isSuccess} = useDelteAccount();
+  let id = "";
+  if (auth) id = Extract(auth, "nameid");
+  console.log(id);
   const style = location.pathname.includes("track-details") && {
     backgroundColor: "transparent",
     boxShadow: "none",
@@ -36,7 +39,7 @@ function Navbar() {
 
   return (
     <nav
-      className={` bg-white  shadow-sm   top-[1%]  text-sm  z-30 absolute  mx-[1%] w-[98%] sticky rounded-xl  min-h-18 `}
+      className={` bg-white  shadow-sm w-full  top-[1%]  text-sm  z-30 absolute  mx-[1%] lg:w-[98%] sticky rounded-xl  min-h-18 `}
       style={style ? style : {}}
     >
       <div className="container mx-auto px-4  sm:px-6 lg:px-8">
@@ -126,16 +129,38 @@ function Navbar() {
                   </button>
                   {isSettingsOpen && (
                     <div className="pl-4 py-1 border-t border-gray-100 text-[12px]">
-                      <button onClick={()=>{setviewOption(!viewOption);setSettings(!isSettingsOpen);setselectedModal('email');}} className="flex w-full cursor-pointer gap-1.5 items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <button
+                        onClick={() => {
+                          setviewOption(!viewOption);
+                          setSettings(!isSettingsOpen);
+                          setselectedModal("email");
+                        }}
+                        className="flex w-full cursor-pointer gap-1.5 items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
                         <MdEmail className="w-4 h-4 text-gray-600" /> Change
                         Email
                       </button>
-                      <button onClick={()=>{setviewOption(!viewOption);setSettings(!isSettingsOpen);setselectedModal('password');}} className="flex  cursor-pointer items-center gap-1.5 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <button
+                        onClick={() => {
+                          setviewOption(!viewOption);
+                          setSettings(!isSettingsOpen);
+                          setselectedModal("password");
+                        }}
+                        className="flex  cursor-pointer items-center gap-1.5 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
                         <MdPassword className="w-4 h-4 text-gray-600" /> Change
                         Password
                       </button>
-                      <button onClick={()=>{setviewOption(!viewOption);setSettings(!isSettingsOpen);setselectedModal('deleteAccount');}} className="flex  cursor-pointer items-center gap-1.5 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <MdDelete  className="w-4 h-4 text-gray-600" /> Delete Account
+                      <button
+                        onClick={() => {
+                          setviewOption(!viewOption);
+                          setSettings(!isSettingsOpen);
+                          setselectedModal("deleteAccount");
+                        }}
+                        className="flex  cursor-pointer items-center gap-1.5 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <MdDelete className="w-4 h-4 text-gray-600" /> Delete
+                        Account
                       </button>
                     </div>
                   )}
@@ -216,10 +241,33 @@ function Navbar() {
           </div>
         )}
       </div>
-      {selectedModal=='email' && <Modal><EmailChangeModal setShowEmailModal={()=>setselectedModal(null)} /></Modal>}
-      {selectedModal=='password' && <Modal><PasswordChangeModal setShowPasswordModal={()=>setselectedModal(null)} /></Modal>}
-      {selectedModal=='deleteAccount' && <Modal><ConfirmationModal view={true}  Cancle={()=>setselectedModal(null)} Confirm={()=>deleteAccount(id) } isPending={isPending}>Are you sure you want to delete your account?</ConfirmationModal></Modal>}
-
+      {selectedModal == "email" && (
+        <Modal >
+          <EmailChangeModal setselectedModal={setselectedModal} setShowEmailModal={() => setselectedModal(null)} />
+        </Modal>
+      )}
+      {selectedModal == "password" && (
+        <Modal >
+          <PasswordChangeModal
+            setselectedModal={setselectedModal}
+            setShowPasswordModal={() => setselectedModal(null)}
+          />
+        </Modal>
+      )}
+      {selectedModal == "deleteAccount" && (
+        <Modal setselectedModal={setselectedModal}>
+          <ConfirmationModal
+           setselectedModal={setselectedModal}
+            view={true}
+            Cancle={() => setselectedModal(null)}
+            Confirm={() => deleteAccount(id)}
+            isPending={isPending}
+            isSuccess={isSuccess}
+          >
+            Are you sure you want to delete your account?
+          </ConfirmationModal>
+        </Modal>
+      )}
     </nav>
   );
 }

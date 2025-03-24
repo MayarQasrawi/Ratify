@@ -5,9 +5,13 @@ export default function ConfirmationModal({
   children,
   Confirm,
   Cancle,
+  isSuccess,
   isPending,
   view=false
-}) {
+})
+{
+  if(isSuccess)
+    return null;
   return (
    <div className={`${view ? 'flex flex-col text-center items-center py-10 px-12 bg-white shadow-lg rounded-2xl w-96 border  border-gray-200':'text-center w-full'}`}> 
       <p className="text-lg font-medium ">{children}</p>

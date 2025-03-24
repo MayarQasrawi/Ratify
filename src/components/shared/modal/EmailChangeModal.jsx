@@ -10,7 +10,7 @@ import {emailSchema} from '../../../validation/validation'
 import ConfirmationModal from "./ConfirmationModal";
 import Header from "./Header";
 
-export default function EmailChangeModal({ setShowEmailModal }) {
+export default function EmailChangeModal({ setShowEmailModal,setselectedModal }) {
   const { auth } = useAuthContext();
   //  const id=Extract(auth,'nameid');
   //  console.log(id)
@@ -25,7 +25,7 @@ export default function EmailChangeModal({ setShowEmailModal }) {
   });
   const [isConfirming, setIsConfirming] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { mutate: changeEmail, isPending } = useChangeEmail();
+  const { mutate: changeEmail, isPending ,isSuccess} = useChangeEmail();
   const watchEmail = watch("email");
   console.log(watchEmail);
   const handleEmailChange = () => {
@@ -88,6 +88,7 @@ export default function EmailChangeModal({ setShowEmailModal }) {
           isPending={isPending}
           Cancle={setShowEmailModal}
           Confirm={handleEmailChange}
+          isSuccess={isSuccess}
         >
           Are you sure you want to change your email to{" "}
           <span className="text-[#003F7D] font-semibold underline">

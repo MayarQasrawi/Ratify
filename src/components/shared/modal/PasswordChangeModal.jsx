@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import useChangePassword from "../../../hooks/auth/useChangePassword";
 import { MdEmail, MdAutorenew, MdLockOpen, MdLock } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {changePasswordSchema} from '../../../validation/validation'
 import ConfirmationModal from "./ConfirmationModal";
 import Header from "./Header";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Alert from "../Alert";
 
-export default function PasswordChangeModal({ setShowPasswordModal }) {
+export default function PasswordChangeModal({ setShowPasswordModal,setselectedModal }) {
   const {
     register,
     getValues,
@@ -18,7 +19,8 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
   });
   const [isConfirming, setIsConfirming] = useState(false);
   const [focusedField, setFocusedField] = useState(false);
-  const { mutate: changePassword, isPending } = useChangePassword();
+  const [showAlert, setShowAlert] = useState(false);
+  const { mutate: changePassword, isPending,isSuccess } = useChangePassword();
 
   const handlePasswordChange = () => {
     const formData = getValues();
@@ -34,8 +36,17 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
     });
     console.log("jjjjjjjjjjjjjjjjjj");
   };
-
+  useEffect(() => {
+    if (isSuccess) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setselectedModal(false); 
+      }, 500);
+    }
+  }, [isSuccess])
   return (
+  <> 
+  {showAlert ? <Alert message='Password change successfully'/>:(
     <div className="flex flex-col items-center p-6 bg-white shadow-lg rounded-2xl w-96 border border-gray-200">
       <Header title="Change Password" />
 
@@ -135,11 +146,13 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
           Confirm={handlePasswordChange}
           Cancle={setShowPasswordModal}
           isPending={isPending}
+          isSuccess={isSuccess}
         >
           {" "}
           Are you want to change Password ?{" "}
         </ConfirmationModal>
       )}
-    </div>
+    </div>)}
+    </> 
   );
 }

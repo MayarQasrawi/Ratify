@@ -20,8 +20,8 @@ export default function useSignin(){
         },
         onSuccess: (data) => {
             console.log("Signup successful:", data)
-            localStorage.setItem('token', data.data);
-           const role= Extract(data.data,'role')
+            localStorage.setItem('token', data.message);
+           const role= Extract(data.message,'role')
            console.log(role)
             switch(role){
                 case 'Applicant':
