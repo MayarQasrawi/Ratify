@@ -5,6 +5,7 @@ const AuthContext=createContext();
 export const AuthProvider=({children})=>{
     const [auth,setAuth]=useState(()=>{
        return  localStorage.getItem('token') ? localStorage.getItem('token'):null
+    // return 'jjjjjjjjj'
     });
 const navigate=useNavigate()
  const logout=()=>{
@@ -13,7 +14,7 @@ const navigate=useNavigate()
     navigate('/login')
  }
     return(
-        <AuthContext.Provider value={{auth,logout}}>
+        <AuthContext.Provider value={{auth,logout,setAuth}}>
             {children}
         </AuthContext.Provider>
     )

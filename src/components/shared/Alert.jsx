@@ -15,7 +15,6 @@ function Alert({
     setTimeout(() => {
       setAnimationState('entered');
     }, 100);
-    
     if (visible) {
       timer = setTimeout(() => {
         setAnimationState('exiting');

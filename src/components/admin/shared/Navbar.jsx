@@ -3,9 +3,9 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdPassword, MdEmail } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useAuthContext } from "../../../contexts/AuthProvider";
-import Modal from '../../shared/Modal'
-import EmailChangeModal from '../../shared/EmailChangeModal'
-import PasswordChangeModel from "../../shared/PasswordChangeModal";
+import Modal from '../../shared/modal/Modal'
+import EmailChangeModal from '../../shared/modal/EmailChangeModal'
+import PasswordChangeModel from "../../shared/modal/PasswordChangeModal";
 import Extract from "../../../utils/Extract";
 
 export default function Navbar() {
@@ -56,8 +56,8 @@ export default function Navbar() {
         )}
     </nav>
 
-   {changePasswordModel && <Modal><PasswordChangeModel /></Modal>}
-   {changeEmailModel && <Modal><EmailChangeModal setShowChangeEmailModal={setShowChangeEmailModal} /></Modal>}
+   {changePasswordModel && <Modal><PasswordChangeModel setShowPasswordModal={()=>setShowChangePasswordModal(null)} /></Modal>}
+   {changeEmailModel && <Modal><EmailChangeModal setShowChangeEmailModal={()=>setShowChangeEmailModal(null)} /></Modal>}
     </>
   );
 }

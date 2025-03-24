@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import {resetPasswordSchema} from '../../validation/validation'
 import Input from "../../components/Input";
 import { FaLock } from "react-icons/fa";
 import Header from "../../components/Header";
@@ -11,30 +11,6 @@ import { useSearchParams } from "react-router-dom";
 import useAutoFocus from "../../hooks/useAutoFocus";
 import PasswordResetStepper from "../../components/shared/PasswordResetStepper";
 
-const schema = z.object({
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" }) .refine(
-      (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
-      { message: "Password must include at least one unique character like @" }
-    )
-    .refine(
-      (value) => /\d/.test(value), 
-      { message: "Password must include at least one digit" }
-    ),
-    confirmPassword:z.string()
-    .min(8, { message: "Password must be at least 8 characters" }) .refine(
-      (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
-      { message: "Password must include at least one unique character like @" }
-    )
-    .refine(
-      (value) => /\d/.test(value), 
-      { message: "Password must include at least one digit" }
-    ),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"], 
-});
 
 export default function ResetPassword() {
   const {
@@ -42,21 +18,20 @@ export default function ResetPassword() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(resetPasswordSchema),
   });
   const { mutate,isPending } = useResetPassword();
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
-  const fullUrl = window.location.href;
-  console.log()
-  const decode1=fullUrl.split('token=')[1].trim()
-  console.log(decode1)
+  // const fullUrl = window.location.href;
+  // const decode1=fullUrl.split('token=')[1].trim()
+  // console.log(decode1)
   // const decode = encodeURIComponent(encodeURIComponent(token));
   const password = useAutoFocus();
   const onSubmit = ({ password }) => {
-    console.log({ password, token:decode1, email },'data send');
-    mutate({ password, email,token:token});
+    // console.log({ password, token:decode1, email },'data send');
+    // mutate({ password, email,token:token});
   };
   
   return (
