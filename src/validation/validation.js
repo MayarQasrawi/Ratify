@@ -68,10 +68,6 @@ export const changePasswordSchema = z
         message: "Password must include at least one digit",
       }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
  export const contactSchema = z.object({
     name: z.string().min(3, { message: "Name is required" }),
     email: z.string().email({ message: "Invalid email address" }),
@@ -101,4 +97,10 @@ export const changePasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"], 
   });
+export const addEmployeeSchema =z.object({
+  fullName: z
+  .string()
+  .min(3, { message: "Username must be at least 3 characters" }),
+  email: z.string().email({ message: "Invalid email address" }),
+})
   

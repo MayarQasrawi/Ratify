@@ -13,7 +13,7 @@ export default function ConfirmationModal({
   if(isSuccess)
     return null;
   return (
-   <div className={`${view ? 'flex flex-col text-center items-center py-10 px-12 bg-white shadow-lg rounded-2xl w-96 border  border-gray-200':'text-center w-full'}`}> 
+   <div className={`${view ? 'flex flex-col text-center items-center py-10 px-12 bg-gradient-to-br from-blue-50 to-white shadow-lg rounded-2xl w-96 border  border-gray-200':'text-center w-full'}`}> 
       <p className="text-lg font-medium ">{children}</p>
       <div className="flex mt-9 gap-4 justify-center">
         <button

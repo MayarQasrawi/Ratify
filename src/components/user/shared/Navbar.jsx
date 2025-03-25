@@ -21,7 +21,7 @@ function Navbar() {
   const location = useLocation();
   const { mutate: deleteAccount, isPending ,isSuccess} = useDelteAccount();
   let id = "";
-  if (auth) id = Extract(auth, "nameid");
+  // if (auth) id = Extract(auth, "nameid");
   console.log(id);
   const style = location.pathname.includes("track-details") && {
     backgroundColor: "transparent",
@@ -243,13 +243,12 @@ function Navbar() {
       </div>
       {selectedModal == "email" && (
         <Modal >
-          <EmailChangeModal setselectedModal={setselectedModal} setShowEmailModal={() => setselectedModal(null)} />
+          <EmailChangeModal  setShowEmailModal={() => setselectedModal(null)} />
         </Modal>
       )}
       {selectedModal == "password" && (
         <Modal >
           <PasswordChangeModal
-            setselectedModal={setselectedModal}
             setShowPasswordModal={() => setselectedModal(null)}
           />
         </Modal>
@@ -257,7 +256,7 @@ function Navbar() {
       {selectedModal == "deleteAccount" && (
         <Modal setselectedModal={setselectedModal}>
           <ConfirmationModal
-           setselectedModal={setselectedModal}
+          
             view={true}
             Cancle={() => setselectedModal(null)}
             Confirm={() => deleteAccount(id)}

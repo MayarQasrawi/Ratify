@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { MdEmail, MdAutorenew } from "react-icons/md";
-import { z } from "zod";
+import { MdEmail, MdClose  } from "react-icons/md";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useChangeEmail from "../../../hooks/auth/useChangeEmail";
 import { useAuthContext } from "../../../contexts/AuthProvider";
@@ -10,7 +9,7 @@ import {emailSchema} from '../../../validation/validation'
 import ConfirmationModal from "./ConfirmationModal";
 import Header from "./Header";
 
-export default function EmailChangeModal({ setShowEmailModal,setselectedModal }) {
+export default function EmailChangeModal({ setShowEmailModal }) {
   const { auth } = useAuthContext();
   //  const id=Extract(auth,'nameid');
   //  console.log(id)
@@ -36,7 +35,13 @@ export default function EmailChangeModal({ setShowEmailModal,setselectedModal })
   };
 
   return (
-    <div className="flex flex-col  items-center py-10 px-12 bg-white shadow-lg rounded-2xl w-96 border border-gray-200">
+    <div className="flex flex-col  items-center py-10 px-12 bg-gradient-to-br from-blue-50 to-white relative shadow-lg rounded-2xl w-96 border border-gray-200">
+       <button 
+        onClick={() => setShowEmailModal()}
+        className="absolute top-4 cursor-pointer  right-4 text-gray-500 hover:text-red-500 transition"
+      >
+        <MdClose className="w-6 h-6" />
+      </button>
       <Header title='Change Email Address'  />
       {!isConfirming ? (
         <form

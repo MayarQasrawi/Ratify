@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import useChangePassword from "../../../hooks/auth/useChangePassword";
-import { MdEmail, MdAutorenew, MdLockOpen, MdLock } from "react-icons/md";
+import { MdEmail, MdAutorenew, MdLockOpen, MdLock,MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
 import {changePasswordSchema} from '../../../validation/validation'
 import ConfirmationModal from "./ConfirmationModal";
@@ -8,7 +8,7 @@ import Header from "./Header";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Alert from "../Alert";
 
-export default function PasswordChangeModal({ setShowPasswordModal,setselectedModal }) {
+export default function PasswordChangeModal({ setShowPasswordModal }) {
   const {
     register,
     getValues,
@@ -40,14 +40,20 @@ export default function PasswordChangeModal({ setShowPasswordModal,setselectedMo
     if (isSuccess) {
       setShowAlert(true);
       setTimeout(() => {
-        setselectedModal(false); 
-      }, 500);
+        setShowPasswordModal(); 
+      }, 200);
     }
   }, [isSuccess])
   return (
   <> 
   {showAlert ? <Alert message='Password change successfully'/>:(
-    <div className="flex flex-col items-center p-6 bg-white shadow-lg rounded-2xl w-96 border border-gray-200">
+    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-white shadow-lg rounded-2xl w-96 border border-gray-200 relative">
+        <button 
+        onClick={() => setShowPasswordModal()}
+        className="absolute top-4 cursor-pointer  right-4 text-gray-500 hover:text-red-500 transition"
+      >
+        <MdClose className="w-6 h-6" />
+      </button>
       <Header title="Change Password" />
 
       {!isConfirming ? (
