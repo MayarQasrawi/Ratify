@@ -1,18 +1,13 @@
-import { NavLink } from "react-router-dom"
-import menue from './Menue'
-import { useAuthContext } from "../../../contexts/AuthProvider"
-import Extract from "../../../utils/Extract";
+import { NavLink } from "react-router-dom";
+import menue from "./Menue";
 
 export default function Sidebar() {
-  // const {auth}=useAuthContext();
-  let role='Admin';
-  // if(auth){
-  //    role=Extract(auth,'role');
-  // }
+  let role = "Admin";
+
   return (
-    <ul className="pl-2 py-5 flex flex-col gap-4">
-      {menue.map((menueItem,ind)=>{
-        if(menueItem.visible.includes(role)){
+    <ul className="flex flex-col mx-auto">
+      {menue.map((menueItem, ind) => {
+        if (menueItem.visible.includes(role)) {
           return (
             <NavLink
               end
@@ -20,25 +15,30 @@ export default function Sidebar() {
               to={`/dashboard/${role}/${menueItem.link}`}
               className={({ isActive }) => {
                 return isActive
-                  ? 'relative text-blue-600 font-medium bg-blue-50'
-                  : 'text-gray-600 hover:bg-gray-50';
+                  ? "relative text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"
+                  : "text-[var(--text-color)] hover:text-[var(--main-color)]";
               }}
             >
-              <li className="relative py-3 px-4 transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl flex-shrink-0">{menueItem.icon}</span>
-                  <span className="text-sm hidden md:block transition-all duration-200">
-                    {menueItem.title}
-                  </span>
-                </div>
-                <div className={({ isActive }) => 
-                  isActive ? "absolute top-0 bottom-0 left-0 w-1 bg-blue-600" : ""
-                } />
-              </li>
+              {/* Pass isActive as a prop to the li element */}
+              {({ isActive }) => (
+                <li className={`relative py-2 lg:py-3 px-4  transition-all ease-in-out font-medium mx-auto m-3 duration-200 ${isActive&&" border-l-3  border-[var(--secondary-color)] md:border-0"}`}>
+                  <div className="flex gap-3  items-center">
+                    {/* Icon with active styles */}
+                    <div
+                      className={`text-xl flex-shrink-0 }`}
+                    >
+                      {menueItem.icon}
+                    </div>
+                    <span className="text-sm hidden sm:block transition-all duration-200">
+                      {menueItem.title}
+                    </span>
+                  </div>
+                </li>
+              )}
             </NavLink>
           );
         }
-        return null; 
+        return null;
       })}
     </ul>
   );

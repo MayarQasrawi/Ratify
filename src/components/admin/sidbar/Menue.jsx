@@ -11,16 +11,17 @@ import {
   HiOutlineCog,
   HiUserGroup
 } from "react-icons/hi";
+import { MdOutlineHome } from "react-icons/md";
 
 const menue = [
   {
     title: "Dashboard",
-    icon: <HiOutlineViewGrid  />,
+    icon: <MdOutlineHome />,
     link: "",
     visible: ["Admin", "SeniorExaminer", "Examiner"],
   },
   {
-    title: "Team Management",
+    title: "Manage Teams ",
     icon: <HiUserGroup />,
     link: "teams",
     visible: ["Admin"],

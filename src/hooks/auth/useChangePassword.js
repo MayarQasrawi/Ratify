@@ -1,22 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-async function changePassword(data){
-    console.log(data)
-    const response=await axios.post(`${import.meta.env.VITE_BAPI}/Auth/changepassword`,data);
-    return response;
-}
-export default function useChangePassword(){
+import axiosInstance from "./utils/axiosInstance"; // Import the Axios instance
 
-    return useMutation({
-        mutationFn:(data)=> changePassword(data),
-        retry: false,
-        onError: (error) => {
-           
-                console.error("Server responded with:", error);
-            
-        },
-        onSuccess: (data) => {
-            console.log("changePassword successful:", data);
-        }
-    })
+async function changePassword(data) {
+  console.log(data); // Log the data being sent
+  const response = await axiosInstance.post("/Auth/changepassword", data); // Use axiosInstance
+  return response;
+}
+
+export default function useChangePassword() {
+  return useMutation({
+    mutationFn: (data) => changePassword(data),
+    retry: false,
+    onError: (error) => {
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+      } else {
+        console.error("Error during password change:", error.message);
+      }
+    },
+    onSuccess: (data) => {
+      console.log("Password change successful:", data);
+    },
+  });
 }

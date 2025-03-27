@@ -25,16 +25,20 @@ const tracks = [
     price: 180,
   },
 ];
-const cols = ["Title", "Price", ];
+
+const cols = ["Title", "Price"];
 
 export default function AdminTrack() {
   const renderRow = (track) => (
-    <tr className="border border-[#EAECF0] text-sm ">
-      <td className="p-3">{track.trackName}</td>
-      <td className="p-3">{track.price}</td>
-      <td className="p-3"><Action /></td>
+    <tr className="border border-[var(--table-border)] text-sm">
+      <td className="p-3 text-[var(--text-color)]">{track.trackName}</td>
+      <td className="p-3 text-[var(--text-color)]">{track.price}</td>
+      <td className="p-3">
+        <Action />
+      </td>
     </tr>
   );
+
   return (
     <div className="pl-4 pt-4 pb-6">
       <Table data={tracks} cols={cols} row={renderRow} />

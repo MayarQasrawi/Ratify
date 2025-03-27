@@ -18,7 +18,7 @@ export default function Navbar() {
   const [changeEmailModel,setShowChangeEmailModal]=useState(false);
   return (
   <>
-       <nav className="py-3 px-6 w-full flex justify-end border-b border-[#E7ECFF] bg-white relative">
+       <nav className="py-3 px-6 w-full flex justify-end rounded-2xl m-1 lg:m-2 shadow bg-white relative">
         <FaUserCircle
           size={32}
           color="#E7ECFF"

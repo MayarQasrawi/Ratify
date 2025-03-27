@@ -44,6 +44,7 @@ export default function ResetPassword() {
   } = useForm({
     resolver: zodResolver(schema),
   });
+  
   const { mutate,isPending } = useResetPassword();
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");

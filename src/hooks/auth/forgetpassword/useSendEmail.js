@@ -1,12 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"; // Import the Axios instance
 
 async function forgetPassword(data) {
-  console.log(data.email, "inside asynch");
-  const response = await axios.post(
-    `${import.meta.env.VITE_BAPI}/Auth/forgotpassword`,
-    data
-  );
+  console.log(data.email, "inside async function"); // Log the email being sent
+  const response = await axiosInstance.post("/Auth/forgotpassword", data); // Use axiosInstance
   return response;
 }
 
@@ -15,10 +12,14 @@ export default function useSendEmail() {
     mutationFn: (data) => forgetPassword(data),
     retry: false,
     onSuccess: () => {
-      console.log("success");
+      console.log("Email sent successfully");
     },
     onError: (error) => {
-      console.error("Error during login:", error.response.data);
+      if (error.response) {
+        console.error("Server responded with:", error.response.data);
+      } else {
+        console.error("Error during email sending:", error.message);
+      }
     },
   });
 }
