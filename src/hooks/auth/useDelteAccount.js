@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { useAuthContext } from "../../contexts/AuthProvider";
-async function deleteAccount(id){
-    const response=await axios.delete(`${import.meta.env.VITE_BAPI}/Auth/${id}`);
-    return response;
+import axiosInstance from "./utils/axiosInstance.js"; // Import the Axios instance
+import { useAuthContext } from '../../contexts/AuthProvider.jsx'
+
+async function deleteAccount(id) {
+  const response = await axiosInstance.delete(`/Auth/${id}`);
+  return response;
 }
+
 export default function useDelteAccount(){
    const {setAuth}= useAuthContext()
     return useMutation({

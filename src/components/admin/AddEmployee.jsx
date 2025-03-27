@@ -72,54 +72,41 @@ export default function AddEmployee({ setIsOpen }) {
             <input
               type={password.show ? "text" : "password"}
               name="password"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg pr-12 focus:outline-none focus:ring-2 focus:ring-[#003F7DDE] focus:border-transparent transition duration-300 ease-in-out"
+              className="w-full p-2 border border-[var(--input-border)] rounded focus:outline-none focus:border-[var(--input-focus)]"
               readOnly
               value={password.passwordValue}
             />
             <button
               type="button"
               onClick={() => setPassword({ ...password, show: !password.show })}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-5 top-2 text-[var(--text-color)] hover:text-[var(--main-color)]"
             >
-              {password.show ? (
-                <FaEye size={20} className="cursor-pointer" />
-              ) : (
-                <FaEyeSlash size={20} className="cursor-pointer" />
-              )}
+              {password.show ? <FaEye size={20} className="cursor-pointer" /> : <FaEyeSlash size={20} className="cursor-pointer" />}
             </button>
           </div>
-          
-          <div className="flex items-center gap-2 mt-2">
-            <input 
-              type="checkbox" 
-              onClick={generatePassword} 
-              className="rounded text-[#003F7DDE] focus:ring-[#003F7DDE]"
-            />
-            <p className="text-xs text-gray-500">
-              Auto-generate 8-character password with letters, numbers, and special characters
+          <div className="flex gap-1 items-center">
+            <input type="checkbox" onClick={generatePassword} />
+            <p className="text-xs text-[var(--text-color)] mt-1">
+              Auto-generated 8-character password with letters, numbers, and special characters
             </p>
           </div>
         </div>
-        
-        <div className="flex justify-between space-x-3 pt-4">
+        <div className="flex justify-end space-x-3">
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="flex-1 px-4 cursor-pointer py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition duration-300 ease-in-out"
+            className="px-4 py-2 border border-[var(--input-border)] rounded text-[var(--text-color)] hover:bg-[var(--sidebar-icon-bg)] transition"
           >
             Cancel
           </button>
           <button
             type="submit"
-            disabled={isPending}
-            className="flex-1 px-4 py-2 cursor-pointer bg-[#003F7DDE] text-white rounded-lg hover:bg-[#3B82F6] transition duration-300 ease-in-out flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-[var(--button-bg)] text-white rounded hover:bg-[var(--button-hover)] transition"
           >
-            {isPending ? <Spinner /> : 'Add Employee'}
+            Add Employee
           </button>
         </div>
       </form>
     </div>
   );
 }
-
-

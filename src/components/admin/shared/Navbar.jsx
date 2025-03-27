@@ -3,9 +3,9 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdPassword, MdEmail } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useAuthContext } from "../../../contexts/AuthProvider";
-import Modal from '../../shared/modal/Modal'
-import EmailChangeModal from '../../shared/modal/EmailChangeModal'
-import PasswordChangeModel from "../../shared/modal/PasswordChangeModal";
+import Modal from '../../shared/Modal'
+import EmailChangeModal from '../../shared/EmailChangeModal'
+import PasswordChangeModel from "../../shared/PasswordChangeModal";
 import Extract from "../../../utils/Extract";
 
 export default function Navbar() {
@@ -18,7 +18,7 @@ export default function Navbar() {
   const [changeEmailModel,setShowChangeEmailModal]=useState(false);
   return (
   <>
-       <nav className="py-3 px-6 w-full flex justify-end border-b border-[#E7ECFF] bg-white relative">
+       <nav className="py-3 px-6 w-full flex justify-end rounded-2xl m-1 lg:m-2 shadow bg-white relative">
         <FaUserCircle
           size={32}
           color="#E7ECFF"
@@ -56,8 +56,8 @@ export default function Navbar() {
         )}
     </nav>
 
-   {changePasswordModel && <Modal><PasswordChangeModel setShowPasswordModal={()=>setShowChangePasswordModal(null)} /></Modal>}
-   {changeEmailModel && <Modal><EmailChangeModal setShowChangeEmailModal={()=>setShowChangeEmailModal(null)} /></Modal>}
+   {changePasswordModel && <Modal><PasswordChangeModel /></Modal>}
+   {changeEmailModel && <Modal><EmailChangeModal setShowChangeEmailModal={setShowChangeEmailModal} /></Modal>}
     </>
   );
 }

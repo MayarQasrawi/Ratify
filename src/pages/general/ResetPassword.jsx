@@ -20,6 +20,7 @@ export default function ResetPassword() {
   } = useForm({
     resolver: zodResolver(resetPasswordSchema),
   });
+  
   const { mutate,isPending } = useResetPassword();
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
@@ -31,7 +32,7 @@ export default function ResetPassword() {
   const password = useAutoFocus();
   const onSubmit = ({ password }) => {
     // console.log({ password, token:decode1, email },'data send');
-    // mutate({ password, email,token:token});
+    mutate({ password, email,token:token});
   };
   
   return (

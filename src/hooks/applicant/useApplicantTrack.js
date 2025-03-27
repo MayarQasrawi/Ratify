@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+
 async function fetchApplicantTracks({ queryKey }){
   const [, applicantId] = queryKey;
  const response=await axios.get(`${import.meta.env.VITE_BAPI}`);
  console.log(response)
  return response;
 }
+
 export default function useApplicantTrack(applicantId){
     return useQuery({
         queryKey: ["applicantTracks", applicantId], 
