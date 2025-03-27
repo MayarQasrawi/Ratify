@@ -103,7 +103,7 @@ export default function AddEmployee({ setIsOpen }) {
             type="submit"
             className="px-4 py-2 bg-[var(--button-bg)] text-white rounded hover:bg-[var(--button-hover)] transition"
           >
-            Add Employee
+           {isPending ? <Spinner />:'Add Employee'} 
           </button>
         </div>
       </form>

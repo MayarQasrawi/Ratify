@@ -25,10 +25,7 @@ export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
-  // const fullUrl = window.location.href;
-  // const decode1=fullUrl.split('token=')[1].trim()
-  // console.log(decode1)
-  // const decode = encodeURIComponent(encodeURIComponent(token));
+ 
   const password = useAutoFocus();
   const onSubmit = ({ password }) => {
     // console.log({ password, token:decode1, email },'data send');
