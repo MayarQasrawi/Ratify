@@ -5,7 +5,7 @@ import Lottie from "lottie-react";
 
 export default function Achievements() {
   return (
-    <section className="p-10 text-center mt-22 bg-gray-100">
+    <section className="p-10 text-center mt-24 bg-gray-100">
       <Title  first='Our ' last='Achievements'/>
       <div className="flex  mt-8 flex-raw  justify-center gap-3  items-center">
          

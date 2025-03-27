@@ -14,7 +14,7 @@ export default function ExpertsPage() {
     setSearchParams(`?${current.toString()}`);
   }
   return (
-    <main className="mt-10 w-[90%] mx-auto">
+    <main className="mt-16 w-[90%] mx-auto">
       <div className="text-center">
         <Title first="OUR " last="Teams" />
       </div>

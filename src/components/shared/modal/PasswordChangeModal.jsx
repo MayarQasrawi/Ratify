@@ -1,37 +1,60 @@
 import { useForm } from "react-hook-form";
-import useChangePassword from "../../hooks/auth/useChangePassword";
-import {
-  MdEmail,
-  MdCheck,
-  MdClose,
-  MdAutorenew,
-  MdLockOpen,
-  MdLock,
-} from "react-icons/md";
-import { useState } from "react";
-import { useAuthContext } from "../../contexts/AuthProvider";
+import useChangePassword from "../../../hooks/auth/useChangePassword";
+import { MdEmail, MdAutorenew, MdLockOpen, MdLock,MdClose } from "react-icons/md";
+import { useEffect, useState } from "react";
+import {changePasswordSchema} from '../../../validation/validation'
+import ConfirmationModal from "./ConfirmationModal";
+import Header from "./Header";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Alert from "../Alert";
 
-export default function PasswordChangeModel() {
+export default function PasswordChangeModal({ setShowPasswordModal }) {
   const {
     register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({});
+    getValues,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(changePasswordSchema),
+  });
   const [isConfirming, setIsConfirming] = useState(false);
   const [focusedField, setFocusedField] = useState(false);
-  const { mutate, isPending } = useChangePassword();
+  const [showAlert, setShowAlert] = useState(false);
+  const { mutate: changePassword, isPending,isSuccess } = useChangePassword();
 
-  const handlePasswordChange = ({ newPassword, oldPassword, email }) => {
-    mutate({ oldPassword, email, newPassword });
-    console.log({ oldPassword, email, newPassword });
+  const handlePasswordChange = () => {
+    const formData = getValues();
+    changePassword({
+      oldPassword: formData.oldPassword,
+      email: formData.email,
+      newPassword: formData.newPassword,
+    });
+    console.log({
+      oldPassword: formData.oldPassword,
+      email: formData.email,
+      newPassword: formData.newPassword,
+    });
+    console.log("jjjjjjjjjjjjjjjjjj");
   };
-
+  useEffect(() => {
+    if (isSuccess) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowPasswordModal(); 
+      }, 200);
+    }
+  }, [isSuccess])
   return (
-    <div className="flex flex-col items-center p-6 bg-white shadow-lg rounded-2xl w-96 border border-gray-200">
-      <div className="flex items-center justify-center w-full mb-8">
-        <MdLock className="w-6 h-6 text-blue-500 mr-2" />
-        <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
-      </div>
+  <> 
+  {showAlert ? <Alert message='Password change successfully'/>:(
+    <div className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-white shadow-lg rounded-2xl w-96 border border-gray-200 relative">
+        <button 
+        onClick={() => setShowPasswordModal()}
+        className="absolute top-4 cursor-pointer  right-4 text-gray-500 hover:text-red-500 transition"
+      >
+        <MdClose className="w-6 h-6" />
+      </button>
+      <Header title="Change Password" />
 
       {!isConfirming ? (
         <form className="w-full flex flex-col gap-6">
@@ -113,38 +136,29 @@ export default function PasswordChangeModel() {
           </div>
 
           <button
-            onClick={handleSubmit(() => setIsConfirming(true))}
+            onClick={() => {
+              if (isValid) setIsConfirming(true);
+            }}
             type="button"
-            className="bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2.5 font-medium"
+            disabled={!isValid}
+            className="bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500  text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2.5 font-medium"
           >
             <MdAutorenew className="w-5 h-5" />
             Change Password
           </button>
         </form>
       ) : (
-        <div className="text-center w-full">
-          <p className="text-lg font-medium text-gray-700">
-            Are you sure you want to change your password?
-          </p>
-          <div className="flex mt-9 gap-4 justify-center">
-            <button
-              disabled={isPending}
-              onClick={handleSubmit(handlePasswordChange)}
-              className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1 disabled:opacity-70"
-            >
-              <MdCheck className="w-5 h-5" />
-              {isPending ? "Updating..." : "Confirm"}
-            </button>
-            <button
-              // onClick={handleCancel}
-              className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1"
-            >
-              <MdClose className="w-5 h-5" />
-              Cancel
-            </button>
-          </div>
-        </div>
+        <ConfirmationModal
+          Confirm={handlePasswordChange}
+          Cancle={setShowPasswordModal}
+          isPending={isPending}
+          isSuccess={isSuccess}
+        >
+          {" "}
+          Are you want to change Password ?{" "}
+        </ConfirmationModal>
       )}
-    </div>
+    </div>)}
+    </> 
   );
 }

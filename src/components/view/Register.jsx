@@ -2,7 +2,6 @@ import {
   useForm,
   FaEnvelope,
   FaLock,
-  z,
   zodResolver,
   Link,
   Input,
@@ -11,45 +10,10 @@ import {
   FormContainer,
   FaUser,
 } from "../sharedImports";
+import {registerSchema} from '../../validation/validation'
 import signup from "../../assets/img/animation/signup.json";
 import useSignup from "../../hooks/auth/useSignUp";
 import { useEffect, useRef } from "react";
-
-// Define the Zod schema
-const schema = z
-  .object({
-    fullName: z
-      .string()
-      .min(3, { message: "Username must be at least 3 characters" }),
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .refine(
-        (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
-        { message: "Password must include at least one unique character like @" }
-      )
-      .refine(
-        (value) => /\d/.test(value), 
-        { message: "Password must include at least one digit" }
-      ),
-    confirmPassword: z
-      .string()
-      .min(8, { message: "Confirm password must be at least 8 characters" }) .refine(
-        (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), 
-        { message: "Password must include at least one unique character like @" }
-      )
-      .refine(
-        (value) => /\d/.test(value), 
-        { message: "Password must include at least one digit" }
-      ),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"], // This associates the error with the confirmPassword field
-  });
-// input fields
-
 const inputFields = [
   {
     type: "text",
@@ -82,7 +46,7 @@ function Register() {
     handleSubmit,
     formState: { errors},
   } = useForm({
-    resolver: zodResolver(schema), // Integrate Zod with react-hook-form
+    resolver: zodResolver(registerSchema), // Integrate Zod with react-hook-form
   });
   const { isError, error,isPending, mutate } = useSignup();
   const ref = useRef();

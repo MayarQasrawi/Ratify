@@ -12,25 +12,10 @@ import {
   FormContainer,
 } from "../sharedImports";
 import useSignin from "../../hooks/auth/useLogin";
+import {signinSchema} from '../../validation/validation'
 import login from '../../assets/img/animation/loginA.json'
 import Alert from "../shared/Alert";
 
-// Zod schema for form validation
-const schema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" })
-    .refine(
-      (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), // Ensure at least one unique character
-      { message: "Password must include at least one unique character like @" }
-    )
-    .refine(
-      (value) => /\d/.test(value), // Ensure at least one digit
-      { message: "Password must include at least one digit" }
-    ),
-  rememberMe: z.boolean().optional(),
-});
 
 
 // Input fields configuration
@@ -55,7 +40,7 @@ function Login() {
     handleSubmit,
     formState: {errors },
   } = useForm({
-    resolver: zodResolver(schema), // Integrate Zod with react-hook-form
+    resolver: zodResolver(signinSchema), // Integrate Zod with react-hook-form
     mode: "onChange",
   });
   const [serverError, setServerError] = useState([]); // State for server errors

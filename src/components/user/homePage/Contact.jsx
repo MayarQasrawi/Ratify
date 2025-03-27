@@ -3,19 +3,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useWeb3Forms from "@web3forms/react";
 import Input from "../../Input"; // Import the Input component
-import { z } from "zod";
+import {contactSchema} from '../../../validation/validation';
 import contact from "../../../assets/img/animation/contact.json";
 import FormContainer from "../../FormContainer"; // Import the FormContainer component
 import Header from "../../Header";
 import { FaEnvelope, FaLock,FaUser } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 
-// Zod schema for form validation
-const contactSchema = z.object({
-  name: z.string().min(3, { message: "Name is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  message: z.string().min(1, { message: "Message is required" }),
-});
 
 export default function Contact() {
   const {
@@ -101,7 +95,7 @@ export default function Contact() {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full mt-4  font-bold px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
+        className="w-full mt-4 cursor-pointer font-bold px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200"
       >
         Send <FiSend  className="inline" size={20}/>
       </button>

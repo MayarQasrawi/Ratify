@@ -30,7 +30,7 @@ export default function TrackCard() {
             />
           ))}
         </div>
-        <div className="flex gap-3 absolute -top-9 left-[280px] ">
+        <div className="flex gap-3 absolute -top-12 left-[280px] ">
           {currentIndex != 0 && (
             <div className="bg-[#3B82F6] w-[30px] h-[30px] rounded-full flex items-center justify-center">
               {" "}
@@ -56,7 +56,7 @@ export default function TrackCard() {
       </div>
 
       {/* Desktop Grid: Visible on md and larger screens */}
-      <div className="md:hidden grid grid-cols-1 lg:grid lg:grid-cols-2 gap-4 cursor-pointer">
+      <div className="md:hidden grid grid-cols-1 lg:grid lg:grid-cols-2 gap-x-4 gap-y-8 cursor-pointer">
         {traks.slice(0, 4).map((track, index) => (
           <div
             key={index}
