@@ -7,12 +7,13 @@ const traks = [
   { id: 3, title: "Front-End", img: myImg },
   { id: 3, title: "Front-End", img: myImg },
 ];
-export default function TrackCard() {
+export default function TrackCard({isLoading}) {
   const [currentIndex, setCurrentIndex] = useState(1);
   return (
     <>
       <div className=" gap-2 relative hidden md:flex  lg:hidden">
-        <div className="bg-[#E7ECFF] flex cursor-pointer items-center gap-4 h-full rounded-xl w-[320px] px-3">
+      {isLoading && <div className="bg-gray-300  flex h-[200px] items-center gap-4 animate-pulse rounded-xl w-[320px] px-3"></div>}
+      {!isLoading &&<><div className="bg-[#E7ECFF] flex cursor-pointer items-center gap-4 h-full rounded-xl w-[320px] px-3">
           <h3 className="text-[18px] font-semibold">
             <span className="text-[#3B82F6]">{traks[currentIndex].title} </span>
             <br />
@@ -52,12 +53,14 @@ export default function TrackCard() {
               />
             </div>
           )}
-        </div>
+        </div></>}  
       </div>
 
       {/* Desktop Grid: Visible on md and larger screens */}
       <div className="md:hidden grid grid-cols-1 lg:grid lg:grid-cols-2 gap-x-4 gap-y-8 cursor-pointer">
-        {traks.slice(0, 4).map((track, index) => (
+        {isLoading ?Array.from({length:4},(_,ind)=><div key={ind}  className="bg-gray-300 w-[300px] h-[200px] animate-pulse flex items-center gap-4 rounded-xl px-3 py-2 ">
+        </div>)
+        : traks.slice(0, 4).map((track, index) => (
           <div
             key={index}
             className="bg-[#E7ECFF] flex items-center gap-4 rounded-xl px-3 py-2 hover:scale-105 transition-transform duration-300"

@@ -11,6 +11,7 @@ import EmailChangeModal from "../../shared/modal/EmailChangeModal";
 import PasswordChangeModal from "../../shared/modal/PasswordChangeModal";
 import ConfirmationModal from "../../shared/modal/ConfirmationModal";
 import Extract from "../../../utils/Extract";
+import getFirstCharacter from "../../../utils/getFirstCharacter";
 function Navbar() {
   const { auth, logout } = useAuthContext();
   console.log(auth, "nabbbb");
@@ -21,7 +22,8 @@ function Navbar() {
   const location = useLocation();
   const { mutate: deleteAccount, isPending ,isSuccess} = useDelteAccount();
   let id = "";
-  // if (auth) id = Extract(auth, "nameid");
+  let name=""
+  // if (auth) {id = Extract(auth, "nameid");name=Extract(auth, "nameid")} 
   console.log(id);
   const style = location.pathname.includes("track-details") && {
     backgroundColor: "transparent",
@@ -94,6 +96,7 @@ function Navbar() {
             <HashLink
               to="/#contact"
               className="text-gray-700 hover:text-[#3B82F6] transition duration-300"
+              style={style ? { color: "white" } : {}}
             >
               {" "}
               CONTACT US
@@ -109,7 +112,7 @@ function Navbar() {
                   viewOption && "border-3 border-[#EBEBEB]"
                 }`}
               >
-                A
+                {getFirstCharacter(name)}
               </div>
               {viewOption && (
                 <div className="absolute right-0 mt-.5 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
@@ -264,6 +267,7 @@ function Navbar() {
             isSuccess={isSuccess}
           >
             Are you sure you want to delete your account?
+           <span className="text-red-500 text-sm block mt-1">Once you delete your account, there is no going back. Please be certain.</span>
           </ConfirmationModal>
         </Modal>
       )}

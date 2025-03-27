@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import Spinner from "./shared/Spinner";
 
 const Button = ({ btnText, type = "submit",disabled }) => {
-  console.log(disabled)
   return (
     <button
       type={type} disabled={disabled}

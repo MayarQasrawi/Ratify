@@ -3,7 +3,7 @@ import Achievements from "../../components/user/homePage/achievements/Achievemen
 import Experts from "../../components/user/homePage/experts/Experts";
 import Tracks from "../../components/user/homePage/tracks/Tracks";
 import Work from "../../components/user/homePage/works/Work";
-import HomePage from "../../components/user/homePage/service/HomePage";
+import  Service from "../../components/user/homePage/service/Service";
 import Contact from "../../components/user/homePage/Contact";
 import Footer from "../../components/user/shared/Footer";
 import BackToTop from "../../components/user/trackDetailsPage/shared/BackToTop";
@@ -15,7 +15,7 @@ export default function Home() {
       <HeroSection />
 
       <div id="about">
-        <HomePage />
+        < Service />
       </div>
       <Work />
       <Tracks />
