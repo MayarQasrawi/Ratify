@@ -1,8 +1,8 @@
-import img from '../../../assets/img/tracks/frontEnd.png'
-import Navbar from '../shared/Navbar'
+import img from '../../../../assets/img/tracks/frontEnd.png'
+import Navbar from '../../shared/Navbar'
 export default function Header() {
   return (
-    <header className='bg-[#003F7D] pt-5 pb-10 h-[60vh] rounded-bl-[60px] rounded-br-[60px]'>
+    <header className='bg-[#003F7D] md:hidden lg:block pt-5 pb-10 h-[60vh] rounded-bl-[60px] rounded-br-[60px]'>
       <Navbar />
       <div className='flex h-full gap-10 items-center justify-center'>
         <div>

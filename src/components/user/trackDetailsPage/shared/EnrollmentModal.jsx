@@ -29,7 +29,7 @@ export default function EnrollmentModal({ setShow ,title,description}) {
           }}
           className="w-[95%] ml-3 mt-5 font-medium cursor-pointer px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
         >
-         { title.includes('Log')?'SignIn':title}
+         { title.includes('Log')?'Signin':title}
         </button>
       </div>
     </>

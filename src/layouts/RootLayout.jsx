@@ -6,7 +6,7 @@ import TopLoader from "../components/shared/TopLoader";
 
 export default function RootLayout() {
 //  const {data,isLoading, isSuccess}= useApplicantTrack('1')
-  // const location = useLocation();
+  const location = useLocation();
 
   return (
     <>

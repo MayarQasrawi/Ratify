@@ -10,7 +10,7 @@ import Login from "../components/view/Login";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/user/Home";
 import ExpertsPage from "../pages/user/ExpertsPage";
-import TrackPage from "../components/user/TrackPage/TrackPage";
+import TrackPage from "../pages/user/TrackPage";
 import Register from "../components/view/Register";
 import ForgetPassword from "../pages/general/ForgetPassword";
 import MyTracksPage from "../pages/applicant/MyTracksPage";
@@ -32,7 +32,7 @@ export const routes = createBrowserRouter([
       { path: "our-tracks", element: <TrackPage /> },
       { path: "our-experts", element: <ExpertsPage /> },
       { path: "my-tracks", element: <MyTracksPage /> },
-      { path: "track-details", element: <TrackDetailsPage /> },
+      { path: "track-details/:id", element: <TrackDetailsPage /> },
     ],
   },
   {

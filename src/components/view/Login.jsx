@@ -66,7 +66,7 @@ function Login() {
           <div className="text-red-500 text-sm mb-4">{serverError}</div>
         )}
         {/* Map over the inputFields array to render Input components */}
-        {inputFields.map((field, index) => 
+        {inputFields.map((field, index) =>
          {const fieldRegister=index==0?(name) => {
           console.log(name)
             const registration = register(name);
@@ -84,7 +84,7 @@ function Login() {
               placeholder={field.placeholder}
               name={field.name}
               icon={field.icon}
-              register={fieldRegister}
+              register={ fieldRegister}
               errors={errors}
             />
           </div>

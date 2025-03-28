@@ -1,36 +1,57 @@
-import React from 'react';
+import React, { useState } from "react";
 import { BiShowAlt } from "react-icons/bi";
-import Button from '../trackDetailsPage/shared/Button';
+import Button from "../trackDetailsPage/shared/Button";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../contexts/AuthProvider";
+import Modal from '../../shared/modal/Modal'
+import EnrollmentModal from '../trackDetailsPage/shared/EnrollmentModal'
+function TracksCard({ header, description, img, id }) {
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const { auth } = useAuthContext();
 
-function TracksCard({ header, description, img }) {
   return (
-    <div className='h-105 '>
-<div className="flex flex-col gap-0 max-w-sm rounded-lg bg-[#2A5C8A] items-center text-center justify-center w-78 h-80 p-6 transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-      
-      <div className="mt-20">
-        {img}
-      </div>
-
-      <div className="bg-white text-xl w-72 h-48 rounded-lg p-4 mt-4">
-        <div className="h-24 items-center">
-          <h1 className="font-bold">{header}</h1>
-          <p className="text-gray-600 text-sm ">
-            {description}
-          </p>
+    <>
+      {show && (
+        <Modal>
+          {auth ? (
+            <EnrollmentModal
+              setShow={setShow}
+              title="Enroll Now &#10148;"
+              description="Our unique assessment tracks are not just about learning—they're about discovering the essence of your strengths and matching them against the pulse of today's market demands. Register and log in to experience an evaluation crafted by industry visionaries, and step confidently into a future aligned with professional excellence."
+            />
+          ) : (
+            <EnrollmentModal
+              title="&#128274; Login Required"
+              description="Please Signin First."
+              setShow={setShow}
+            />
+          )}
+        </Modal>
+      )}
+      <div>
+        <div className="rounded-lg bg-[var(--secondary-color)]  h-65 p-6 transition-transform hover:shadow-lg">
+          <img src={img} className="w-30 h-30 block mx-auto" />
         </div>
-
-        <div className="mt-4">
-          <a href="#" className="text-[#3B82F6]  text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]">
-            Details <BiShowAlt className="inline text-xl" />
-          </a>
-          <div className="mt-4">
-            <Button  />
+        <div className="bg-white relative -mt-24 shadow text-center  text-xl  h-50 rounded-lg p-3  w-[90%] mx-auto ">
+          <div className="h-24">
+            <h1 className="font-bold">{header}</h1>
+            <p className="text-gray-600 text-sm  ">{description}</p>
+          </div>
+          <div className="mt-5 ">
+            <button
+              onClick={() => navigate(`/track-details/${id}`)}
+              className="text-[#3B82F6] cursor-pointer  text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]"
+            >
+              Details <BiShowAlt className="inline text-xl" />
+            </button>
+            <div className="mt-3.5">
+              <Button px="28" py="6" showModal={() => setShow(true)} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    </div>
-    
+    </>
   );
 }
 
