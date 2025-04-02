@@ -42,7 +42,7 @@ export default function AddEmployee({ setIsOpen }) {
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-2xl w-full max-w-md p-8 mx-auto">
-      <h2 className="text-2xl font-extrabold mb-6 text-center text-[#003F7DDE] tracking-tight">
+      <h2 className="text-2xl font-extrabold mb-6 text-center text-blue-500 tracking-tight">
         Add New Employee
       </h2>
 
@@ -54,7 +54,7 @@ export default function AddEmployee({ setIsOpen }) {
             </label>
             <input
               {...register(field.includes("Full Name") ? "fullName" : "email")}
-              className="w-full p-3 border-2 border-gray-300 rounded-lg outline-none  focus:border-[#003F7DDE]  transition duration-300 ease-in-out"
+              className="w-full p-2 border border-[var(--input-border)] rounded-lg outline-none  focus:border-[var(--input-focus)]  transition duration-300 ease-in-out"
             />
             {errors[field.includes("Full Name") ? "fullName" : "email"] && (
               <p className="absolute text-red-500 text-xs mt-1.5  pl-1">
@@ -91,17 +91,17 @@ export default function AddEmployee({ setIsOpen }) {
             </p>
           </div>
         </div>
-        <div className="flex justify-end space-x-3">
+        <div className="flex font-medium justify-end space-x-3">
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="px-4 py-2 border border-[var(--input-border)] rounded text-[var(--text-color)] hover:bg-[var(--sidebar-icon-bg)] transition"
+            className="cursor-pointer px-4 py-2 border border-[var(--input-border)] rounded text-[var(--text-color)] "
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-[var(--button-bg)] text-white rounded hover:bg-[var(--button-hover)] transition"
+            className="px-4 py-2 cursor-pointer bg-[var(--button-hover)] text-white rounded hover:bg-[var(--button-hover)] transition"
           >
            {isPending ? <Spinner />:'Add Employee'} 
           </button>

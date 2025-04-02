@@ -9,7 +9,7 @@ export default function Add({ icon, text, table }) {
         onClick={() => {
           setIsOpen(true);
         }}
-        className="flex cursor-pointer items-center justify-center px-3 py-2  bg-[#3B82F6] text-white rounded-lg hover:bg-[#003F7D] transition-colors shadow-sm font-medium"
+        className="flex cursor-pointer items-center justify-center px-2 py-1  bg-[var(--main-color)] text-white rounded-lg hover:bg-[#003F7D] transition-colors text-sm font-medium"
       >
         {icon}
         <span>{text}</span>

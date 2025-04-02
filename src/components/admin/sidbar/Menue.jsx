@@ -27,13 +27,13 @@ const menue = [
     visible: ["Admin"],
   },
   {
-    title: "Track",
+    title: "Manage Tracks",
     icon: <HiOutlineCollection />,
     link: "tracks",
     visible: ["Admin"],
   },
   {
-    title: "Track Management",
+    title: "Define Plan",
     icon: <HiOutlineUserGroup />,
     link: "tracks",
     visible: ["SeniorExaminer"],

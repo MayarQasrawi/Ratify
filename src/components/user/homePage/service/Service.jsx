@@ -6,6 +6,7 @@ import why3 from "../../../../assets/img/why3.png";
 import { motion } from "framer-motion";
 import Button from "../../shared/Button";
 import Title from "../../shared/Title";
+import { useNavigate } from "react-router-dom";
 const why = [
   {
     header: "Bridge the Gap",
@@ -24,6 +25,7 @@ const why = [
   },
 ];
 function Service() {
+  const navigate=useNavigate()
   return (
     <div className="min-h-[70%]  m-0 overflow-x-hidden">
       <div className="   items-center">
@@ -45,7 +47,7 @@ function Service() {
         </section>
 
         <div className="text-center">
-          <button className="hover:bg-[var(--main-color)] text-white cursor-pointer px-8 py-3 m-20 rounded-4xl  font-bold text-sm bg-[var(--secondary-color)] transition duration-300 shadow-lg hover:shadow-xl">
+          <button onClick={()=>navigate('/our-tracks')} className="hover:bg-[var(--main-color)] text-white cursor-pointer px-8 py-3 m-20 rounded-4xl  font-bold text-sm bg-[var(--secondary-color)] transition duration-300 shadow-lg hover:shadow-xl">
             Start your journey to success today!
           </button>
         </div>

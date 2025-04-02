@@ -18,7 +18,7 @@ const QuickLinks = ({ links }) => {
             <ScrollLink
               to={link.target}
               children={link.text}
-              className="text-sm cursor-pointer text-white hover:text-gray-500"
+              className="text-sm cursor-pointer text-white "
             />
           </li>
         ))}
@@ -37,7 +37,7 @@ const SocialIcons = ({ socialLinks }) => {
           <a
             key={index}
             href={social.url}
-            className="text-white hover:text-gray-500"
+            className="text-white  hover:-translate-y-2 transition"
             target="_blank"
             rel="noopener noreferrer"
           >

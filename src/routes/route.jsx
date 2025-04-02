@@ -4,7 +4,7 @@ import AdminHome from "../pages/admin/AdminHome";
 import SeniorHome from "../pages/SeniorHome";
 import { AuthProvider } from "../contexts/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
-import AdminTrack from "../pages/admin/AdminTrack";
+import AdminTrack from "../pages/admin/track/Track";
 import Team from "../pages/admin/Team";
 import Login from "../components/view/Login";
 import RootLayout from "../layouts/RootLayout";
@@ -18,6 +18,7 @@ import TrackDetailsPage from "../pages/user/TrackDetailsPage";
 import UnAuthorized from "../pages/general/UnAuthorized";
 import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
+import TrackSetup from "../pages/admin/track/TrackSetup";
 
 export const routes = createBrowserRouter([
   {
@@ -59,6 +60,7 @@ export const routes = createBrowserRouter([
           { index: true, element: <AdminHome /> },
           { path: "teams", element: <Team /> },
           { path: "tracks", element: <AdminTrack /> },
+          { path: "tracks/setup", element: <TrackSetup /> },
         ],
       },
       {

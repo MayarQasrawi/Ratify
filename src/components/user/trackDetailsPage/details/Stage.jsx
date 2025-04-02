@@ -24,11 +24,11 @@ export default function Stage() {
             <FaCheckCircle className="text-green-500 text-3xl" />
               <div className="w-[2px] h-12 bg-gray-300 mt-1"></div>
           </div>
-          <div className="shadow-lg cursor-pointer w-96 p-4 hover:-translate-y-5 transition border border-gray-200 rounded-lg bg-white">
+          <div className="shadow-lg cursor-pointer w-[220px] sm:w-96 p-4 hover:-translate-y-5 transition border border-gray-200 rounded-lg bg-white">
             <div className="p-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2 text-gray-900">
                 {stage.icon}
-                <h3 className="text-lg font-semibold">{stage.title}</h3>
+                <h3 className="text-lg font-semibold inline-block">{stage.title}</h3>
               </div>
             </div>
           </div>

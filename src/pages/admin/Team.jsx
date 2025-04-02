@@ -44,20 +44,27 @@ const teamMember = [
 ];
 
 const cols = ["Info", "Role", "Status"];
-const actions = ["Toggle Account", "View Details"];
 
 export default function Teams() {
   const [search, setSearch] = useState("");
+  const actions = [
+    {name:'Toggle Account',onClick:'some logic pass'}, 
+    {name:'View Details',onClick:'some logic pass'}];
 
   const renderRow = (member) => (
-    <tr className="border text-md border-[var(--table-border)] text-sm hover:bg-[var(--sidebar-icon-bg)]" key={member.id}>
+    <tr
+      className="border text-md border-[var(--table-border)] text-sm hover:bg-[var(--sidebar-icon-bg)]"
+      key={member.id}
+    >
       <td className="p-3">
         <div className="flex gap-1 items-center">
           <div className="h-8 w-8 flex items-center justify-center font-bold rounded-lg bg-[var(--sidebar-icon-bg)] text-[var(--main-color)]">
             {member.name.split(" ")[0].slice(0, 1).toUpperCase()}
           </div>
           <div className="ml-3 flex flex-col">
-            <div className="font-medium text-[var(--text-color)]">{member.name}</div>
+            <div className="font-medium text-[var(--text-color)]">
+              {member.name}
+            </div>
             <div className="font-medium text-[var(--text-color)] text-[12px]">
               {member.email}
             </div>
@@ -98,11 +105,13 @@ export default function Teams() {
   );
 
   return (
-    <>
+    <section className="pr-3">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div>
-            <h2 className="text-2xl font-bold text-[var(--text-color)]">Team Members</h2>
+            <h2 className="text-2xl font-bold text-[var(--text-color)]">
+              Team Members
+            </h2>
             <p className="text-[var(--text-color)] mt-1">
               Manage your team and their account permissions here
             </p>
@@ -120,11 +129,15 @@ export default function Teams() {
             <FaFilter className="mr-2 text-[var(--text-color)]" />
             <span>Filters</span>
           </button>
-          <Add text="Add Employee" icon={<FaPlus className="mr-2" />} table="teams" />
+          <Add
+            text="Add Employee"
+            icon={<FaPlus className="mr-2" />}
+            table="teams"
+          />
         </div>
       </div>
 
       <Table data={teamMember} cols={cols} row={renderRow} />
-    </>
+    </section>
   );
 }

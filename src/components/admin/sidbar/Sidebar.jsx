@@ -1,9 +1,12 @@
 import { NavLink } from "react-router-dom";
 import menue from "./Menue";
+import { useAuthContext } from "../../../contexts/AuthProvider";
 
 export default function Sidebar() {
-  let role = "Admin";
-
+  const { auth } = useAuthContext();
+  let role='Admin'
+  // if(auth)
+  //   role=Extract(auth ,'role')
   return (
     <ul className="flex flex-col mx-auto">
       {menue.map((menueItem, ind) => {

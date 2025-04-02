@@ -62,6 +62,7 @@ function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-blue-600 focus:text-blue-600"
+              style={style ? { color: "white" } : {}}
             >
               <svg
                 className="h-6 w-6"
@@ -259,7 +260,6 @@ function Navbar() {
       {selectedModal == "deleteAccount" && (
         <Modal setselectedModal={setselectedModal}>
           <ConfirmationModal
-          
             view={true}
             Cancle={() => setselectedModal(null)}
             Confirm={() => deleteAccount(id)}
