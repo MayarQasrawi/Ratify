@@ -11,11 +11,11 @@ export default function useSignup() {
     mutationFn: (data) => signup(data),
     retry: false,
     onError: (error) => {
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-      } else {
-        console.error("Error during signup:", error.message);
-      }
+      // if (error.response) {
+      //   console.error("Server responded with:", error.response.data);
+      // } else {
+      //   console.error("Error during signup:", error.message);
+      // }
     },
     onSuccess: (data) => {
       console.log("Signup successful:", data);

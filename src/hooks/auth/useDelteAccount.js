@@ -3,12 +3,11 @@ import axiosInstance from "./utils/axiosInstance.js"; // Import the Axios instan
 import { useAuthContext } from '../../contexts/AuthProvider.jsx'
 
 async function deleteAccount(id) {
-  const response = await axiosInstance.delete(`/Auth/${id}`);
+  const response = await axiosInstance.delete(`/Users/${id}`);
   return response;
 }
 
 export default function useDelteAccount(){
-   const {setAuth}= useAuthContext()
     return useMutation({
         mutationFn:(id)=> deleteAccount(id),
         retry: false,
@@ -17,7 +16,6 @@ export default function useDelteAccount(){
         },
         onSuccess: (data) => {
             console.log("DelteAccount successful:", data);
-            setAuth(null)
         }
     })
 }

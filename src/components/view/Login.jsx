@@ -44,7 +44,7 @@ function Login() {
     mode: "onChange",
   });
   const [serverError, setServerError] = useState([]); // State for server errors
-  const{mutate,isPending,isError,error}=useSignin();
+  const{mutate,isPending,isError,error,isSuccess,data}=useSignin();
   const ref=useRef();
   useEffect(()=>{
     ref.current.focus();
@@ -54,10 +54,12 @@ function Login() {
     console.log({ email, password })
     mutate({ email, password });    
   };
-
+console.log(data,'test')
+console.log(error)
   return (
   <>
-  {isError && <Alert type='error' message={error.message}/>}
+  {isError && <Alert type='error' message={error.response.data.message}/>}
+  {isSuccess && <Alert  message={data.message}/>}
     <FormContainer onSubmit={handleSubmit(onSubmit)} image={login}>
       <div>
         <Header text="Login" />

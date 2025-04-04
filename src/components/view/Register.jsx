@@ -14,6 +14,7 @@ import {registerSchema} from '../../validation/validation'
 import signup from "../../assets/img/animation/signup.json";
 import useSignup from "../../hooks/auth/useSignUp";
 import { useEffect, useRef } from "react";
+import Alert from "../shared/Alert";
 const inputFields = [
   {
     type: "text",
@@ -48,17 +49,21 @@ function Register() {
   } = useForm({
     resolver: zodResolver(registerSchema), // Integrate Zod with react-hook-form
   });
-  const { isError, error,isPending, mutate } = useSignup();
+  const { isError, error,isPending, mutate:signUp,isSuccess,data } = useSignup();
   const ref = useRef();
   useEffect(() => {
     ref.current.focus()
   }, []);
 
   const onSubmit = ({ email, password, fullName }) => {
-    mutate({ email, password, fullName });
     console.log({ email, password, fullName });
+    signUp({ email, password, fullName });
   };
+  console.log(data?.data,'kjjjjjjjjjs')
   return (
+    <>
+    {isError && <Alert type='error' message={error.response.data.errors[0]} />}
+    {isSuccess && <Alert  message={data.data.message}/>}
     <FormContainer
       onSubmit={handleSubmit(onSubmit)}
       image={signup}
@@ -66,7 +71,6 @@ function Register() {
       children={
         <div>
           <Header text="Create Account" />
-          {isError && <div className="text-red-400">{error.message}</div>}
           {inputFields.map((field, index) => {
             const fieldRegister =
               index === 0
@@ -112,6 +116,7 @@ function Register() {
         </div>
       }
     />
+    </>
   );
 }
 
