@@ -9,7 +9,11 @@ import img from "../../../assets/img/tracks/frontEnd.png";
 import { FaSadTear } from "react-icons/fa";
 import ConfirmationModal from "../../../components/shared/modal/ConfirmationModal";
 import Card from "../../../components/admin/track/Card";
-const tracks = [
+import axiosInstance from '../../../hooks/auth/utils/axiosInstance';
+import { useEffect } from "react";
+
+ 
+const tracks= [
   {
     id: 1,
     trackName: "Frontend Development",
@@ -48,8 +52,31 @@ const tracks = [
 ];
 
 const cols = ["Track", "Manager", "Date Published"];
-
+// const [tracks2,setTracks]= useState([]);
 export default function Track() {
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await axiosInstance.get("/tracks", {
+         
+          headers: {
+           'Accept': 'application/json'
+            
+          }
+        });
+         console.log("response from server",response);
+         console.log("data-",response.data);
+        //  setTracks(response);
+         
+       
+      } catch (err) {
+       console.log(err.message , "--- Failed to fetch team members");
+      } 
+    };
+
+    fetchTeamMembers();
+  }, []);
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState("table");
   const [selected, setSelected] = useState(null);

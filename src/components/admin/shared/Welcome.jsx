@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import image from '../../../assets/img/animation/admin/Welcome.json';
+import image from '../../../assets/img/animation/welcome.json';
 import { useAuthContext } from '../../../contexts/AuthProvider'
 import Extract from '../../../utils/Extract';
 

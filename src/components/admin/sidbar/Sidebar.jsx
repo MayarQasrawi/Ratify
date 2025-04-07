@@ -8,7 +8,7 @@ export default function Sidebar() {
   // if(auth)
   //   role=Extract(auth ,'role')
   return (
-    <ul className="flex flex-col mx-auto">
+    <ul className="flex flex-col mx-auto ">
       {menue.map((menueItem, ind) => {
         if (menueItem.visible.includes(role)) {
           return (
@@ -18,7 +18,7 @@ export default function Sidebar() {
               to={`/dashboard/${role}/${menueItem.link}`}
               className={({ isActive }) => {
                 return isActive
-                  ? "relative text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"
+                  ? "relative   text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"
                   : "text-[var(--text-color)] hover:text-[var(--main-color)]";
               }}
             >
@@ -30,7 +30,8 @@ export default function Sidebar() {
                     <div
                       className={`text-xl flex-shrink-0 }`}
                     >
-                      {menueItem.icon}
+                      {isActive? menueItem.active:menueItem.icon}
+                    
                     </div>
                     <span className="text-sm hidden sm:block transition-all duration-200">
                       {menueItem.title}

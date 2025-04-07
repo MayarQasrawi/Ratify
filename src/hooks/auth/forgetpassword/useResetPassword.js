@@ -7,7 +7,6 @@ async function resetPassword(data) {
     const response = await axiosInstance.post("/Auth/resetpassword", data);
     console.log("done ...");
     return response;
-   
   } catch (error) {
     console.log("error.toJSON()", error.toJSON());
 

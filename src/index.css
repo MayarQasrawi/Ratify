@@ -25,14 +25,14 @@
 }
 
 .dark {
-  --main-color: #1e40af; /* Dark mode main color */
+  --main-color: #3b82f6; /* Dark mode main color */
   --secondary-color: #1e3a8a; /* Dark mode secondary color */
   --background-color: #1f2937; /* Dark mode background color */
   --text-color: #ffffff; /* Dark mode text color */
   --sidebar-bg: #273342; /* Dark mode sidebar background */
   --sidebar-text: #ffffff; /* Dark mode sidebar text */
   --sidebar-icon-bg: #374151; /* Dark mode sidebar icon background */
-  --table-header-bg: #374151; /* Dark mode table header background */
+  --table-header-bg: #273342; /* Dark mode table header background */
   --table-border: #4b5563; /* Dark mode table border */
   --input-border: #4b5563; /* Dark mode input border */
   --input-focus: #3b82f6; /* Dark mode input focus border */
@@ -40,6 +40,6 @@
   --button-hover: #3b82f6; /* Dark mode button hover background */
   --status-active-bg: #1c4532; /* Dark mode active status background */
   --status-active-text: #34d399; /* Dark mode active status text */
-  --status-inactive-bg: #374151; /* Dark mode inactive status background */
+  --status-inactive-bg: #4b5563; /* Dark mode inactive status background */
   --status-inactive-text: #9ca3af; /* Dark mode inactive status text */
 }

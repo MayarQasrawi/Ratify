@@ -19,7 +19,7 @@ import UnAuthorized from "../pages/general/UnAuthorized";
 import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
 import TrackSetup from "../pages/admin/track/TrackSetup";
-
+import Applicants from "../components/admin/Applicants";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -61,6 +61,7 @@ export const routes = createBrowserRouter([
           { path: "teams", element: <Team /> },
           { path: "tracks", element: <AdminTrack /> },
           { path: "tracks/setup", element: <TrackSetup /> },
+          { path: "applicants", element: <Applicants /> },
         ],
       },
       {
