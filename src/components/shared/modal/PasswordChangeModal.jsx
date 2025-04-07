@@ -1,12 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { changePasswordSchema } from "../../../validation/validation";
 import { useForm } from "react-hook-form";
 import useChangePassword from "../../../hooks/auth/useChangePassword";
-import { MdEmail, MdAutorenew, MdLockOpen, MdLock,MdClose } from "react-icons/md";
-import { useEffect, useState } from "react";
-import {changePasswordSchema} from '../../../validation/validation'
-import ConfirmationModal from "./ConfirmationModal";
 import Header from "./Header";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Alert from "../Alert";
+import ConfirmationModal from "./ConfirmationModal";
+import { MdAutorenew, MdClose, MdEmail, MdLock, MdLockOpen } from "react-icons/md";
+
 
 export default function PasswordChangeModal({ setShowPasswordModal }) {
   const {
@@ -19,8 +19,14 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
   });
   const [isConfirming, setIsConfirming] = useState(false);
   const [focusedField, setFocusedField] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const { mutate: changePassword, isPending,isSuccess } = useChangePassword();
+  const {
+    mutate: changePassword,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+    data
+  } = useChangePassword();
 
   const handlePasswordChange = () => {
     const formData = getValues();
@@ -36,26 +42,22 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
     });
     console.log("jjjjjjjjjjjjjjjjjj");
   };
+
   useEffect(() => {
-    if (isSuccess) {
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowPasswordModal(); 
-      }, 200);
+    if (isSuccess || isError) {
+      setTimeout(() => setShowPasswordModal(), 1500);
     }
-  }, [isSuccess])
+  }, [isSuccess, isError]);
+
   return (
-  <> 
-  {showAlert ? <Alert message='Password change successfully'/>:(
     <div className="flex flex-col items-center p-6 bg-gradient-to-br from-blue-50 to-white shadow-lg rounded-2xl w-96 border border-gray-200 relative">
-        <button 
+      <button
         onClick={() => setShowPasswordModal()}
         className="absolute top-4 cursor-pointer  right-4 text-gray-500 hover:text-red-500 transition"
       >
         <MdClose className="w-6 h-6" />
       </button>
       <Header title="Change Password" />
-
       {!isConfirming ? (
         <form className="w-full flex flex-col gap-6">
           <div className="relative">
@@ -134,14 +136,13 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
               </p>
             )}
           </div>
-
           <button
             onClick={() => {
               if (isValid) setIsConfirming(true);
             }}
             type="button"
             disabled={!isValid}
-            className="bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500  text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2.5 font-medium"
+            className="bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2.5 font-medium"
           >
             <MdAutorenew className="w-5 h-5" />
             Change Password
@@ -153,12 +154,13 @@ export default function PasswordChangeModal({ setShowPasswordModal }) {
           Cancle={setShowPasswordModal}
           isPending={isPending}
           isSuccess={isSuccess}
+          isError={isError}
+          error={error}
+          data={data}
         >
-          {" "}
-          Are you want to change Password ?{" "}
+          Are you want to change Password?
         </ConfirmationModal>
       )}
-    </div>)}
-    </> 
+    </div>
   );
 }

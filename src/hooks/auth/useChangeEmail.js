@@ -12,7 +12,7 @@ export default function useChangeEmail() {
     retry: false,
     onError: (error) => {
       if (error.response) {
-        console.error("Server responded with:", error.response.data);
+        console.error("change email Server responded with:", error.response.data);
       } else {
         console.error("Error during email update:", error.message);
       }

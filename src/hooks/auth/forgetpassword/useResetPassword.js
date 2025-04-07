@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 
 async function resetPassword(data) {
@@ -29,11 +30,13 @@ async function resetPassword(data) {
 }
 
 export default function useResetPassword(){
+  const navigate=useNavigate()
     return  useMutation({
      mutationFn:(data)=>resetPassword(data),
      retry:false,
      onSuccess:()=>{
          console.log('success')
+         navigate('/login')
     },
     onError:(error)=>{
      console.error("Error during reset:", error.response);
