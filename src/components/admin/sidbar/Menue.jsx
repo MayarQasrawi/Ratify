@@ -9,26 +9,35 @@ import {
   HiOutlineCheckCircle,
   HiOutlinePlusCircle,
   HiOutlineCog,
-  HiUserGroup
+  HiUsers 
 } from "react-icons/hi";
 import { MdOutlineHome } from "react-icons/md";
+import { MdHome } from "react-icons/md";
+import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
+import { MdOutlineDashboardCustomize,MdDashboardCustomize } from "react-icons/md";
+
+
+
 
 const menue = [
   {
     title: "Dashboard",
     icon: <MdOutlineHome />,
+    active:<MdHome />,
     link: "",
     visible: ["Admin", "SeniorExaminer", "Examiner"],
   },
   {
-    title: "Manage Teams ",
-    icon: <HiUserGroup />,
+    title: "Manage Teams",
+    icon: <RiTeamLine />,
     link: "teams",
+    active:<RiTeamFill/>,
     visible: ["Admin"],
   },
   {
     title: "Manage Tracks",
-    icon: <HiOutlineCollection />,
+    icon: <MdOutlineDashboardCustomize />,
+    active:<MdDashboardCustomize/>,
     link: "tracks",
     visible: ["Admin"],
   },
@@ -79,6 +88,13 @@ const menue = [
     icon: <HiOutlineCog />,
     link: "setting",
     visible: ["SeniorExaminer", "Examiner"],
+  },
+  {
+    title: "Applicants",
+    icon: <HiOutlineUsers />,
+    active:<HiUsers  />,
+    link: "applicants",
+    visible: ["Admin"],
   },
  
 ];

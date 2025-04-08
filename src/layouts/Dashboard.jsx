@@ -11,62 +11,60 @@ import ExaminerInfoModal from "../components/allExaminer/ExaminerInfoModal";
 
 export default function Dashboard() {
   const { auth } = useAuthContext();
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const currentLocation = useLocation();
+
   let role = "ex";
   let id;
-  let isExaminer=false;
+  let isExaminer = false;
+
   if (auth) {
     role = Extract(auth, "role");
     id = Extract(auth, "nameid");
-    isExaminer = role == "Examiner";
+    isExaminer = role === "Examiner";
   }
-  const { data: examinerInfo, isLoading } = useFetchExaminerById(
-    id,
-    isExaminer
-  );
-  console.log(examinerInfo,'kkkkkkkkkkkk')
-  console.log(id)
-  console.log(isLoading ,'isloading')
+
+  const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer);
+
   useEffect(() => {
     if (!isLoading && isExaminer && examinerInfo) {
-      const isInfoMissing = !examinerInfo.specialization 
-      console.log(!examinerInfo.specialization,'test' )
-      setShowModal(isInfoMissing)
+      const isInfoMissing = !examinerInfo.specialization;
+      setShowModal(isInfoMissing);
     }
-  }, [examinerInfo, isLoading, isExaminer])
- if(showModal)
-  return <ExaminerInfoModal setShowModal={setShowModal} />
-  // if (typeof auth !== "string") {
-  //   return <Navigate to="/login" />;
-  // }
-  if (currentLocation.pathname == "/dashboard/Admin/tracks/setup" ||currentLocation.pathname == "/dashboard/seniorExaminer/plan-setup" )
+  }, [examinerInfo, isLoading, isExaminer]);
+
+  if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />;
+
+  if (
+    currentLocation.pathname === "/dashboard/Admin/tracks/setup" ||
+    currentLocation.pathname === "/dashboard/seniorExaminer/plan-setup"
+  ) {
     return <Outlet />;
+  }
+
   return (
     <>
-   {isLoading &&  <TopLoader isLoading={isLoading} />}
-    <ThemeProvider>
-      <div className="flex gap-4 md:gap-8 bg-[var(--background-color)] min-h-screen font-sans text-[var(--text-color)]">
-        <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
-          <div className="hidden sm:flex flex-col items-center gap-2 pb-5 pl-3">
-            <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
-              A
+      {isLoading && <TopLoader isLoading={isLoading} />}
+      <ThemeProvider>
+        <div className="flex gap-4 md:gap-8 bg-[var(--background-color)] min-h-screen font-sans text-[var(--text-color)]">
+          <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
+            <div className="hidden sm:flex flex-col items-center gap-2 pb-5 pl-3">
+              <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
+                A
+              </div>
+              <h1 className="text-[30px] text-[var(--sidebar-text)] font-medium">Abrar</h1>
             </div>
-            <h1 className="text-[30px] text-[var(--sidebar-text)] font-medium">
-              Abrar
-            </h1>
+            <Sidebar />
           </div>
-          <Sidebar />
-        </div>
-        <div className="flex-1 flex-col gap-8 pr-5">
-          <div className="mt-1"></div>
-          <div>
+          <div className="flex-1 flex-col gap-8 pr-5">
             <TopMenue />
-            <Outlet />
+            <div className="p-4 md:p-6">
+              <Outlet />
+            </div>
           </div>
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
     </>
   );
 }
+

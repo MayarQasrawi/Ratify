@@ -9,9 +9,10 @@ export default function Add({ icon, text, table }) {
         onClick={() => {
           setIsOpen(true);
         }}
-        className="flex cursor-pointer items-center justify-center px-2 py-1  bg-[var(--main-color)] text-white rounded-lg hover:bg-[#003F7D] transition-colors text-sm font-medium"
+        className="flex cursor-pointer items-center justify-center px-2 py-1  text-[var(--text-color)]  rounded-lg hover:text-[var(--main-color)] transition-colors text-sm font-medium"
       >
         {icon}
+       
         <span>{text}</span>
       </button>
       {isOpen && table == "teams" && (
