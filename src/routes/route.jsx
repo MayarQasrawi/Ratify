@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../layouts/Dashboard";
 import AdminHome from "../pages/admin/AdminHome";
-import SeniorHome from "../pages/SeniorHome";
+import SeniorHome from "../pages/seniorExaminer/SeniorHome";
 import { AuthProvider } from "../contexts/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminTrack from "../pages/admin/track/Track";
@@ -19,6 +19,8 @@ import UnAuthorized from "../pages/general/UnAuthorized";
 import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
 import TrackSetup from "../pages/admin/track/TrackSetup";
+import Plan from "../pages/seniorExaminer/plan/Plan";
+import PlanSetup from "../pages/seniorExaminer/plan/PlanSetup";
 
 export const routes = createBrowserRouter([
   {
@@ -65,12 +67,15 @@ export const routes = createBrowserRouter([
       },
       {
         path: "seniorExaminer",
-        element: <ProtectedRoute allowRole="Examiner" />,
-        children: [{ index: true, element: <SeniorHome /> }],
+        // element: <ProtectedRoute allowRole="SeniorExaminer" />,
+        children: [{ index: true, element: <SeniorHome /> },
+          { path: 'plan', element: <Plan /> },
+          { path: 'plan-setup', element: <PlanSetup /> }
+        ],
       },
       {
         path: "examiner",
-        element: <ProtectedRoute allowRole="seniorExaminer" />,
+        element: <ProtectedRoute allowRole="Examiner" />,
         children: [{ index: true, element: <SeniorHome /> }],
       },
     ],

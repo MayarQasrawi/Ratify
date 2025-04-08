@@ -33,9 +33,9 @@ const menue = [
     visible: ["Admin"],
   },
   {
-    title: "Define Plan",
+    title: "Mange Plan",
     icon: <HiOutlineUserGroup />,
-    link: "tracks",
+    link: "plan",
     visible: ["SeniorExaminer"],
   },
   {

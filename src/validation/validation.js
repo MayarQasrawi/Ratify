@@ -32,7 +32,7 @@ export const signinSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" })
+    .min(7, { message: "Password must be at least 7 characters" })
     .refine(
       (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), // Ensure at least one unique character
       { message: "Password must include at least one unique character like @" }

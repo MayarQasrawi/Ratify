@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { addEmployeeSchema } from "../../validation/validation";
-import useAddEmployee from "../../hooks/examiner/useAddEmployee";
+import useAddEmployee from "../../hooks/admin/examiner/useAddEmployee";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "../shared/Spinner";
 
