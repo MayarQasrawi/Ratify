@@ -5,5 +5,10 @@ const axiosInstance = axios.create({
   // headers: {
   //   "Content-Type": "application/json",
   // },
+  headers: {
+             
+    'ngrok-skip-browser-warning': '1'
+    
+  }
 });
 export default axiosInstance;

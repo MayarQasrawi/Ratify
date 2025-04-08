@@ -7,8 +7,12 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineFindInPage } from "react-icons/md";
 import { useEffect } from "react";
 import axiosInstance from '../../hooks/auth/utils/axiosInstance'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { FaArrowCircleLeft ,FaArrowCircleRight} from "react-icons/fa";
+import ItemsPerPageSelector from "../../components/admin/shared/ItemsPerPageSelector";
+import Pagination from "../../components/admin/shared/Pagination";
+import { useQuery } from "@tanstack/react-query";
+
+import Loading from "../../components/admin/shared/Loading";
+import Error from "../../components/admin/shared/Error";
 
   const teamMember = [
     {
@@ -57,104 +61,46 @@ import { FaArrowCircleLeft ,FaArrowCircleRight} from "react-icons/fa";
       { name: "view details", onClick: "some logic pass" },
     ];
     const [teamMembers, setTeamMembers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
      const cols = ["Info", "Role", "Status", " "];
-     useEffect(() => {
-      const fetchTeamMembers = async () => {
-        try {
-          const response = await axiosInstance.get("/Users", {
-            params: {
-              // userType: ['Examiner', 'Senior Examiner', 'Admin'],
-              page: currentPage,
-              pageSize: itemsPerPage
-            }
-            ,
-            headers: {
-             'Accept': 'application/json'
-              
-            }
-          });
-           console.log("response",response)
-           console.log("ddddddd",response.data.data)
-           
-          setTeamMembers(response.data.data);
-          setTotalPages(response.data.totalPages);
-        } catch (err) {
-          setError(err.message || "Failed to fetch team members");
-        } finally {
-          setLoading(false);
-        }
-      };
+    
+     const fetchTeamMembers = async ({ queryKey }) => {
+      // Destructure from queryKey array
+      const [_key, { page, pageSize }] = queryKey;
+      
+      const response = await axiosInstance.get("/Examiners", {
+        params: { page, pageSize }
+      });
+      return response.data;
+    };
+
+    const { data, isLoading, isError, error } = useQuery({
+      queryKey: ["teamMembers", { page: currentPage, pageSize: itemsPerPage }],
+      queryFn: fetchTeamMembers,
+      keepPreviousData: true,
+    });
+
+    useEffect(() => {
+      if (data) {
+      setTeamMembers(data.data.data);
+      setTotalPages(data.totalPages);
+      }
+    }, [data]);
+
   
-      fetchTeamMembers();
-    }, [currentPage, itemsPerPage]); // Refetch when page or itemsPerPage changes
-
-  //Pagination controls component
-
-
-  const Pagination = () => (
-    <div className="flex items-center justify-center mt-4 gap-4">
-      <button
-        onClick={() => setCurrentPage(currentPage => Math.max(1, currentPage - 1))}
-        disabled={currentPage === 1 || !totalPages}
-        className="p-2 text-[var(--text-color)] hover:text-[var(--button-hover)] disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <FaArrowCircleLeft className="text-lg" />
-      </button>
-  
-      <span className="text-sm text-[var(--text-color)]">
-        Page <span className="font-bold">{currentPage}</span> of {totalPages}
-      </span>
-  
-      <button
-        onClick={() => setCurrentPage(currentPage => Math.min(totalPages, currentPage + 1))}
-        disabled={currentPage === totalPages || !totalPages}
-        className="p-2 text-[var(--text-color)] hover:text-[var(--button-hover)] disabled:opacity-30 disabled:cursor-not-allowed"
-      >
-        <FaArrowCircleRight className="text-lg" />
-      </button>
-    </div>
-  );
-
-  // Items per page selector
-  const ItemsPerPageSelector = () => (
-    <div className="flex items-center gap-2">
-      <span className="text-[var(--text-color)]">Items per page:</span>
-      <select 
-        value={itemsPerPage}
-        onChange={(e) => setItemsPerPage(Number(e.target.value))}
-        className="px-2 py-1 border border-gray-300 rounded"
-      >
-        <option value={5}>5</option>
-        <option value={10}>10</option>
-        <option value={20}>20</option>
-        <option value={50}>50</option>
-      </select>
-    </div>
-  );
-
-  // if (loading) {
-  //   return <div className="p-4 text-center">Loading team members...</div>;
-  // }
-
-  // if (error) {
-  //   return <div className="p-4 text-center text-red-500">Error: {error}</div>;
-  // }
     const renderRow = (member) => (
       <tr
         className="text-md border-b last:border-b-0 last:rounded-b-lg  border-[var(--table-border)] text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
         key={member.id}
       >
         <td className="py-3 px-1 lg:px-3 text-center">
-          <div className="flex gap-1 items-center justify-center">
+          <div className="flex gap-1 items-center justify-start ml-[4%] md:ml-[10%] ">
             <div className="h-8 w-8 items-center justify-center font-bold rounded-lg bg-[var(--sidebar-icon-bg)] text-[var(--main-color)] lg:flex hidden">
               {member.fullName.split(" ")[0].slice(0, 1).toUpperCase()}
             </div>
-            <div className="ml-3 flex flex-col md:items-start items-center">
+            <div className="ml-3 flex flex-col  ">
               <div className="font-medium text-[var(--text-color)]">
                 {member.fullName}
               </div>
@@ -204,6 +150,7 @@ import { FaArrowCircleLeft ,FaArrowCircleRight} from "react-icons/fa";
     <section className="pr-3">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
+         
           <div >
             <h2 className="lg:text-3xl mb-2 text-xl font-bold text-[var(--main-color)] ">
               Team Members
@@ -234,12 +181,19 @@ import { FaArrowCircleLeft ,FaArrowCircleRight} from "react-icons/fa";
     
       </div>
       <div className="mb-3">
-      <ItemsPerPageSelector />
+      <ItemsPerPageSelector 
+               options={[5, 10, 20, 50]} 
+               selectedValue={itemsPerPage} 
+               onChange={setItemsPerPage} 
+          />
       </div>
       
-
-      <Table data={teamMembers} cols={cols} row={renderRow} />
-      <Pagination />
+      {isLoading? (<Loading text={"Assembling Your Team..."}/>): isError?(<Error message={error.message || "Failed to fetch team members"} /> )
+      :(<><Table data={teamMember} cols={cols} row={renderRow} />
+        <Pagination  totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage}/></>) }
+     
+      {/* <Table data={teamMembers} cols={cols} row={renderRow} />
+      <Pagination  totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage}/> */}
     </section>
   );
 }
