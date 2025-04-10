@@ -19,9 +19,10 @@ import UnAuthorized from "../pages/general/UnAuthorized";
 import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
 import TrackSetup from "../pages/admin/track/TrackSetup";
-import Plan from "../pages/seniorExaminer/plan/Plan";
-import PlanSetup from "../pages/seniorExaminer/plan/PlanSetup";
+import PlanStructure from "../pages/seniorExaminer/plan/definePlan/PlanStructure";
+import PlanSetup from "../pages/seniorExaminer/plan/definePlan/PlanSetup";
 import Applicants from "../components/admin/Applicants";
+import Plan from "../pages/seniorExaminer/plan/Plan";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -71,7 +72,8 @@ export const routes = createBrowserRouter([
         // element: <ProtectedRoute allowRole="SeniorExaminer" />,
         children: [{ index: true, element: <SeniorHome /> },
           { path: 'plan', element: <Plan /> },
-          { path: 'plan-setup', element: <PlanSetup /> }
+          { path: 'plan-setup', element: <PlanSetup /> },
+          { path: 'plan-structure', element: <PlanStructure /> }
         ],
       },
       {

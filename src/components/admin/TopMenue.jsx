@@ -23,7 +23,7 @@ function TopMenue() {
           />
         </Modal>
       )}
-      <nav className="flex flex-row-reverse gap-3 mb-8 ">
+      <nav className="flex flex-row-reverse gap-3 mb-5 ">
         <div className="relative   ">
           <button
             className="flex relative items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
