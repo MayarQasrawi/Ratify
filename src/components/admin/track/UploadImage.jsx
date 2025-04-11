@@ -3,11 +3,14 @@ import Alert from "../../shared/Alert";
 import { FiUpload } from "react-icons/fi";
 import { FaPencilAlt } from "react-icons/fa";
 import Header from "./shared/Header";
+import { useLocation } from "react-router-dom";
 
 export default function UploadImage({ ref }) {
-  const [image, setImage] = useState(null);
+  const location=useLocation();
+  const [image, setImage] = useState(()=>location.state?location.state.track.img:null);
   const [error, setError] = useState("");
-
+  if(location?.state)
+  ref.current=location.state.track.img
   const handleImageUpload = (file) => {
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -23,6 +26,7 @@ export default function UploadImage({ ref }) {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    console.log(file,'check imge')
     handleImageUpload(file);
   };
 
@@ -66,7 +70,7 @@ export default function UploadImage({ ref }) {
                 <img
                   src={image}
                   alt="Uploaded Preview"
-                  className="w-full rounded-lg"
+                  className="w-[70%] rounded-lg"
                 />
               ) : (
                 <>

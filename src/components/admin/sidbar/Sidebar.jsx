@@ -5,7 +5,7 @@ import Extract from "../../../utils/Extract";
 
 export default function Sidebar() {
   const { auth } = useAuthContext();
-  let role='SeniorExaminer'
+  let role='Admin'
   if(auth)
     role=Extract(auth ,'role')
   return (
@@ -23,7 +23,6 @@ export default function Sidebar() {
                   : "text-[var(--text-color)] hover:text-[var(--main-color)]";
               }}
             >
-              {/* Pass isActive as a prop to the li element */}
               {({ isActive }) => (
                 <li className={`relative py-2 lg:py-3 px-4  transition-all ease-in-out font-medium mx-auto m-3 duration-200 ${isActive&&" border-l-3  border-[var(--secondary-color)] md:border-0"}`}>
                   <div className="flex gap-3  items-center">
@@ -34,7 +33,7 @@ export default function Sidebar() {
                       {isActive? menueItem.active:menueItem.icon}
                     
                     </div>
-                    <span className="text-sm hidden sm:block transition-all duration-200">
+                    <span className="text-sm hidden lg:block transition-all duration-200">
                       {menueItem.title}
                     </span>
                   </div>

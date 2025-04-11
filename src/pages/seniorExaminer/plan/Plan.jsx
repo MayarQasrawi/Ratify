@@ -88,7 +88,6 @@ const initialPlan = {
       },
     ],
   };
-
 export default function Plan() {
   const [plan, setPlan] = useState(initialPlan);
   const navigate = useNavigate();

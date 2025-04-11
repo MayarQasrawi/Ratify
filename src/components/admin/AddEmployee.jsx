@@ -50,7 +50,7 @@ export default function AddEmployee({ setIsOpen }) {
         {inputField.map((field, index) => (
           <div key={index} className="relative mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
-              {field}
+              {field}<span className="text-red-500">*</span>
             </label>
             <input
               {...register(field.includes("Full Name") ? "fullName" : "email")}
@@ -66,7 +66,7 @@ export default function AddEmployee({ setIsOpen }) {
         
         <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
-            Password
+            Password<span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input

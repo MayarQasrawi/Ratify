@@ -26,7 +26,6 @@ function Navbar() {
     isPending,
     isSuccess,
     isError,
-    error,
   } = useDelteAccount();
   let id = "";
   let name = "";
@@ -56,7 +55,7 @@ function Navbar() {
   }
   return (
     <>
-      {isError && <Alert type="error" message="mmmmmmmmmmm" />}
+      {isError && <Alert type="error" message="Request fails" />}
       {isSuccess && (
         <Alert message="Your account has been successfully deleted." />
       )}
