@@ -33,7 +33,7 @@ export default function TrackSetup() {
   }, [showAlert]);
   console.log(  isTrackPending || isPending,'addtr')
   const handleAddTrack = () => {
-    console.log(selectRef.current,'manger');
+    // console.log(selectRef.current,'manger');
     console.log(titleRef.current,'name');
     console.log(descriptionRef.current,'de');
     console.log(imageRef.current,'imgemmm');
@@ -42,9 +42,8 @@ export default function TrackSetup() {
       titleRef.current == "" ||
       descriptionRef.current == "" ||
       objectivesRef.current == "" ||
-      selectRef.current == null ||
-      imageRef.current == undefined ||
-      skillsRef.current.length == 0
+      // selectRef.current == null ||
+      imageRef.current == undefined 
     ) {
       setShow(true);
       return;
@@ -58,11 +57,12 @@ export default function TrackSetup() {
     formData.append('name', titleRef.current);
     formData.append('description', descriptionRef.current);
     formData.append('objectives', objectivesRef.current);
-    formData.append('seniorExaminerID', selectRef.current);
+    // formData.append('seniorExaminerID', selectRef.current);
     formData.append('image', selectRef.current);
     if(!location.state){
-      formData.append('associatedSkills', skillsRef.current); 
+      formData.append('associatedSkills', 'html'); 
       formData.append('id', 1); 
+      formData.append('isActive', true);
       addTrack(formData)
     }
    else{
@@ -101,11 +101,11 @@ export default function TrackSetup() {
           {trackField.map((field, ind) => (
             <TrackInput key={ind} field={field} ind={ind} ref={field.ref} />
           ))}
-          <Select selectRef={selectRef} />
+          {/* <Select selectRef={selectRef} /> */}
         </div>
         <div className="w-[97%] sm:w-[70%] md:w-[60%] lg:w-[40%] flex flex-col gap-4">
           <UploadImage ref={imageRef} />
-          <AssociatedSkills ref={skillsRef} />
+          {/* <AssociatedSkills ref={skillsRef} /> */}
         </div>
       </div>
     </section>

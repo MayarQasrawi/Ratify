@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import useGetAllTraks from "../../../hooks/admin/tracks/useGetAllTracks";
 
 const options = [
   { id: 1, value: "Abrar" },
   { id: 2, value: "Abr" },
   { id: 3, value: "Abrar" },
 ];
-export default function Select({selectRef}) {
+export default function Select() {
+  const {data:tracks,isLoading,isError}= useGetAllTraks()
+    console.log(tracks?.data,'inside add moda')
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  selectRef.current=selectedOption;
   return (
-    <div className="bg-[var(--sidebar-icon-bg)] rounded-lg p-3 text-gray-900 font-medium">
-      <p className="text-sm sm:text-[16px] md:text-lg font-semibold text-gray-900">Track Manager</p>
-      <div className="mt-3 relative" >
+    <div className=" text-gray-900  font-medium">
+      <div className="mt-3 relative border border-[var(--input-border)] rounded-lg" >
         <div
-          className="w-full text-gray-900 p-2  bg-white  rounded-lg flex justify-between items-center cursor-pointer"
+          className="w-full text-xs text-[var(--text-color)] p-2 h-12  rounded-lg flex justify-between items-center cursor-pointer"
           onClick={()=>setIsOpen(!isOpen)}
         >
           <span
-          className="text-sm"
           >
-            {selectedOption ? selectedOption : "Choose Manager"}
+            {selectedOption ? selectedOption : "Assign Examiner to Track"}
           </span>
           <FiChevronDown />
         </div>

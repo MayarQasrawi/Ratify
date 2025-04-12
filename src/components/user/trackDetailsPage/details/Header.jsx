@@ -4,7 +4,7 @@ import Navbar from "../../shared/Navbar";
 import { AiOutlineHome, AiOutlineArrowRight } from "react-icons/ai";
 import { MdTrackChanges } from "react-icons/md";
 
-export default function Header() {
+export default function Header({name,image}) {
   const navigate=useNavigate()
   return (
     <>

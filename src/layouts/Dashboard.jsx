@@ -8,6 +8,7 @@ import useFetchExaminerById from "../hooks/examiner/useFetchExaminerById";
 import { useEffect, useState } from "react";
 import TopLoader from "../components/shared/TopLoader";
 import ExaminerInfoModal from "../components/allExaminer/ExaminerInfoModal";
+import getFirstCharacter from "../utils/getFirstCharacter";
 
 export default function Dashboard() {
   const { auth } = useAuthContext();
@@ -25,10 +26,13 @@ export default function Dashboard() {
   }
 
   const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer);
+  console.log(examinerInfo?.specialization,'test bbb')
+  console.log(examinerInfo,'examiner info')
 
   useEffect(() => {
     if (!isLoading && isExaminer && examinerInfo) {
-      const isInfoMissing = !examinerInfo.specialization;
+      const isInfoMissing = !examinerInfo.data.dateOfBirth      ;
+      console.log(isInfoMissing,'info miss')
       setShowModal(isInfoMissing);
     }
   }, [examinerInfo, isLoading, isExaminer]);
@@ -41,18 +45,21 @@ export default function Dashboard() {
   ) {
     return <Outlet />;
   }
-
+if(isLoading){
+  return <TopLoader isLoading={isLoading} />
+}
   return (
     <>
-      {isLoading && <TopLoader isLoading={isLoading} />}
+      {/* {isLoading && <TopLoader isLoading={isLoading} />} */}
       <ThemeProvider>
         <div className="flex gap-4 md:gap-8 bg-[var(--background-color)] min-h-screen font-sans text-[var(--text-color)]">
           <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
             <div className="hidden lg:flex flex-col items-center gap-2 pb-5 pl-3">
-              <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
-                A
+              <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-2xl">
+              {role=='Examiner' ? getFirstCharacter(examinerInfo?.data?.fullName) :'B'}
               </div>
-              <h1 className="text-[30px] text-[var(--sidebar-text)] font-medium">Abrar</h1>
+              <h1 className="text-2xl text-[var(--sidebar-text)] font-medium">{role=='Examiner' ? examinerInfo?.data?.fullName :'Abrar'}</h1>
+              
             </div>
             <Sidebar />
           </div>

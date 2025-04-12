@@ -16,7 +16,7 @@ export default function ConfirmationModal({
   console.log(isError,'gggggg')
   return (
     <>
-      {isError && <Alert type="error" message={error?.response?.data?.message ||'delete request fails' } />}
+      {isError && <Alert type="error" message={error?.response?.data?.message ||'Delete Request Fails' } />}
       {isSuccess && <Alert message={data?.data?.meta || 'Track Delete successfully'} />}
       <div
         className={`${

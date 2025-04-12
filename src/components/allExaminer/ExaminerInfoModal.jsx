@@ -6,6 +6,7 @@ import useUploadImage from "../../hooks/useUploadImage";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import Extract from "../../utils/Extract";
 import Alert from "../shared/Alert";
+import Spinner from "../shared/Spinner";
 
 export default function ExaminerInfoModal({ setShowModal }) {
   const { auth } = useAuthContext();
@@ -21,11 +22,14 @@ export default function ExaminerInfoModal({ setShowModal }) {
   const [step, setStep] = useState(1);
   const [imageError, setImageError] = useState(null);
   const [infoError, setInfoError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const fileInputRef = useRef();
   const { mutateAsync: updateInfo } = useUpdateExaminerInfo();
   const { mutateAsync: uploadImage } = useUploadImage();
   let id;
   if (auth) id = Extract(auth, "nameid");
+  console.log('inside modal')
   const totalSteps = 2;
   const imageFile = watch("image");
   console.log(imageFile);
@@ -49,10 +53,12 @@ export default function ExaminerInfoModal({ setShowModal }) {
   };
   const onSubmit = async (data) => {
     const formData = new FormData();
-    console.log(data);
-    const info={fullName:data.fullName,specialization: data.specialization, dateOfBirth: data.dateOfBirth, gender: Number(data.gender)}
-    console.log(info,'kkkk')
+    console.log(data,'image upload');
+    console.log(data.gender,'gender')
+    const info={fullName:data.fullName,specialization: data.specialization, dateOfBirth: data.dateOfBirth, 
+      gendar: data.gender}
     formData.append("image", data.image);
+    setIsLoading(true);
     const [imgResult, infoResult] = await Promise.allSettled([
       uploadImage({ id, body: formData }),
       updateInfo({ id, body: {...info} }),
@@ -64,9 +70,14 @@ export default function ExaminerInfoModal({ setShowModal }) {
     if (infoResult.status === "rejected") {
       setInfoError("Saving your profile failed. Please try again.");
       setShowModal(false);
+      setIsLoading(false); 
       return;
     }
-  };
+    // if (infoResult.status === "fulfilled") {
+    //   setShowModal(false);
+    // }
+    setIsLoading(false); 
+  }
   const handleNext = (data) => {
     if (step < totalSteps) {
       setStep((s) => s + 1);
@@ -205,7 +216,7 @@ export default function ExaminerInfoModal({ setShowModal }) {
                       <label className="inline-flex items-center">
                         <input
                           type="radio"
-                          value={0}
+                          value='Male'
                           {...register("gender", { required: true })}
                         />
                         <span className="ml-2">Male </span>
@@ -213,7 +224,7 @@ export default function ExaminerInfoModal({ setShowModal }) {
                       <label className="inline-flex items-center">
                         <input
                           type="radio"
-                          value={1}
+                          value='Female'
                           {...register("gender", { required: true,})}
                          
                         />
@@ -242,9 +253,9 @@ export default function ExaminerInfoModal({ setShowModal }) {
               )}
               <button
                 type="submit"
-                className="px-5 py-3  cursor-pointer bg-gradient-to-r from-blue-400 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-400 transition shadow-lg"
+                className="px-5 py-3 flex items-center gap-1  cursor-pointer bg-gradient-to-r from-blue-400 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-400 transition shadow-lg"
               >
-                {step < totalSteps ? "Continue" : "Complete Setup"}
+             {isLoading && <Spinner />}   {step < totalSteps ? "Continue" : "Complete Setup"}
               </button>
             </div>
           </form>

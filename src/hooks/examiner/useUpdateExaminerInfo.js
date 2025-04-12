@@ -12,7 +12,8 @@ export default function useUpdateExaminerInfo() {
   const { auth } = useAuthContext();
   let id;
   if (auth) id = Extract(auth, "nameid");
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data) => updateExaminerInfo(data),
     retry: false,
@@ -21,7 +22,7 @@ export default function useUpdateExaminerInfo() {
     },
     onSuccess: (data) => {
       console.log(data, "examiner info");
-      // queryClient.invalidateQueries(["examiner", id]);
+      queryClient.invalidateQueries(["examiner", id]);
     },
   });
 }

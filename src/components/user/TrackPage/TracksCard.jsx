@@ -40,13 +40,13 @@ function TracksCard({ header, description, img, id }) {
           </div>
           <div className="mt-5 ">
             <button
-              onClick={() => navigate(`/track-details/${id}`)}
+              onClick={() =>{ navigate(`/track-details/${id}`);scrollTo(0, 0)}}
               className="text-[#3B82F6] cursor-pointer  text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]"
             >
               Details <BiShowAlt className="inline text-xl" />
             </button>
             <div className="mt-3.5">
-              <Button px="28" py="6" showModal={() => setShow(true)} />
+              <Button px="28" py="6" showModal={() =>{ setShow(true)}} />
             </div>
           </div>
         </div>

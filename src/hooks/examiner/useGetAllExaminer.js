@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../auth/utils/axiosInstance";
   async function fetchAllExaminers() {
-  const { data } = await axiosInstance.get(`Applicants?page=1&pageSize=10`,{headers: {
+  const { data } = await axiosInstance.get(`Examiners?page=1&pageSize=10`,{headers: {
              
     'ngrok-skip-browser-warning': '1'
     

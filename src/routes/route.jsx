@@ -23,6 +23,7 @@ import PlanStructure from "../pages/seniorExaminer/plan/definePlan/PlanStructure
 import PlanSetup from "../pages/seniorExaminer/plan/definePlan/PlanSetup";
 import Applicants from "../components/admin/Applicants";
 import Plan from "../pages/seniorExaminer/plan/Plan";
+import TrackDetails from '../pages/admin/track/TrackDetails'
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -64,6 +65,7 @@ export const routes = createBrowserRouter([
           { path: "teams", element: <Team /> },
           { path: "tracks", element: <AdminTrack /> },
           { path: "tracks/setup", element: <TrackSetup /> },
+          { path: "track-details", element: <TrackDetails /> },
           { path: "applicants", element: <Applicants /> },
         ],
       },

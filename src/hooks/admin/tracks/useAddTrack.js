@@ -2,10 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function addTrack(info) {
+  console.log(info,'add track')
   const response = await axiosInstance.post("Tracks", info, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    // headers: {
+    //   "Content-Type": "multipart/form-data",
+    // },
   });
   return response;
 }
