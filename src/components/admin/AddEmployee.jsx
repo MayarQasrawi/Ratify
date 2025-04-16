@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { addEmployeeSchema } from "../../validation/validation";
@@ -10,6 +10,7 @@ import Select from "./track/Select";
 const inputField = ["Full Name", "Email"];
 
 export default function AddEmployee({ setIsOpen }) {
+ const workingTrackId= useRef()
   const {
     register,
     handleSubmit,
@@ -38,6 +39,7 @@ export default function AddEmployee({ setIsOpen }) {
 
   const onSubmit = ({ fullName, email }) => {
     console.log({ fullName, email, password: password.passwordValue });
+    console.log(workingTrackId.current,'jjjj')
     // addEmployee({ fullName, email, password: password.passwordValue });
   };
 
@@ -95,7 +97,7 @@ export default function AddEmployee({ setIsOpen }) {
           <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
             Track<span className="text-red-500">*</span>
           </label>
-          <Select />
+          <Select workingTrackId={workingTrackId} />
           </div>
         </div>
         <div className="flex font-medium justify-end space-x-3">

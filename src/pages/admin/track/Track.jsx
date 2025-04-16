@@ -76,8 +76,9 @@ export default function Track() {
     navigate('/dashboard/Admin/tracks/setup',{state:{track}})
   };
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (track) => {
     console.log("View Details action clicked");
+    navigate('/dashboard/Admin/track-details',{state:{track}})
   };
 // const isLoading =false;
   const handleDelete = (id) => {
@@ -130,7 +131,7 @@ export default function Track() {
         },]),
       {
         name: "View Details",
-        onClick: () => handleViewDetails(track.id),
+        onClick: () => handleViewDetails(track),
       },
     ];
     

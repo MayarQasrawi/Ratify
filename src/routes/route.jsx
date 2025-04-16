@@ -24,6 +24,7 @@ import PlanSetup from "../pages/seniorExaminer/plan/definePlan/PlanSetup";
 import Applicants from "../components/admin/Applicants";
 import Plan from "../pages/seniorExaminer/plan/Plan";
 import TrackDetails from '../pages/admin/track/TrackDetails'
+import EditCriteria from "../pages/seniorExaminer/plan/definePlan/EditCriteria";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -75,7 +76,8 @@ export const routes = createBrowserRouter([
         children: [{ index: true, element: <SeniorHome /> },
           { path: 'plan', element: <Plan /> },
           { path: 'plan-setup', element: <PlanSetup /> },
-          { path: 'plan-structure', element: <PlanStructure /> }
+          { path: 'plan-structure', element: <PlanStructure /> },
+          { path: 'edit-criteria', element: <EditCriteria /> }
         ],
       },
       {

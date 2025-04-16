@@ -54,11 +54,11 @@ function Login() {
     console.log({ email, password })
     mutate({ email, password });    
   };
-console.log(data,'test')
-console.log(error)
+
+console.log(error,'during login')
   return (
   <>
-  {isError && <Alert type='error' message={error.response.data.message}/>}
+  {isError && <Alert type='error' message={error?.response?.data?.message || 'Network Error'}/>}
   {isSuccess && <Alert  message={data.message}/>}
     <FormContainer onSubmit={handleSubmit(onSubmit)} image={login}>
       <div>

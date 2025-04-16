@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineSettings, MdPassword } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { PiMoonBold } from "react-icons/pi";
-import { useTheme } from "../../hooks/ThemeProvider";
+import { useTheme } from "../../contexts/ThemeProvider";
 import { FiSun } from "react-icons/fi";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import { HiOutlineLogout } from "react-icons/hi";

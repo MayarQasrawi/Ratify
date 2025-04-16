@@ -9,5 +9,6 @@ export default function useFetchTrackById(id){
     return useQuery({
         queryKey:['track',id],
         queryFn: () => fetchTrackById(id),
+        retry:false
     })
 }

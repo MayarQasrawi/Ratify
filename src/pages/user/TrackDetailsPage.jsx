@@ -78,18 +78,20 @@ export default function TrackDetailsPage() {
   const { id } = useParams();
   console.log(id, "id inside track details");
   const {data, isLoading } = useFetchTrackById(2);
-  console.log(data)
-  if(isLoading )
-   return  <TopLoader isLoading={isLoading} />
+  console.log(data,isLoading,'inside track details')
+  // if(isLoading )
+  //  return  <TopLoader isLoading={isLoading} />
   console.log('hi')
   return (
     <>
-      <Header name={data?.data?.name} image={data?.data?.image}      />
+      {isLoading && <TopLoader isLoading={isLoading} />}
+      {!isLoading &&<>  <Header name={data?.data?.name} image={data?.data?.image}      />
       <TrackInfo skill={skill} />
       <TrackMap plan={initialPlan} />
       <AdditionalInformation />
       <Outcome />
-      <Register />
+      <Register /> </>}
+     
     </>
   );
 }

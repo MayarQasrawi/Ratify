@@ -6,6 +6,8 @@ import Button from "../../../../components/seniorExaminer/plan/Button";
 import Alert from "../../../../components/shared/Alert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import useAddPlan from "../../../../hooks/seniorExaminer/plan/useAddPlan";
+import Spinner from "../../../../components/shared/Spinner";
 
 export default function PlanSetup() {
   const [levels, setLevels] = useState([]);
@@ -15,7 +17,15 @@ export default function PlanSetup() {
   const navigate = useNavigate();
   const location = useLocation();
   const source = location.state?.source;
-  const [formState, setFormState] = useState(()=>source=='add-stage'?'stage':"level");
+  const [formState, setFormState] = useState(() =>
+    source == "add-stage" ? "stage" : "level"
+  );
+  const {
+    mutate: addPlan,
+    isError: isAddPlanError,
+    isPending: isAddPlanPending,
+    isSuccess:isAddPlanSuccess
+  } = useAddPlan();
 
   console.log(location.state.length);
   useEffect(() => {
@@ -53,10 +63,10 @@ export default function PlanSetup() {
   };
 
   const handleLevelSubmit = (data) => {
-    console.log(data);
+    console.log(data,'add level');
     const newLevel = {
       ...data,
-      order:source=='add'?location.state.length+1:getNextLevelOrder(),
+      order: source == "add" ? location.state.length + 1 : getNextLevelOrder(),
       stages: [],
     };
     setLevels((prev) => [...prev, newLevel]);
@@ -66,9 +76,9 @@ export default function PlanSetup() {
   };
 
   const handleStageSubmit = (data) => {
-    if(source=='add-stage'){
-      setLevels([...levels,{...data,order:length+1,criteria: []}])
-      console.log([...levels,{...data,criteria: []}])
+    if (source == "add-stage") {
+      setLevels([...levels, { ...data, order: location.state.length+1 ,  evaluationCriteria: [] }]);
+      console.log([...levels, { ...data,  evaluationCriteria: [] }]);
       setFormState("criterion");
       setActiveStageIndex(0);
       return;
@@ -76,9 +86,12 @@ export default function PlanSetup() {
 
     const newStage = {
       ...data,
-      PassingScore: Number(data.PassingScore),
-      criteria: [],
-      order: source=='add-stage'?location.state.length+1:getNextStageOrder(activeLevelIndex),
+      passingScore: Number(data.passingScore),
+      evaluationCriteria: [],
+      order:
+        source == "add-stage"
+          ? location.state.length + 1
+          : getNextStageOrder(activeLevelIndex),
     };
 
     setLevels((prevLevels) =>
@@ -98,11 +111,15 @@ export default function PlanSetup() {
   };
 
   const handleCriterionSubmit = (data) => {
-    const criteria = source!='add-stage' ? levels[activeLevelIndex].stages[activeStageIndex].criteria:levels[activeStageIndex].criteria;
+    console.log(data,'add criteria')
+    const criteria =
+      source != "add-stage"
+        ? levels[activeLevelIndex].stages[activeStageIndex].evaluationCriteria
+        : levels[activeStageIndex].evaluationCriteria;
     if (criteria) {
       if (criteria.length != 0) {
         const w = getTotalWeight();
-        const result = w + Number(data.Weight) > 100;
+        const result = w + Number(data.weight) > 100;
         if (result) {
           setIsWeightValid("Please Enter valid weight");
           return;
@@ -110,13 +127,16 @@ export default function PlanSetup() {
       }
       const newCriterion = {
         ...data,
-        Weight: Number(data.Weight),
+        weight: Number(data.weight),
       };
-      console.log(levels,'jj');
-      if(source=='add-stage'){
+      console.log(levels, "jj");
+      if (source == "add-stage") {
         // setLevels([{...levels,criteria:[...data]}])
-        console.log([{ ...levels[0],criteria: [...levels[0].criteria, data] }],'test66')
-        setLevels([{ ...levels[0],criteria: [...levels[0].criteria, data] }])
+        console.log(
+          [{ ...levels[0], criteria: [...levels[0].evaluationCriteria, data] }],
+          "test66"
+        );
+        setLevels([{ ...levels[0], evaluationCriteria: [...levels[0].evaluationCriteria, data] }]);
         resetCriterionForm();
         return;
       }
@@ -129,7 +149,7 @@ export default function PlanSetup() {
               if (stgIdx !== activeStageIndex) return stg;
               return {
                 ...stg,
-                criteria: [...stg.criteria, newCriterion],
+                evaluationCriteria: [...stg.evaluationCriteria, newCriterion],
               };
             }),
           };
@@ -149,21 +169,29 @@ export default function PlanSetup() {
     resetLevelForm();
   };
   const getTotalWeight = () => {
-    const currentStage =source!='add-stage' ? levels[activeLevelIndex]?.stages[activeStageIndex]:levels[activeStageIndex];
+    const currentStage =
+      source != "add-stage"
+        ? levels[activeLevelIndex]?.stages[activeStageIndex]
+        : levels[activeStageIndex];
     if (currentStage.length == 0) return 0;
-    return currentStage.criteria.reduce((sum, crit) => sum + crit.Weight, 0);
+    return currentStage. evaluationCriteria.reduce((sum, crit) => sum + crit.weight, 0);
   };
   const activeStageHasCriteria = () => {
-    const currentStage =source!='add-stage' ? levels[activeLevelIndex]?.stages[activeStageIndex]:levels[activeStageIndex];
-    return currentStage.criteria.length > 0;
+    const currentStage =
+      source != "add-stage"
+        ? levels[activeLevelIndex]?.stages[activeStageIndex]
+        : levels[activeStageIndex];
+    return currentStage.evaluationCriteria.length > 0;
   };
   const savePlan = () => {
     console.log("Saving plan:", levels);
-    if(source=='add' || source=='define'){
-      console.log('add')
-    } else if(source=='add-stage'){
-      console.log('add stage')
-      console.log('add stage',location.state.level.id)
+    console.log("Saving plan2:", {trackId:3,trackName:'Backend Development',levels:[...levels]});
+
+    if (source == "add" || source == "define") {
+      addPlan({trackId:3,trackName:'Backend Development',levels:[...levels]})
+    } else if (source == "add-stage") {
+      console.log("add stage");
+      console.log("add stage", location.state.level.id);
     }
   };
 
@@ -175,7 +203,7 @@ export default function PlanSetup() {
             {activeLevelIndex == -1 && (
               <div
                 onClick={() => navigate("/dashboard/seniorExaminer/plan")}
-                className=" cursor-pointer flex px-6 pt-5 items-center gap-2 text-[20px]  font-medium text-blue-500 hover:text-blue-600 transition-colors"
+                className=" cursor-pointer flex px-6 pt-5 items-center gap-2.5 text-[20px]  font-medium text-blue-500 hover:text-blue-600 transition-colors"
               >
                 <AiOutlineArrowLeft className="text-xl" />
                 <span>Back to Plan</span>
@@ -184,7 +212,10 @@ export default function PlanSetup() {
             <div className="flex items-center min-h-[70vh]">
               <div className="w-[80%] sm:[450px] md:w-[500px] lg:w-[600px] mx-auto bg-white rounded-2xl shadow-xl p-8 mt-12 ">
                 <h2 className="text-[20px] md:text-2xl lg:text-3xl font-bold text-gray-800 mb-6  text-center">
-                  Add Level {source=='add'?location.state.length :getNextLevelOrder()}
+                  Add Level{" "}
+                  {source == "add"
+                    ? location.state.length
+                    : getNextLevelOrder()}
                 </h2>
                 <form
                   onSubmit={handleSubmitLevel(handleLevelSubmit)}
@@ -199,7 +230,7 @@ export default function PlanSetup() {
                       {...registerLevel("name", {
                         required: "Level name is required",
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-sm"
+                      className='w-full px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-sm '
                       placeholder="Enter level name"
                     />
                     {levelErrors.name && (
@@ -240,24 +271,49 @@ export default function PlanSetup() {
           <div className="px-12 py-3 w-full ">
             <div className="mb-6 flex items-center">
               <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-lg text-sm">
-                Level {source=='add-stage' ?location.state.level.order:levels[activeLevelIndex].order}{" "}
-                {source!='add-stage' &&levels[activeLevelIndex]?.name}
+                Level{" "}{source !="add-stage" ?' ': ':'}
+                {source == "add-stage"
+                  ? `${location.state.level.order}`
+                  : `${levels[activeLevelIndex].order} : ` }{" "}
+                {source != "add-stage" && levels[activeLevelIndex]?.name}
               </div>
-              {source!='add-stage' && levels[activeLevelIndex].stages.length > 0 && (
-                <div className="ml-3 text-gray-600 text-sm">
-                  ({levels[activeLevelIndex].stages.length} stage
-                  {levels[activeLevelIndex].stages.length !== 1 ? "s" : ""}{" "}
-                  added)
-                </div>
-              )}
+              {source != "add-stage" &&
+                levels[activeLevelIndex].stages.length > 0 && (
+                  <div className="ml-3 text-gray-600 text-sm">
+                    ({levels[activeLevelIndex].stages.length} stage
+                    {levels[activeLevelIndex].stages.length !== 1
+                      ? "s"
+                      : ""}{" "}
+                    added)
+                  </div>
+                )}
             </div>
-          {source!='add-stage' &&  <h2 className="text-[20px] md:text-2xl font-bold text-gray-800 mb-6">
-              Add Stage {getNextStageOrder(activeLevelIndex)}
-            </h2>}
+            {source != "add-stage" && (
+              <h2 className="text-[20px] md:text-2xl font-bold text-gray-800 mb-6">
+                Add Stage {getNextStageOrder(activeLevelIndex)}
+              </h2>
+            )}
             <form
               onSubmit={handleSubmitStage(handleStageSubmit)}
               className="space-y-6"
-            >
+            >  <div>
+            <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
+              Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              {...registerStage("name", {
+                required: "stage name is required",
+              })}
+              className="w-[100%] sm:w-[75%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+              placeholder="Enter stage name"
+            />
+            {stageErrors.name && (
+              <p className="text-red-500 text-sm mt-1">
+                {stageErrors.name.message}
+              </p>
+            )}
+          </div>
               <div>
                 <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
                   Stage Type <span className="text-red-500">*</span>
@@ -303,17 +359,20 @@ export default function PlanSetup() {
                 <input
                   type="number"
                   min={0}
-                  max={100}
-                  {...registerStage("PassingScore", {
+                  {...registerStage("passingScore", {
                     required: "Passing score is required",
+                    max: {
+                      value: 100,
+                      message: "Number must be 100 or less",
+                    },
                     valueAsNumber: true,
                   })}
                   className="w-[100%] sm:w-[75%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
                   placeholder="Enter passing score"
                 />
-                {stageErrors.PassingScore && (
+                {stageErrors.passingScore && (
                   <p className="text-red-500 text-sm mt-1">
-                    {stageErrors.PassingScore.message}
+                    {stageErrors.passingScore.message}
                   </p>
                 )}
               </div>
@@ -325,10 +384,13 @@ export default function PlanSetup() {
           </div>
         );
       case "criterion": {
-        const currentStage =source!='add-stage' ? levels[activeLevelIndex].stages[activeStageIndex]:levels[activeStageIndex];
-        const criteriaList = currentStage?.criteria;
+        const currentStage =
+          source != "add-stage"
+            ? levels[activeLevelIndex].stages[activeStageIndex]
+            : levels[activeStageIndex];
+        const criteriaList = currentStage?.evaluationCriteria;
         const totalWeight = getTotalWeight();
-        const nextCriterionOrder = currentStage?.criteria?.length + 1;
+        const nextCriterionOrder = currentStage?.evaluationCriteria?.length + 1;
         const hasCriteria = activeStageHasCriteria();
         const weightIs100 = totalWeight === 100;
         console.log(weightIs100);
@@ -337,32 +399,34 @@ export default function PlanSetup() {
             <div className="flex justify-between items-center mb-4">
               <div className="hidden sm:block">
                 <div className="mt-4 flex flex-row items-center gap-6 ">
-               {source !== "add-stage" && <button
-                    type="button"
-                    onClick={addAnotherStage}
-                    className={` flex rounded-md text-sm items-center justify-center ${
-                      hasCriteria && weightIs100
-                        ? "cursor-pointer text-blue-500"
-                        : "text-gray-400  cursor-not-allowed"
-                    }`}
-                    disabled={!hasCriteria || !weightIs100}
-                  >
-                    <BiPlusCircle className="mr-2" /> Add Another Stage
-                  </button>}
-                  {source !== "add" && source !== "add-stage"  && (
-                <button
-                  type="button"
-                  onClick={addAnotherLevel}
-                  className={`rounded-md flex text-sm items-center justify-center ${
-                    hasCriteria && weightIs100
-                      ? "text-blue-500 cursor-pointer"
-                      : "text-gray-400 cursor-not-allowed"
-                  }`}
-                  disabled={!hasCriteria || !weightIs100}
-                >
-                  <BiPlusCircle className="mr-2" /> Add Another Level
-                </button>
-              )}
+                  {source !== "add-stage" && (
+                    <button
+                      type="button"
+                      onClick={addAnotherStage}
+                      className={` flex rounded-md text-sm items-center justify-center ${
+                        hasCriteria && weightIs100
+                          ? "cursor-pointer text-blue-500"
+                          : "text-gray-400  cursor-not-allowed"
+                      }`}
+                      disabled={!hasCriteria || !weightIs100}
+                    >
+                      <BiPlusCircle className="mr-2" /> Add Another Stage
+                    </button>
+                  )}
+                  {source !== "add" && source !== "add-stage" && (
+                    <button
+                      type="button"
+                      onClick={addAnotherLevel}
+                      className={`rounded-md flex text-sm items-center justify-center ${
+                        hasCriteria && weightIs100
+                          ? "text-blue-500 cursor-pointer"
+                          : "text-gray-400 cursor-not-allowed"
+                      }`}
+                      disabled={!hasCriteria || !weightIs100}
+                    >
+                      <BiPlusCircle className="mr-2" /> Add Another Level
+                    </button>
+                  )}
                 </div>
               </div>
               <button
@@ -375,25 +439,28 @@ export default function PlanSetup() {
                 }`}
                 disabled={!hasCriteria || !weightIs100}
               >
-                <BiSave size={18} className="mr-2" /> {source=='add' && 'Add Level'}
-                {source=='add-stage' && 'Add Stage'}
-                {source=='define' && 'Publish Plan'}
+               {isAddPlanPending ?<Spinner /> :<BiPlusCircle className="mr-2" />}{" "}
+                {source == "add" && "Add Level"}
+                {source == "add-stage" && "Add Stage"}
+                {source == "define" && "Publish Plan"}
               </button>
             </div>
             <div className="my-4  flex flex-row items-center gap-6 sm:hidden ">
-             {source !='add-stage' && <button
-                type="button"
-                onClick={addAnotherStage}
-                className={` flex rounded-md text-sm items-center justify-center ${
-                  hasCriteria && weightIs100
-                    ? "cursor-pointer text-blue-500"
-                    : "text-gray-400  cursor-not-allowed"
-                }`}
-                disabled={!hasCriteria || !weightIs100}
-              >
-                <BiPlusCircle className="mr-2" /> Add Another Stage
-              </button>}
-              {source !== "add" && source !='add-stage' && (
+              {source != "add-stage" && (
+                <button
+                  type="button"
+                  onClick={addAnotherStage}
+                  className={` flex rounded-md text-sm items-center justify-center ${
+                    hasCriteria && weightIs100
+                      ? "cursor-pointer text-blue-500"
+                      : "text-gray-400  cursor-not-allowed"
+                  }`}
+                  disabled={!hasCriteria || !weightIs100}
+                >
+                  <BiPlusCircle className="mr-2" /> Add Another Stage
+                </button>
+              )}
+              {source !== "add" && source != "add-stage" && (
                 <button
                   type="button"
                   onClick={addAnotherLevel}
@@ -412,12 +479,18 @@ export default function PlanSetup() {
               <div className="w-[80%]  justify-center lg:gap-y-8  lg:flex lg:flex-col xl:flex-row xl:justify-between xl:items-center ">
                 <div className="flex flex-col items-start md:flex-row gap-3 md:items-center">
                   <div className="bg-blue-100 text-blue-800 px-5 py-1 rounded-md text-sm ">
-                    Level {source == "add-stage" ? location.state.length: levels[activeLevelIndex].order}{source!='add-stage' && ':'}{" "}
+                    Level{" "}
+                    {source == "add-stage"
+                      ? location.state.level.order
+                      : levels[activeLevelIndex].order}
+                    {source != "add-stage" && ":"}{" "}
                     {source !== "add-stage" && levels[activeLevelIndex].name}
                   </div>
-               {source !== "add-stage" &&   <div className="bg-green-100 text-green-800 px-5 py-1 rounded-md text-sm">
-                    Stage {currentStage.order}: {currentStage.type}
-                  </div>}
+                  {source !== "add-stage" && (
+                    <div className="bg-green-100 text-green-800 px-5 py-1 rounded-md text-sm">
+                      Stage {currentStage.order}: {currentStage.type}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -426,12 +499,12 @@ export default function PlanSetup() {
                 Add Criteria ({nextCriterionOrder})
               </h2>
             )}
-            
+
             {criteriaList.length > 0 && (
               <div className="mb-6">
                 <div
                   className={`flex justify-between mb-2 ${
-                    weightIs100 ? "w-[100%]" : "w-[80%]"
+                    weightIs100 ? "w-[100%]" : "w-[75%]"
                   }`}
                 >
                   <div className="text-sm font-medium">Current Criteria</div>
@@ -458,11 +531,11 @@ export default function PlanSetup() {
                     <li
                       key={index}
                       className={`p-4 bg-gray-100 rounded-md ${
-                        weightIs100 ? "w-[100%]" : "w-[80%]"
+                        weightIs100 ? "w-[100%]" : "w-[75%]"
                       }`}
                     >
                       <div className="font-medium">
-                        {index + 1}. {crit.name} ({crit.Weight})
+                        {index + 1}. {crit.name} ({crit.weight})
                       </div>
                       {crit.description && (
                         <div className="text-sm text-gray-600">
@@ -522,16 +595,16 @@ export default function PlanSetup() {
                     type="number"
                     min={0}
                     max={100}
-                    {...registerCriterion("Weight", {
+                    {...registerCriterion("weight", {
                       required: "Weight is required",
                       valueAsNumber: true,
                     })}
                     className="w-[75%] px-3 py-2 border border-gray-300 rounded-md outline-none placeholder:text-sm"
                     placeholder="Enter weight "
                   />
-                  {criterionErrors.Weight && (
+                  {criterionErrors.weight && (
                     <p className="text-red-500 text-sm mt-1">
-                      {criterionErrors.Weight.message}
+                      {criterionErrors.weight.message}
                     </p>
                   )}
                   {totalWeight < 100 && (
@@ -561,6 +634,8 @@ export default function PlanSetup() {
 
   return (
     <>
+      {isAddPlanSuccess && <Alert message='Plan add Successfully ' />}
+      {isAddPlanError && <Alert type="error" message='Request Fail' />}
       {isWeightValid && <Alert type="error" message={isWeightValid} />}
       <main className={`mx-auto container `}>{renderForm()}</main>
     </>

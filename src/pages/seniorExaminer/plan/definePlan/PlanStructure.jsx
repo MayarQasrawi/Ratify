@@ -45,7 +45,7 @@ export default function PlanStructure() {
         </div>
         <h1 className="text-md sm:text-lg md:text-2xl font-bold mb-2">No Evaluation Plan Defined</h1>
       </div>
-      <div className="bg-gray-50 rounded-lg p-6 mb-8">
+      <div className="sm:bg-gray-50 rounded-lg p-6 mb-8">
         <h2 className="text-lg font-semibold mb-4 hidden sm:block">
           Understanding the Plan Structure
         </h2>
@@ -58,8 +58,8 @@ export default function PlanStructure() {
                   <Icon size={24} className={iconColorClass} />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">{title}</h3>
-                  <p className="text-gray-600 text-sm hidden sm:block">
+                  <h3 className="text-md sm:text-lg font-medium mb-1">{title}</h3>
+                  <p className="text-gray-600 text-sm hidden sm:block ">
                     {description}
                   </p>
                 </div>

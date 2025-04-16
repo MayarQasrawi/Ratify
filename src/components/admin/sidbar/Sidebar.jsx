@@ -5,11 +5,11 @@ import Extract from "../../../utils/Extract";
 
 export default function Sidebar() {
   const { auth } = useAuthContext();
-  let role='Admin'
+  let role='SeniorExaminer'
   if(auth)
     role=Extract(auth ,'role')
   return (
-    <ul className="flex flex-col mx-auto ">
+    <ul className="flex flex-col mx-auto  sm:items-center lg:items-start ">
       {menue.map((menueItem, ind) => {
         if (menueItem.visible.includes(role)) {
           return (
@@ -19,7 +19,7 @@ export default function Sidebar() {
               to={`/dashboard/${role}/${menueItem.link}`}
               className={({ isActive }) => {
                 return isActive
-                  ? "relative   text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"
+                  ? "relative w-full  text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"
                   : "text-[var(--text-color)] hover:text-[var(--main-color)]";
               }}
             >

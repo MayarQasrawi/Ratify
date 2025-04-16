@@ -1,22 +1,24 @@
 import { useState } from "react";
 import img from "../../../assets/img/tracks/frontEnd.png";
+import { useLocation } from "react-router-dom";
 export default function HorizontalTrackDetailsPage() {
   const [trackData, setTrackData] = useState(mockTrackData);
-
+  const location =useLocation()
+  console.log(location.state,'track info')
   return (
     <div className="min-h-[85vh] block  md:flex md:items-center">
       <div className="md:container md:mx-auto sm:px-4 py-6 ">
         <div className=" bg-white shadow-lg sm:rounded-2xl mb-8 border border-blue-50">
           <div className="flex flex-col lg:flex-row">
-            <div className="lg:w-2/3 pb-0 p-4 sm:pb-4 ">
+            <div className="lg:w-2/3 pb-0 p-4 sm:pb-4 flex items-center sm:block    ">
               <h1 className="text-md sm:text-[20px] md:text-2xl lg:text-3xl font-bold text-[var(--main-color)] mb-3">
                 {trackData.name}
               </h1>
-              <p className="text-sm  hidden md:block text-gray-600 mb-4">
+              <p className="text-xs  hidden sm:block sm:text-sm text-gray-600 mb-4">
                 {trackData.description}
               </p>
 
-              <div className="mb-4 flex items-center">
+              <div className="mb-4  items-center hidden sm:flex">
                 <span className="text-sm sm:text-md font-medium text-gray-800">
                   Status:
                 </span>
@@ -35,11 +37,11 @@ export default function HorizontalTrackDetailsPage() {
               <img
                 src={trackData.image}
                 alt={trackData.name}
-                className="hidden lg:block lg:w-[40%] mx-auto mt-4"
+                className="w-[35%] min-w-[80px] block sm:hidden md:block md:w-[35%] lg:w-[40%] mx-auto lg:mt-4"
               />
             </div>
             <div className="lg:w-1/3 lg:bg-blue-50  pb-6 lg:p-4 px-4 lg:border-t  lg:border-blue-100">
-              <h2 className="text-lg sm:text-xl font-semibold text-[var(--main-color)] mb-4">
+              <h2 className="text-sm sm:text-lg font-semibold text-[var(--main-color)] mb-4">
                 Skills
               </h2>
               <div className="flex flex-wrap gap-2">

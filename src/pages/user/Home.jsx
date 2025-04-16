@@ -9,7 +9,8 @@ import BackToTop from "../../components/user/trackDetailsPage/shared/BackToTop";
 import useFetchAllExaminers from "../../hooks/examiner/useGetAllExaminer";
 
 export default function Home() {
-  const { data } = useFetchAllExaminers();
+  const { data, isError ,error} = useFetchAllExaminers();
+  console.log(error,'get examiner')
   console.log(data);
   return (
     <>

@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/admin/sidbar/Sidebar";
 import TopMenue from "../components/admin/TopMenue";
-import { ThemeProvider } from "../hooks/ThemeProvider";
+import { ThemeProvider } from "../contexts/ThemeProvider";
 import { useAuthContext } from "../contexts/AuthProvider";
 import Extract from "../utils/Extract";
 import useFetchExaminerById from "../hooks/examiner/useFetchExaminerById";
@@ -50,10 +50,9 @@ if(isLoading){
 }
   return (
     <>
-      {/* {isLoading && <TopLoader isLoading={isLoading} />} */}
       <ThemeProvider>
         <div className="flex gap-4 md:gap-8 bg-[var(--background-color)] min-h-screen font-sans text-[var(--text-color)]">
-          <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
+          <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-[20%] md:w-[20%] p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
             <div className="hidden lg:flex flex-col items-center gap-2 pb-5 pl-3">
               <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-2xl">
               {role=='Examiner' ? getFirstCharacter(examinerInfo?.data?.fullName) :'B'}

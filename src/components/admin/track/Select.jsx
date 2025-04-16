@@ -7,11 +7,13 @@ const options = [
   { id: 2, value: "Abr" },
   { id: 3, value: "Abrar" },
 ];
-export default function Select() {
+export default function Select({workingTrackId}) {
   const {data:tracks,isLoading,isError}= useGetAllTraks()
     console.log(tracks?.data,'inside add moda')
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  workingTrackId.current=selectedOption
+  console.log( workingTrackId)
   return (
     <div className=" text-gray-900  font-medium">
       <div className="mt-3 relative border border-[var(--input-border)] rounded-lg" >
@@ -28,13 +30,13 @@ export default function Select() {
 
         {isOpen && (
           <div className="absolute -mt-.5  text-sm text-gray-900 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-            {options.map((option) => (
+            {tracks?.data.filter(track=>track.isActive).map((option) => (
               <div
                 key={option.id}
                 className='p-2 cursor-pointer hover:bg-gray-50 text-gray-900'
-                onClick={() =>{setSelectedOption(option.value);setIsOpen(false)}}
+                onClick={() =>{setSelectedOption(option.name);setIsOpen(false)}}
               >
-                {option.value}
+                {option.name}
               </div>
             ))}
           </div>

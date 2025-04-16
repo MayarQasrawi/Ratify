@@ -62,7 +62,7 @@ function Register() {
   console.log(data?.data,'kjjjjjjjjjs')
   return (
     <>
-    {isError && <Alert type='error' message={error.response.data.errors[0]} />}
+    {isError && <Alert type='error' message={error?.response?.data?.errors[0] ||'Network Error'} />}
     {isSuccess && <Alert  message={data.data.message}/>}
     <FormContainer
       onSubmit={handleSubmit(onSubmit)}
