@@ -52,7 +52,7 @@ const tracks= [
 ];
 
 const cols = ["Track", "Manager", "Date Published"];
-// const [tracks2,setTracks]= useState([]);
+//  const [tracks2,setTracks]= useState([]);
 export default function Track() {
 
   useEffect(() => {
@@ -60,18 +60,15 @@ export default function Track() {
       try {
         const response = await axiosInstance.get("/tracks", {
          
-          headers: {
-           'Accept': 'application/json'
-            
-          }
+        
         });
-         console.log("response from server",response);
+         console.log("response from server to track",response);
          console.log("data-",response.data);
         //  setTracks(response);
          
        
       } catch (err) {
-       console.log(err.message , "--- Failed to fetch team members");
+       console.log(err.message , "--- Failed to fetch tracks");
       } 
     };
 
@@ -134,8 +131,10 @@ export default function Track() {
         onClick: () => handleDelete(track.id),
       },
     ];
+
+
     return (
-      <tr className="border border-[var(--table-border)] text-sm">
+      <tr className="text-md border-b last:border-b-0 last:rounded-b-lg border-[var(--table-border)] text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
         <td className="p-3 text-[var(--text-color)] ">
           <div className="flex flex-col items-start gap-2 max-w-[200px]">
             <img
@@ -179,6 +178,7 @@ export default function Track() {
       <section className="pr-3">
         <div className="pl-4 mt-3 gap-y-3 justify-start flex flex-col md:flex-row md:justify-between md:items-center">
           <div className="w-[90%] md:w-[36%] lg:w-[44%] md:min-w-70 md:max-w-[340px]">
+           
             <Search search={search} setSearch={setSearch} />
           </div>
           <button

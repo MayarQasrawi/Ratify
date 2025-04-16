@@ -7,7 +7,8 @@ async function deleteAccount(id) {
   return response;
 }
 
-export default function useDelteAccount(){
+
+export default function useDeleteAccount(){
     return useMutation({
         mutationFn:(id)=> deleteAccount(id),
         retry: false,

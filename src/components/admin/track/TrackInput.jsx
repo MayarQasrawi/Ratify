@@ -65,16 +65,17 @@ export default function TrackInput({ field }) {
               <button
                 onClick={() => {
                   if (value == "") {
-                    setError("This field is requried.");
+                    setError("This field is requried");
                     return;
                   }
                   if(value.length>500){
-                    setError("Character limit exceeded 500.");
+                    setError("Character limit exceeded 500 characters");
                     return;
                   }
                   setError("");
                   if (!empty && value) setUpdate(true);
-                }}
+                }} 
+                
                 className="block cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md text-sm"
               >
                 Save

@@ -20,7 +20,7 @@ const Pagination = ({ totalPages,setCurrentPage,currentPage }) => {
 
                <button
                     onClick={() => setCurrentPage((currentPage) => Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages || !totalPages}
+                    disabled={currentPage === totalPages }
                     className="p-2 text-[var(--text-color)] hover:text-[var(--button-hover)] disabled:opacity-30 disabled:cursor-not-allowed"
                >
                     <FaArrowCircleRight className="text-lg" />

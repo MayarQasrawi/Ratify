@@ -20,6 +20,8 @@ import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
 import TrackSetup from "../pages/admin/track/TrackSetup";
 import Applicants from "../components/admin/Applicants";
+
+import ViewDetailes from "../pages/admin/ViewDetailes";
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -62,16 +64,17 @@ export const routes = createBrowserRouter([
           { path: "tracks", element: <AdminTrack /> },
           { path: "tracks/setup", element: <TrackSetup /> },
           { path: "applicants", element: <Applicants /> },
+          {path:"ViewDetailes/:id", element:<ViewDetailes/>}
         ],
       },
       {
         path: "seniorExaminer",
-        element: <ProtectedRoute allowRole="Examiner" />,
+        // element: <ProtectedRoute allowRole="Examiner" />,
         children: [{ index: true, element: <SeniorHome /> }],
       },
       {
         path: "examiner",
-        element: <ProtectedRoute allowRole="seniorExaminer" />,
+        // element: <ProtectedRoute allowRole="seniorExaminer" />,
         children: [{ index: true, element: <SeniorHome /> }],
       },
     ],

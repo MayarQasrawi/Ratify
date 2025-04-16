@@ -8,10 +8,17 @@ import Extract from "../../../utils/Extract";
 import { emailSchema } from "../../../validation/validation";
 import ConfirmationModal from "./ConfirmationModal";
 import Header from "./Header";
+import { useParams } from "react-router";
+import { RiMailSendLine } from "react-icons/ri";
+import { TbUserEdit } from "react-icons/tb";
 
 export default function EmailChangeModal({ setShowEmailModal }) {
   const { auth } = useAuthContext();
-   const id=Extract(auth,'nameid');
+
+  const { id: id } = useParams(); // Extracting the userId from the URL parameters
+  // const id = Extract(auth, 'role') === 'admin' ? paramId : Extract(auth, 'nameid');
+   
+
    console.log(id)
   const {
     register,
@@ -22,6 +29,8 @@ export default function EmailChangeModal({ setShowEmailModal }) {
     resolver: zodResolver(emailSchema),
     mode: "onChange",
   });
+
+
   const [isConfirming, setIsConfirming] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const {
@@ -33,6 +42,8 @@ export default function EmailChangeModal({ setShowEmailModal }) {
     data
   } = useChangeEmail();
   const watchEmail = watch("email");
+
+  
   useEffect(() => {
     if (isSuccess || isError) {
       setTimeout(() => setShowEmailModal(), 1500);
@@ -45,7 +56,7 @@ export default function EmailChangeModal({ setShowEmailModal }) {
   };
 console.log(data,'ehhhhhhhhhhhhhhhh')
   return (
-      <div className="flex flex-col  items-center py-10 px-12 bg-gradient-to-br from-blue-50 to-white relative shadow-lg rounded-2xl w-96 border border-gray-200">
+      <div className="flex flex-col  items-center py-10 px-12 bg-white relative shadow-lg rounded-2xl w-96 border border-gray-200">
         <button
           onClick={() => setShowEmailModal()}
           className="absolute top-4 cursor-pointer  right-4 text-gray-500 hover:text-red-500 transition"
@@ -62,10 +73,10 @@ console.log(data,'ehhhhhhhhhhhhhhhh')
           >
             <div className="relative">
               <div
-                className={`absolute left-3 flex items-center gap-4 ${
+                className={`absolute left-3 flex items-center gap-1 ${
                   isFocused || watchEmail
-                    ? "text-xs text-blue-500 -top-2 bg-white px-1"
-                    : "text-gray-500 top-3"
+                    ? "text-xs text-blue-500 -top-4.5 bg-white px-2 font-medium "
+                    : "text-gray-500 top-3 font-medium"
                 } transition-all duration-200`}
               >
                 <MdEmail className="w-5 h-5 " />
@@ -76,7 +87,7 @@ console.log(data,'ehhhhhhhhhhhhhhhh')
                 {...register("email")}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                className="w-full p-3 border border-gray-300 rounded-lg outline-none  pt-4"
+                className="w-full p-3 border border-gray-300 rounded-lg outline-none   pt-4"
               />
 
               {errors.email && (
@@ -94,8 +105,9 @@ console.log(data,'ehhhhhhhhhhhhhhhh')
               disabled={!isValid}
               className="bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500  text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2.5 font-medium"
             >
-              <MdEmail className="w-5 h-5" />
+              
               Change Email Address
+              <RiMailSendLine className="w-5 h-5" />
             </button>
           </form>
         ) : (

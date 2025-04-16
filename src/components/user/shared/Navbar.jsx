@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useDelteAccount from "../../../hooks/auth/useDelteAccount";
+import useDeleteAccount from "../../../hooks/auth/useDeleteAccount";
 import { Link, useLocation, NavLink } from "react-router-dom";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import { HashLink } from "react-router-hash-link";
@@ -27,7 +27,7 @@ function Navbar() {
     isSuccess,
     isError,
     error,
-  } = useDelteAccount();
+  } = useDeleteAccount();
   let id = "";
   let name = "";
   if (auth) {

@@ -35,6 +35,13 @@ const menue = [
     visible: ["Admin"],
   },
   {
+    title: "Applicants",
+    icon: <HiOutlineUsers />,
+    active:<HiUsers  />,
+    link: "applicants",
+    visible: ["Admin"],
+  },
+  {
     title: "Manage Tracks",
     icon: <MdOutlineDashboardCustomize />,
     active:<MdDashboardCustomize/>,
@@ -88,14 +95,7 @@ const menue = [
     icon: <HiOutlineCog />,
     link: "setting",
     visible: ["SeniorExaminer", "Examiner"],
-  },
-  {
-    title: "Applicants",
-    icon: <HiOutlineUsers />,
-    active:<HiUsers  />,
-    link: "applicants",
-    visible: ["Admin"],
-  },
+  }
  
 ];
 
