@@ -7,10 +7,10 @@ import { useLocation } from "react-router-dom";
 
 export default function UploadImage({ ref }) {
   const location=useLocation();
-  const [image, setImage] = useState(()=>location.state?location.state.track.img:null);
+  const [image, setImage] = useState(()=>location.state?location.state.track.image:null);
   const [error, setError] = useState("");
-  if(location?.state)
-  ref.current=location.state.track.img
+  // if(location?.state)
+  // // ref.current=location.state.track.image
   const handleImageUpload = (file) => {
     if (file) {
       if (!file.type.startsWith("image/")) {

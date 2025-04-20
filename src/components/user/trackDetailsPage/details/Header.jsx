@@ -8,7 +8,7 @@ export default function Header({name,image}) {
   const navigate=useNavigate()
   return (
     <>
-      <header className="bg-[#003F7D] overflow-hidden hidden lg:block pt-5 pb-10 lg:h-[70vh] xl:h-[60vh] rounded-bl-[60px] rounded-br-[60px]">
+      <header className="bg-[#003F7D] overflow-hidden hidden lg:block pt-5 pb-14 lg:h-[70vh] xl:h-[60vh] rounded-bl-[60px] rounded-br-[60px]">
         <Navbar />
         <div className="flex h-full gap-10 items-center justify-center">
           <div>

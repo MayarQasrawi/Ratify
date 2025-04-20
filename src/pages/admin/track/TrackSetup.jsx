@@ -26,7 +26,7 @@ export default function TrackSetup() {
   const trackField = [
     { title: "Track Title", textArea: false, ref: titleRef,name:'name' },
     { title: "Track Description", textArea: true, ref: descriptionRef,name:'description' },
-    { title: "Track Objectives", ref: objectivesRef,name:'objectives' },
+    { title: "Track Objectives",textArea: true, ref: objectivesRef,name:'objectives' },
   ];
   useEffect(() => {
     if (showAlert) setTimeout(() => setShow(false), 3000);
@@ -41,9 +41,9 @@ export default function TrackSetup() {
     if (
       titleRef.current == "" ||
       descriptionRef.current == "" ||
-      objectivesRef.current == "" ||
-      // selectRef.current == null ||
-      imageRef.current == undefined 
+      objectivesRef.current == "" 
+     
+      
     ) {
       setShow(true);
       return;
@@ -58,11 +58,16 @@ export default function TrackSetup() {
     formData.append('description', descriptionRef.current);
     formData.append('objectives', objectivesRef.current);
     // formData.append('seniorExaminerID', selectRef.current);
-    formData.append('image', selectRef.current);
+    // formData.append('image', selectRef.current);
     if(!location.state){
-      formData.append('associatedSkills', 'html'); 
-      formData.append('id', 1); 
-      formData.append('isActive', true);
+      // formData.append('associatedSkills', 'html'); 
+      // formData.append('id', 0); 
+      // formData.append('isActive', true);
+      // formData.append('seniorExaminerID', '291fa418-9e0e-4fc5-b370-2c98d1409006');
+      // console.log(imageRef.current,'add track check image')
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
       addTrack(formData)
     }
    else{
@@ -104,7 +109,7 @@ export default function TrackSetup() {
           {/* <Select selectRef={selectRef} /> */}
         </div>
         <div className="w-[97%] sm:w-[70%] md:w-[60%] lg:w-[40%] flex flex-col gap-4">
-          <UploadImage ref={imageRef} />
+          {/* <UploadImage ref={imageRef} /> */}
           {/* <AssociatedSkills ref={skillsRef} /> */}
         </div>
       </div>

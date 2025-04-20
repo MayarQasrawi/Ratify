@@ -25,8 +25,9 @@ export default function PlanSetup() {
     isError: isAddPlanError,
     isPending: isAddPlanPending,
     isSuccess:isAddPlanSuccess
+   , error
   } = useAddPlan();
-
+  console.log(error)
   console.log(location.state.length);
   useEffect(() => {
     if (isWeightValid) setTimeout(() => setIsWeightValid(null), 1500);
@@ -393,7 +394,6 @@ export default function PlanSetup() {
         const nextCriterionOrder = currentStage?.evaluationCriteria?.length + 1;
         const hasCriteria = activeStageHasCriteria();
         const weightIs100 = totalWeight === 100;
-        console.log(weightIs100);
         return (
           <div className="p-12 w-full ">
             <div className="flex justify-between items-center mb-4">
@@ -518,7 +518,7 @@ export default function PlanSetup() {
                             : "text-red-500 ml-1"
                         }
                       >
-                        (total Should 100)
+                        (Total Should 100)
                       </span>
                     )}
                     {totalWeight === 100 && (
@@ -634,7 +634,7 @@ export default function PlanSetup() {
 
   return (
     <>
-      {isAddPlanSuccess && <Alert message='Plan add Successfully ' />}
+      {isAddPlanSuccess && <Alert message='Plan Add Successfully ' />}
       {isAddPlanError && <Alert type="error" message='Request Fail' />}
       {isWeightValid && <Alert type="error" message={isWeightValid} />}
       <main className={`mx-auto container `}>{renderForm()}</main>

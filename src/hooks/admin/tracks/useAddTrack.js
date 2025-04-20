@@ -17,7 +17,7 @@ export default function useAddTrack() {
       console.log(data, "track add");
     },
     onError: (error) => {
-      console.log("error done", error);
+      console.log("error done inside add track", error);
     },
   });
 }

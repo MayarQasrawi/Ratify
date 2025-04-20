@@ -168,10 +168,10 @@ export default function LearningJourneyMap({ plan }) {
           {activeStage && (
             <div className="mt-4 bg-blue-50 rounded-lg border border-blue-200 p-6">
               <div className="flex items-center">
-                <h3 className="font-bold text-xl text-blue-800">
+                <h3 className="font-bold text-xl text-blue-600">
                   {activeStage.type}
                 </h3>
-                <div className="ml-auto bg-blue-100 text-blue-800 px-3 py-1 text-sm font-medium rounded-full">
+                <div className="ml-auto bg-blue-100 text-blue-700 px-3 py-1 text-sm font-medium rounded-full">
                   Stage{" "}
                   {activeStage.order}
                 </div>
@@ -180,7 +180,7 @@ export default function LearningJourneyMap({ plan }) {
 
               <div className="flex items-center mt-4 flex-wrap gap-2">
                 <div className="bg-gradient-to-r from-blue-400 to-blue-700 text-white rounded-full py-1 px-4 text-sm font-medium shadow-sm">
-                  Passing Score: {activeStage.PassingScore}%
+                  Passing Score: {activeStage.passingScore}%
                 </div>
               </div>
             </div>

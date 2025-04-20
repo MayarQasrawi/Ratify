@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "./utils/axiosInstance.js"; // Import the Axios instance
-import { useAuthContext } from '../../contexts/AuthProvider.jsx'
 
 async function deleteAccount(id) {
   const response = await axiosInstance.delete(`/Users/${id}`);

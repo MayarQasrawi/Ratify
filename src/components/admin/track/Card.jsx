@@ -2,10 +2,8 @@ import { useState } from "react";
 import Action from "../shared/Action";
 import Modal from "../../shared/modal/Modal";
 import ConfirmationModal from "../../shared/modal/ConfirmationModal";
-import useGetAllTraks from "../../../hooks/admin/tracks/useGetAllTracks";
 import useDeleteTrack from "../../../hooks/admin/tracks/useDeleteTrack";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../components/admin/shared/Loading";
 export default function Card({ data }) {
   const [selected, setSelected] = useState(null);
   const [trackId, setTrackId] = useState(null);
@@ -28,12 +26,8 @@ export default function Card({ data }) {
     setTrackId(id);
   };
   console.log("card error",error);
-//    if(isLoading){
-//   return <div className="h-[70vh] flex items-center justify-center"> 
-//   <Loading /></div>
-//  }
   return (
-    <div className="mt-4  grid sm:grid-cols-2 md:grid-cols-3  gap-4 text-center">
+    <div className="mt-4 grid sm:grid-cols-2 md:grid-cols-3  gap-4 text-center">
       {selected == "delete" && (
         <Modal>
           <ConfirmationModal

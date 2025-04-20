@@ -13,7 +13,7 @@ function EditCriteria() {
   console.log(location.state?.criteria, "inside edit ");
   const initialCriteria = location.state?.criteria || [];
   const [tempWeights, setTempWeights] = useState(
-    initialCriteria.map((c) => Number(c.Weight))
+    initialCriteria.map((c) => Number(c.weight))
   );
   const totalWeight = tempWeights.reduce((sum, w) => sum + w, 0);
   const getErrorMessage = () => {
@@ -36,7 +36,7 @@ function EditCriteria() {
 
     const updatedCriteria = initialCriteria.map((c, i) => ({
       ...c,
-      Weight: tempWeights[i],
+      weight: tempWeights[i],
     }));
 
     console.log("Submitting updated criteria:", updatedCriteria);
@@ -45,7 +45,7 @@ function EditCriteria() {
   return (
     <div className="min-h-screen py-10 px-4">
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div className="bg-[var(--main-color)] text-white px-6 py-4 flex justify-between items-center">
+        <div className="bg-blue-500 text-white px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             {totalWeight === 100 ? (
               <>

@@ -24,7 +24,6 @@ export default function TrackInput({ field }) {
             <span>Add {field.title}</span>
           </div>
         )}
-
         {update && (
           <div
             onClick={() => setUpdate(false)}
@@ -51,6 +50,7 @@ export default function TrackInput({ field }) {
           <div className="flex flex-col items-start gap-2 pl-2">
             {field.textArea ? (
               <textarea
+                value={value}
                 className="pl-2 py-1 w-[90%] outline-none bg-white rounded-md min-h-[200px]"
                 onChange={(e) => setValue(e.target.value)}
               ></textarea>

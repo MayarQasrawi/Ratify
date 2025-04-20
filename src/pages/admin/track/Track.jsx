@@ -63,13 +63,14 @@ export default function Track() {
   const [selected, setSelected] = useState(null);
   const [trackId, setTrackId] = useState(null);
   const navigate = useNavigate();
-  const {data:tracks,isLoading,isError}= useGetAllTraks()
-  console.log(tracks?.data)
+  // const {data:tracks,isLoading,isError}= useGetAllTraks()
+  // console.log(tracks?.data)
+  let isLoading=false
  const {mutate: deleteTrack,
   isPending,
   isSuccess,
   error} =useDeleteTrack()
-  let trackFilter = tracks?.data || [] ;
+  let trackFilter = tracks ;
   const handleEdit = (track) => {
     console.log("Edit action clicked");
     console.log(track)
@@ -87,13 +88,13 @@ export default function Track() {
     setTrackId(id);
   };
   console.log(trackId,'check id pass')
- if(isLoading){
-  return <div className="h-[70vh] flex items-center justify-center"> 
-  <Loading /></div>
- }
- if(isError){
- return <div className="h-[70vh]  flex items-center justify-center"><div className="h-full w-full"> <Error /></div></div>
- }
+//  if(isLoading){
+//   return <div className="h-[70vh] flex items-center justify-center"> 
+//   <Loading /></div>
+//  }
+//  if(isError){
+//  return <div className="h-[70vh]  flex items-center justify-center"><div className="h-full w-full"> <Error /></div></div>
+//  }
   if (search)
     trackFilter = tracks.data.filter((track) =>
       track.name.toUpperCase().includes(search.toUpperCase())

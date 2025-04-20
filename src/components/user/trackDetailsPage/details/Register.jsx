@@ -22,8 +22,8 @@ export default function Register() {
             />
           ) : (
             <EnrollmentModal
-              title="&#128274; LoginRequire"
-              description="Please Signin First."
+              title="&#128274; Login Required"
+              description="Please Login First."
               setShow={setShow}
             />
           )}
@@ -35,7 +35,7 @@ export default function Register() {
             <p className="w-[90%] text-center">Want to know more about the Tracks?</p>
           </div>
           <div >
-            <Button py="9" px="60" showModal={() => setShow(true)} />
+            <Button py="12" px="60" showModal={() => setShow(true)} />
           </div>
         </div>
       </section>

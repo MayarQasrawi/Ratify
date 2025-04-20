@@ -25,14 +25,17 @@ export default function Dashboard() {
     isExaminer = role === "Examiner";
   }
 
-  const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer);
-  console.log(examinerInfo?.specialization,'test bbb')
-  console.log(examinerInfo,'examiner info')
+  const { data: examinerInfo, isLoading } = useFetchExaminerById(
+    id,
+    isExaminer
+  );
+  console.log(examinerInfo?.specialization, "test bbb");
+  console.log(examinerInfo, "examiner info");
 
   useEffect(() => {
     if (!isLoading && isExaminer && examinerInfo) {
-      const isInfoMissing = !examinerInfo.data.dateOfBirth      ;
-      console.log(isInfoMissing,'info miss')
+      const isInfoMissing = !examinerInfo.data.dateOfBirth;
+      console.log(isInfoMissing, "info miss");
       setShowModal(isInfoMissing);
     }
   }, [examinerInfo, isLoading, isExaminer]);
@@ -45,9 +48,9 @@ export default function Dashboard() {
   ) {
     return <Outlet />;
   }
-if(isLoading){
-  return <TopLoader isLoading={isLoading} />
-}
+  if (isLoading) {
+    return <TopLoader isLoading={isLoading} />;
+  }
   return (
     <>
       <ThemeProvider>
@@ -55,10 +58,13 @@ if(isLoading){
           <div className="bg-[var(--sidebar-bg)] md:py-4 w-8 sm:w-[20%] md:w-[20%] p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
             <div className="hidden lg:flex flex-col items-center gap-2 pb-5 pl-3">
               <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-2xl">
-              {role=='Examiner' ? getFirstCharacter(examinerInfo?.data?.fullName) :'B'}
+                {role == "Examiner"
+                  ? getFirstCharacter(examinerInfo?.data?.fullName)
+                  : "B"}
               </div>
-              <h1 className="text-2xl text-[var(--sidebar-text)] font-medium">{role=='Examiner' ? examinerInfo?.data?.fullName :'Abrar'}</h1>
-              
+              <h1 className="text-2xl text-[var(--sidebar-text)] font-medium">
+                {role == "Examiner" ? examinerInfo?.data?.fullName : "Abrar"}
+              </h1>
             </div>
             <Sidebar />
           </div>
@@ -73,4 +79,3 @@ if(isLoading){
     </>
   );
 }
-
