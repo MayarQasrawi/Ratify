@@ -8,7 +8,7 @@ import Home from '../pages/user/Home';
 import  ExpertsPage from '../pages/user/ExpertsPage';
 import TrackPage from '../pages/user/TrackPage';
 import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
-
+console.log('hh')
 const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
 const Login = lazy(() => import('../components/view/Login'));
 const Register = lazy(() => import('../components/view/Register'));
