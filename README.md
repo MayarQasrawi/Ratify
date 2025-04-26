@@ -15,7 +15,7 @@ This project is being developed as a **graduation project** to demonstrate full-
 - **React Router** — Declarative routing for React applications
 - *(More technologies may be added as development progresses)*
 
----
+
 
 ## 📂 Project Structure
 
@@ -31,7 +31,7 @@ src/
 └── index.css        # Global Tailwind styles
 ```
 
----
+
 
 ## 📋 Features (Planned)
 
@@ -44,17 +44,19 @@ src/
 - Mobile-responsive, modern UI
 - Dark mode support
 
----
-
-## ✨ Screenshots
-
-*(Screenshots will be added soon as development progresses.)*
-
----
-
 ## 📅 Project Status
 
 > **Status:** 🛠️ In Development  
 > Ratify is actively being built as a graduation project.  
 > Major features and designs are still evolving.
+
+
+
+## ✨ Screenshots
+
+*(Screenshots will be added soon as development progresses.)*
+
+
+
+
 
