@@ -1,9 +1,3 @@
-Perfect!  
-So instead of saying it's only about credential storage, you want it clear that **Ratify** is a **skills assessment platform**.  
-I’ll update the README accordingly:
-
----
-
 # Ratify
 
 **Ratify** is a modern **skills assessment platform** currently under active development, built using **React.js** and **Tailwind CSS**.  
