@@ -6,17 +6,11 @@ import Extract from "../../../utils/Extract";
 export default function Sidebar() {
   const { auth } = useAuthContext();
   let role='Admin'
-<<<<<<< HEAD
-  // if(auth)
-  //   role=Extract(auth ,'role')
-
-=======
   if(auth)
     role=Extract(auth ,'role')
   // if (!auth || typeof auth !== "string") {
   //   return <Navigate to="/login" />;
   // }
->>>>>>> ccc8cfaa4f25b037c4ad8d72ce7e4a4947b8d426
   return (
     <ul className="flex flex-col mx-auto  sm:items-center lg:items-start ">
       {menue.map((menueItem, ind) => {

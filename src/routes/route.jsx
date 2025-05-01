@@ -25,6 +25,7 @@ const Plan = lazy(() => import('../pages/seniorExaminer/plan/Plan'));
 const PlanSetup = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanSetup'));
 const PlanStructure = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanStructure'));
 const EditCriteria = lazy(() => import('../pages/seniorExaminer/plan/definePlan/EditCriteria'));
+const Applicants=lazy(()=> import('../components/admin/Applicants'));
 
 const LoadingFallback = () => <div>Loading...</div>;
 
@@ -136,6 +137,14 @@ export const routes = createBrowserRouter([
             element: (
               <Suspense fallback={null}>
                 <Team />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'applicants',
+            element: (
+              <Suspense fallback={null}>
+                <Applicants />
               </Suspense>
             ),
           },

@@ -22,6 +22,7 @@ export default function Dashboard() {
     id = Extract(auth, "nameid");
     isExaminer = role === "Examiner";
   }
+  
   const { data: examinerInfo, isLoading } = useFetchExaminerById(
     id,
     isExaminer
