@@ -13,10 +13,11 @@ export default function ConfirmationModal({
   error,
   data
 }) {
+  console.log(isError,'gggggg')
   return (
     <>
-      {isError && <Alert type="error" message={error.response.data.message} />}
-      {isSuccess && <Alert message={data.data.meta} />}
+      {isError && <Alert type="error" message={error?.response?.data?.message ||'Delete Request Fails' } />}
+      {isSuccess && <Alert message={data?.data?.meta || 'Track Delete successfully'} />}
       <div
         className={`${
           view

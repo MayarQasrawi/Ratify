@@ -34,7 +34,7 @@ export default function ResetPassword() {
 
   return (
     <>
-     {isError && <Alert type='error' message={error.response.data.errors[0]} />}
+     {isError && <Alert type='error' message={error.response.data.errors[0] || 'Network Error'} />}
      {isSuccess && <Alert  message={data.data.meta}/>}
       <div className="flex items-center gap-30 bg-gray-100 justify-center">
         <PasswordResetStepper currentStep={2} />

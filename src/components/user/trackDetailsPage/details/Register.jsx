@@ -5,25 +5,28 @@ import Modal from "../../../shared/modal/Modal";
 import { MdClose } from "react-icons/md";
 import { useAuthContext } from "../../../../contexts/AuthProvider";
 import EnrollmentModal from "../shared/EnrollmentModal";
+import { useParams } from "react-router-dom";
 
 export default function Register() {
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
-
+ const {id} =useParams()
+   
   return (
     <>
       {show && (
         <Modal>
           {auth ? (
             <EnrollmentModal
+              trackId={id}
               setShow={setShow}
               title="Enroll Now &#10148;"
               description="Our unique assessment tracks are not just about learning—they're about discovering the essence of your strengths and matching them against the pulse of today's market demands. Register and log in to experience an evaluation crafted by industry visionaries, and step confidently into a future aligned with professional excellence."
             />
           ) : (
             <EnrollmentModal
-              title="&#128274; LoginRequire"
-              description="Please Signin First."
+              title="&#128274; Login Required"
+              description="Please Login First."
               setShow={setShow}
             />
           )}
@@ -35,7 +38,7 @@ export default function Register() {
             <p className="w-[90%] text-center">Want to know more about the Tracks?</p>
           </div>
           <div >
-            <Button py="9" px="60" showModal={() => setShow(true)} />
+            <Button py="12" px="60" showModal={() => setShow(true)} />
           </div>
         </div>
       </section>

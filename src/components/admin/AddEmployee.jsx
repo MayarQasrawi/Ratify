@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { addEmployeeSchema } from "../../validation/validation";
-import useAddEmployee from "../../hooks/examiner/useAddEmployee";
+import useAddEmployee from "../../hooks/admin/examiner/useAddEmployee";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Spinner from "../shared/Spinner";
+import Select from "./track/Select";
 
 const inputField = ["Full Name", "Email"];
 
 export default function AddEmployee({ setIsOpen }) {
+ const workingTrackId= useRef()
   const {
     register,
     handleSubmit,
@@ -37,7 +39,8 @@ export default function AddEmployee({ setIsOpen }) {
 
   const onSubmit = ({ fullName, email }) => {
     console.log({ fullName, email, password: password.passwordValue });
-    addEmployee({ fullName, email, password: password.passwordValue });
+    console.log(workingTrackId.current,'jjjj')
+    // addEmployee({ fullName, email, password: password.passwordValue });
   };
 
   return (
@@ -50,7 +53,7 @@ export default function AddEmployee({ setIsOpen }) {
         {inputField.map((field, index) => (
           <div key={index} className="relative mb-8">
             <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
-              {field}
+              {field}<span className="text-red-500">*</span>
             </label>
             <input
               {...register(field.includes("Full Name") ? "fullName" : "email")}
@@ -66,7 +69,7 @@ export default function AddEmployee({ setIsOpen }) {
         
         <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
-            Password
+            Password<span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -84,11 +87,17 @@ export default function AddEmployee({ setIsOpen }) {
               {password.show ? <FaEye size={20} className="cursor-pointer" /> : <FaEyeSlash size={20} className="cursor-pointer" />}
             </button>
           </div>
-          <div className="flex gap-1 items-center">
-            <input type="checkbox" onClick={generatePassword} />
-            <p className="text-xs text-[var(--text-color)] mt-1">
+          <div className="flex gap-1.5 justify-start items-start ">
+            <input type="checkbox" onClick={generatePassword} className="relative top-4" />
+            <p className="text-xs text-[var(--text-color)] mt-1 mb-8">
               Auto-generated 8-character password with letters, numbers, and special characters
             </p>
+          </div>
+          <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
+            Track<span className="text-red-500">*</span>
+          </label>
+          <Select workingTrackId={workingTrackId} />
           </div>
         </div>
         <div className="flex font-medium justify-end space-x-3">

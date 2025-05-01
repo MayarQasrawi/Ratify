@@ -16,9 +16,6 @@ import { MdHome } from "react-icons/md";
 import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
 import { MdOutlineDashboardCustomize,MdDashboardCustomize } from "react-icons/md";
 
-
-
-
 const menue = [
   {
     title: "Dashboard",
@@ -49,9 +46,9 @@ const menue = [
     visible: ["Admin"],
   },
   {
-    title: "Define Plan",
+    title: "Mange Plan",
     icon: <HiOutlineUserGroup />,
-    link: "tracks",
+    link: "plan",
     visible: ["SeniorExaminer"],
   },
   {

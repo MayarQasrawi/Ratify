@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../../auth/utils/axiosInstance";
 async function addEmployee(data){
-    const response=await axios.post(`${import.meta.env.VITE_BAPI}/Auth/register/examiner`,data);
+    const response=await axiosInstance.post(`Auth/register/examiner`,data);
     return response;
 }
 export default function useAddEmployee(){

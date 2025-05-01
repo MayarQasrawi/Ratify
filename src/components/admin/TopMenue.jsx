@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineSettings, MdPassword } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { PiMoonBold } from "react-icons/pi";
-import { useTheme } from "../../hooks/ThemeProvider";
+import { useTheme } from "../../contexts/ThemeProvider";
 import { FiSun } from "react-icons/fi";
 import { useAuthContext } from "../../contexts/AuthProvider";
 import { HiOutlineLogout } from "react-icons/hi";
@@ -23,7 +23,7 @@ function TopMenue() {
           />
         </Modal>
       )}
-      <nav className="flex flex-row-reverse gap-3 mb-8 ">
+      <nav className="flex flex-row-reverse gap-3 mb-5 ">
         <div className="relative   ">
           <button
             className="flex relative items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"

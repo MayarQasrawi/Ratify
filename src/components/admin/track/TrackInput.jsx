@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
 import Header from "./shared/Header";
+import { useLocation } from "react-router-dom";
 
 export default function TrackInput({ field }) {
-  const [empty, setIsEmpty] = useState(true);
-  const [value, setValue] = useState("");
-  const [update, setUpdate] = useState(false);
+  const location=useLocation();
+  const [empty, setIsEmpty] = useState(()=>location?.state?false:true);
+  const [value, setValue] = useState(()=>location?.state? location?.state.track[field.name]:'');
+  const [update, setUpdate] = useState(()=>location?.state?true:false);
   const [error, setError] = useState("");
   field.ref.current = value;
-  console.log(value == "");
   return (
     <div className="bg-[var(--sidebar-icon-bg)] rounded-lg p-3 text-gray-900 font-medium">
       <div className="flex justify-between items-center">
@@ -23,7 +24,6 @@ export default function TrackInput({ field }) {
             <span>Add {field.title}</span>
           </div>
         )}
-
         {update && (
           <div
             onClick={() => setUpdate(false)}
@@ -50,6 +50,7 @@ export default function TrackInput({ field }) {
           <div className="flex flex-col items-start gap-2 pl-2">
             {field.textArea ? (
               <textarea
+                value={value}
                 className="pl-2 py-1 w-[90%] outline-none bg-white rounded-md min-h-[200px]"
                 onChange={(e) => setValue(e.target.value)}
               ></textarea>
@@ -80,7 +81,7 @@ export default function TrackInput({ field }) {
               >
                 Save
               </button>
-              <button
+             {!location?.state &&<button
                 onClick={() => {
                   setUpdate(false);
                   setIsEmpty(true);
@@ -88,7 +89,7 @@ export default function TrackInput({ field }) {
                 className="block cursor-pointer bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md text-sm"
               >
                 Cancel
-              </button>
+              </button>}     
             </div>
           </div>
         )}

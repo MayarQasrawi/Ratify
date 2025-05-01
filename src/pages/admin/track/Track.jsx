@@ -8,95 +8,96 @@ import Search from "../../../components/admin/shared/Search";
 import img from "../../../assets/img/tracks/frontEnd.png";
 import { FaSadTear } from "react-icons/fa";
 import ConfirmationModal from "../../../components/shared/modal/ConfirmationModal";
-import Card from "../../../components/admin/track/Card";
-import axiosInstance from '../../../hooks/auth/utils/axiosInstance';
-import { useEffect } from "react";
+import useGetAllTraks from "../../../hooks/admin/tracks/useGetAllTracks";
+import Loading from "../../../components/admin/shared/Loading";
+import Error from "../../../components/admin/shared/Error";
+import useDeleteTrack from "../../../hooks/admin/tracks/useDeleteTrack";
+import Card from '../../../components/admin/track/Card'
 
  
 const tracks= [
   {
     id: 1,
-    trackName: "Frontend Development",
-    img: img,
-    Manager: "Abrar Arman",
+    name: "Frontendj Development",
+    image: img,
+    isActive: true,
     DatePublished: "2/4/2025",
+    description:'testkkkkkkkkkkkkkkkkkkk',
+    objectives:'test1',
+    associatedSkills:[{skill:'html', description:'hhhhhhhh'}]
   },
   {
     id: 2,
-    trackName: "Backend Development",
+    name: "Backend Development",
     img: img,
-    Manager: "Abrar Arman",
+    isActive: true,
     DatePublished: "2/4/2025",
   },
   {
     id: 3,
-    trackName: "Full Stack Development",
+    name: "Full Stack Development",
     img: img,
-    Manager: "Abrar Arman",
+    isActive: false,
     DatePublished: "2/4/2025",
   },
   {
     id: 4,
-    trackName: "Data Science",
+    name: "Data Science",
     img: img,
-    Manager: "Abrar Arman",
+    isActive: true,
     DatePublished: "2/4/2025",
   },
   {
     id: 5,
-    trackName: "Cybersecurity",
+    name: "Cybersecurity",
     img: img,
-    Manager: "Abrar Arman",
+    isActive: false,
     DatePublished: "2/4/2025",
   },
 ];
 
-const cols = ["Track", "Manager", "Date Published"];
-//  const [tracks2,setTracks]= useState([]);
+const cols = ["Track", "Status", " "];
 export default function Track() {
-
-  useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const response = await axiosInstance.get("/tracks", {
-         
-        
-        });
-         console.log("response from server to track",response);
-         console.log("data-",response.data);
-        //  setTracks(response);
-         
-       
-      } catch (err) {
-       console.log(err.message , "--- Failed to fetch tracks");
-      } 
-    };
-
-    fetchTeamMembers();
-  }, []);
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState("table");
   const [selected, setSelected] = useState(null);
   const [trackId, setTrackId] = useState(null);
   const navigate = useNavigate();
-  let trackFilter = tracks;
-  let isLoading = false;
-  const handleEdit = () => {
+  // const {data:tracks,isLoading,isError}= useGetAllTraks()
+  // console.log(tracks?.data)
+  let isLoading=false
+ const {mutate: deleteTrack,
+  isPending,
+  isSuccess,
+  error} =useDeleteTrack()
+  let trackFilter = tracks ;
+  const handleEdit = (track) => {
     console.log("Edit action clicked");
+    console.log(track)
+    navigate('/dashboard/Admin/tracks/setup',{state:{track}})
   };
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (track) => {
     console.log("View Details action clicked");
+    navigate('/dashboard/Admin/track-details',{state:{track}})
   };
-
+// const isLoading =false;
   const handleDelete = (id) => {
     setSelected("delete");
+    console.log(id)
     setTrackId(id);
   };
-
+  console.log(trackId,'check id pass')
+//  if(isLoading){
+//   return <div className="h-[70vh] flex items-center justify-center"> 
+//   <Loading /></div>
+//  }
+//  if(isError){
+//  return <div className="h-[70vh]  flex items-center justify-center"><div className="h-full w-full"> <Error /></div></div>
+//  }
   if (search)
-    trackFilter = tracks.filter((track) =>
-      track.trackName.toUpperCase().includes(search.toUpperCase())
+    trackFilter = tracks.data.filter((track) =>
+      track.name.toUpperCase().includes(search.toUpperCase())
     );
   if (trackFilter.length == 0 && isLoading == false) {
     return (
@@ -114,45 +115,59 @@ export default function Track() {
   }
   const renderRow = (track) => {
     const actions = [
-      {
-        name: "Edit Track",
-        onClick: () => handleEdit(track.id),
-      },
+      ...(track.isActive
+        ? [
+            {
+              name: "Edit Track",
+              onClick: () => handleEdit(track),
+            },
+            {
+              name: "Delete Track",
+              onClick: () => handleDelete(track.id),
+            },
+          ]
+        : [{
+          name: "Toggle Track",
+          onClick: () => handleEdit(track),
+        },]),
       {
         name: "View Details",
-        onClick: () => handleViewDetails(track.id),
-      },
-      {
-        name: "Delete Track",
-        onClick: () => handleDelete(track.id),
-      },
-      {
-        name: "Toggle Track",
-        onClick: () => handleDelete(track.id),
+        onClick: () => handleViewDetails(track),
       },
     ];
-
-
+    
     return (
-      <tr className="text-md border-b last:border-b-0 last:rounded-b-lg border-[var(--table-border)] text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-        <td className="p-3 text-[var(--text-color)] ">
-          <div className="flex flex-col items-start gap-2 max-w-[200px]">
+      <tr className="border border-[var(--table-border)] text-sm text-center ">
+        <td className="p-3 text-[var(--text-color)] text-center ">
+          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-2 max-w-[200px]">
             <img
               className="w-15 h-15 object-cover"
-              src={track.img}
-              alt={track.trackName}
+              src={track.image}
+              alt={track.name}
             />
-            <h2 className="font-semibold">{track.trackName}</h2>
+            <h2 className="font-semibold">{track.name}</h2>
+          </div>
           </div>
         </td>
-        <td className="p-3 ">
-          <span className="bg-blue-100 rounded-full block px-3 py-1.5  text-blue-800 font-medium w-fit">
-            {track.Manager}
-          </span>
-        </td>
-        <td className="p-3  font-semibold">
-          <div className="pl-7">{track.DatePublished}</div>
-        </td>
+        <td className="py-3 px-1 lg:px-3  text-center">
+          <div className=" flex justify-center ">
+          <div
+            className={`flex items-center  justify-center w-fit gap-1 p-1 md:px-3 font-medium py-1 text-xs rounded-full ${
+              track.isActive
+                ? "sm:bg-green-100 dark:sm:bg-green-200 text-green-800"
+                : "sm:bg-red-100 dark:sm:bg-red-200 text-red-800"
+            }`}
+          >
+            {track.isActive === true ? (
+              <span className="block w-1.5 h-1.5 rounded-full bg-green-600"></span>
+            ) : (
+              <span className="block w-1.5 h-1.5 rounded-full bg-red-600"></span>
+            )}
+            <span className=""> {track.isActive?'Active':'Inactive'}</span>
+          </div>
+          </div>
+          </td>
         <td className="p-3">
           <Action actions={actions} />
         </td>
@@ -170,6 +185,10 @@ export default function Track() {
               setSelected(null);
               setTrackId(null);
             }}
+            Confirm={()=> deleteTrack(trackId)}
+            isPending={isPending}
+            isSuccess={isSuccess}
+            isError={error}
           >
             Are you sure you want to delete this track?
           </ConfirmationModal>
@@ -217,8 +236,10 @@ export default function Track() {
         </div>
 
         {viewMode == "table" ? (
-          <div className="pl-4 mt-1.5 pt-4 pb-6">
+          <div>
+          <div className="pl-4 mt-1.5 pt-4 pb-6 min-w-[500px]">
             <Table data={trackFilter} cols={cols} row={renderRow} />
+          </div>
           </div>
         ) : (
           <Card data={trackFilter} />

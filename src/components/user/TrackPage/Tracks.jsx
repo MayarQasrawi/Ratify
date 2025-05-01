@@ -46,7 +46,6 @@ const tracks = [
 
 export default function Tracks() {
   const [searchQuery, setSearchQuery] = useState("");
-  
   const inputSearch = useAutoFocus();
   let isLoading = false;
   let filteredTracks = tracks;

@@ -13,9 +13,23 @@ import ConfirmationModal from "../../shared/modal/ConfirmationModal";
 import Extract from "../../../utils/Extract";
 import getFirstCharacter from "../../../utils/getFirstCharacter";
 import Alert from "../../shared/Alert";
+import useGetApplicantTrack from '../../../hooks/applicant/enroll/useGetApplicantTrack'
+const allNavLinks = [
+  { name: "HOME", to: "/" },
+  { name: "OUR TRACKS", to: "/our-tracks" },
+  { name: "OUR TEAMS", to: "/our-experts" },
+  { name: "DASHBOARD", to: "/my-tracks" },
+];
 function Navbar() {
   const { auth, logout, setAuth } = useAuthContext();
   console.log(auth, "kkk");
+  let id = "";
+  let name = "";
+  if (auth) {
+    id = Extract(auth, "nameid");
+    name = Extract(auth, "unique_name");
+  }
+  const {data:tracks}=useGetApplicantTrack(id);
   const [isOpen, setIsOpen] = useState(false);
   const [viewOption, setviewOption] = useState(false);
   const [isSettingsOpen, setSettings] = useState(false);
@@ -26,14 +40,14 @@ function Navbar() {
     isPending,
     isSuccess,
     isError,
-    error,
   } = useDeleteAccount();
-  let id = "";
-  let name = "";
-  if (auth) {
-    id = Extract(auth, "nameid");
-    name = Extract(auth, "unique_name");
-  }
+
+  const navLinks = allNavLinks.filter((link) => {
+    if (link.name === "DASHBOARD") {
+      return id && tracks?.data?.length>0;
+    }
+    return true;
+  });
   console.log(id);
   console.log(name);
   const style = location.pathname.includes("track-details") && {
@@ -42,13 +56,7 @@ function Navbar() {
     position: "static",
   };
   console.log(style);
-  // Array of navigation links
-  const navLinks = [
-    { name: "HOME", to: "/" },
-    { name: "OUR TRACKS", to: "/our-tracks" },
-    { name: "OUR TEAMS", to: "/our-experts" },
-    { name: "DASHBOARD", to: "/my-tracks" },
-  ];
+ 
   console.log(id);
   if (isSuccess) {
     setAuth(null);
@@ -56,7 +64,7 @@ function Navbar() {
   }
   return (
     <>
-      {isError && <Alert type="error" message="mmmmmmmmmmm" />}
+      {isError && <Alert type="error" message="Request fails" />}
       {isSuccess && (
         <Alert message="Your account has been successfully deleted." />
       )}
@@ -108,7 +116,6 @@ function Navbar() {
                 </svg>
               </button>
             </div>
-
             {/* Navigation Links (Desktop) */}
             <div className="hidden lg:flex space-x-8 ">
               {navLinks.map((link, index) => (

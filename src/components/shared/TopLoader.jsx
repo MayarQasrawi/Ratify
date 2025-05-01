@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export default function TopLoader({isLoading}) {
     const [progress, setProgress] = useState(0);
     const [visible, setVisible] = useState(false);
+    console.log(isLoading,'inside top loader')
     const view = useRef();
     useEffect(() => {
       let interval;
@@ -10,22 +11,22 @@ export default function TopLoader({isLoading}) {
       if (isLoading) {
         setVisible(true); 
         setProgress(20); 
-  
         interval = setInterval(() => {
-          setProgress((prev) => (prev >= 90 ? prev : prev + 20)); 
-        }, 300);
-      } else if (progress > 0) {
+          setProgress((prev) => (prev >= 90 ? prev : prev + 15)); 
+        }, 700);
+      } else  {
         setProgress(100); 
       }
       console.log("1");
       return () => clearInterval(interval);
     }, [isLoading]);
     useEffect(() => {
-      if (progress == 100) {
-        setTimeout(() => (view.current.style.display = "none"), 300);
+      if (progress == 100 && !isLoading) {
+        setTimeout(() => (view.current.style.display = "none"), 2);
         console.log("2");
       }
     }, [progress]);
+    console.log(view.current,'iiiii')
     return (
       <div
         ref={view}

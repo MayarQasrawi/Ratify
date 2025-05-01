@@ -2,24 +2,32 @@ import React, { useRef, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { FaEye, FaTimes } from "react-icons/fa";
 import Header from "./shared/Header";
+import { useLocation } from "react-router-dom";
 
 export default function AssociatedSkills({ ref }) {
+  const location=useLocation();
   const [isAdding, setIsAdding] = useState(false);
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(()=>location?.state?location?.state.track.associatedSkills:[]);
   const [selected, setSelected] = useState(null);
   const [editSkill, setEditSkill] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [error, setError] = useState("");
   const addSkillRef = useRef();
   const addSkillDescRef = useRef();
-  ref.current =skills.length>0? skills.map((s) => ({
-    skill: s.skill,
-    description: s.description,
-  })):[];
+  if (location?.state) {
+    ref.current = skills;
+  } else {
+    ref.current = skills.length > 0
+      ? skills.map((s) => ({
+          skill: s.skill,
+          description: s.description,
+        }))
+      : [];
+  }
+  console.log(ref.current,'inside skill')
   const handleAddSkill = () => {
     const skillName = addSkillRef.current.value.trim();
     const skillDesc = addSkillDescRef.current.value.trim();
-
     if (!skillName || !skillDesc) {
       setError("Skill name and description fields are required.");
       return;
@@ -36,6 +44,7 @@ export default function AssociatedSkills({ ref }) {
   };
 
   const handleEditInit = (skillItem) => {
+    console.log(skillItem,'jjjj')
     setSelected(skillItem);
     setEditSkill(skillItem.skill);
     setEditDescription(skillItem.description);
@@ -50,7 +59,7 @@ export default function AssociatedSkills({ ref }) {
 
     setSkills(
       skills.map((s) =>
-        s.id === selected.id
+        s.id === selected?.id
           ? { ...s, skill: editSkill, description: editDescription }
           : s
       )
@@ -100,18 +109,18 @@ export default function AssociatedSkills({ ref }) {
           </button>
         </div>
       )}
-
+ {console.log(skills.length > 0 && !isAdding,'testhb')}
       {skills.length > 0 && !isAdding && (
         <ul className="mt-4 space-y-3">
-          {skills.map((skillItem) => (
+          {skills.map((skillItem,ind) => (
             <li
-              key={skillItem.id}
+              key={location?.state?ind:skillItem.id}
               className={`p-3 rounded-lg bg-white shadow ${
                 selected?.id !== skillItem.id && "hover:shadow-md transition"
               }`}
             >
               <div className="flex justify-between items-center">
-                {selected?.id === skillItem.id ? (
+                {!location?.state && selected?.id === skillItem.id ? (
                   <div className="w-full space-y-2">
                     <input
                       type="text"
@@ -142,16 +151,16 @@ export default function AssociatedSkills({ ref }) {
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <FaEye
+                   {!location?.state &&    <FaEye
                         onClick={() => handleEditInit(skillItem)}
                         className="cursor-pointer text-blue-500 hover:text-blue-700 transition"
-                      />
-                      <FaTimes
+                      />}
+                     {!location?.state &&  <FaTimes
                         onClick={() =>
                           setSkills(skills.filter((s) => s.id !== skillItem.id))
                         }
                         className="cursor-pointer text-red-500 hover:text-red-700 transition"
-                      />
+                      />}
                     </div>
                   </>
                 )}

@@ -1,94 +1,242 @@
-import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "../layouts/Dashboard";
-import AdminHome from "../pages/admin/AdminHome";
-import SeniorHome from "../pages/SeniorHome";
-import { AuthProvider } from "../contexts/AuthProvider";
-import ProtectedRoute from "./ProtectedRoute";
-import AdminTrack from "../pages/admin/track/Track";
-import Team from "../pages/admin/Team";
-import Login from "../components/view/Login";
-import RootLayout from "../layouts/RootLayout";
-import Home from "../pages/user/Home";
-import ExpertsPage from "../pages/user/ExpertsPage";
-import TrackPage from "../pages/user/TrackPage";
-import Register from "../components/view/Register";
-import ForgetPassword from "../pages/general/ForgetPassword";
-import MyTracksPage from "../pages/applicant/MyTracksPage";
-import TrackDetailsPage from "../pages/user/TrackDetailsPage";
-import UnAuthorized from "../pages/general/UnAuthorized";
-import NotFoundPage from "../pages/general/NotFoundPage";
-import ResetPassword from "../pages/general/ResetPassword";
-import TrackSetup from "../pages/admin/track/TrackSetup";
-import Applicants from "../components/admin/Applicants";
-import StudentRankingDashboard from "../components/StudentRankingDashboard "
-import ViewDetailes from "../pages/admin/ViewDetailes";
-import Deriver from "../components/applicant/dashboard/deriver";
+import React, { Suspense, lazy } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import { AuthProvider } from '../contexts/AuthProvider';
+import ProtectedRoute from './ProtectedRoute';
+import RootLayout from '../layouts/RootLayout';
+import Dashboard from '../layouts/Dashboard';
+import Home from '../pages/user/Home';
+import  ExpertsPage from '../pages/user/ExpertsPage';
+import TrackPage from '../pages/user/TrackPage';
+import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
+const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
+const Login = lazy(() => import('../components/view/Login'));
+const Register = lazy(() => import('../components/view/Register'));
+const ForgetPassword = lazy(() => import('../pages/general/ForgetPassword'));
+const ResetPassword = lazy(() => import('../pages/general/ResetPassword'));
+const UnAuthorized = lazy(() => import('../pages/general/UnAuthorized'));
+const NotFoundPage = lazy(() => import('../pages/general/NotFoundPage'));
+const AdminHome = lazy(() => import('../pages/admin/AdminHome'));
+const Team = lazy(() => import('../pages/admin/Team'));
+const AdminTrack = lazy(() => import('../pages/admin/track/Track'));
+const TrackSetup = lazy(() => import('../pages/admin/track/TrackSetup'));
+const TrackDetails = lazy(() => import('../pages/admin/track/TrackDetails'));
+const SeniorHome = lazy(() => import('../pages/seniorExaminer/SeniorHome'));
+const Plan = lazy(() => import('../pages/seniorExaminer/plan/Plan'));
+const PlanSetup = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanSetup'));
+const PlanStructure = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanStructure'));
+const EditCriteria = lazy(() => import('../pages/seniorExaminer/plan/definePlan/EditCriteria'));
+
+const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: (
       <AuthProvider>
         <RootLayout />
       </AuthProvider>
     ),
     children: [
-      { index: true, element: <Home /> },
-      { path: "our-tracks", element: <TrackPage /> },
-      { path: "our-experts", element: <ExpertsPage /> },
-      { path: "my-tracks", element: <MyTracksPage /> },
-      { path: "track-details/:id", element: <TrackDetailsPage /> },
-      // {path:"stages", element:<Stages/>}
+      {
+        index: true,
+        element: (
+            <Home />
+        ),
+      },
+      {
+        path: 'our-tracks',
+        element: (
+            <TrackPage />
+        ),
+      },
+      {
+        path: 'our-experts',
+        element: (
+            <ExpertsPage />
+        ),
+      },
+      {
+        path: 'my-tracks',
+        element: (
+          <Suspense fallback={null}>
+            <MyTracksPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'track-details/:id',
+        element: (
+            <TrackDetailsPage />
+        ),
+      },
     ],
   },
   {
-    path: "login",
-    element: <Login />,
+    path: 'login',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Login />
+      </Suspense>
+    ),
   },
-  { path: "signup", element: <Register /> },
-  { path: "forgetPassword", element: <ForgetPassword /> },
-  { path: "resetPassword", element: <ResetPassword /> },
-  { path: "unAuthorized", element: <UnAuthorized /> },
-  
-  
-  
-  {path:"/dashboard/applicants/", element:<Deriver />},
-  
   {
-    path: "/dashboard",
+    path: 'signup',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Register />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'forgetPassword',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <ForgetPassword />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'resetPassword',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <ResetPassword />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'unAuthorized',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <UnAuthorized />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/dashboard',
     element: (
       <AuthProvider>
         <Dashboard />
       </AuthProvider>
     ),
-
     children: [
       {
-        path: "admin",
-        // element: <ProtectedRoute allowRole="Admin" />,
+        path: 'admin',
+         element: <ProtectedRoute allowRole="Admin" />,
         children: [
-          { index: true, element: <AdminHome /> },
-          { path: "teams", element: <Team /> },
-          { path: "tracks", element: <AdminTrack /> },
-          { path: "tracks/setup", element: <TrackSetup /> },
-          { path: "applicants", element: <Applicants /> },
-          {path:"ViewDetailes/:id", element:<ViewDetailes/>}
+          {
+            index: true,
+            element: (
+              <Suspense fallback={null}>
+                <AdminHome />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'teams',
+            element: (
+              <Suspense fallback={null}>
+                <Team />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'tracks',
+            element: (
+              <Suspense fallback={null}>
+                <AdminTrack />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'tracks/setup',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <TrackSetup />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'track-details',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <TrackDetails />
+              </Suspense>
+            ),
+          },
         ],
       },
       {
-        path: "seniorExaminer",
+        path: 'seniorExaminer',
         // element: <ProtectedRoute allowRole="Examiner" />,
-        children: [{ index: true, element: <SeniorHome /> }],
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <SeniorHome />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'plan',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <Plan />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'plan-setup',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <PlanSetup />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'plan-structure',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <PlanStructure />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'edit-criteria',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <EditCriteria />
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
-        path: "examiner",
-        // element: <ProtectedRoute allowRole="seniorExaminer" />,
-        children: [{ index: true, element: <SeniorHome /> }],
+        path: 'examiner',
+        // element: <ProtectedRoute allowRole="Examiner" />, 
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <SeniorHome />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
   {
-    path: "*",
-    element: <NotFoundPage />,
+    path: '*',
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <NotFoundPage />
+      </Suspense>
+    ),
   },
 ]);
+
+
+
+
