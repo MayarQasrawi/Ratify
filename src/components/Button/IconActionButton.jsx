@@ -38,6 +38,11 @@ const IconActionButton = ({
       hover: 'hover:bg-purple-500/20',
       text: 'text-purple-600 dark:text-purple-400',
     },
+    yellow: {
+      bg: 'bg-yellow-500/10',
+      hover: 'hover:bg-yellow-500/20',
+      text: 'text-yellow-600 dark:text-yellow-400',
+    },
   };
 
   return (

@@ -9,7 +9,9 @@ const fetchTeamMembers = async ({ queryKey }) => {
      const response = await axiosInstance.get("/Examiners", {
        params: { pageNumber: page, pageSize: pageSize }
      });
+     console.log(response.data.data.data);
      return response.data;
+
    };
    
    function useGetExaminers({ currentPage, itemsPerPage }) {

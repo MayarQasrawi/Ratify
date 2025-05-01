@@ -20,8 +20,10 @@ import NotFoundPage from "../pages/general/NotFoundPage";
 import ResetPassword from "../pages/general/ResetPassword";
 import TrackSetup from "../pages/admin/track/TrackSetup";
 import Applicants from "../components/admin/Applicants";
-
+import StudentRankingDashboard from "../components/StudentRankingDashboard "
 import ViewDetailes from "../pages/admin/ViewDetailes";
+import Deriver from "../components/applicant/dashboard/deriver";
+
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -36,6 +38,7 @@ export const routes = createBrowserRouter([
       { path: "our-experts", element: <ExpertsPage /> },
       { path: "my-tracks", element: <MyTracksPage /> },
       { path: "track-details/:id", element: <TrackDetailsPage /> },
+      // {path:"stages", element:<Stages/>}
     ],
   },
   {
@@ -46,6 +49,11 @@ export const routes = createBrowserRouter([
   { path: "forgetPassword", element: <ForgetPassword /> },
   { path: "resetPassword", element: <ResetPassword /> },
   { path: "unAuthorized", element: <UnAuthorized /> },
+  
+  
+  
+  {path:"/dashboard/applicants/", element:<Deriver />},
+  
   {
     path: "/dashboard",
     element: (

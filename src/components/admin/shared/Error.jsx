@@ -1,36 +1,52 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { TbFaceIdError } from "react-icons/tb";
+import { IoWarningOutline } from 'react-icons/io5';
+import { TbReload } from 'react-icons/tb';
+import IconActionButton from '../../Button/IconActionButton';
 
-const Error = ({ message, className, iconSize = "w-24 h-24" }) => {
+const Error = ({
+  message = "Something went wrong",
+  title = "Error Occurred",
+  onRetry = null,
+  errorCode =null,
+ 
+}) => {
+
+
+
   return (
-    <div 
-      role="alert"
-      aria-live="assertive"
-      className={`flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800 ${className}`}
-    >
-      <TbFaceIdError className={`${iconSize} text-red-500 dark:text-red-300`} />
-      <div className="text-center space-y-1">
-        <strong className="text-lg font-semibold text-red-600 dark:text-red-300">
-          Error!
-        </strong>
-        <p className="text-sm text-red-500 dark:text-red-400">
+    <div className="flex flex-col items-center justify-center gap-y-1 w-full min-h-[200px] py-12 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg">
+        <div className={`text-blue-500 animate-bounce`}>
+          <IoWarningOutline size={48} />
+        </div>
+        
+        <div className="text-xl font-bold text-[var(--main-color)] text-center">
+          {title}
+        </div>
+        
+        <div className="text-sm text-gray-600 dark:text-gray-300 text-center">
           {message}
-        </p>
-      </div>
+        </div>
+        
+        {errorCode && (
+          <div className="text-xs text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-black/10 px-2 py-1 rounded">
+            Error Code: {errorCode}
+          </div>
+        )}
+        
+        {onRetry && (
+          <IconActionButton
+            onClick={onRetry}
+            color="gray"
+            Icon={TbReload}
+            label="Try Again"
+            className="mt-4"
+            ariaLabel="Retry"
+          />
+          
+        )}
+      
     </div>
   );
-};
-
-Error.propTypes = {
-  message: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  iconSize: PropTypes.string
-};
-
-Error.defaultProps = {
-  className: '',
-  iconSize: 'w-24 h-24'
 };
 
 export default Error;
