@@ -1,12 +1,62 @@
-# React + Vite
+# Ratify
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Ratify** is a modern **skills assessment platform** currently under active development, built using **React.js** and **Tailwind CSS**.  
+It enables users to showcase, validate, and manage their professional skills and credentials in a secure, streamlined way.
 
-Currently, two official plugins are available:
+This project is being developed as a **graduation project** to demonstrate full-stack application development, user experience design, and modern frontend technologies.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Technologies Used
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React.js** — Modern JavaScript library for building interactive UIs
+- **Tailwind CSS** — Utility-first CSS framework for rapid styling
+- **Vite** — Lightning-fast build tool for modern web projects
+- **React Router** — Declarative routing for React applications
+- *(More technologies may be added as development progresses)*
+
+
+
+## 📂 Project Structure
+
+```bash
+src/
+├── assets/          # Static assets (images, icons, etc.)
+├── components/      # Reusable UI components
+├── pages/           # Application pages and layouts
+├── hooks/           # Custom React hooks
+├── utils/           # Helper functions and utilities
+├── App.jsx          # Main application file
+├── main.jsx         # Entry point
+└── index.css        # Global Tailwind styles
+```
+
+
+
+## 📋 Features (Planned)
+
+- Skill verification and assessment tools
+- User authentication and role-based access
+- Personal profiles showcasing skills and certifications
+- Upload and manage credentials/certificates
+- Admin dashboard for managing users and assessments
+- Real-time skill scoring and analytics
+- Mobile-responsive, modern UI
+- Dark mode support
+
+## 📅 Project Status
+
+> **Status:** 🛠️ In Development  
+> Ratify is actively being built as a graduation project.  
+> Major features and designs are still evolving.
+
+
+
+## ✨ Screenshots
+
+*(Screenshots will be added soon as development progresses.)*
+
+
+
+
+
