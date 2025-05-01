@@ -8,7 +8,6 @@ import Home from '../pages/user/Home';
 import  ExpertsPage from '../pages/user/ExpertsPage';
 import TrackPage from '../pages/user/TrackPage';
 import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
-console.log('hh')
 const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
 const Login = lazy(() => import('../components/view/Login'));
 const Register = lazy(() => import('../components/view/Register'));
@@ -59,7 +58,7 @@ export const routes = createBrowserRouter([
       {
         path: 'my-tracks',
         element: (
-          <Suspense fallback={<LoadingFallback />}>
+          <Suspense fallback={null}>
             <MyTracksPage />
           </Suspense>
         ),
@@ -122,12 +121,12 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'admin',
-          // element: <ProtectedRoute allowRole="Admin" />,
+         element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
             index: true,
             element: (
-              <Suspense fallback={<LoadingFallback />}>
+              <Suspense fallback={null}>
                 <AdminHome />
               </Suspense>
             ),
@@ -135,7 +134,7 @@ export const routes = createBrowserRouter([
           {
             path: 'teams',
             element: (
-              <Suspense fallback={<LoadingFallback />}>
+              <Suspense fallback={null}>
                 <Team />
               </Suspense>
             ),
@@ -143,7 +142,7 @@ export const routes = createBrowserRouter([
           {
             path: 'tracks',
             element: (
-              <Suspense fallback={<LoadingFallback />}>
+              <Suspense fallback={null}>
                 <AdminTrack />
               </Suspense>
             ),
@@ -237,4 +236,7 @@ export const routes = createBrowserRouter([
     ),
   },
 ]);
+
+
+
 

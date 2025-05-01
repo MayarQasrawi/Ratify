@@ -5,10 +5,10 @@ import Button from "../../shared/Button";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 const experts = [
-  { name: "Abrar Arman", img: img ,role:"Frontend Engineer" },
-  { name: "Mayar Qasarwa", img: img,role:"Frontend Engineer"  },
-  { name: "Abrar Arman", img: img, role:"Frontend Engineer" },
-  { name: "Mayar Qasarwa", img: img, role:"Frontend Engineer" },
+  { fullName: "Abrar Arman", image: img ,role:"Frontend Engineer" },
+  { fullName: "Mayar Qasarwa", image: img,role:"Frontend Engineer"  },
+  { fullName: "Abrar Arman", image: img, role:"Frontend Engineer" },
+  { fullName: "Mayar Qasarwa", image: '', role:"Frontend Engineer" },
 ];
 export default function Experts() {
   const navigate=useNavigate()
@@ -19,7 +19,7 @@ export default function Experts() {
        <div className="flex flex-col gap-7 items-start"><Title first="Meet Our " last="Teams" />  <Button onClick={()=>navigate('/our-experts')}>Explore all Teams</Button></div> 
         <div className=" w-[70%] grid  sm:grid-cols-2 xl:grid-cols-4 gap-10">
           {experts.slice(0, 4).map((expert, ind) => (
-            <ExpertCard isLoading={isLoading} key={ind} img={expert.img} name={expert.name} role={expert.role} />
+            <ExpertCard isLoading={isLoading} key={ind} img={expert.image} name={expert.fullName} />
           ))}
         </div>
         <div className="lg:hidden flex gap-2 items-center text-[#3B82F6] text-[18px] md:text-2xl font-semibold cursor-pointer">

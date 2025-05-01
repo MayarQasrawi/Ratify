@@ -14,24 +14,20 @@ export default function Dashboard() {
   const { auth } = useAuthContext();
   const [showModal, setShowModal] = useState(false);
   const currentLocation = useLocation();
-
-  let role = "ex";
+  let role ='jjjjj';
   let id;
   let isExaminer = false;
-
   if (auth) {
     role = Extract(auth, "role");
     id = Extract(auth, "nameid");
     isExaminer = role === "Examiner";
   }
-
   const { data: examinerInfo, isLoading } = useFetchExaminerById(
     id,
     isExaminer
   );
   console.log(examinerInfo?.specialization, "test bbb");
   console.log(examinerInfo, "examiner info");
-
   useEffect(() => {
     if (!isLoading && isExaminer && examinerInfo) {
       const isInfoMissing = !examinerInfo.data.dateOfBirth;
@@ -39,7 +35,7 @@ export default function Dashboard() {
       setShowModal(isInfoMissing);
     }
   }, [examinerInfo, isLoading, isExaminer]);
-
+  
   if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />;
 
   if (

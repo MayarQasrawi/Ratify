@@ -109,8 +109,8 @@ export default function TrackSetup() {
           {/* <Select selectRef={selectRef} /> */}
         </div>
         <div className="w-[97%] sm:w-[70%] md:w-[60%] lg:w-[40%] flex flex-col gap-4">
-          {/* <UploadImage ref={imageRef} /> */}
-          {/* <AssociatedSkills ref={skillsRef} /> */}
+          <UploadImage ref={imageRef} />
+          <AssociatedSkills ref={skillsRef} />
         </div>
       </div>
     </section>

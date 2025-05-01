@@ -8,8 +8,8 @@ import EnrollmentModal from '../trackDetailsPage/shared/EnrollmentModal'
 function TracksCard({ header, description, img, id }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const { auth } = useAuthContext();
-
+  // const { auth } = useAuthContext();
+  let auth='hhh'
   return (
     <>
       {show && (
@@ -23,8 +23,9 @@ function TracksCard({ header, description, img, id }) {
           ) : (
             <EnrollmentModal
               title="&#128274; Login Required"
-              description="Please Signin First."
+              description="Please Login First."
               setShow={setShow}
+              trackId={id}
             />
           )}
         </Modal>

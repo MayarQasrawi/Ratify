@@ -3,61 +3,62 @@ import img from "../../../../assets/img/home/team.png";
 import ExpertCard from "./ExpertCard";
 import Search from "./Search";
 import { FaSadTear } from "react-icons/fa";
+import { MdClose} from "react-icons/md";
 const experts = [
   {
     id: 1,
     trackId: 1,
-    name: "Abrar Arman",
-    img: img,
+    fullName: "Abrar Arman",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 2,
     trackId: 1,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 3,
     trackId: 1,
-    name: "Abrar Arman",
-    img: img,
+    fullName: "Abrar Arman",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 4,
     trackId: 1,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 5,
     trackId: 2,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 6,
     trackId: 2,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 7,
     trackId: 2,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
   {
     id: 8,
     trackId: 3,
-    name: "Mayar Qasarwa",
-    img: img,
+    fullName: "Mayar Qasarwa",
+    image: img,
     Bio: "Expert in artificial intelligence with 10+ years of experience in machine learning and neural networks.",
   },
 ];
@@ -88,7 +89,7 @@ export default function Expert({ searchParams ,setSearchParams }) {
   }
   if (searchFilter) {
     expertsFilter = expertsFilter.filter(
-      (expert) => expert.name.toLowerCase().includes(searchFilter.toLowerCase())
+      (expert) => expert.fullName.toLowerCase().includes(searchFilter.toLowerCase())
     );
   }
   if(searchFilter && expertsFilter.length==0){
@@ -104,7 +105,7 @@ export default function Expert({ searchParams ,setSearchParams }) {
   return (
     <section>
       <Search  setsearchQuery={setsearchQuery} setSearchParams={setSearchParams} />
-      {searchQuery && <div onClick={()=>{setsearchQuery(''),setSearchParams('query',null)}} className="text-white mt-2 cursor-pointer bg-[#003F7D] w-fit px-6 rounded-full py-1 t text-center">{searchQuery}</div>}
+      {searchQuery && <div onClick={()=>{setsearchQuery(''),setSearchParams('query',null)}} className="text-white mt-2 cursor-pointer bg-[#003F7D] w-fit px-8 rounded-full py-1 t text-center flex items-center gap-1">{searchQuery}<MdClose className="hover:text-red-500 text-lg" /></div>}
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
         {expertsFilter.length>0 && expertsFilter.map((expert, index) => (
           <ExpertCard key={expert.id} expert={expert} index={index} />

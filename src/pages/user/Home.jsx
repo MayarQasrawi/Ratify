@@ -6,29 +6,22 @@ import Work from "../../components/user/homePage/works/Work";
 import Service from "../../components/user/homePage/service/Service";
 import Contact from "../../components/user/homePage/Contact";
 import BackToTop from "../../components/user/trackDetailsPage/shared/BackToTop";
-import useFetchAllExaminers from "../../hooks/examiner/useGetAllExaminer";
 
 export default function Home() {
-  const { data, isError ,error} = useFetchAllExaminers();
-  console.log(error,'get examiner')
-  console.log(data);
+ 
   return (
     <>
       <HeroSection />
-
       <div id="about">
         <Service />
       </div>
       <Work />
       <Tracks />
-
       <Achievements />
-
       <Experts />
       <div id="contact">
         <Contact />
       </div>
-
       <BackToTop />
     </>
   );

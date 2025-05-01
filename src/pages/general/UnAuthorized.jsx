@@ -1,8 +1,5 @@
 import { FaExclamationTriangle, FaLock } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-
 export default function UnAuthorized() {
-  const navigate = useNavigate();
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl overflow-hidden">
@@ -29,17 +26,6 @@ export default function UnAuthorized() {
           <p className="text-gray-600 mb-6 text-center">
             Please make sure you're logged in with the correct credentials .
           </p>
-
-          <div className="flex space-x-3">
-            <button
-              onClick={() => {
-                navigate("/");
-              }}
-              className="flex-1 bg-red-500 cursor-pointer hover:bg-red-600 text-white py-2 px-4 rounded-md font-medium transition duration-200"
-            >
-              Go To Home
-            </button>
-          </div>
         </div>
       </div>
     </div>

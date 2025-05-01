@@ -1,13 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import menue from "./Menue";
 import { useAuthContext } from "../../../contexts/AuthProvider";
 import Extract from "../../../utils/Extract";
 
 export default function Sidebar() {
   const { auth } = useAuthContext();
-  let role='SeniorExaminer'
+  let role='Admin'
   if(auth)
     role=Extract(auth ,'role')
+  // if (!auth || typeof auth !== "string") {
+  //   return <Navigate to="/login" />;
+  // }
   return (
     <ul className="flex flex-col mx-auto  sm:items-center lg:items-start ">
       {menue.map((menueItem, ind) => {
