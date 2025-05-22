@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axiosInstance from "../auth/utils/axiosInstance";
 
 
@@ -18,8 +18,9 @@ const fetchTeamMembers = async ({ queryKey }) => {
      return useQuery({
                queryKey: ["teamMembers", { page: currentPage, pageSize: itemsPerPage }],
                queryFn: fetchTeamMembers,
-               keepPreviousData: true,
-              
+               placeholderData: keepPreviousData,
+               staleTime: 1000 * 60 * 8,
+               retry:1
              });
      
    }

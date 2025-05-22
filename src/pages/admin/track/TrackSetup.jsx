@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
 import TrackInput from "../../../components/admin/track/TrackInput";
 import Select from "../../../components/admin/track/Select";
@@ -9,6 +8,8 @@ import Alert from "../../../components/shared/Alert";
 import useAddTrack from "../../../hooks/admin/tracks/useAddTrack";
 import Spinner from "../../../components/shared/Spinner";
 import useUpdateTrack from "../../../hooks/admin/tracks/useUpdateTrack";
+import { IoIosReturnLeft } from "react-icons/io";
+import Back from "../../../components/shared/dashboard/Back";
 
 export default function TrackSetup() {
   const navigate = useNavigate();
@@ -42,39 +43,35 @@ export default function TrackSetup() {
       titleRef.current == "" ||
       descriptionRef.current == "" ||
       objectivesRef.current == "" 
+    
      
-      
     ) {
       setShow(true);
       return;
     }
     const formData = new FormData();
-    console.log(selectRef.current,'manger');
     console.log(titleRef.current,'name');
     console.log(descriptionRef.current,'de');
     console.log(imageRef.current,'imgemmm');
-    console.log(skillsRef.current);
+    console.log(skillsRef.current,'list skill hhhhhh');
     formData.append('name', titleRef.current);
     formData.append('description', descriptionRef.current);
     formData.append('objectives', objectivesRef.current);
-    // formData.append('seniorExaminerID', selectRef.current);
-    // formData.append('image', selectRef.current);
+    formData.append('imageFile', imageRef.current);
+
     if(!location.state){
-      // formData.append('associatedSkills', 'html'); 
-      // formData.append('id', 0); 
-      // formData.append('isActive', true);
-      // formData.append('seniorExaminerID', '291fa418-9e0e-4fc5-b370-2c98d1409006');
-      // console.log(imageRef.current,'add track check image')
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(key, value);
-      // }
+       formData.append('seniorExaminerID',''
+  ); 
+   formData.append('associatedSkills',skillsRef.current
+  ); 
+   console.log('inside add track jjjjjjjjjjjjjjjjjjjjjjjjjjj')
+   console.log(skillsRef.current)
       addTrack(formData)
     }
    else{
     console.log(skillsRef.current.map(item=>({skill:item.skill,description:item.description})),'id')
-    const skill=skillsRef.current.map(item=>({skill:item.skill,description:item.description}))
-    formData.append('id',location.state.track.id);
-    formData.append('associatedSkills',skill);
+    const skill=skillsRef.current.map(item=>({name:item.skill,description:item.description}))
+    formData.append('associatedSkills',skill.map(s=>({name:s.name,description:s.description})));
     updateTrack(formData)
    }
 
@@ -86,13 +83,7 @@ export default function TrackSetup() {
     <section className="py-8 px-14">
       {showAlert && <Alert type="error" message="All fields requried . " />}
       <div className="flex flex-col items-start md:flex-row gap-y-4 md:justify-between md:items-center bg-transparent py-2">
-        <div
-          onClick={() => navigate("/dashboard/Admin/tracks")}
-          className="flex  items-center gap-2 text-lg font-medium text-gray-800 cursor-pointer hover:text-blue-600 transition-colors"
-        >
-          <AiOutlineArrowLeft className="text-xl" />
-          <span>Back to Tracks</span>
-        </div>
+         <Back text='Back To Tracks' onClick={() => navigate("/dashboard/Admin/tracks")}/>
         <button
           onClick={handleAddTrack}
           className="bg-blue-500 text-sm flex gap-1 cursor-pointer text-white font-medium px-6 py-2 rounded-md transition hover:bg-blue-600 active:scale-95"
@@ -106,7 +97,6 @@ export default function TrackSetup() {
           {trackField.map((field, ind) => (
             <TrackInput key={ind} field={field} ind={ind} ref={field.ref} />
           ))}
-          {/* <Select selectRef={selectRef} /> */}
         </div>
         <div className="w-[97%] sm:w-[70%] md:w-[60%] lg:w-[40%] flex flex-col gap-4">
           <UploadImage ref={imageRef} />

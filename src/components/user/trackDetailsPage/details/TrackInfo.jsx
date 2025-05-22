@@ -17,7 +17,7 @@ export default function TrackInfo({skill , description,stageType}) {
         <div>
         <Title>Target Skill</Title>
         <div className="mt-6 rounded-2xl border border-gray-200 px-4">
-          {skill.map((skill,ind)=><Accordion key={ind} skill={skill} ind={ind} />)}
+          {skill.map((skill,ind)=><Accordion key={ind} name={skill.name} ind={ind} description={skill.description} />)}
         </div>
         </div>
       </div>

@@ -1,37 +1,48 @@
-import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
-import { AuthProvider } from '../contexts/AuthProvider';
-import ProtectedRoute from './ProtectedRoute';
-import RootLayout from '../layouts/RootLayout';
-import Dashboard from '../layouts/Dashboard';
-import Home from '../pages/user/Home';
-import  ExpertsPage from '../pages/user/ExpertsPage';
-import TrackPage from '../pages/user/TrackPage';
-import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
-const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
-const Login = lazy(() => import('../components/view/Login'));
-const Register = lazy(() => import('../components/view/Register'));
-const ForgetPassword = lazy(() => import('../pages/general/ForgetPassword'));
-const ResetPassword = lazy(() => import('../pages/general/ResetPassword'));
-const UnAuthorized = lazy(() => import('../pages/general/UnAuthorized'));
-const NotFoundPage = lazy(() => import('../pages/general/NotFoundPage'));
-const AdminHome = lazy(() => import('../pages/admin/AdminHome'));
-const Team = lazy(() => import('../pages/admin/Team'));
-const AdminTrack = lazy(() => import('../pages/admin/track/Track'));
-const TrackSetup = lazy(() => import('../pages/admin/track/TrackSetup'));
-const TrackDetails = lazy(() => import('../pages/admin/track/TrackDetails'));
-const SeniorHome = lazy(() => import('../pages/seniorExaminer/SeniorHome'));
-const Plan = lazy(() => import('../pages/seniorExaminer/plan/Plan'));
-const PlanSetup = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanSetup'));
-const PlanStructure = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanStructure'));
-const EditCriteria = lazy(() => import('../pages/seniorExaminer/plan/definePlan/EditCriteria'));
-const Applicants=lazy(()=> import('../components/admin/Applicants'));
-
+import React, { Suspense, lazy } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import { AuthProvider } from "../contexts/AuthProvider";
+import ProtectedRoute from "./ProtectedRoute";
+import RootLayout from "../layouts/RootLayout";
+import Dashboard from "../layouts/Dashboard";
+import Home from "../pages/user/Home";
+import ExpertsPage from "../pages/user/ExpertsPage";
+import TrackPage from "../pages/user/TrackPage";
+import TrackDetailsPage from "../pages/user/TrackDetailsPage";
+const MyTracksPage = lazy(() => import("../pages/applicant/MyTracksPage"));
+const Login = lazy(() => import("../components/view/Login"));
+const Register = lazy(() => import("../components/view/Register"));
+const ForgetPassword = lazy(() => import("../pages/general/ForgetPassword"));
+const ResetPassword = lazy(() => import("../pages/general/ResetPassword"));
+const UnAuthorized = lazy(() => import("../pages/general/UnAuthorized"));
+const NotFoundPage = lazy(() => import("../pages/general/NotFoundPage"));
+const AdminHome = lazy(() => import("../pages/admin/AdminHome"));
+const Team = lazy(() => import("../pages/admin/Team"));
+const AdminTrack = lazy(() => import("../pages/admin/track/Track"));
+const TrackSetup = lazy(() => import("../pages/admin/track/TrackSetup"));
+const TrackDetails = lazy(() => import("../pages/admin/track/TrackDetails"));
+const SeniorHome = lazy(() => import("../pages/seniorExaminer/SeniorHome"));
+const Plan = lazy(() => import("../pages/seniorExaminer/plan/Plan"));
+const PlanSetup = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/PlanSetup")
+);
+const PlanStructure = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/PlanStructure")
+);
+const EditCriteria = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/EditCriteria")
+);
+const Applicants = lazy(() => import("../components/admin/Applicants"));
+ import TeamWorkload from 
+  "../pages/seniorExaminer/teams/TeamWorkload"
+;
+const Task = lazy(() => import("../pages/examiner/task/Task"));
+const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
+const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
 const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <AuthProvider>
         <RootLayout />
@@ -40,24 +51,18 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-            <Home />
-        ),
+        element: <Home />,
       },
       {
-        path: 'our-tracks',
-        element: (
-            <TrackPage />
-        ),
+        path: "our-tracks",
+        element: <TrackPage />,
       },
       {
-        path: 'our-experts',
-        element: (
-            <ExpertsPage />
-        ),
+        path: "our-experts",
+        element: <ExpertsPage />,
       },
       {
-        path: 'my-tracks',
+        path: "my-tracks",
         element: (
           <Suspense fallback={null}>
             <MyTracksPage />
@@ -65,15 +70,13 @@ export const routes = createBrowserRouter([
         ),
       },
       {
-        path: 'track-details/:id',
-        element: (
-            <TrackDetailsPage />
-        ),
+        path: "track-details/:id",
+        element: <TrackDetailsPage />,
       },
     ],
   },
   {
-    path: 'login',
+    path: "login",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Login />
@@ -81,7 +84,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'signup',
+    path: "signup",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Register />
@@ -89,7 +92,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'forgetPassword',
+    path: "forgetPassword",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <ForgetPassword />
@@ -97,7 +100,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'resetPassword',
+    path: "resetPassword",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <ResetPassword />
@@ -105,7 +108,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'unAuthorized',
+    path: "unAuthorized",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <UnAuthorized />
@@ -113,7 +116,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: '/dashboard',
+    path: "/dashboard",
     element: (
       <AuthProvider>
         <Dashboard />
@@ -121,8 +124,8 @@ export const routes = createBrowserRouter([
     ),
     children: [
       {
-        path: 'admin',
-         element: <ProtectedRoute allowRole="Admin" />,
+        path: "admin",
+        element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
             index: true,
@@ -133,15 +136,16 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'teams',
+            path: "teams",
             element: (
               <Suspense fallback={null}>
                 <Team />
               </Suspense>
             ),
           },
+
           {
-            path: 'applicants',
+            path: "applicants",
             element: (
               <Suspense fallback={null}>
                 <Applicants />
@@ -149,7 +153,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'tracks',
+            path: "tracks",
             element: (
               <Suspense fallback={null}>
                 <AdminTrack />
@@ -157,7 +161,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'tracks/setup',
+            path: "tracks/setup",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <TrackSetup />
@@ -165,7 +169,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'track-details',
+            path: "track-details",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <TrackDetails />
@@ -175,7 +179,7 @@ export const routes = createBrowserRouter([
         ],
       },
       {
-        path: 'seniorExaminer',
+        path: "seniorExaminer",
         // element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
@@ -187,7 +191,15 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan',
+            path: "workload-management",
+            element: (
+              // <Suspense fallback={<LoadingFallback />}>
+                <TeamWorkload />
+              // </Suspense>
+            ),
+          },
+          {
+            path: "plan",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <Plan />
@@ -195,7 +207,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan-setup',
+            path: "plan-setup",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <PlanSetup />
@@ -203,7 +215,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan-structure',
+            path: "plan-structure",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <PlanStructure />
@@ -211,18 +223,34 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'edit-criteria',
+            path: "edit-criteria",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <EditCriteria />
               </Suspense>
             ),
           },
+            {
+            path: "manage-task",
+            element: (
+              <Suspense fallback={null}>
+                <ManageTask />
+              </Suspense>
+            ),
+          },
+           {
+            path: "stage-tasks",
+            element: (
+              <Suspense fallback={null}>
+                <Task />
+              </Suspense>
+            ),
+          },
         ],
       },
       {
-        path: 'examiner',
-        // element: <ProtectedRoute allowRole="Examiner" />, 
+        path: "examiner",
+        // element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
             index: true,
@@ -232,12 +260,29 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: "stage-tasks",
+            element: (
+              <Suspense fallback={null}>
+                <Task />
+              </Suspense>
+            ),
+          },
+          {
+            path: "add-task",
+            element: (
+              <Suspense fallback={null}>
+                <CreateTask />
+              </Suspense>
+            ),
+          },
+         
         ],
       },
     ],
   },
   {
-    path: '*',
+    path: "*",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <NotFoundPage />
@@ -245,7 +290,3 @@ export const routes = createBrowserRouter([
     ),
   },
 ]);
-
-
-
-

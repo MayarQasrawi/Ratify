@@ -8,12 +8,40 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import useAddPlan from "../../../../hooks/seniorExaminer/plan/useAddPlan";
 import Spinner from "../../../../components/shared/Spinner";
-
+import Back from "../../../../components/shared/dashboard/Back";
+import { FiAlertCircle } from "react-icons/fi";
+const stageFields = [
+  { name: "daysToSubmit", label: "Days to Submit" },
+  { name: "description", label: "Description" },
+  { name: "requirements", label: "Requirements" },
+];
+const bookingFields = [
+  { name: "maxDaysToBook", label: "Max Days to Book" },
+  { name: "durationMinutes", label: "Duration (Minutes)" },
+  { name: "instructions", label: "Instructions", type: "textarea" },
+];
+const examFields = [
+  {
+    name: "difficulty",
+    label: "Difficulty",
+    options: ["Easy", "Medium", "Hard"],
+    multiple: false,
+  },
+  {
+    name: "questionsType",
+    label: "Questions Type",
+    options: ["MultipleChoice", "Essay", "Coding", "TrueFalse"],
+    multiple: true,
+  },
+  { name: "durationMinutes", label: "Duration (Minutes)" },
+];
 export default function PlanSetup() {
   const [levels, setLevels] = useState([]);
   const [isWeightValid, setIsWeightValid] = useState(null);
   const [activeLevelIndex, setActiveLevelIndex] = useState(-1);
   const [activeStageIndex, setActiveStageIndex] = useState(null);
+  const [selectedStage, setSelectedStage] = useState("Interview");
+  console.log(selectedStage, "stage inside plan ss");
   const navigate = useNavigate();
   const location = useLocation();
   const source = location.state?.source;
@@ -24,10 +52,10 @@ export default function PlanSetup() {
     mutate: addPlan,
     isError: isAddPlanError,
     isPending: isAddPlanPending,
-    isSuccess:isAddPlanSuccess
-   , error
+    isSuccess: isAddPlanSuccess,
+    error,
   } = useAddPlan();
-  console.log(error)
+  console.log(error);
   console.log(location.state.length);
   useEffect(() => {
     if (isWeightValid) setTimeout(() => setIsWeightValid(null), 1500);
@@ -51,7 +79,27 @@ export default function PlanSetup() {
     reset: resetCriterionForm,
     formState: { errors: criterionErrors },
   } = useForm();
-
+  const {
+    register: handleExamInfo,
+    formState: { errors: examInfoErrors },
+    trigger: triggerExam,
+    getValues: getExamValues,
+    reset: resetExamInfo,
+  } = useForm();
+  const {
+    register: handleTaskInfo,
+    formState: { errors: TaskInfoErrors },
+    trigger: triggerTask,
+    getValues: getTaskValues,
+    reset: resetTaskInfo,
+  } = useForm();
+  const {
+    register: handleInterviewInfo,
+    formState: { errors: interviewInfoErrors },
+    trigger: triggerInterview,
+    getValues: getInterviewValues,
+    reset: resetInterviewInfo,
+  } = useForm();
   const getNextLevelOrder = () => {
     if (levels.length === 0) return 1;
     return Math.max(...levels.map((level) => level.order)) + 1;
@@ -64,7 +112,7 @@ export default function PlanSetup() {
   };
 
   const handleLevelSubmit = (data) => {
-    console.log(data,'add level');
+    console.log(data, "add level");
     const newLevel = {
       ...data,
       order: source == "add" ? location.state.length + 1 : getNextLevelOrder(),
@@ -76,10 +124,42 @@ export default function PlanSetup() {
     setFormState("stage");
   };
 
-  const handleStageSubmit = (data) => {
+  const handleStageSubmit = async (data) => {
+    console.log("hi");
+    console.log(data, "stage data inside with info", selectedStage);
+    let valid = false;
+    switch (selectedStage) {
+      case "Exam":
+        valid = await triggerExam(examFields.map((f) => f.name));
+        break;
+      case "Task":
+        valid = await triggerTask(stageFields.map((f) => f.name));
+        break;
+      case "Interview":
+        valid = await triggerInterview(bookingFields.map((f) => f.name));
+        break;
+    }
+    console.log(valid, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    if (!valid) {
+      return;
+    }
+    const extraInfo =
+      selectedStage == "Interview"
+        ? {
+            interview: { ...getInterviewValues(),stageId:0 },
+            exam: null,
+            tasksPool: null,
+          }
+        : selectedStage == "Task"
+        ? { tasksPool: { ...getTaskValues(),id:0,stageId:0,isActive:true}, exam: null, interview: null }
+        : { exam: { ...getExamValues(),id:0,stageId:0,isActive:true }, tasksPool: null, interview: null };
+    console.log(extraInfo);
     if (source == "add-stage") {
-      setLevels([...levels, { ...data, order: location.state.length+1 ,  evaluationCriteria: [] }]);
-      console.log([...levels, { ...data,  evaluationCriteria: [] }]);
+      setLevels([
+        ...levels,
+        { ...data, order: location.state.length + 1, evaluationCriteria: [], ...extraInfo },
+      ]);
+      console.log([...levels, { ...data, evaluationCriteria: [] }]);
       setFormState("criterion");
       setActiveStageIndex(0);
       return;
@@ -89,6 +169,7 @@ export default function PlanSetup() {
       ...data,
       passingScore: Number(data.passingScore),
       evaluationCriteria: [],
+      ...extraInfo,
       order:
         source == "add-stage"
           ? location.state.length + 1
@@ -108,11 +189,14 @@ export default function PlanSetup() {
     const newStageIndex = levels[activeLevelIndex]?.stages.length || 0;
     setActiveStageIndex(newStageIndex);
     resetStageForm();
+    resetInterviewInfo();
+    resetTaskInfo();
+    resetExamInfo();
     setFormState("criterion");
   };
 
   const handleCriterionSubmit = (data) => {
-    console.log(data,'add criteria')
+    console.log(data, "add criteria");
     const criteria =
       source != "add-stage"
         ? levels[activeLevelIndex].stages[activeStageIndex].evaluationCriteria
@@ -137,7 +221,12 @@ export default function PlanSetup() {
           [{ ...levels[0], criteria: [...levels[0].evaluationCriteria, data] }],
           "test66"
         );
-        setLevels([{ ...levels[0], evaluationCriteria: [...levels[0].evaluationCriteria, data] }]);
+        setLevels([
+          {
+            ...levels[0],
+            evaluationCriteria: [...levels[0].evaluationCriteria, data],
+          },
+        ]);
         resetCriterionForm();
         return;
       }
@@ -159,7 +248,6 @@ export default function PlanSetup() {
       resetCriterionForm();
     }
   };
-
   const addAnotherStage = () => {
     setFormState("stage");
     resetStageForm();
@@ -175,7 +263,10 @@ export default function PlanSetup() {
         ? levels[activeLevelIndex]?.stages[activeStageIndex]
         : levels[activeStageIndex];
     if (currentStage.length == 0) return 0;
-    return currentStage. evaluationCriteria.reduce((sum, crit) => sum + crit.weight, 0);
+    return currentStage.evaluationCriteria.reduce(
+      (sum, crit) => sum + crit.weight,
+      0
+    );
   };
   const activeStageHasCriteria = () => {
     const currentStage =
@@ -186,10 +277,17 @@ export default function PlanSetup() {
   };
   const savePlan = () => {
     console.log("Saving plan:", levels);
-    console.log("Saving plan2:", {trackId:3,trackName:'Backend Development',levels:[...levels]});
-
+    console.log("Saving plan2:", {
+      trackId: 1,
+      trackName: "Backend Development",
+      levels: [...levels],
+    });
     if (source == "add" || source == "define") {
-      addPlan({trackId:3,trackName:'Backend Development',levels:[...levels]})
+      addPlan({
+        trackId: 1,
+        trackName: "Backend Development",
+        levels: [...levels],
+      });
     } else if (source == "add-stage") {
       console.log("add stage");
       console.log("add stage", location.state.level.id);
@@ -202,12 +300,11 @@ export default function PlanSetup() {
         return (
           <>
             {activeLevelIndex == -1 && (
-              <div
-                onClick={() => navigate("/dashboard/seniorExaminer/plan")}
-                className=" cursor-pointer flex px-6 pt-5 items-center gap-2.5 text-[20px]  font-medium text-blue-500 hover:text-blue-600 transition-colors"
-              >
-                <AiOutlineArrowLeft className="text-xl" />
-                <span>Back to Plan</span>
+              <div className="p-5">
+                <Back
+                  text="Back to Plan"
+                  onClick={() => navigate("/dashboard/seniorExaminer/plan")}
+                />
               </div>
             )}
             <div className="flex items-center min-h-[70vh]">
@@ -231,13 +328,16 @@ export default function PlanSetup() {
                       {...registerLevel("name", {
                         required: "Level name is required",
                       })}
-                      className='w-full px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-sm '
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-sm "
                       placeholder="Enter level name"
                     />
                     {levelErrors.name && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {levelErrors.name.message}
-                      </p>
+                      <div className="flex items-center gap-1 text-red-500 m-0 p-0">
+                        <FiAlertCircle className="w-4 h-4" />
+                        <p className=" text-sm mt-1">
+                          {levelErrors.name.message}
+                        </p>
+                      </div>
                     )}
                   </div>
                   <div>
@@ -253,9 +353,12 @@ export default function PlanSetup() {
                       rows={4}
                     />
                     {levelErrors.description && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {levelErrors.description.message}
-                      </p>
+                      <div className="flex items-center gap-1 text-red-500 m-0 p-0">
+                        <FiAlertCircle className="w-4 h-4" />
+                        <p className="text-red-500 text-sm mt-1">
+                          {levelErrors.description.message}
+                        </p>
+                      </div>
                     )}
                   </div>
                   <Button>
@@ -272,10 +375,10 @@ export default function PlanSetup() {
           <div className="px-12 py-3 w-full ">
             <div className="mb-6 flex items-center">
               <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-lg text-sm">
-                Level{" "}{source !="add-stage" ?' ': ':'}
+                Level {source != "add-stage" ? " " : ":"}
                 {source == "add-stage"
-                  ? `${location.state.level.order}`
-                  : `${levels[activeLevelIndex].order} : ` }{" "}
+                  ? `${location.state.level.order}`:source=='add'?`${location.state.length}: `
+                  : `${levels[activeLevelIndex].order} : `}{" "}
                 {source != "add-stage" && levels[activeLevelIndex]?.name}
               </div>
               {source != "add-stage" &&
@@ -290,97 +393,234 @@ export default function PlanSetup() {
                 )}
             </div>
             {source != "add-stage" && (
-              <h2 className="text-[20px] md:text-2xl font-bold text-gray-800 mb-6">
-                Add Stage {getNextStageOrder(activeLevelIndex)}
-              </h2>
+             <h2 className="text-[20px] md:text-[26px] font-bold text-gray-800 mb-6">
+     <span className="text-blue-600">Add Stage {getNextStageOrder(activeLevelIndex)}</span>
+         </h2>
             )}
             <form
               onSubmit={handleSubmitStage(handleStageSubmit)}
-              className="space-y-6"
-            >  <div>
-            <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
-              Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              {...registerStage("name", {
-                required: "stage name is required",
-              })}
-              className="w-[100%] sm:w-[75%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
-              placeholder="Enter stage name"
-            />
-            {stageErrors.name && (
-              <p className="text-red-500 text-sm mt-1">
-                {stageErrors.name.message}
-              </p>
-            )}
-          </div>
-              <div>
-                <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
-                  Stage Type <span className="text-red-500">*</span>
-                </label>
-                <select
-                  {...registerStage("type", {
-                    required: "Stage type is required",
-                  })}
-                  className="w-[100%] sm:w-[75%] h-12 px-4 border border-gray-300 rounded-lg outline-none"
-                >
-                  <option value="Interview">Interview</option>
-                  <option value="Task">Task</option>
-                  <option value="Exam">Exam</option>
-                </select>
-                {stageErrors.type && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {stageErrors.type.message}
-                  </p>
-                )}
+              className=" grid grid-cols-2 gap-8"
+            >
+              <div className="space-y-6 ">
+                  <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
+                    name <span className="text-red-500">*</span>
+                  </label>
+                 <input
+                    type="text"
+                    {...registerStage("name", {
+                      required: "Passing score is required",
+          
+                    })}
+                    className="w-full sm:w-[90%]  h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                  />
+                <div>
+                  <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
+                    Stage Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    {...registerStage("type", {
+                      required: "Stage type is required",
+                    })}
+                    onChange={(e) => setSelectedStage(e.target.value)}
+                    className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none"
+                  >
+                    <option value="Interview">Interview</option>
+                    <option value="Task">Task</option>
+                    <option value="Exam">Exam</option>
+                  </select>
+                  {stageErrors.type && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {stageErrors.type.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
+                    Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    {...registerStage("description", {
+                      required: "Stage description is required",
+                    })}
+                    className="w-full sm:w-[90%] px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                    placeholder="Enter stage description"
+                    rows={4}
+                  />
+                  {stageErrors.description && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {stageErrors.description.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
+                    Passing Score <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    {...registerStage("passingScore", {
+                      required: "Passing score is required",
+                      max: {
+                        value: 100,
+                        message: "Number must be 100 or less",
+                      },
+                      valueAsNumber: true,
+                    })}
+                    className="w-full sm:w-[90%]  h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                    placeholder="Enter passing score"
+                  />
+                  {stageErrors.passingScore && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {stageErrors.passingScore.message}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-8">
+                <Button>
+                  <BsArrowRight size={18} className="mr-2" /> Continue to Add
+                  Criteria
+                </Button>
+                </div>
               </div>
-              <div>
-                <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
-                  Description <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  {...registerStage("description", {
-                    required: "Stage description is required",
-                  })}
-                  className="w-[100%] sm:w-[75%] px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
-                  placeholder="Enter stage description"
-                  rows={4}
-                />
-                {stageErrors.description && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {stageErrors.description.message}
-                  </p>
-                )}
+              <div className="space-y-6 ">
+                <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
+                          No Of Attempts <span className="text-red-500">*</span>
+                      </label>
+                      <input type="number"
+                            {...registerStage('noOfAttempts', {
+                              required: `${'No Of Attempts'} is required`,
+                              valueAsNumber: true,
+                            })}
+                            max={3}
+                            min={1}
+                            className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter No Of Attempts`}
+                          />
+                {selectedStage == "Task"
+                  ? stageFields.map((field) => (
+                      <div key={field.name} className="mb-4">
+                        <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
+                          {field.label} <span className="text-red-500">*</span>
+                        </label>
+
+                        {field.name === "description" ||
+                        field.name === "requirements" ? (
+                          <textarea
+                            {...handleTaskInfo(field.name, {
+                              required: `${field.label} is required`,
+                            })}
+                            className="w-full sm:w-[90%] px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            rows={4}
+                          />
+                        ) : (
+                          <input
+                            type="number"
+                            {...handleTaskInfo(field.name, {
+                              required: `${field.label} is required`,
+                              valueAsNumber: true,
+                            })}
+                            className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                        )}
+
+                        {TaskInfoErrors[field.name] && (
+                          <div className="flex items-center gap-1 text-red-500 m-0 p-0">
+                            <FiAlertCircle className="w-4 h-4" />
+                            <p className=" text-sm mt-1">
+                              {TaskInfoErrors[field.name].message}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  : selectedStage == "Interview"
+                  ? bookingFields.map((field) => (
+                      <div key={field.name} className="mb-4">
+                        <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
+                          {field.label} <span className="text-red-500">*</span>
+                        </label>
+                        {field.type === "textarea" ? (
+                          <textarea
+                            {...handleInterviewInfo(field.name, {
+                              required: `${field.label} is required`,
+                            })}
+                            className="w-full sm:w-[90%] px-4 py-3 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            rows={4}
+                          />
+                        ) : (
+                          <input
+                            type="number"
+                            {...handleInterviewInfo(field.name, {
+                              required: `${field.label} is required`,
+                              valueAsNumber: true,
+                            })}
+                            className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                        )}
+
+                        {interviewInfoErrors[field.name] && (
+                          <div className="flex items-center m-0 p-0 gap-1 text-red-500 ">
+                            <FiAlertCircle className="w-4 h-4" />
+                            <p className=" text-sm mt-1">
+                              {interviewInfoErrors[field.name].message}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  : examFields.map((field) => (
+                      <div key={field.name} className="mb-4">
+                        <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
+                          {field.label} <span className="text-red-500">*</span>
+                        </label>
+                        {field.name == "durationMinutes" && (
+                          <input
+                            type="number"
+                            {...handleExamInfo(field.name, {
+                              required: `${field.label} is required`,
+                              valueAsNumber: true,
+                            })}
+                            className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                        )}
+                        {field.name != "durationMinutes" && (
+                          <select
+                            {...handleExamInfo(field.name, {
+                              required: `${field.label} is required`,
+                            })}
+                            multiple={field.multiple}
+                            className="w-full sm:w-[90%] h-20 px-4 border border-gray-300 rounded-lg outline-none text-sm"
+                          >
+                            {!field.multiple && (
+                              <option value="" hidden>
+                                Select {field.label.toLowerCase()}
+                              </option>
+                            )}
+                            {field.options.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+                        {examInfoErrors[field.name] && (
+                          <div className="flex items-center gap-1 text-red-500 m-0 p-0">
+                            <FiAlertCircle className="w-4 h-4" />
+                            <p className=" text-sm mt-1">
+                              {examInfoErrors[field.name].message}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
               </div>
-              <div>
-                <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
-                  Passing Score <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  min={0}
-                  {...registerStage("passingScore", {
-                    required: "Passing score is required",
-                    max: {
-                      value: 100,
-                      message: "Number must be 100 or less",
-                    },
-                    valueAsNumber: true,
-                  })}
-                  className="w-[100%] sm:w-[75%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
-                  placeholder="Enter passing score"
-                />
-                {stageErrors.passingScore && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {stageErrors.passingScore.message}
-                  </p>
-                )}
-              </div>
-              <Button>
-                <BsArrowRight size={18} className="mr-2" /> Continue to Add
-                Criteria
-              </Button>
+            
             </form>
           </div>
         );
@@ -439,7 +679,11 @@ export default function PlanSetup() {
                 }`}
                 disabled={!hasCriteria || !weightIs100}
               >
-               {isAddPlanPending ?<Spinner /> :<BiPlusCircle className="mr-2" />}{" "}
+                {isAddPlanPending ? (
+                  <Spinner />
+                ) : (
+                  <BiPlusCircle className="mr-2" />
+                )}{" "}
                 {source == "add" && "Add Level"}
                 {source == "add-stage" && "Add Stage"}
                 {source == "define" && "Publish Plan"}
@@ -482,7 +726,7 @@ export default function PlanSetup() {
                     Level{" "}
                     {source == "add-stage"
                       ? location.state.level.order
-                      : levels[activeLevelIndex].order}
+                      :source=='add' ?location.state.length :levels[activeLevelIndex].order}
                     {source != "add-stage" && ":"}{" "}
                     {source !== "add-stage" && levels[activeLevelIndex].name}
                   </div>
@@ -586,7 +830,6 @@ export default function PlanSetup() {
                     </p>
                   )}
                 </div>
-
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Weight <span className="text-red-500">*</span>
@@ -619,7 +862,7 @@ export default function PlanSetup() {
                     className="px-5 py-2 cursor-pointer text-white text-sm rounded-md bg-blue-500 flex items-center justify-center"
                   >
                     <BiPlusCircle size={18} className="mr-2" /> Add This
-                    Criterion
+                    Criteria
                   </button>
                 </div>
               </form>
@@ -634,8 +877,8 @@ export default function PlanSetup() {
 
   return (
     <>
-      {isAddPlanSuccess && <Alert message='Plan Add Successfully ' />}
-      {isAddPlanError && <Alert type="error" message='Request Fail' />}
+      {isAddPlanSuccess && <Alert message="Plan Add Successfully " />}
+      {isAddPlanError && <Alert type="error" message="Request Fail" />}
       {isWeightValid && <Alert type="error" message={isWeightValid} />}
       <main className={`mx-auto container `}>{renderForm()}</main>
     </>

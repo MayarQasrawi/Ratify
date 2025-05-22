@@ -10,5 +10,5 @@ async function getAllTraks() {
   return data;
 }
 export default function useGetAllTraks() {
-  return useQuery({ queryKey: ["tracks"], queryFn: getAllTraks, retry: false });
+  return useQuery({ queryKey: ["tracks"], queryFn: getAllTraks, retry: false ,staleTime: 1000 * 60 * 8, });
 }

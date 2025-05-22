@@ -9,12 +9,13 @@ import {
   HiOutlineCheckCircle,
   HiOutlinePlusCircle,
   HiOutlineCog,
-  HiUsers 
+  HiUsers,
+  HiPlusCircle 
 } from "react-icons/hi";
-import { MdOutlineHome } from "react-icons/md";
-import { MdHome } from "react-icons/md";
+import { MdHome, MdWork } from "react-icons/md";
 import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
-import { MdOutlineDashboardCustomize,MdDashboardCustomize } from "react-icons/md";
+import { MdOutlineDashboardCustomize,MdDashboardCustomize ,MdOutlineHome, MdWorkOutline} from "react-icons/md";
+import { FaRegListAlt } from "react-icons/fa";
 
 const menue = [
   {
@@ -45,16 +46,18 @@ const menue = [
     link: "tracks",
     visible: ["Admin"],
   },
-  {
+   {
     title: "Mange Plan",
-    icon: <HiOutlineUserGroup />,
+    icon: <FaRegListAlt />,
+    active:<FaRegListAlt />,
     link: "plan",
     visible: ["SeniorExaminer"],
   },
   {
-    title: "Examiners",
-    icon: <HiOutlineUsers />,
-    link: "examiners",
+    title: "Manage Workload",
+    icon: <MdWorkOutline />,
+    link: "workload-management",
+    active:<MdWork />,
     visible: ["SeniorExaminer"],
   },
   {
@@ -72,7 +75,7 @@ const menue = [
   {
     title: "Task Repo",
     icon: <HiOutlineFolder className="w-4"/>,
-    link: "tasks",
+    link: "stage-tasks",
     visible: ["SeniorExaminer"],
   },
   {
@@ -84,7 +87,8 @@ const menue = [
   {
     title: "Add Task",
     icon: <HiOutlinePlusCircle />,
-    link: "tasks",
+    link: "stage-tasks",
+    active:<HiPlusCircle  />,
     visible: ["Examiner"],
   },
   {

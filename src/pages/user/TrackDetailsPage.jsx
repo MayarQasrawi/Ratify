@@ -34,10 +34,10 @@ function countStageTypes(plan) {
 }
 
 const associatedSkills = [
-  { skill: "HTML", description: "jgggggggggggggg" },
-  { skill: "Css", description: "jgggggggggggggg" },
-  { skill: "HTML", description: "jgggggggggggggg" },
-  { skill: "CSS", description: "jgggggggggggggg" },
+  { name: "HTML", description: "jgggggggggggggg" },
+  { name: "Css", description: "jgggggggggggggg" },
+  { name: "HTML", description: "jgggggggggggggg" },
+  { name: "CSS", description: "jgggggggggggggg" },
 ];
 const initialPlan = {
   levels:[{

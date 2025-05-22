@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import axiosInstance from "../auth/utils/axiosInstance";
+import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function updatePlan({ endpoint, payload }) {
-  const { data } = await axiosInstance.post(endpoint, payload);
+  console.log('iside update end point',endpoint,payload)
+  const { data } = await axiosInstance.put(endpoint, payload);
   return data;
 }
 

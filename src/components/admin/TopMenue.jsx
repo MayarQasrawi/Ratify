@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { MdOutlineSettings, MdPassword } from "react-icons/md";
+import {
+  MdEdit,
+  MdEmail,
+  MdOutlineSettings,
+  MdPassword,
+  MdPhotoCamera,
+} from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { PiMoonBold } from "react-icons/pi";
 import { useTheme } from "../../contexts/ThemeProvider";
@@ -8,20 +14,35 @@ import { useAuthContext } from "../../contexts/AuthProvider";
 import { HiOutlineLogout } from "react-icons/hi";
 import Modal from "../shared/modal/Modal";
 import PasswordChangeModal from "../shared/modal/PasswordChangeModal";
+import Extract from "../../utils/Extract";
+import EmailChangeModal from "../shared/modal/EmailChangeModal";
+import ExaminerInfoModal from "../allExaminer/ExaminerInfoModal";
 function TopMenue() {
-  const { logout } = useAuthContext();
+  const { logout, auth } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [viewModal, setViewModal] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(null);
   const { darkMode, toggleDarkMode } = useTheme();
-
+  let role = "Sen";
+  if (auth) role = Extract(auth, "role");
   return (
     <>
-      {viewModal && (
+      {selectedModel == "Password" && (
         <Modal>
           <PasswordChangeModal
-            setShowPasswordModal={() => setViewModal(false)}
+            setShowPasswordModal={() => setSelectedModel(null)}
           />
         </Modal>
+      )}
+      {selectedModel == "Email" && (
+        <Modal>
+          <EmailChangeModal setShowEmailModal={() => setSelectedModel(null)} />
+        </Modal>
+      )}
+      {selectedModel == "UpdateImage" && (
+        <ExaminerInfoModal  setShowModal={()=>setSelectedModel(null)} isUpdate={true} updateImage={true}/>
+      )}
+      {selectedModel == "UpdateInfo" && (
+        <ExaminerInfoModal  setShowModal={()=>setSelectedModel(null)} isUpdate={true} />
       )}
       <nav className="flex flex-row-reverse gap-3 mb-5 ">
         <div className="relative   ">
@@ -36,27 +57,69 @@ function TopMenue() {
             </span>
           </button>
           {isOpen && (
-            <div className="absolute right-0 px-2 mt-.5 w-48 bg-white text-sm font-medium text-gray-800 rounded-md shadow-lg py-1 z-10 border border-gray-200">
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setViewModal(true);
-                }}
-                className="flex w-full py-1 gap-1.5  cursor-pointer mb-1 items-center hover:bg-gray-100"
-              >
-                <MdPassword className="w-5 h-5 pl-.5 " /> Change Password
-              </button>
-              <button
-                className="flex cursor-pointer py-1  items-center gap-1.5 w-full   hover:bg-gray-100"
-                onClick={() => logout()}
-              >
-                <HiOutlineLogout className="w-5 h-5 pl-.5" />
-                <span className="text-[15px]">Logout</span>
-              </button>
+            <div
+              className="absolute right-2 mt-2 w-56 bg-[var(--sidebar-bg)]  text-sm font-medium text-gray-700 rounded-lg shadow-xl z-50 border border-gray-200 dark:border-gray-700 overflow-hidden"
+            >
+              <div className="space-y-1">
+                {role !== "Admin" && (
+                  <>
+                    <div className="px-3 pt-3 pb-2 text-xs uppercase tracking-widest text-gray-500">
+                      Profile
+                    </div>
+                    <button
+                      onClick={() => {setIsOpen(false);setSelectedModel('UpdateInfo')}}
+                      className="flex w-full hover:text-[var(--main-color)] text-[var(--text-color)] cursor-pointer items-center px-3 py-2 gap-2 focus:outline-none transition-colors "
+                    >
+                      <MdEdit className="w-5 h-5" />
+                      <span>Update Info</span>
+                    </button>
+                    <button
+                      onClick={() => {setIsOpen(false);setSelectedModel('UpdateImage')}}
+                      className="flex w-full cursor-pointer text-[var(--text-color)] items-center px-3 py-2 gap-2 hover:text-[var(--main-color)] focus:outline-none transition-colors"
+                    >
+                      <MdPhotoCamera className="w-5 h-5" />
+                      <span>Update Image</span>
+                    </button>
+                    <div className="border-t border-gray-200 dark:border-gray-700"></div>
+                    <div className="px-3 pt-2 pb-1 text-xs uppercase tracking-widest text-gray-500">
+                      Security
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsOpen(false);
+                        setSelectedModel("Email");
+                      }}
+                      className="flex w-full cursor-pointer text-[var(--text-color)] items-center px-3 py-2 gap-2 hover:text-[var(--main-color)] focus:outline-none transition-colors"
+                    >
+                      <MdEmail className="w-5 h-5" />
+                      <span>Change Email</span>
+                    </button>
+                  </>
+                )}
+
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    setSelectedModel("Password");
+                  }}
+                  className="flex w-full text-[var(--text-color)] cursor-pointer items-center px-3 py-2 gap-2 hover:text-[var(--main-color)] focus:outline-none transition-colors"
+                >
+                  <MdPassword className="w-5 h-5" />
+                  <span>Change Password</span>
+                </button>
+
+                <div className="border-t border-gray-200 dark:border-gray-700"></div>
+                <button
+                  onClick={logout}
+                  className="flex w-full cursor-pointer items-center px-3 py-2 gap-2 text-[var(--text-color)] hover:text-[var(--main-color)] focus:outline-none transition-colors"
+                >
+                  <HiOutlineLogout className="w-5 h-5" />
+                  <span className="">Logout</span>
+                </button>
+              </div>
             </div>
           )}
         </div>
-
         {/* User Page Button */}
         <button
           className="flex items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
@@ -69,7 +132,6 @@ function TopMenue() {
             <FaRegUser />
           </span>
         </button>
-
         {/* Dark Mode Toggle Button */}
         <button
           className="flex items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"

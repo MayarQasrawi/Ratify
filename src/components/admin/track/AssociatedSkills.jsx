@@ -19,12 +19,11 @@ export default function AssociatedSkills({ ref }) {
   } else {
     ref.current = skills.length > 0
       ? skills.map((s) => ({
-          skill: s.skill,
+          name: s.name,
           description: s.description,
         }))
       : [];
   }
-  console.log(ref.current,'inside skill')
   const handleAddSkill = () => {
     const skillName = addSkillRef.current.value.trim();
     const skillDesc = addSkillDescRef.current.value.trim();
@@ -33,10 +32,9 @@ export default function AssociatedSkills({ ref }) {
       return;
     }
     setError("");
-
     const newSkill = {
       id: skills.length + 1,
-      skill: skillName,
+      name: skillName,
       description: skillDesc,
     };
     setSkills([...skills, newSkill]);
@@ -46,7 +44,7 @@ export default function AssociatedSkills({ ref }) {
   const handleEditInit = (skillItem) => {
     console.log(skillItem,'jjjj')
     setSelected(skillItem);
-    setEditSkill(skillItem.skill);
+    setEditSkill(skillItem.name);
     setEditDescription(skillItem.description);
   };
 
@@ -60,14 +58,13 @@ export default function AssociatedSkills({ ref }) {
     setSkills(
       skills.map((s) =>
         s.id === selected?.id
-          ? { ...s, skill: editSkill, description: editDescription }
+          ? { ...s, name: editSkill, description: editDescription }
           : s
       )
     );
     setSelected(null);
   };
-  console.log(skills);
-  console.log(ref);
+  console.log(skills,'inside skilli',ref);
   return (
     <div className="bg-[var(--sidebar-icon-bg)] rounded-lg p-4 text-gray-900 font-medium">
       <div className="flex justify-between items-center mb-3">
@@ -147,7 +144,7 @@ export default function AssociatedSkills({ ref }) {
                   <>
                     <div>
                       <p className="text-gray-900 font-bold">
-                        {skillItem.skill}
+                        {skillItem.name}
                       </p>
                     </div>
                     <div className="flex gap-2">

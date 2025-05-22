@@ -11,6 +11,7 @@ export default function Sidebar() {
   // if (!auth || typeof auth !== "string") {
   //   return <Navigate to="/login" />;
   // }
+const path=role.charAt(0).toLowerCase() + role.slice(1);
   return (
     <ul className="flex flex-col mx-auto  sm:items-center lg:items-start ">
       {menue.map((menueItem, ind) => {
@@ -19,7 +20,7 @@ export default function Sidebar() {
             <NavLink
               end
               key={ind}
-              to={`/dashboard/${role}/${menueItem.link}`}
+              to={`/dashboard/${path}/${menueItem.link}`}
               className={({ isActive }) => {
                 return isActive
                   ? "relative w-full  text-[var(--main-color)]  rounded-xl bg-[var(--sidebar-icon-bg)]"

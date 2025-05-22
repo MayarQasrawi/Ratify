@@ -44,7 +44,7 @@ function Navbar() {
 
   const navLinks = allNavLinks.filter((link) => {
     if (link.name === "DASHBOARD") {
-      return id && tracks?.data?.length>0;
+      return id && tracks?.data?.data.length>0;
     }
     return true;
   });
