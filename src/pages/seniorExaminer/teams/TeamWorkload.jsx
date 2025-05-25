@@ -60,14 +60,19 @@ export default function TeamWorkload() {
     const { auth } = useAuthContext();
     let role;
     let id;
+    let isExaminer = false;
+
    if (auth) {
     id = Extract(auth, "nameid");
+    role = Extract(auth, "role");
+       isExaminer = (role === "Examiner" || role === "SeniorExaminer");
+
   }
    const { data: examinerInfo} = useFetchExaminerById(
-    id,
+    id,isExaminer
   );
   console.log(examinerInfo.data.workingTracks[0].id,'inside manage workload',examinerInfo.data)
-  const { data: teams, isError,isLoading } = useFetchExaminersByTrack(1);
+  const { data: teams, isError,isLoading } = useFetchExaminersByTrack(examinerInfo.data.workingTracks[0].id);
   const {
       mutate: deleteWorkload,
       isPending,
@@ -89,9 +94,9 @@ export default function TeamWorkload() {
     return (
       <>
         <div className="mt-8 pl-4 mb-6">
-          <Title>My Team</Title>
+          <Title>Workload Management</Title>
         </div>
-        <div className="h-[50vh] flex items-center w-full bg-amber-600">
+        <div className="h-[50vh] flex items-center w-full ">
           <div className="flex-1">
         <Loading text={"Fetching Your Team..."} />
           </div>
@@ -103,7 +108,7 @@ export default function TeamWorkload() {
     return (
       <>
       <div className="mt-8 pl-4 mb-6">
-          <Title>Manage Workload</Title>
+          <Title>Workload Management</Title>
         </div>
       <div className="h-[50vh]  flex items-center justify-center ">
           <Error />
@@ -112,7 +117,7 @@ export default function TeamWorkload() {
     );
   }
    if (search)
-      teamFilter = teams.filter((team) =>
+      teamFilter = teams.data.filter((team) =>
         team.fullName.toUpperCase().includes(search.toUpperCase())
       );
     if (teamFilter.length == 0 && isLoading == false) {

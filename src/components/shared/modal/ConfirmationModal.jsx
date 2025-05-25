@@ -11,13 +11,20 @@ export default function ConfirmationModal({
   view = false,
   isError,
   error,
-  data
+  data,
 }) {
-  console.log(isError,'gggggg')
+  console.log(isError, "gggggg");
   return (
     <>
-      {isError && <Alert type="error" message={error?.response?.data?.message ||'Delete Request Fails' } />}
-      {isSuccess && <Alert message={data?.data?.meta || 'Track Delete successfully'} />}
+      {isError && (
+        <Alert
+          type="error"
+          message={error?.response?.data?.message || "Delete Request Fails"}
+        />
+      )}
+      {isSuccess && (
+        <Alert message={data?.data?.meta || " Delete successfully"} />
+      )}
       <div
         className={`${
           view
@@ -32,20 +39,30 @@ export default function ConfirmationModal({
             onClick={() => Confirm()}
             className="bg-green-500 text-white px-3 py-2  rounded-lg hover:bg-green-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1 disabled:cursor-not-allowed"
           >
-            {isPending ?
-            <><Spinner /><span>Confirm </span> </>   :
-               <> <MdCheck className="w-5 h-5" /><span>Confirm</span></>
-            }
+            {isPending ? (
+              <>
+                <Spinner />
+                <span>Confirm </span>{" "}
+              </>
+            ) : (
+              <>
+                {" "}
+                <MdCheck className="w-5 h-5" />
+                <span>Confirm</span>
+              </>
+            )}
           </button>
-          {!isPending && <button
-            onClick={() => {
-              Cancle();
-            }}
-            className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1"
-          >
-            <MdClose className="w-5 h-5" />
-            Cancel
-          </button>}
+          {!isPending && (
+            <button
+              onClick={() => {
+                Cancle();
+              }}
+              className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1"
+            >
+              <MdClose className="w-5 h-5" />
+              Cancel
+            </button>
+          )}
         </div>
       </div>
     </>

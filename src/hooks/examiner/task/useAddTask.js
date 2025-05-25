@@ -3,7 +3,7 @@ import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function addTask(info) {
   console.log(info,'add task inside end point')
-  const response = await axiosInstance.post("Task", info
+  const response = await axiosInstance.post("AppTasks", info
   );
   return response;
 }

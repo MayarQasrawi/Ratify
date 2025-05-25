@@ -70,9 +70,8 @@ export default function Track() {
   const [selected, setSelected] = useState(null);
   const [track, setTrack] = useState(null);
   const navigate = useNavigate();
-  const {data:trackd,isLoading:isTrackArrive}= useGetAllTraks()
+  const {data:trackd,isLoading:isTrackArrive,isError:isTrackError}= useGetAllTraks();
   console.log(trackd?.data,'from api endhbbjjjjjjj')
-  let isLoading = false;
   const {
     mutate: deleteTrack,
     isPending,
@@ -95,7 +94,8 @@ export default function Track() {
     error: isToggleTrackError,
     reset: resetToggleTrack,
   } = useActivateTrack();
-  let trackFilter = trackd?.data;
+  //trackd?.data
+  let trackFilter= trackd?.data ;
   const handleEdit = (track) => {
     console.log("Edit action clicked");
     console.log(track);
@@ -117,9 +117,10 @@ export default function Track() {
     setTrack(track);
   };
   const handleAssignManger = (track, isMangerAssign) => {
-    console.log("assign manger", track.id);
+    console.log("assign manger ///////////////////////////////", track.id);
     console.log(isMangerAssign);
-    if (isMangerAssign == false) setSelected("assign-manger");
+    if (isMangerAssign ) {
+      setSelected("assign-manger");}
     else {
       setSelected("edit-manger");
     }
@@ -135,7 +136,7 @@ export default function Track() {
           <div className="mt-8 pl-4 mb-6">
             <Title>Our Tracks</Title>
           </div>
-          <div className="h-[50vh] flex items-center w-full bg-amber-600">
+          <div className="h-[50vh] flex items-center w-full ">
             <div className="flex-1">
           <Loading text={"Fetching Your Path..."} />
             </div>
@@ -143,23 +144,23 @@ export default function Track() {
         </>
       );
     }
-  //   if (isError) {
-  //     return (
-  //       <>
-  //       <div className="mt-8 pl-4 mb-6">
-  //           <Title>Our Paths</Title>
-  //         </div>
-  //       <div className="h-[50vh]  flex items-center justify-center ">
-  //           <Error />
-  //       </div>
-  //       </>
-  //     );
-  //   }
+    if (isTrackError) {
+      return (
+        <>
+        <div className="mt-8 pl-4 mb-6">
+            <Title>Our Tracks</Title>
+          </div>
+        <div className="h-[50vh]  flex items-center justify-center ">
+            <Error />
+        </div>
+        </>
+      );
+    }
   if (search)
-    trackFilter = trackd?.data.filter((track) =>
+    trackFilter =  trackd?.data?.filter((track) =>
       track.name.toUpperCase().includes(search.toUpperCase())
     );
-  if (trackFilter.length == 0 && isLoading == false) {
+  if (trackFilter?.length == 0 && isTrackArrive == false) {
     return (
       <>
         <div className="mt-8 pl-4 mb-6">
@@ -173,7 +174,8 @@ export default function Track() {
     );
   }
   const renderRow = (track) => {
-    const isMangerAssign = track.examinerId != null;
+    const isMangerAssign = track.seniorExaminerID ;
+    console.log(isMangerAssign,'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
     const actions = [
       ...(track.isActive
         ? [
@@ -212,7 +214,7 @@ export default function Track() {
             <div className="flex flex-col items-center gap-2 max-w-[200px]">
               <img
                 className="w-15 h-15 object-cover"
-                src={`https://40b8-85-113-123-99.ngrok-free.app/${track.image}`}
+                src={`https://fe37-85-113-123-99.ngrok-free.app/${track.image}`}
                 alt={track.name}
               />
               <h2 className="font-semibold">{track.name}</h2>
@@ -246,7 +248,7 @@ export default function Track() {
       </tr>
     );
   };
-  console.log(`selected track ${track}`, track);
+  console.log(`selected track ${track}`, track,selected,'llllllllllllllll');
   return (
     <>
       {selected == "delete" && (
@@ -288,7 +290,7 @@ export default function Track() {
       {(selected === "assign-manger" || selected === "edit-manger") && (
         <Modal>
           <AssignMangerModal
-            isEdit={selected === "edit-manger"}
+            isEdit={selected === "assign-manger"}
             track={track}
             onClose={() => {
               setSelected(null);

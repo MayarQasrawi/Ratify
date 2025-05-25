@@ -99,7 +99,7 @@ export default function EditPlanModal({
                 const value = Number(e.target.value);
                 if (value > 100) {
                   setError("Score must be 100 or less");
-                  setItemToEdit({ ...itemToEdit, PassingScore: 0 });
+                  setItemToEdit({ ...itemToEdit, passingScore: 0 });
                 } else {
                   setError("");
                   setItemToEdit({ ...itemToEdit, passingScore: value });
@@ -107,6 +107,22 @@ export default function EditPlanModal({
               }}
             />
             <p className="text-red-500 mt-1 text-xs">{error}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 dark:text-black/70">
+              No Of Attempts <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              min='1'
+              max='3'
+              className="w-full p-3 border border-gray-300 rounded-md  outline-none dark:border-gray-700 dark:bg-gray-800 dark:bg-opacity-90 "
+              value={itemToEdit.noOfattempts}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+               setItemToEdit({ ...itemToEdit, noOfattempts: value });
+              }}
+            />
           </div>
         </div>
       )}

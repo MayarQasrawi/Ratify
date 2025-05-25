@@ -3,7 +3,13 @@ import axiosInstance from '../../auth/utils/axiosInstance';
 
 
 async function assignManagerToTrack(data) {
-  const res= await axiosInstance.post('Seniors/assign', data)
+    const token = localStorage.getItem('token');
+  console.log('data assign manager////////////////',data)
+  const res= await axiosInstance.post('Seniors/assign', data,  {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
   return res;}
 
 export function useAssignManagerToTrack() {
@@ -11,7 +17,7 @@ export function useAssignManagerToTrack() {
     mutationFn:(data)=> assignManagerToTrack(data),
      retry: false,
     onError: (error) => {
-      console.log(error, "put track manger error");
+      console.log(error, "put  manger error");
     },
     onSuccess: (data) => {
       console.log(data,"put track manger success");

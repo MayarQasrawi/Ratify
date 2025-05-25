@@ -4,15 +4,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Back from "../../../components/shared/dashboard/Back";
 import Accordion from "../../../components/user/trackDetailsPage/details/Accordion";
 import {
-  FiChevronLeft,
   FiLayers,
   FiColumns,
   FiSave,
-  FiInfo,
   FiAlertCircle,
 } from "react-icons/fi";
 import useAddTask from "../../../hooks/examiner/task/useAddTask";
 import Spinner from "../../../components/shared/Spinner";
+import GeneralSpinner from "../../../components/shared/dashboard/Spinner";
+import useFetchTaskPool from "../../../hooks/seniorExaminer/manageTask/useFetchTaskPool";
+import useFetchCriteria from "../../../hooks/seniorExaminer/manageTask/useFetchCriteria";
+import Alert from "../../../components/shared/Alert";
 
 const criteriaOptions = [
   {
@@ -53,43 +55,68 @@ const formFields = [
     required: "Requirements is required",
     rows: 8,
   },
+  {
+    name: "difficulty",
+    label: "Difficulty",
+    type: "select",
+    required: "Requirements is required",
+    option: ["Easy", "Medium", "Hard"],
+  },
 ];
 
 export default function CreateTask() {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(
+    location.state.stage,
+    "inside create llllllllllllllllllllllllllll"
+  );
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset
   } = useForm();
   const [layout, setLayout] = useState("Stacked");
-  const { mutate:addTask,isError, isPending,isSuccess}= useAddTask()
-  useEffect(() => {
-    if (location.hash === "#top") {
-      const anchor = document.getElementById("top");
-      if (anchor) {
-        anchor.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [location]);
+  const {
+    data: taskPool,
+    isLoading: isTaskLoading,
+    isError: isTaskError,
+  } = useFetchTaskPool(location.state.stage.id);
+  const {
+    data: stageCriteria,
+    isLoading: isCriteriaLoading,
+    isError: isCriteriaError,
+  } = useFetchCriteria(location.state.stage.id);
+  console.log(taskPool, "lllllllllllllllllllllllllllllllllllllll");
+  console.log(stageCriteria?.data, "stage criteria");
+  const { mutate: addTask, isError, isPending, isSuccess,data } = useAddTask();
   const onSubmit = (data) => {
-    console.log(data, "task added");
-    addTask(data)
+    console.log({...data,taskPoolId:taskPool.data.id}, "task added");
+    addTask({...data,taskPoolId:taskPool.data.id});
+    reset()
   };
-
   const ContainerClass =
     layout === "Side-by-Side"
       ? "flex flex-col lg:flex-row gap-6 p-4"
       : "flex flex-col gap-6 p-4";
+  const isLoading = isTaskLoading || isCriteriaLoading;
+  const isErrors = isTaskError || isCriteriaError;
+  if (isLoading) return <GeneralSpinner text={"Create Task Page"} />;
+  if (isErrors) return <div>Error loading data</div>;
+  
+  console.log(data?.data?.message,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;')
   return (
+    <>
+    {isSuccess  && <Alert message={data?.data?.message}/>}
+    {isError  && <Alert type='error' message='Failed to add task' />}
     <div className="flex flex-col" id="top">
-      <div className=" py-4 px-6  ">
+      <div className="py-2 md:py-4 px-6  ">
         <div className="flex md:items-center md:justify-between flex-col md:flex-row">
           <div className="flex items-center gap-2">
             <Back
               text="Back to Stage Tasks"
-              onClick={() => navigate("/dashboard/examiner/add-tasks")}
+              onClick={() => navigate("/dashboard/examiner/stage-tasks")}
             />
           </div>
           <div className="flex items-center gap-4 mt-3 md:mt-0">
@@ -126,10 +153,16 @@ export default function CreateTask() {
       >
         <div className={ContainerClass}>
           <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
+            <div className="flex flex-col md:flex-row gap-y-4 md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
               <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                 Create New Task
               </h2>
+              <span className="text-sm cursor-pointer">
+                DaysToSubmit :
+                <span className="font-mono font-bold ">
+                  {taskPool.data.daysToSubmit}
+                </span>
+              </span>
             </div>
             <div className="p-6 space-y-6">
               {formFields.map((field) => (
@@ -154,10 +187,10 @@ export default function CreateTask() {
                             ? "border-red-300 dark:border-red-500  dark:bg-red-900/10"
                             : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
                         }
-                        text-gray-900 dark:text-gray-100 placeholder:sm placeholder-gray-400 dark:placeholder-gray-500 resize-none`}
+                        text-gray-900 dark:text-gray-100 placeholder:sm placeholder-gray-500 placeholder:text-sm dark:placeholder-gray-500 resize-none`}
                       placeholder={field.placeholder}
                     />
-                  ) : (
+                  ) : field.type === "text" ? (
                     <input
                       type={field.type}
                       {...register(
@@ -170,9 +203,23 @@ export default function CreateTask() {
                             ? "border-red-300 dark:border-red-500  dark:bg-red-900/10"
                             : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 "
                         }
-                        text-gray-900 dark:text-gray-100 placeholder:sm placeholder-gray-400 dark:placeholder-gray-500`}
+                        text-gray-900 dark:text-gray-100 placeholder:sm placeholder-gray-500 placeholder:text-sm dark:placeholder-gray-500`}
                       placeholder={field.placeholder}
                     />
+                  ) : (
+                    <select
+                      className="w-full outline-none px-4 py-3  rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 "
+                      {...register(
+                        field.name,
+                        field.required ? { required: field.required } : {}
+                      )}
+                    >
+                      {field.option.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   )}
                   {errors[field.name] && (
                     <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
@@ -185,12 +232,11 @@ export default function CreateTask() {
             </div>
             <div className="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4 flex justify-end">
               <button
-
                 type="submit"
                 disabled={isPending}
                 className="flex items-center cursor-pointer gap-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                  { isPending ? <Spinner />:<FiSave size={18} />} 
+                {isPending ? <Spinner /> : <FiSave size={18} />}
                 <span> Add Task</span>
               </button>
             </div>
@@ -207,7 +253,7 @@ export default function CreateTask() {
               </h2>
             </div>
             <div className="space-y-3 p-4">
-              {criteriaOptions.map((c, ind) => (
+              {stageCriteria?.data.map((c, ind) => (
                 <Accordion
                   key={ind}
                   description={c.description}
@@ -229,5 +275,6 @@ export default function CreateTask() {
         </div>
       </form>
     </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 // components/IconActionButton.jsx
 import PropTypes from 'prop-types';
 
-const IconActionButton = ({ 
+const  IconActionButton = ({ 
   children,
   onClick,
   color = "blue",
@@ -48,7 +48,7 @@ const IconActionButton = ({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 
+      className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 
         ${colorVariants[color]?.bg || colorVariants.blue.bg} 
         ${colorVariants[color]?.hover || colorVariants.blue.hover} 
         ${colorVariants[color]?.text || colorVariants.blue.text}

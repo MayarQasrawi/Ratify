@@ -1,21 +1,20 @@
 import {
-  HiOutlineViewGrid,
   HiOutlineUsers,
-  HiOutlineCollection,
-  HiOutlineUserGroup,
   HiOutlineCalendar,
-  HiOutlineDocumentText,
   HiOutlineFolder,
   HiOutlineCheckCircle,
   HiOutlinePlusCircle,
   HiOutlineCog,
   HiUsers,
-  HiPlusCircle 
+  HiPlusCircle, 
+   HiOutlineClipboardList
 } from "react-icons/hi";
 import { MdHome, MdWork } from "react-icons/md";
 import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
 import { MdOutlineDashboardCustomize,MdDashboardCustomize ,MdOutlineHome, MdWorkOutline} from "react-icons/md";
-import { FaRegListAlt } from "react-icons/fa";
+import { FaRegListAlt,FaClipboardList } from "react-icons/fa";
+import { FaFolder, FaRegFolder } from "react-icons/fa";
+
 
 const menue = [
   {
@@ -68,13 +67,15 @@ const menue = [
   },
   {
     title: "Exam Requests",
-    icon: <HiOutlineDocumentText />,
-    link: "exams",
+    icon: < HiOutlineClipboardList/>,
+    link: "exams-stages",
+     active:<FaClipboardList />,
     visible: ["SeniorExaminer"],
   },
   {
     title: "Task Repo",
-    icon: <HiOutlineFolder className="w-4"/>,
+    icon: <FaRegFolder  />,
+    active:<FaFolder />,
     link: "stage-tasks",
     visible: ["SeniorExaminer"],
   },
@@ -95,7 +96,7 @@ const menue = [
     title: "Setting",
     icon: <HiOutlineCog />,
     link: "setting",
-    visible: ["SeniorExaminer", "Examiner"],
+    visible: [ "Examiner"],
   }
  
 ];

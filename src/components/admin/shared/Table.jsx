@@ -16,7 +16,6 @@ export default function Table({ cols, data, row }) {
           </tr>
         </thead>
         <tbody>
-          {/* {here I add fragmet and key for each row rendered} */}
           {data &&
             data.map((item, index) => (
               <React.Fragment key={index}>{row(item)}</React.Fragment>

@@ -21,7 +21,7 @@ const AdminTrack = lazy(() => import("../pages/admin/track/Track"));
 const TrackSetup = lazy(() => import("../pages/admin/track/TrackSetup"));
 const TrackDetails = lazy(() => import("../pages/admin/track/TrackDetails"));
 const SeniorHome = lazy(() => import("../pages/seniorExaminer/SeniorHome"));
-const Plan = lazy(() => import("../pages/seniorExaminer/plan/Plan"));
+const  TrackStructureDetails= lazy(() => import("../pages/seniorExaminer/plan/TrackStructureDetails"));
 const PlanSetup = lazy(() =>
   import("../pages/seniorExaminer/plan/definePlan/PlanSetup")
 );
@@ -35,6 +35,9 @@ const Applicants = lazy(() => import("../components/admin/Applicants"));
  import TeamWorkload from 
   "../pages/seniorExaminer/teams/TeamWorkload"
 ;
+import Plan from "../pages/seniorExaminer/plan/Plan";
+const  ExamRequest= lazy(() => import("../pages/seniorExaminer/exam/ExamRequest")); 
+const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")); 
 const Task = lazy(() => import("../pages/examiner/task/Task"));
 const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
 const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
@@ -243,6 +246,22 @@ export const routes = createBrowserRouter([
             element: (
               <Suspense fallback={null}>
                 <Task />
+              </Suspense>
+            ),
+          },
+             {
+            path: "exams-stages",
+            element: (
+              <Suspense fallback={null}>
+                < ExamStages />
+              </Suspense>
+            ),
+          },
+           {
+            path: "exams-request",
+            element: (
+              <Suspense fallback={null}>
+                < ExamRequest />
               </Suspense>
             ),
           },

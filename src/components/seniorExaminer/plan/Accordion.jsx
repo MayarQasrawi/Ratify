@@ -4,7 +4,7 @@ import { BsToggleOn, BsToggleOff } from "react-icons/bs";
 
 import { BiChevronDown, BiChevronRight } from 'react-icons/bi';
 
-export default function Accordion({ title, description,isActive, children, onDelete, badge }) {
+export default function Accordion({ title, description,isActive, children, onDelete, badge,length,ind=false }) {
   const [toggle, setToggle] = useState(false)
   
   return (
@@ -13,24 +13,17 @@ export default function Accordion({ title, description,isActive, children, onDel
         className={`flex justify-between items-center p-4 ${toggle ? "bg-blue-50 dark:bg-gray-700" : "bg-[var(--sidebar-bg)] hover:bg-blue-50 dark:border-gray-700 dark:hover:bg-gray-500"} cursor-pointer transition-colors duration-200`}
         onClick={() => setToggle(!toggle)}
       >
-        <div className="flex items-center flex-1">
+        <div className="flex items-center flex-1 ">
           {toggle ? (
             <BiChevronDown className="text-blue-600 mr-2 flex-shrink-0" size={22} />
           ) : (
             <BiChevronRight className="text-blue-600 mr-2 flex-shrink-0" size={22} />
           )}
-          <div>
+          <div className='w-full'>
+            <div className='flex justify-between items-center  w-full'>
             <h3 className="font-medium text-lg text-gray-800 dark:text-white">{title}</h3>
-            <p className="text-gray-600 text-sm mt-1">{description}</p>
-            {badge && (
-              <span className="text-xs bg-blue-100 dark:bg-white text-blue-700 font-medium px-3 py-1 rounded-full mt-2 inline-block">
-                {badge}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="flex items-center ml-2">
-          {onDelete && (
+             <div className="flex items-center ml-2">
+          {onDelete && ind && length==1? null : (
             <button
              title={isActive?' delete':'Activate'}
               onClick={(e) => {
@@ -44,6 +37,16 @@ export default function Accordion({ title, description,isActive, children, onDel
             </button>
           )}
         </div>
+              </div>
+            <div className="text-gray-600 text-sm mt-1">{description}</div>
+            {badge && (
+              <span className="text-xs bg-blue-100 dark:bg-white text-blue-700 font-medium px-3 py-1 rounded-full mt-2 inline-block">
+                {badge}
+              </span>
+            )}
+          </div>
+        </div>
+       
       </div>
       <div 
         className={`overflow-hidden transition-all duration-300 ${

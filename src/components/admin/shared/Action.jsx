@@ -28,7 +28,7 @@ export default function Action({ actions, icon = true }) {
           {actions.map((action, index) => (
             <li
               key={index}
-              className="text-sm cursor-pointer px-2 py-1 hover:bg-gray-100 text-center  dark:hover:bg-gray-500  transition-colors duration-150 first:rounded-t-md last:rounded-b-md "
+              className="text-sm cursor-pointer px-4 py-1 hover:bg-gray-100 text-center  dark:hover:bg-gray-500  transition-colors duration-150 first:rounded-t-md last:rounded-b-md "
               onClick={() => {
                 setToggle(false);
                 action.onClick();

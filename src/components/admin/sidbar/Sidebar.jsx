@@ -13,7 +13,7 @@ export default function Sidebar() {
   // }
 const path=role.charAt(0).toLowerCase() + role.slice(1);
   return (
-    <ul className="flex flex-col mx-auto  sm:items-center lg:items-start ">
+    <ul className="flex flex-col  mx-auto  sm:items-center lg:items-start ">
       {menue.map((menueItem, ind) => {
         if (menueItem.visible.includes(role)) {
           return (
@@ -28,7 +28,7 @@ const path=role.charAt(0).toLowerCase() + role.slice(1);
               }}
             >
               {({ isActive }) => (
-                <li className={`relative py-2 lg:py-3 px-4  transition-all ease-in-out font-medium mx-auto m-3 duration-200 ${isActive&&" border-l-3  border-[var(--secondary-color)] md:border-0"}`}>
+                <li className={`relative py-2 lg:py-2 px-4  transition-all ease-in-out font-medium mx-auto m-3 duration-200 ${isActive&&" border-l-3  border-[var(--secondary-color)] md:border-0"}`}>
                   <div className="flex gap-3  items-center">
                     {/* Icon with active styles */}
                     <div

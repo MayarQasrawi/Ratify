@@ -68,7 +68,7 @@ export default function UploadImage({ ref }) {
             <div className="flex items-center flex-col gap-2">
               {image ? (
                 <img
-                  src={`https://40b8-85-113-123-99.ngrok-free.app/${image}`}
+                  src={image}
                   alt="Uploaded Preview"
                   className="w-[70%] rounded-lg"
                 />

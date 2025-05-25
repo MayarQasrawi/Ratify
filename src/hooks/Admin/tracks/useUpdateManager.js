@@ -2,8 +2,14 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function updateTrackManager(info) {
- console.log('info inside update manager',info)
-  const { data } = await axiosInstance.put("Seniors/update", info)
+  console.log("info inside update manager /////////////////", info);
+  const token = localStorage.getItem("token");
+
+  const { data } = await axiosInstance.put("Seniors/update", info, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return data;
 }
 export default function useUpdateManager() {
@@ -14,7 +20,7 @@ export default function useUpdateManager() {
       console.log(error, "update manager");
     },
     onSuccess: (data) => {
-      console.log(data,"update manager");
+      console.log(data, "update manager");
     },
   });
 }

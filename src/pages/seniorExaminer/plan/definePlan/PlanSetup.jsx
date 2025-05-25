@@ -288,6 +288,7 @@ export default function PlanSetup() {
         trackName: "Backend Development",
         levels: [...levels],
       });
+      // setTimeout(()=>navigate('/dashboard/seniorExaminer/plan'),1500)
     } else if (source == "add-stage") {
       console.log("add stage");
       console.log("add stage", location.state.level.id);
@@ -595,7 +596,7 @@ export default function PlanSetup() {
                               required: `${field.label} is required`,
                             })}
                             multiple={field.multiple}
-                            className="w-full sm:w-[90%] h-20 px-4 border border-gray-300 rounded-lg outline-none text-sm"
+                            className="w-full sm:w-[90%] h-14 px-4 border border-gray-300 rounded-lg outline-none text-sm"
                           >
                             {!field.multiple && (
                               <option value="" hidden>
