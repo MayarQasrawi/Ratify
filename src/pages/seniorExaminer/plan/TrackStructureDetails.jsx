@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BiPlusCircle } from "react-icons/bi";
 import { FiEdit2, FiTrash2, FiAlertTriangle } from "react-icons/fi";
 import { FaCalendarAlt, FaClock, FaInfoCircle } from "react-icons/fa";
-import { AiOutlineEdit } from 'react-icons/ai'
+import { AiOutlineEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../components/shared/modal/Modal";
 import ConfirmationModal from "../../../components/shared/modal/ConfirmationModal";
@@ -266,6 +266,7 @@ const initialPlan = {
 
 export default function TrackStructureDetails({ structure }) {
   const [plan, setPlan] = useState(structure || initialPlan);
+  console.log(structure, "structure......................");
   const navigate = useNavigate();
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -296,13 +297,13 @@ export default function TrackStructureDetails({ structure }) {
     error: deleteError,
     reset: resetDeletePlan,
   } = useDeletePlanStructer();
-   const {
+  const {
     data: updateStageDetails,
     error: updateStageError,
-    isError:isUpdateStage,
-    mutateAsync:updateStagesDetails,
-    isPending:isStageDetailsPending,
-    isSuccess:isStageDetailsSuccess,
+    isError: isUpdateStage,
+    mutateAsync: updateStagesDetails,
+    isPending: isStageDetailsPending,
+    isSuccess: isStageDetailsSuccess,
   } = useUpdateStageDetails();
   const {
     isPending: isActivatePending,
@@ -412,29 +413,29 @@ export default function TrackStructureDetails({ structure }) {
     setDeleteCriteria(false);
     setAddCriteria(true);
   };
-  const  handleStagesInfo = (extraInfo,type) => {
-    console.log(extraInfo, "extraInfo",type);
-    setSelectedStageDetails({...extraInfo,type})
+  const handleStagesInfo = (extraInfo, type) => {
+    console.log(extraInfo, "extraInfo", type);
+    setSelectedStageDetails({ ...extraInfo, type });
   };
   const handleStageDetailsSubmit = async (data, type) => {
-    console.log('stage details page rrrrrrrrrrrrrrrrrrr',data)
+    console.log("stage details page rrrrrrrrrrrrrrrrrrr", data);
     try {
       switch (type) {
-        case 'Task':
-          await updateStagesDetails({ endpoint: 'TasksPool', payload: data });
+        case "Task":
+          await updateStagesDetails({ endpoint: "TasksPool", payload: data });
           break;
-        case 'Exam':
-          await updateStagesDetails({ endpoint: 'Exams', payload: data });
+        case "Exam":
+          await updateStagesDetails({ endpoint: "Exams", payload: data });
           break;
-        case 'Interview':
-          await updateStagesDetails({ endpoint: 'Interviews', payload: data });
+        case "Interview":
+          await updateStagesDetails({ endpoint: "Interviews", payload: data });
           break;
         default:
           throw new Error(`Unknown stage type: ${type}`);
       }
       window.location.reload();
     } catch (error) {
-      console.error('Update failed:', error);
+      console.error("Update failed:", error);
     } finally {
       setSelectedStageDetails(null);
     }
@@ -443,8 +444,12 @@ export default function TrackStructureDetails({ structure }) {
 
   return (
     <>
-      {(isSuccess || isStageDetailsSuccess) && <Alert message="Updated successfully" />}
-      {(isError || isUpdateStage) && <Alert type="error" message="Update failed" />}
+      {(isSuccess || isStageDetailsSuccess) && (
+        <Alert message="Updated successfully" />
+      )}
+      {(isError || isUpdateStage) && (
+        <Alert type="error" message="Update failed" />
+      )}
       <div>
         {open && (
           <Modal>
@@ -540,12 +545,12 @@ export default function TrackStructureDetails({ structure }) {
             />
           </Modal>
         )}
-        {selectedStageDetails &&  (
+        {selectedStageDetails && (
           <Modal>
             <EditStageDetailsModal
               editType={selectedStageDetails.type}
               onClose={() => {
-                setSelectedStageDetails(null)
+                setSelectedStageDetails(null);
               }}
               itemToEdit={selectedStageDetails}
               onUpdate={handleStageDetailsSubmit}
@@ -592,7 +597,11 @@ export default function TrackStructureDetails({ structure }) {
               className="cursor-pointer flex items-center font-medium text-[var(--text-color)] hover:text-[var(--main-color)]   transition-colors "
               onClick={() =>
                 navigate("/dashboard/seniorExaminer/plan-setup", {
-                  state: { source: "add", length: plan.levels.length + 1 },
+                  state: {
+                    source: "add",
+                    length: plan.levels.length + 1,
+                    track: {name: plan.name, id: plan.id },
+                  },
                 })
               }
             >
@@ -615,7 +624,7 @@ export default function TrackStructureDetails({ structure }) {
                           }}
                           className="p-1.5 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-full transition-colors mr-2"
                         >
-                          <AiOutlineEdit  size={18} className="cursor-pointer" />
+                          <AiOutlineEdit size={18} className="cursor-pointer" />
                         </button>
                       </div>
                     )}
@@ -710,16 +719,17 @@ export default function TrackStructureDetails({ structure }) {
                               )}
                             </div>
                             <button
-                              onClick={(e) =>{
-                                 e.stopPropagation();
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 handleStagesInfo(
                                   stg.type === "Interview"
                                     ? stg.interview
                                     : stg.type === "Exam"
                                     ? stg.exam
-                                    : stg.tasksPool
-                                ,stg.type)}
-                              }
+                                    : stg.tasksPool,
+                                  stg.type
+                                );
+                              }}
                               className="p-1.5 text-blue-500 hover:text-blue-700 hover:bg-blue-50 rounded-full transition-colors mr-2"
                             >
                               <FiEdit2 size={18} className="cursor-pointer" />

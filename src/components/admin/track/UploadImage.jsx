@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 export default function UploadImage({ ref }) {
   const location=useLocation();
-  const [image, setImage] = useState(()=>location.state?location.state.track.image:null);
+  const [image, setImage] = useState(()=>location.state?`https://4b2a-85-113-123-99.ngrok-free.app/${location.state.track.image}`:null);
   const [error, setError] = useState("");
   // if(location?.state)
   // // ref.current=location.state.track.image

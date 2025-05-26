@@ -23,7 +23,7 @@ export default function ConfirmationModal({
         />
       )}
       {isSuccess && (
-        <Alert message={data?.data?.meta || " Delete successfully"} />
+        <Alert message={data?.message|| "Delete successfully"} />
       )}
       <div
         className={`${

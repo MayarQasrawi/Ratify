@@ -5,8 +5,18 @@
   .scrollbar-custom {
     scrollbar-width: thin;
     scrollbar-color:  #e5e7eb;
-  }}
+  }
+   .dark .scrollbar-custom {
+    scrollbar-color: #374151 transparent; 
+  }
 
+  .dark .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #374151; 
+  }
+}
+
+ 
+  
 
 :root {
   --main-color: #3b82f6; /* Light mode main color */

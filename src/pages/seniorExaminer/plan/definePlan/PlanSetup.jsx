@@ -36,6 +36,8 @@ const examFields = [
   { name: "durationMinutes", label: "Duration (Minutes)" },
 ];
 export default function PlanSetup() {
+    const location = useLocation();
+  console.log(location?.state?.track?.id,location?.state?.track?.name,'lllllllllllllllllllllllllllllllllllllllllllllllll')
   const [levels, setLevels] = useState([]);
   const [isWeightValid, setIsWeightValid] = useState(null);
   const [activeLevelIndex, setActiveLevelIndex] = useState(-1);
@@ -43,7 +45,6 @@ export default function PlanSetup() {
   const [selectedStage, setSelectedStage] = useState("Interview");
   console.log(selectedStage, "stage inside plan ss");
   const navigate = useNavigate();
-  const location = useLocation();
   const source = location.state?.source;
   const [formState, setFormState] = useState(() =>
     source == "add-stage" ? "stage" : "level"
@@ -110,7 +111,10 @@ export default function PlanSetup() {
     if (stages.length === 0) return 1;
     return Math.max(...stages.map((stage) => stage.order)) + 1;
   };
-
+useEffect(()=>{
+if(isAddPlanSuccess)
+  setTimeout(()=>{navigate('/dashboard/seniorExaminer/plan');window.location.reload();},2000)
+},[isAddPlanSuccess])
   const handleLevelSubmit = (data) => {
     console.log(data, "add level");
     const newLevel = {
@@ -278,17 +282,16 @@ export default function PlanSetup() {
   const savePlan = () => {
     console.log("Saving plan:", levels);
     console.log("Saving plan2:", {
-      trackId: 1,
-      trackName: "Backend Development",
+      trackId: location.state.track.id,
+      trackName: location.state.track.name,
       levels: [...levels],
     });
     if (source == "add" || source == "define") {
       addPlan({
-        trackId: 1,
-        trackName: "Backend Development",
+       trackId: location.state.track.id,
+       trackName: location.state.track.name,
         levels: [...levels],
       });
-      // setTimeout(()=>navigate('/dashboard/seniorExaminer/plan'),1500)
     } else if (source == "add-stage") {
       console.log("add stage");
       console.log("add stage", location.state.level.id);
@@ -404,7 +407,7 @@ export default function PlanSetup() {
             >
               <div className="space-y-6 ">
                   <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
-                    name <span className="text-red-500">*</span>
+                    Name <span className="text-red-500">*</span>
                   </label>
                  <input
                     type="text"

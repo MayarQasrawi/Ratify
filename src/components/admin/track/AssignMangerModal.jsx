@@ -16,8 +16,9 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
   const { data: trackTeam, isLoading } = useGetExaminersByTrack(track.id);
   console.log(
     trackTeam?.data,
-    "inside assign manger model ///////////",
-    isEdit
+    "inside assign manger model //////////////////////////////////",
+    isEdit,
+    track.id
   );
   const {
     mutate: assignManger,
@@ -42,12 +43,13 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
         },
         {
           onSuccess: () => {
-            onClose();
+            setTimeout(() => onClose(), 2000);
           },
         }
       );
     }
   };
+
   console.log("track inside assign manger", track);
   // let isLoading=false
   return (
@@ -68,10 +70,44 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
           {isEdit ? "Edit" : "Assign"} {track.name} Manager
         </Header>
         {isLoading ? (
-          <p className="text-gray-500 flex items-center justify-center py-4">
-            <Spinner className="mr-2" />
-            Processing...
-          </p>
+          <div className=" flex items-center justify-center py-4 h-28">
+            <Spinner className="mr-2" color='blue-500' />
+          </div>
+        ) : !isLoading && trackTeam.data.length == 0 ? (
+          <>
+          <div className="text-center m-4  text-gray-600 dark:text-gray-300 py-10 px-6 bg-white dark:bg-gray-800 rounded-2xl  dark:border-gray-600 shadow-lg transition-all">
+            <div className="flex flex-col items-center space-y-3">
+              <svg
+                className="w-10 h-10 text-gray-400 dark:text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 14v.01M12 10a4 4 0 00-4 4v1h8v-1a4 4 0 00-4-4zM12 6.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"
+                />
+              </svg>
+              <p className="text-lg font-medium">No Examiner Found</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                There are currently no examiners assigned to this track. Please
+                check back later or assign one manually.
+              </p>
+            </div>
+            
+          </div>
+          <div className="flex justify-end pr-3">
+              <button
+                onClick={onClose}
+                className="bg-gray-200 hover:bg-gray-300 cursor-pointer text-gray-800 px-4 py-2 rounded-md transition-colors"
+                disabled={isPending}
+              >
+                Cancel
+              </button>
+            </div>
+            </>
         ) : (
           <div className="px-6 mt-4">
             <label className="block font-medium text-gray-700 mb-2">

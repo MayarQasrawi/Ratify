@@ -36,6 +36,7 @@ const Applicants = lazy(() => import("../components/admin/Applicants"));
   "../pages/seniorExaminer/teams/TeamWorkload"
 ;
 import Plan from "../pages/seniorExaminer/plan/Plan";
+const  EvaluationRequests =lazy(() => import("../pages/examiner/task/evaluationRequest/EvaluationRequests")); 
 const  ExamRequest= lazy(() => import("../pages/seniorExaminer/exam/ExamRequest")); 
 const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")); 
 const Task = lazy(() => import("../pages/examiner/task/Task"));
@@ -292,6 +293,14 @@ export const routes = createBrowserRouter([
             element: (
               <Suspense fallback={null}>
                 <CreateTask />
+              </Suspense>
+            ),
+          },
+             {
+            path: "pending-evaluations",
+            element: (
+              <Suspense fallback={null}>
+                <EvaluationRequests />
               </Suspense>
             ),
           },

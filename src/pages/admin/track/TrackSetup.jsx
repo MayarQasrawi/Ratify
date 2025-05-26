@@ -1,33 +1,41 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TrackInput from "../../../components/admin/track/TrackInput";
-import Select from "../../../components/admin/track/Select";
 import UploadImage from "../../../components/admin/track/UploadImage";
 import AssociatedSkills from "../../../components/admin/track/AssociatedSkills";
 import Alert from "../../../components/shared/Alert";
 import useAddTrack from "../../../hooks/admin/tracks/useAddTrack";
 import Spinner from "../../../components/shared/Spinner";
 import useUpdateTrack from "../../../hooks/admin/tracks/useUpdateTrack";
-import { IoIosReturnLeft } from "react-icons/io";
 import Back from "../../../components/shared/dashboard/Back";
 
 export default function TrackSetup() {
   const navigate = useNavigate();
   const titleRef = useRef();
   const location = useLocation();
-  console.log(location?.state, "get pre info");
+  console.log(
+    location?.state,
+    "get pre info ///////////////////////////////////////"
+  );
   const descriptionRef = useRef();
   const objectivesRef = useRef();
-  const selectRef = useRef();
   const imageRef = useRef();
   const skillsRef = useRef();
   const [showAlert, setShow] = useState(false);
   const {
     mutate: addTrack,
     isError: isTrackError,
+    isSuccess: isTrackSuccess,
     isPending: isTrackPending,
+    data: trackData,
   } = useAddTrack();
-  const { mutate: updateTrack, isError, isPending } = useUpdateTrack();
+  const {
+    mutate: updateTrack,
+    isError: isUpdateTrackError,
+    isPending,
+    data: updateTrackData,
+    isSuccess: isUpdateSuccess,
+  } = useUpdateTrack();
   const trackField = [
     { title: "Track Title", textArea: false, ref: titleRef, name: "name" },
     {
@@ -46,9 +54,12 @@ export default function TrackSetup() {
   useEffect(() => {
     if (showAlert) setTimeout(() => setShow(false), 3000);
   }, [showAlert]);
+  useEffect(() => {
+    if (isTrackSuccess)
+      setTimeout(() => navigate("/dashboard/admin/tracks"), 3000);
+  }, [isTrackSuccess]);
   console.log(isTrackPending || isPending, "addtr");
   const handleAddTrack = () => {
-    // console.log(selectRef.current,'manger');
     console.log(titleRef.current, "name");
     console.log(descriptionRef.current, "de");
     console.log(imageRef.current, "imgemmm");
@@ -72,38 +83,49 @@ export default function TrackSetup() {
     formData.append("imageFile", imageRef.current);
     if (!location.state) {
       formData.append("seniorExaminerID", "");
-      const result = skillsRef.current.reduce((acc, item) => {
-        acc[item.name] = item.description;
-        return acc;
-      }, {});
-      console.log(JSON.stringify(result),'inside add .......................')
-      formData.append("associatedSkills", JSON.stringify(result));
-      console.log("inside add track jjjjjjjjjjjjjjjjjjjjjjjjjjj");
-      console.log(skillsRef.current);
+      console.log(
+        "add track .........................................",
+        skillsRef.current
+      );
+      const skills = skillsRef.current || [];
+      console.log(skills, "inside add sssssssssssssssssssssssss");
+      for (let i = 0; i < skills.length; i++) {
+        formData.append(`AssociatedSkills[${i}][Name]`, skills[i].name);
+        formData.append(
+          `AssociatedSkills[${i}][Description]`,
+          skills[i].description
+        );
+      }
       addTrack(formData);
     } else {
-      console.log(
-        skillsRef.current.map((item) => ({
-          skill: item.skill,
-          description: item.description,
-        })),
-        "id"
-      );
       const skill = skillsRef.current.map((item) => ({
-        name: item.skill,
+        name: item.name,
         description: item.description,
       }));
-      formData.append(
-        "associatedSkills",
-        skill.map((s) => ({ name: s.name, description: s.description }))
-      );
-      updateTrack(formData);
+      for (let j = 0; j < skill.length; j++) {
+        formData.append(`AssociatedSkills[${j}][Name]`, skill[j].name);
+        formData.append(
+          `AssociatedSkills[${j}][Description]`,
+          skill[j].description
+        );
+      }
+      console.log(skill, "inside update ////////////////////////////////");
+      updateTrack({ formData, id: location?.state.track.id });
     }
   };
+  console.log(trackData, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+  console.log(
+    updateTrackData,
+    "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+  );
   return (
     <>
-      {isTrackError && <Alert type="error" message="Request  Fail" />}
-      {isError && <Alert type="error" message="Request Fail" />}
+      {(isTrackError || isUpdateTrackError) && (
+        <Alert type="error" message="Request Fail" />
+      )}
+      {(isTrackSuccess || isUpdateSuccess) && (
+        <Alert message={trackData?.data?.message || updateTrackData.message} />
+      )}
       <section className="py-8 px-14">
         {showAlert && <Alert type="error" message="All fields requried . " />}
         <div className="flex flex-col items-start md:flex-row gap-y-4 md:justify-between md:items-center bg-transparent py-2">
@@ -113,7 +135,8 @@ export default function TrackSetup() {
           />
           <button
             onClick={handleAddTrack}
-            className="bg-blue-500 text-sm flex gap-1 cursor-pointer text-white font-medium px-6 py-2 rounded-md transition hover:bg-blue-600 active:scale-95"
+            disabled={isPending || isTrackPending}
+            className="bg-blue-500 disabled:cursor-not-allowed text-sm flex gap-1 cursor-pointer text-white font-medium px-6 py-2 rounded-md transition hover:bg-blue-600 active:scale-95"
           >
             {isTrackPending && <Spinner />}
             {isPending && <Spinner />} {location?.state ? "Edit" : "Publish"}{" "}

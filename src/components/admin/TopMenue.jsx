@@ -22,7 +22,7 @@ function TopMenue() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState(null);
   const { darkMode, toggleDarkMode } = useTheme();
-  let role = "Sen";
+  let role = "Admin";
   if (auth) role = Extract(auth, "role");
   return (
     <>

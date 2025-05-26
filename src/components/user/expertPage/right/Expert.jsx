@@ -73,7 +73,7 @@ export default function Expert({ searchParams ,setSearchParams }) {
   console.log(specialtyFilter);
   // const loading=false;
   console.log(isLoading,'insude team page')
-  console.log(Teams,'inside expert page check .......................')
+  console.log(Teams,'inside expert page check .......................',currentPage)
   if(isLoading){
     return (
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">

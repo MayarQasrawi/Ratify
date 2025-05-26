@@ -106,7 +106,7 @@ beginners and professionals looking to enhance their knowledge.`
 export default function TrackDetailsPage() {
   const { id } = useParams();
   console.log(id, "id inside track details");
-  const {data, isLoading } = useFetchTrackById(2);
+  const {data, isLoading } = useFetchTrackById(id);
   console.log(data,isLoading,'inside track details')
  const stageType= getThreeTypes(data?.data || initialPlan);
  const countTypes = countStageTypes(initialPlan);

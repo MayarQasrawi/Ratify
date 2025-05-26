@@ -24,7 +24,8 @@ export default function Plan() {
     isLoading,
     isError,
   } = useGetTrackStructure(examinerInfo?.data?.workingTracks[0].id);
+  console.log(trackStructure,'trackStructure')
   if (isLoading) return <Spinner text="Plan Page" />;
-  if (trackStructure?.data?.levels?.length == 0) return <PlanStructure />;
-  else return <TrackStructureDetails structure={trackStructure?.data} />;
+  if (trackStructure?.data?.levels?.length == 0) return <PlanStructure name={examinerInfo?.data?.workingTracks[0].name}  id={examinerInfo?.data?.workingTracks[0].id} />;
+  else return <TrackStructureDetails structure={trackStructure?.data}  />;
 }

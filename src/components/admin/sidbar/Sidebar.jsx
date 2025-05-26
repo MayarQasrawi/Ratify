@@ -5,7 +5,7 @@ import Extract from "../../../utils/Extract";
 
 export default function Sidebar() {
   const { auth } = useAuthContext();
-  let role='Admin'
+  let role='Examiner'
   if(auth)
     role=Extract(auth ,'role')
   // if (!auth || typeof auth !== "string") {

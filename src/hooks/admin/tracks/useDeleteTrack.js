@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function deleteTrack(id) {
@@ -7,6 +7,7 @@ async function deleteTrack(id) {
 }
 
 export default function useDeleteTrack() {
+    const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => deleteTrack(id),
     retry: false,
@@ -15,6 +16,7 @@ export default function useDeleteTrack() {
     },
     onSuccess: (data) => {
       console.log("DeleteTrack successful:", data);
+      queryClient.invalidateQueries(["tracks"]);
     },
   });
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   FaFileAlt,
   FaHourglassHalf,
@@ -79,7 +79,7 @@ export default function ExamStages() {
   const totalPending = examStages.reduce((sum, s) => sum + s.totalPending, 0);
   console.log(selectedStage, "inside exam stage task ");
   return (
-    <div className="min-h-screen p-4 sm:p-6">
+    <div className="min-h-screen p-4 sm:p-6" id='top'>
       <div className="max-w-5xl mx-auto">
         <header className="mb-6 sm:mb-10 flex justify-between">
           <Title>Exam Stages</Title>
@@ -146,11 +146,11 @@ export default function ExamStages() {
               </div>
 
               <div
-                onClick={() => setSelectedStage(stage)}
+                onClick={() =>{setSelectedStage(stage); window.scrollTo(0, 0)} }
                 className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center"
               >
-                <button className="flex items-center cursor-pointer text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                  Select <FaChevronRight className="ml-1 h-3 w-3" />
+                <button className=" cursor-pointer text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 text-sm">
+                <a href="#top" className=" flex items-center">  Select <FaChevronRight className="ml-1 h-3 w-3" /></a>
                 </button>
               </div>
             </div>

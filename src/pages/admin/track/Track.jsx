@@ -79,6 +79,7 @@ export default function Track() {
     error,
     isError,
     reset,
+    data:deleteRequestData
   } = useDeleteTrack();
   const {
     mutate: deleteTrackManger,
@@ -93,6 +94,7 @@ export default function Track() {
     isSuccess: isToggleTrackSuccess,
     error: isToggleTrackError,
     reset: resetToggleTrack,
+    data:toggleTrackData
   } = useActivateTrack();
   //trackd?.data
   let trackFilter= trackd?.data ;
@@ -138,7 +140,7 @@ export default function Track() {
           </div>
           <div className="h-[50vh] flex items-center w-full ">
             <div className="flex-1">
-          <Loading text={"Fetching Your Path..."} />
+          <Loading text={"Fetching Tracks..."} />
             </div>
           </div>
         </>
@@ -214,7 +216,7 @@ export default function Track() {
             <div className="flex flex-col items-center gap-2 max-w-[200px]">
               <img
                 className="w-15 h-15 object-cover"
-                src={`https://fe37-85-113-123-99.ngrok-free.app/${track.image}`}
+                src={`https://4b2a-85-113-123-99.ngrok-free.app/${track.image}`}
                 alt={track.name}
               />
               <h2 className="font-semibold">{track.name}</h2>
@@ -249,6 +251,7 @@ export default function Track() {
     );
   };
   console.log(`selected track ${track}`, track,selected,'llllllllllllllll');
+  console.log(toggleTrackData,'toggleTrackData responce ')
   return (
     <>
       {selected == "delete" && (
@@ -264,8 +267,9 @@ export default function Track() {
             isPending={isPending}
             isSuccess={isSuccess}
             isError={isError}
+            data={deleteRequestData}
           >
-            Are you sure you want to delete {track.name} Track?
+            Are you sure you want to delete <span className="capitalize"> {track.name}</span> Track?
           </ConfirmationModal>
         </Modal>
       )}
@@ -282,8 +286,9 @@ export default function Track() {
             isPending={isTogglePending}
             isSuccess={isToggleTrackSuccess}
             isError={isToggleTrackError}
+            data={toggleTrackData}
           >
-            Are you sure you want to activate {track.name}?
+            Are you sure you want to Activate <span className="capitalize">{track.name}</span>?
           </ConfirmationModal>
         </Modal>
       )}

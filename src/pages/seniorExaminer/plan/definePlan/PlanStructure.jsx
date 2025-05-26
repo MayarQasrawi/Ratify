@@ -32,7 +32,8 @@ const structureItems = [
   },
 ];
 
-export default function PlanStructure() {
+export default function PlanStructure({name,id}) {
+  console.log(name,id,'plan structure step llllllllllllllllllllll')
   const navigate = useNavigate();
   return (
     <div className="max-w-4xl mx-auto p-6 mt-[4vh] bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -42,8 +43,8 @@ export default function PlanStructure() {
             <FiFile size={32} className="text-blue-600 dark:text-blue-300" />
           </div>
         </div>
-        <h1 className="text-md sm:text-lg md:text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-          Plan Structure
+        <h1 className="text-md sm:text-lg md:text-2xl font-bold mb-2 capitalize text-gray-900 dark:text-white">
+          {name} Plan Structure
         </h1>
       </div>
       <div className="sm:bg-gray-50 dark:sm:bg-gray-700 rounded-lg p-6 mb-8">
@@ -73,7 +74,7 @@ export default function PlanStructure() {
       <div className="text-center">
         <button
           onClick={() =>
-            navigate("/dashboard/seniorExaminer/plan-setup", { state: { source: 'define' } })
+            navigate("/dashboard/seniorExaminer/plan-setup", { state: { source: 'define',track:{name,id} } })
           }
           className="inline-flex items-center cursor-pointer gap-2 bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition-all duration-150"
         >

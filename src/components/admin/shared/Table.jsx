@@ -1,7 +1,7 @@
 import React from "react";
 export default function Table({ cols, data, row }) {
   return (
-    <div className="rounded-lg border border-[var(--table-border)] ">
+    <div className="rounded-lg border border-[var(--table-border)] overflow-x-auto scrollbar-custom ">
       <table className="w-full  bg-[var(--table-header-bg)] shadow-md rounded-lg  ">
         <thead className="text-md text-center">
           <tr className="text-[var(--text-color)] font-bold rounded-lg  border-b border-b-[var(--table-border)]">

@@ -14,8 +14,8 @@ import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
 import { MdOutlineDashboardCustomize,MdDashboardCustomize ,MdOutlineHome, MdWorkOutline} from "react-icons/md";
 import { FaRegListAlt,FaClipboardList } from "react-icons/fa";
 import { FaFolder, FaRegFolder } from "react-icons/fa";
-
-
+import { FiClock } from "react-icons/fi"
+import { MdPendingActions } from "react-icons/md"
 const menue = [
   {
     title: "Dashboard",
@@ -81,8 +81,9 @@ const menue = [
   },
   {
     title: "Pending Evaluations",
-    icon: <HiOutlineCheckCircle />,
-    link: "evaluation",
+    icon: <MdPendingActions  />,
+     active:<FiClock />,
+     link: "pending-evaluations",
     visible: ["Examiner"],
   },
   {
