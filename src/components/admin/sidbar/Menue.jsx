@@ -15,7 +15,8 @@ import { MdOutlineDashboardCustomize,MdDashboardCustomize ,MdOutlineHome, MdWork
 import { FaRegListAlt,FaClipboardList } from "react-icons/fa";
 import { FaFolder, FaRegFolder } from "react-icons/fa";
 import { FiClock } from "react-icons/fi"
-import { MdPendingActions } from "react-icons/md"
+import { MdPendingActions , MdAssignment,  MdOutlineAssignment } from "react-icons/md"
+
 const menue = [
   {
     title: "Dashboard",
@@ -59,6 +60,13 @@ const menue = [
     active:<MdWork />,
     visible: ["SeniorExaminer"],
   },
+   {
+    title: "Assign Creation Assignments",
+    icon: <MdOutlineAssignment/>,
+    link: "assign-creation",
+    active:<MdAssignment />,
+    visible: ["SeniorExaminer"],
+  },
   {
     title: "Appointments",
     icon: <HiOutlineCalendar />,
@@ -86,11 +94,11 @@ const menue = [
      link: "pending-evaluations",
     visible: ["Examiner"],
   },
-  {
-    title: "Add Task",
-    icon: <HiOutlinePlusCircle />,
-    link: "stage-tasks",
-    active:<HiPlusCircle  />,
+ {
+    title: "Assigned Work",
+    icon: <MdOutlineAssignment/>,
+    link: "todo-assignments",
+    active:<MdAssignment />,
     visible: ["Examiner"],
   },
   {

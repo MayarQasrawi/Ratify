@@ -15,7 +15,7 @@ import useGetPendingRequest from "../../../../hooks/examiner/evaluationRequest/u
 import Loading from "../../../../components/admin/shared/Loading";
 
 export default function EvaluationRequests() {
-  const [activeTab, setActiveTab] = useState("tasks");
+  const [activeTab, setActiveTab] = useState("exams");
   const [loading, setLoading] = useState({
     taskSubmissions: false,
     examReviews: false,
@@ -44,7 +44,7 @@ export default function EvaluationRequests() {
     enable:
       activeTab == "tasks" || activeTab == "interviews" || activeTab == "exams",
   });
-  console.log(pendingRequest, ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;pending request ");
+  console.log(pendingRequest, ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;pending request evalc");
   console.log(activeTab, "///");
 
   const handleSort = (key, tabType) => {

@@ -124,7 +124,7 @@ export default function TeamWorkload() {
       return (
         <>
         <div className="mt-8 pl-4 mb-6">
-          <Title>My Team</Title>
+          <Title>Workload Management</Title>
         </div>
           <div className="w-[90%] md:w-[36%] lg:w-[44%] md:min-w-70 md:max-w-[340px]">
             <Search search={search} setSearch={setSearch} />

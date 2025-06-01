@@ -109,7 +109,7 @@ export default function TrackDetailsPage() {
   const {data, isLoading } = useFetchTrackById(id);
   console.log(data,isLoading,'inside track details')
  const stageType= getThreeTypes(data?.data || initialPlan);
- const countTypes = countStageTypes(initialPlan);
+ const countTypes = countStageTypes(data?.data || initialPlan);
  console.log( stageType,'stage type')
  console.log( countTypes,'stage count')
   // if(isLoading )

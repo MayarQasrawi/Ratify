@@ -36,10 +36,12 @@ const Applicants = lazy(() => import("../components/admin/Applicants"));
   "../pages/seniorExaminer/teams/TeamWorkload"
 ;
 import Plan from "../pages/seniorExaminer/plan/Plan";
+import AssignCreationAssignments from "../pages/seniorExaminer/assignCreation/AssignCreationAssignments";
+import AssignedWork from "../pages/examiner/AssignedWork";
 const  EvaluationRequests =lazy(() => import("../pages/examiner/task/evaluationRequest/EvaluationRequests")); 
 const  ExamRequest= lazy(() => import("../pages/seniorExaminer/exam/ExamRequest")); 
 const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")); 
-const Task = lazy(() => import("../pages/examiner/task/Task"));
+const Task = lazy(() => import("../pages/seniorExaminer/manageTask/Task"));
 const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
 const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
 const LoadingFallback = () => <div>Loading...</div>;
@@ -202,6 +204,14 @@ export const routes = createBrowserRouter([
               // </Suspense>
             ),
           },
+           {
+            path: "assign-creation",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AssignCreationAssignments />
+              </Suspense>
+            ),
+          },
           {
             path: "plan",
             element: (
@@ -301,6 +311,14 @@ export const routes = createBrowserRouter([
             element: (
               <Suspense fallback={null}>
                 <EvaluationRequests />
+              </Suspense>
+            ),
+          },
+           {
+            path: "todo-assignments",
+            element: (
+              <Suspense fallback={null}>
+                <AssignedWork  />
               </Suspense>
             ),
           },

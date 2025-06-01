@@ -17,7 +17,7 @@ export default function useUpdateWorkload() {
     mutationFn: (data) =>  updateWorkload(data),
     retry: false,
     onError: (error) => {
-      console.log(error, "put workload error");
+      console.log(error?.response.data, "put workload error");
     },
     onSuccess: (data) => {
       console.log(data, "put workload Success");

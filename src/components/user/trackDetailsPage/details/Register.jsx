@@ -6,12 +6,20 @@ import { MdClose } from "react-icons/md";
 import { useAuthContext } from "../../../../contexts/AuthProvider";
 import EnrollmentModal from "../shared/EnrollmentModal";
 import { useParams } from "react-router-dom";
+import Extract from "../../../../utils/Extract";
+import useGetApplicantTrack from "../../../../hooks/applicant/enroll/useGetApplicantTrack";
 
 export default function Register() {
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
- const {id} =useParams()
-   
+  let authId = null;
+  if (auth) authId = Extract(auth, "nameid");
+  const { data: MyTracks, isLoading } = useGetApplicantTrack(authId);
+  console.log(
+    MyTracks?.data?.data?.map((tr) => tr.trackId),
+    "iside card test jjjjjjjjjjjjj "
+  );
+  const { id } = useParams();
   return (
     <>
       {show && (
@@ -32,16 +40,21 @@ export default function Register() {
           )}
         </Modal>
       )}
-      <section className="mt-24 w-[90%] mx-auto py-18 px-5 bg-[#003F7D] rounded-2xl">
-        <div className="flex flex-wrap justify-center gap-9 items-center">
-          <div className="text-white w-[60%] text-2xl font-medium ">
-            <p className="w-[90%] text-center">Want to know more about the Tracks?</p>
-          </div>
-          <div >
-            <Button py="12" px="60" showModal={() => setShow(true)} />
-          </div>
-        </div>
-      </section>
+      {
+       !( MyTracks?.data?.data?.map((tr) => tr.trackId).includes(id)) && (
+          <section className="mt-24 w-[90%] mx-auto py-18 px-5 bg-[#003F7D] rounded-2xl">
+            <div className="flex flex-wrap justify-center gap-9 items-center">
+              <div className="text-white w-[60%] text-2xl font-medium ">
+                <p className="w-[90%] text-center">
+                  Want to know more about the Tracks?
+                </p>
+              </div>
+              <div>
+                <Button py="12" px="60" showModal={() => setShow(true)} />
+              </div>
+            </div>
+          </section>
+        )}
     </>
   );
 }

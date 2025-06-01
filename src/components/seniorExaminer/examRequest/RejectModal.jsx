@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
 import useRejectRequest from "../../../hooks/seniorExaminer/examRequest/useRejectRequest";
 import { FaCheckCircle } from "react-icons/fa";
+import Spinner from "../../shared/Spinner";
+import Alert from "../../shared/Alert";
 
 export default function RejectModal({ selectedRequest, cancelAction }) {
   const {
@@ -15,13 +17,24 @@ export default function RejectModal({ selectedRequest, cancelAction }) {
     isPending: isRejectPending,
     mutate: rejectRequest,
     isSuccess: isRejectSuccess,
-  } = useRejectRequest();
+    data:rejectData
+  } = useRejectRequest(selectedRequest.id);
   console.log("inside reject modal", selectedRequest);
   const onSubmit = (data) => {
     console.log(data, "form reject");
      rejectRequest({...data,id:selectedRequest.id})
   };
+  useEffect(()=>{
+     if(isRejectError || isRejectSuccess)
+      setTimeout(()=>cancelAction(),1500)
+    if(isRejectSuccess)
+    window.location.reload();
+    },[isRejectSuccess,isRejectError])
+  console.log(rejectData,';;;;;;;;;;;;;;;;;;;;rejectData')
   return (
+    <>
+      {isRejectError && <Alert message='Request Failed  Please try again' type='error' /> }
+      {isRejectSuccess  && <Alert message='Reject successfully'  /> }
     <div className="w-full max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-y-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
         <header className="flex items-center justify-between">
@@ -62,7 +75,7 @@ export default function RejectModal({ selectedRequest, cancelAction }) {
           <button
             disabled={isRejectPending}
             type="submit"
-            className="px-6 py-2 disabled:cursor-not-allowed bg-blue-600 cursor-pointer dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+            className="px-6 py-2 disabled:cursor-not-allowed bg-blue-500 cursor-pointer dark:bg-blue-500 hover:bg-blue-600 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
           >
             {isRejectPending ? <Spinner /> : <FaCheckCircle />}
             Reject
@@ -70,5 +83,6 @@ export default function RejectModal({ selectedRequest, cancelAction }) {
         </div>
       </form>
     </div>
+    </>
   );
 }

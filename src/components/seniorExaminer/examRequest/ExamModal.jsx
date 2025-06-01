@@ -30,21 +30,23 @@ export default function ExamModal({ cancelAction, selectedRequest,all=false }) {
     isPending:isApproveAllPending,
     mutate: approveAllRequest,
     isSuccess:isApproveAllSuccess,
+    data:approveAllData
   } = useApproveAllRequest();
-  console.log(selectedRequest,'llllllllllllllllllllllllllllllllllllllll')
+  console.log(selectedRequest,'llllllllllllllllllllllllllllllllllllllll selectedRequest')
   const onSubmit = (data) => {
-    console.log(data, selectedRequest.id);
+    console.log({...data,status:'Pending'}, selectedRequest.id);
     if(all){
       console.log({...data,requestIds:selectedRequest},'all')
-      approveAllRequest({...data,requestIds:selectedRequest})
+      approveAllRequest({...data,status:'Approved',requestIds:selectedRequest})
     }
     else{
-       approveRequest({ ...data, id: selectedRequest.id });
+       approveRequest({ ...data,status:'Pending', id: selectedRequest.id });
     }
   };
+  console.log(approveAllData,'approveAllData')
   useEffect(()=>{
    if(isError || isSuccess)
-    setTimeout(()=>cancelAction(),1500)
+    setTimeout(()=>{cancelAction(),window.location.reload();},1500)
   },[isError,isSuccess])
   return (
     <>

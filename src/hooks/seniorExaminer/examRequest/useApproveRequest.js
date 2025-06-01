@@ -3,8 +3,8 @@ import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function approveRequest(request) {
   console.log('ibside approve exam end point',request)
-  const {scheduledDateTime,instructions}=request
-  const info={scheduledDateTime,instructions}
+  const {scheduledDate,instructions,status}=request
+  const info={scheduledDate,instructions,status}
   console.log(info,'info ,,,,,,,,,,,')
   const { data } = await axiosInstance.put(`exam-request/${request.id}/approve`,info);
   return data;
@@ -15,7 +15,7 @@ export default function useApproveRequest() {
     mutationFn: (request) => approveRequest(request),
     retry: false,
     onError: (error) => {
-      console.log(error, `error i `);
+      console.log( error?.response.data, `error i `);
       
     },
     onSuccess: (data) => {

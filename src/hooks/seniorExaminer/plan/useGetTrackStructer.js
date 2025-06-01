@@ -10,6 +10,6 @@ export default function useGetTrackStructure(id){
         queryKey:['trackStructure',id],
         queryFn: () => getTrackStructure(id),
         retry:false,
-        // staleTime: 1000 * 60 * 8 ,
+        staleTime: 1000 * 60 * 8 ,
     })
 }

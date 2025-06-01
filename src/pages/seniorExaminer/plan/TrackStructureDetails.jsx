@@ -15,9 +15,6 @@ import AddCriteriaModal from "../../../components/seniorExaminer/plan/mangePlan/
 import DeleteCritera from "../../../components/seniorExaminer/plan/mangePlan/DeleteCritera";
 import useUpdatePlan from "../../../hooks/seniorExaminer/plan/useUpdatePlan";
 import useRestorePlanStructer from "../../../hooks/seniorExaminer/plan/useRestorePlanStructer";
-import { useAuthContext } from "../../../contexts/AuthProvider";
-import Extract from "../../../utils/Extract";
-import useGetTrackStructure from "../../../hooks/seniorExaminer/plan/useGetTrackStructer";
 import useUpdateStageDetails from "../../../hooks/seniorExaminer/plan/useUpdateStageDetails";
 import EditStageDetailsModal from "../../../components/seniorExaminer/plan/mangePlan/EditStageDetailsModal";
 const initialPlan = {
@@ -357,7 +354,7 @@ export default function TrackStructureDetails({ structure }) {
   };
 
   const handleEditCriteria = (cri) => {
-    console.log(cri);
+    console.log(cri,'handle edit cri');
     setItemToEdit({ ...cri });
     setEditType("criteria");
     setUpdateModalOpen(true);
@@ -398,7 +395,7 @@ export default function TrackStructureDetails({ structure }) {
           window.location.reload();
           break;
         case "criteria":
-          await mutateAsync({ endpoint: "criteria", payload: itemToEdit });
+          await mutateAsync({ endpoint: `EvaluationCriteria/${itemToEdit.id}`, payload: itemToEdit });
           window.location.reload();
           break;
       }
@@ -569,6 +566,7 @@ export default function TrackStructureDetails({ structure }) {
                 stageIndex.current = null;
               }}
               current={criteriaIndex}
+              stage={stageIndex.current}
             />
           </Modal>
         )}
@@ -750,11 +748,11 @@ export default function TrackStructureDetails({ structure }) {
                           <span className="w-1 h-5 bg-blue-500 rounded-full mr-2 "></span>
                           Evaluation Criteria
                         </h4>
-                        <div className="space-y-3">
-                          {stg.evaluationCriteria.map((crit, k) => (
+                        <div className="space-y-3 ">
+                          {stg.evaluationCriteria.filter(cr =>cr.isActive==true).map((crit, k) => (
                             <div
                               key={crit.id}
-                              className="bg-white dark:border-gray-700 dark:bg-gray-600 p-4 rounded-lg shadow-sm flex justify-between items-start border border-gray-100 hover:shadow-md transition-shadow"
+                              className="bg-white dark:border-gray-700 dark:bg-gray-600 p-4 rounded-lg shadow-sm flex justify-between items-start border border-gray-100 hover:shadow-md transition-shadow scrollbar-custom overflow-y-auto"
                             >
                               <div className="flex-1">
                                 <div className="font-medium text-gray-800 dark:text-white capitalize">
@@ -785,7 +783,7 @@ export default function TrackStructureDetails({ structure }) {
                                     className="cursor-pointer"
                                   />
                                 </button>
-                                <button
+                                {stg.evaluationCriteria.filter(cr =>cr.isActive==true).length >1 &&   <button
                                   onClick={() => {
                                     setDeleteCriteria(true);
                                     levelIndex.current = lvl;
@@ -798,7 +796,8 @@ export default function TrackStructureDetails({ structure }) {
                                     size={16}
                                     className="cursor-pointer"
                                   />
-                                </button>
+                                </button>}
+                             
                               </div>
                             </div>
                           ))}

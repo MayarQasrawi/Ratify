@@ -10,6 +10,7 @@ import useAddPlan from "../../../../hooks/seniorExaminer/plan/useAddPlan";
 import Spinner from "../../../../components/shared/Spinner";
 import Back from "../../../../components/shared/dashboard/Back";
 import { FiAlertCircle } from "react-icons/fi";
+import useAddStage from "../../../../hooks/seniorExaminer/plan/useAddStage";
 const stageFields = [
   { name: "daysToSubmit", label: "Days to Submit" },
   { name: "description", label: "Description" },
@@ -36,8 +37,12 @@ const examFields = [
   { name: "durationMinutes", label: "Duration (Minutes)" },
 ];
 export default function PlanSetup() {
-    const location = useLocation();
-  console.log(location?.state?.track?.id,location?.state?.track?.name,'lllllllllllllllllllllllllllllllllllllllllllllllll')
+  const location = useLocation();
+  console.log(
+    location?.state?.track?.id,
+    location?.state?.track?.name,
+    "lllllllllllllllllllllllllllllllllllllllllllllllll"
+  );
   const [levels, setLevels] = useState([]);
   const [isWeightValid, setIsWeightValid] = useState(null);
   const [activeLevelIndex, setActiveLevelIndex] = useState(-1);
@@ -56,6 +61,13 @@ export default function PlanSetup() {
     isSuccess: isAddPlanSuccess,
     error,
   } = useAddPlan();
+  const {
+    mutate: addStage,
+    isError: isAddStageError,
+    isPending: isAddStagePending,
+    isSuccess: isAddStageSuccess,
+    data: stageAddData,
+  } = useAddStage();
   console.log(error);
   console.log(location.state.length);
   useEffect(() => {
@@ -111,10 +123,13 @@ export default function PlanSetup() {
     if (stages.length === 0) return 1;
     return Math.max(...stages.map((stage) => stage.order)) + 1;
   };
-useEffect(()=>{
-if(isAddPlanSuccess)
-  setTimeout(()=>{navigate('/dashboard/seniorExaminer/plan');window.location.reload();},2000)
-},[isAddPlanSuccess])
+  useEffect(() => {
+    if (isAddPlanSuccess || isAddStageSuccess)
+      setTimeout(() => {
+        navigate("/dashboard/seniorExaminer/plan");
+        window.location.reload();
+      }, 2000);
+  }, [isAddPlanSuccess,isAddStageSuccess]);
   const handleLevelSubmit = (data) => {
     console.log(data, "add level");
     const newLevel = {
@@ -150,18 +165,23 @@ if(isAddPlanSuccess)
     const extraInfo =
       selectedStage == "Interview"
         ? {
-            interview: { ...getInterviewValues(),stageId:0 },
+            interview: { ...getInterviewValues() },
             exam: null,
             tasksPool: null,
           }
         : selectedStage == "Task"
-        ? { tasksPool: { ...getTaskValues(),id:0,stageId:0,isActive:true}, exam: null, interview: null }
-        : { exam: { ...getExamValues(),id:0,stageId:0,isActive:true }, tasksPool: null, interview: null };
+        ? { tasksPool: { ...getTaskValues() }, exam: null, interview: null }
+        : { exam: { ...getExamValues() }, tasksPool: null, interview: null };
     console.log(extraInfo);
     if (source == "add-stage") {
       setLevels([
         ...levels,
-        { ...data, order: location.state.length + 1, evaluationCriteria: [], ...extraInfo },
+        {
+          ...data,
+          order: location.state.length + 1,
+          evaluationCriteria: [],
+          ...extraInfo,
+        },
       ]);
       console.log([...levels, { ...data, evaluationCriteria: [] }]);
       setFormState("criterion");
@@ -198,9 +218,10 @@ if(isAddPlanSuccess)
     resetExamInfo();
     setFormState("criterion");
   };
-
+  console.log(stageAddData, "stageAddData");
   const handleCriterionSubmit = (data) => {
     console.log(data, "add criteria");
+    const data1={...data,id:0}
     const criteria =
       source != "add-stage"
         ? levels[activeLevelIndex].stages[activeStageIndex].evaluationCriteria
@@ -228,7 +249,7 @@ if(isAddPlanSuccess)
         setLevels([
           {
             ...levels[0],
-            evaluationCriteria: [...levels[0].evaluationCriteria, data],
+            evaluationCriteria: [...levels[0].evaluationCriteria, data1],
           },
         ]);
         resetCriterionForm();
@@ -281,20 +302,27 @@ if(isAddPlanSuccess)
   };
   const savePlan = () => {
     console.log("Saving plan:", levels);
-    console.log("Saving plan2:", {
-      trackId: location.state.track.id,
-      trackName: location.state.track.name,
-      levels: [...levels],
-    });
+    // console.log("Saving plan2:", {
+    //   trackId: location.state.track.id,
+    //   trackName: location.state.track.name,
+    //   levels: [...levels],
+    // });
     if (source == "add" || source == "define") {
       addPlan({
-       trackId: location.state.track.id,
-       trackName: location.state.track.name,
+        trackId: location.state.track.id,
+        trackName: location.state.track.name,
         levels: [...levels],
       });
     } else if (source == "add-stage") {
-      console.log("add stage");
+      console.log("add stage", {
+        mainStage: { ...levels },
+        // additionalStages: [],
+      });
       console.log("add stage", location.state.level.id);
+      addStage({
+        info: [...levels ],
+        id: location.state.level.id,
+      });
     }
   };
 
@@ -378,13 +406,19 @@ if(isAddPlanSuccess)
         return (
           <div className="px-12 py-3 w-full ">
             <div className="mb-6 flex items-center">
-              <div className="bg-blue-100 text-blue-800 px-6 py-2 rounded-lg text-sm">
-                Level {source != "add-stage" ? " " : ":"}
-                {source == "add-stage"
-                  ? `${location.state.level.order}`:source=='add'?`${location.state.length}: `
-                  : `${levels[activeLevelIndex].order} : `}{" "}
-                {source != "add-stage" && levels[activeLevelIndex]?.name}
-              </div>
+              {source == "add-stage" && (
+                <div className="p-2">
+                  <Back
+                    text="Back to Plan"
+                    onClick={() => navigate("/dashboard/seniorExaminer/plan")}
+                  />
+                  <h2 className="text-[20px] md:text-[26px] font-bold text-gray-800 my-3">
+                    <span className="text-blue-600">
+                      Add Stage To {location.state.level.name}
+                    </span>{" "}
+                  </h2>
+                </div>
+              )}
               {source != "add-stage" &&
                 levels[activeLevelIndex].stages.length > 0 && (
                   <div className="ml-3 text-gray-600 text-sm">
@@ -397,26 +431,27 @@ if(isAddPlanSuccess)
                 )}
             </div>
             {source != "add-stage" && (
-             <h2 className="text-[20px] md:text-[26px] font-bold text-gray-800 mb-6">
-     <span className="text-blue-600">Add Stage {getNextStageOrder(activeLevelIndex)}</span>
-         </h2>
+              <h2 className="text-[20px] md:text-[26px] font-bold text-gray-800 mb-6">
+                <span className="text-blue-600">
+                  Add Stage {getNextStageOrder(activeLevelIndex)}
+                </span>
+              </h2>
             )}
             <form
               onSubmit={handleSubmitStage(handleStageSubmit)}
               className=" grid grid-cols-2 gap-8"
             >
               <div className="space-y-6 ">
-                  <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
-                    Name <span className="text-red-500">*</span>
-                  </label>
-                 <input
-                    type="text"
-                    {...registerStage("name", {
-                      required: "Passing score is required",
-          
-                    })}
-                    className="w-full sm:w-[90%]  h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
-                  />
+                <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  {...registerStage("name", {
+                    required: "Passing score is required",
+                  })}
+                  className="w-full sm:w-[90%]  h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                />
                 <div>
                   <label className="block text-[12px] sm:text-base font-medium text-gray-700 mb-2">
                     Stage Type <span className="text-red-500">*</span>
@@ -481,26 +516,27 @@ if(isAddPlanSuccess)
                   )}
                 </div>
                 <div className="mt-8">
-                <Button>
-                  <BsArrowRight size={18} className="mr-2" /> Continue to Add
-                  Criteria
-                </Button>
+                  <Button>
+                    <BsArrowRight size={18} className="mr-2" /> Continue to Add
+                    Criteria
+                  </Button>
                 </div>
               </div>
               <div className="space-y-6 ">
                 <label className="block text-[12px] sm:text-sm font-medium text-gray-700 mb-1">
-                          No Of Attempts <span className="text-red-500">*</span>
-                      </label>
-                      <input type="number"
-                            {...registerStage('noOfAttempts', {
-                              required: `${'No Of Attempts'} is required`,
-                              valueAsNumber: true,
-                            })}
-                            max={3}
-                            min={1}
-                            className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
-                            placeholder={`Enter No Of Attempts`}
-                          />
+                  No Of Attempts <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  {...registerStage("noOfAttempts", {
+                    required: `${"No Of Attempts"} is required`,
+                    valueAsNumber: true,
+                  })}
+                  max={3}
+                  min={1}
+                  className="w-full sm:w-[90%] h-12 px-4 border border-gray-300 rounded-lg outline-none placeholder:text-[10px] sm:placeholder:text-sm"
+                  placeholder={`Enter No Of Attempts`}
+                />
                 {selectedStage == "Task"
                   ? stageFields.map((field) => (
                       <div key={field.name} className="mb-4">
@@ -624,7 +660,6 @@ if(isAddPlanSuccess)
                       </div>
                     ))}
               </div>
-            
             </form>
           </div>
         );
@@ -683,7 +718,7 @@ if(isAddPlanSuccess)
                 }`}
                 disabled={!hasCriteria || !weightIs100}
               >
-                {isAddPlanPending ? (
+                {(isAddPlanPending || isAddStagePending) ? (
                   <Spinner />
                 ) : (
                   <BiPlusCircle className="mr-2" />
@@ -730,7 +765,9 @@ if(isAddPlanSuccess)
                     Level{" "}
                     {source == "add-stage"
                       ? location.state.level.order
-                      :source=='add' ?location.state.length :levels[activeLevelIndex].order}
+                      : source == "add"
+                      ? location.state.length
+                      : levels[activeLevelIndex].order}
                     {source != "add-stage" && ":"}{" "}
                     {source !== "add-stage" && levels[activeLevelIndex].name}
                   </div>
@@ -881,6 +918,8 @@ if(isAddPlanSuccess)
 
   return (
     <>
+      {isAddStageSuccess && <Alert message="Stage Add Successfully " />}
+      {isAddStageError && <Alert type="error" message="Request Fail" />}
       {isAddPlanSuccess && <Alert message="Plan Add Successfully " />}
       {isAddPlanError && <Alert type="error" message="Request Fail" />}
       {isWeightValid && <Alert type="error" message={isWeightValid} />}

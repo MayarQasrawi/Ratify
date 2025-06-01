@@ -5,7 +5,11 @@ async function getPendingRequest(endpoint) {
   console.log("inside get evaluation end point  end point", endpoint);
   const token = localStorage.getItem("token");
   console.log(token, "inside get evaluation");
-  const { data } = await axiosInstance.get(endpoint);
+  const { data } = await axiosInstance.get(endpoint,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   return data;
 }
 

@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '../../auth/utils/axiosInstance';
 
 
@@ -13,6 +13,7 @@ async function assignManagerToTrack(data) {
   return res;}
 
 export function useAssignManagerToTrack() {
+      const queryClient = useQueryClient();
   return useMutation({
     mutationFn:(data)=> assignManagerToTrack(data),
      retry: false,
@@ -21,6 +22,7 @@ export function useAssignManagerToTrack() {
     },
     onSuccess: (data) => {
       console.log(data,"put track manger success");
+            queryClient.invalidateQueries(["tracks"]);
     },
   });
 }

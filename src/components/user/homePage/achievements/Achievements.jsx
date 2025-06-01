@@ -36,7 +36,7 @@ export default function Achievements() {
               </span>{" "}
             </div>
           </div>
-          <div className=" bg-[var(--main-color)] rounded-2xl  hover:bg-[#003F7D] transition p-6 text-center shadow text-white text-[20px] sm:text-2xl font-bold md:w-[380px] lg:w-[430px]">
+          <div className=" bg-[var(--main-color)] rounded-2xl cursor-pointer  hover:bg-[#003F7D] transition p-6 text-center shadow text-white text-[20px] sm:text-2xl font-bold md:w-[380px] lg:w-[430px]">
             <span> Start your journey </span>
             <span>now</span>
             <FaRocket className="mt-1.5 text-white inline  ml-2" />

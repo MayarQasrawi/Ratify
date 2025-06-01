@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import Back from "../../../components/shared/dashboard/Back";
@@ -12,25 +12,8 @@ import {
 import useAddTask from "../../../hooks/examiner/task/useAddTask";
 import Spinner from "../../../components/shared/Spinner";
 import GeneralSpinner from "../../../components/shared/dashboard/Spinner";
-import useFetchTaskPool from "../../../hooks/seniorExaminer/manageTask/useFetchTaskPool";
 import useFetchCriteria from "../../../hooks/seniorExaminer/manageTask/useFetchCriteria";
 import Alert from "../../../components/shared/Alert";
-
-const criteriaOptions = [
-  {
-    id: "c3",
-    name: "Correctness",
-    description: "Bug-free solution",
-    weight: 60,
-  },
-  {
-    id: "c4",
-    name: "Efficiency",
-    description: "Optimal performance",
-    weight: 40,
-  },
-];
-
 const formFields = [
   {
     name: "title",
@@ -68,40 +51,33 @@ export default function CreateTask() {
   const navigate = useNavigate();
   const location = useLocation();
   console.log(
-    location.state.stage,
-    "inside create llllllllllllllllllllllllllll"
+    location.state.tasksPool,' location.state.tasksPool'
   );
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors},
     reset
   } = useForm();
   const [layout, setLayout] = useState("Stacked");
   const {
-    data: taskPool,
-    isLoading: isTaskLoading,
-    isError: isTaskError,
-  } = useFetchTaskPool(location.state.stage.id);
-  const {
     data: stageCriteria,
     isLoading: isCriteriaLoading,
     isError: isCriteriaError,
-  } = useFetchCriteria(location.state.stage.id);
-  console.log(taskPool, "lllllllllllllllllllllllllllllllllllllll");
+  } = useFetchCriteria(location.state.tasksPool.stageId);
   console.log(stageCriteria?.data, "stage criteria");
   const { mutate: addTask, isError, isPending, isSuccess,data } = useAddTask();
   const onSubmit = (data) => {
-    console.log({...data,taskPoolId:taskPool.data.id}, "task added");
-    addTask({...data,taskPoolId:taskPool.data.id});
+    console.log({...data,taskPoolId:location.state.tasksPool.stageId}, "task added");
+    addTask({...data,taskPoolId:location.state.tasksPool.id});
     reset()
   };
   const ContainerClass =
     layout === "Side-by-Side"
       ? "flex flex-col lg:flex-row gap-6 p-4"
       : "flex flex-col gap-6 p-4";
-  const isLoading = isTaskLoading || isCriteriaLoading;
-  const isErrors = isTaskError || isCriteriaError;
+  const isLoading =  isCriteriaLoading;
+  const isErrors =  isCriteriaError;
   if (isLoading) return <GeneralSpinner text={"Create Task Page"} />;
   if (isErrors) return <div>Error loading data</div>;
   
@@ -115,8 +91,8 @@ export default function CreateTask() {
         <div className="flex md:items-center md:justify-between flex-col md:flex-row">
           <div className="flex items-center gap-2">
             <Back
-              text="Back to Stage Tasks"
-              onClick={() => navigate("/dashboard/examiner/stage-tasks")}
+              text="Back to Assigned Work"
+              onClick={() => navigate("/dashboard/examiner/todo-assignments")}
             />
           </div>
           <div className="flex items-center gap-4 mt-3 md:mt-0">
@@ -160,7 +136,7 @@ export default function CreateTask() {
               <span className="text-sm cursor-pointer">
                 DaysToSubmit :
                 <span className="font-mono font-bold ">
-                  {taskPool.data.daysToSubmit}
+                  {location.state.tasksPool.daysToSubmit}
                 </span>
               </span>
             </div>
@@ -241,8 +217,7 @@ export default function CreateTask() {
               </button>
             </div>
           </div>
-
-          <div
+   {stageCriteria?.data.filter(cr=>cr.isActive==true).length>0 && <div
             className={`${
               layout === "Side-by-Side" ? "lg:w-1/3" : "w-full"
             } bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden`}
@@ -253,7 +228,7 @@ export default function CreateTask() {
               </h2>
             </div>
             <div className="space-y-3 p-4">
-              {stageCriteria?.data.map((c, ind) => (
+              {stageCriteria?.data.filter(cr=>cr.isActive==true).map((c, ind) => (
                 <Accordion
                   key={ind}
                   description={c.description}
@@ -271,7 +246,7 @@ export default function CreateTask() {
                 />
               ))}
             </div>
-          </div>
+          </div>}
         </div>
       </form>
     </div>

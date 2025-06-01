@@ -62,7 +62,7 @@ export default function ApproveAllModal({ cancelAction, selectedRequest,currentW
         {approveScope && <div className="flex justify-end">
          <button
             type="button"
-            className=" bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+            className=" bg-blue-500 cursor-pointer hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
           >
             <FaCheckCircle />
             {approveScope === "all" ? "Approve All Weeks" : "Approve Current Week"}

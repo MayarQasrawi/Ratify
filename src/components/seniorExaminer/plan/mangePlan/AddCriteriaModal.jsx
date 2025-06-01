@@ -1,8 +1,9 @@
+import useHandleDeleteCriteria from "../../../../hooks/seniorExaminer/plan/useHandleDeleteCriteria";
 import Spinner from "../../../shared/Spinner";
 import Title from "./shared/Title";
 import { useForm } from "react-hook-form";
 
-export default function AddCriteriaModal({ isPending, onCancel, onSubmit,current }) {
+export default function AddCriteriaModal({ onCancel,current,stage }) {
   const {
     register,
     handleSubmit,
@@ -13,9 +14,14 @@ export default function AddCriteriaModal({ isPending, onCancel, onSubmit,current
       description: "",
     },
   });
-console.log(current,'inside add')
+  console.log(current,'inside add cri',stage,current.current.id)
+  const {isPending,mutate,isError, isSuccess}=
+  useHandleDeleteCriteria()
   const submitHandler =  (data) => {
-   console.log({...data,weight:current.current.weight
+   console.log(current,'inside add')
+console.log({id:stage,info:{newCriteriaToAdd:[{...data,weight:current.current.weight,stageId:stage}],criteriaIdToDelete:current.current.id,deletionMode:'ReplaceWithNewCriteria',stageId:stage}
+})
+   mutate({id:stage,info:{newCriteriaToAdd:[{...data,weight:current.current.weight,stageId:stage}],criteriaIdToDelete:current.current.id,deletionMode:'ReplaceWithNewCriteria',stageId:stage}
 })
   };
 
@@ -81,7 +87,7 @@ console.log(current,'inside add')
           className="cursor-pointer disabled:cursor-not-allowed flex items-center gap-0.5 px-4 py-2 bg-blue-500 dark:bg-blue-700 text-white rounded-md hover:bg-blue-600 transition-colors"
         >
           {isPending && <Spinner />}
-          <span>{isPending ? "Submitting..." : "Submit"}</span>
+          <span>{isPending ? "Submitting" : "Submit"}</span>
         </button>
       </div>
     </form>

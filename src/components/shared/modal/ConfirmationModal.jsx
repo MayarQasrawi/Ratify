@@ -13,7 +13,7 @@ export default function ConfirmationModal({
   error,
   data,
 }) {
-  console.log(isError, "gggggg");
+  console.log(data, "inside confirmation .....");
   return (
     <>
       {isError && (
@@ -23,7 +23,7 @@ export default function ConfirmationModal({
         />
       )}
       {isSuccess && (
-        <Alert message={data?.message|| "Delete successfully"} />
+        <Alert message={data?.message|| data.meta || "Delete successfully"} />
       )}
       <div
         className={`${

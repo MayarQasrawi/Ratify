@@ -9,58 +9,65 @@ import Title from "../../../components/admin/shared/Title";
 import Modal from "../../../components/shared/modal/Modal";
 import ExamModal from "../../../components/seniorExaminer/examRequest/ExamModal";
 import ApproveAllModal from "../../../components/seniorExaminer/examRequest/ApproveAllModal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useGetPendingExamRequest from "../../../hooks/seniorExaminer/examRequest/useGetPendingExamRequest";
 import RejectModal from "../../../components/seniorExaminer/examRequest/RejectModal";
+import Spinner from "../../../components/shared/Spinner";
+import Back from "../../../components/shared/dashboard/Back";
+import ExamDetailsModal from "../../../components/seniorExaminer/examRequest/ExamDetailsModal";
 const columns = ["#", "Date", "Request Details", "Status", " "];
 
-const generateStaticData = () => {
-  const data = [];
-  for (let i = 0; i < 50; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-    data.push({
-      id: i + 1,
-      requestDate: date.toISOString(),
-      status: "pending",
-    });
-  }
-  return data;
-};
+// const generateStaticData = () => {
+//   const data = [];
+//   for (let i = 0; i < 50; i++) {
+//     const date = new Date();
+//     date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+//     data.push({
+//       id: i + 1,
+//       scheduledDate: date.toISOString(),
+//       status: "Pending",
+//     });
+//   }
+//   return data;
+// };
 
 export default function ExamRequest() {
   const location = useLocation();
-  console.log(location.state, "inside exam pending request ");
+  console.log(location.state.stage.stageId, "inside exam pending request ");
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedAction, setSelectedAction] = useState(false);
   const [isApproveAllModalOpen, setIsApproveAllModalOpen] = useState(false);
-  // const { data: pendingExamRequest, isLoading } = useGetPendingExamRequest(
-  //   location.state.stage.id
-  // );
-  // console.log(pendingExamRequest, "pendingExamRequest");
-  useEffect(() => {
-    const data = generateStaticData();
-    setRequests(data);
-  }, []);
+  const { data: pendingExamRequest, isLoading,isSuccess } = useGetPendingExamRequest(
+    location.state.stage.stageId
+  );
+  const navigate=useNavigate()
+  console.log(pendingExamRequest?.data, "pendingExamRequest ////////////////////////////////////",location.state);
+  // useEffect(() => {
+  //   const data = generateStaticData();
+  //   setRequests(data);
+  // }, []);
 
   useEffect(() => {
-    const now = new Date();
+    if(isSuccess){
+        const now = new Date();
     const startOfWeek = new Date(now);
     startOfWeek.setDate(now.getDate() - now.getDay() + currentWeek * 7);
     startOfWeek.setHours(0, 0, 0, 0);
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 6);
     endOfWeek.setHours(23, 59, 59, 999);
-    const filtered = requests.filter((request) => {
-      const requestDate = new Date(request.requestDate);
+    const filtered = pendingExamRequest?.data.filter((request) => {
+      const requestDate = new Date(request.scheduledDate
+);
       return requestDate >= startOfWeek && requestDate <= endOfWeek;
     });
-
     setFilteredRequests(filtered);
-  }, [requests, currentWeek]);
+    }
+  
+  }, [currentWeek,isSuccess]);
 
   const handleApprove = (request) => {
     console.log(request, "handle approve");
@@ -131,11 +138,11 @@ export default function ExamRequest() {
               className="text-gray-400 dark:text-gray-300"
               size={16}
             />
-            <span>{request.requestDate.split("T")[0]}</span>
+            <span>{request.scheduledDate.split("T")[0]}</span>
           </div>
         </td>
         <td className="py-3 px-3 lg:px-3 text-center">
-          <div className="w-full flex justify-center cursor-pointer">
+          <div className="w-full flex justify-center cursor-pointer" onClick={()=>{setSelectedAction('details'); setSelectedRequest(request)}}>
             <IconActionButton Icon={IoSearch} label="Details" color="green" />
           </div>
         </td>
@@ -158,7 +165,8 @@ export default function ExamRequest() {
       </tr>
     );
   };
-
+if(isLoading )
+  return <Spinner text="Exam Pending Request" />
   return (
     <>
       {selectedAction == "reject" && (
@@ -167,6 +175,11 @@ export default function ExamRequest() {
             cancelAction={cancelAction}
             selectedRequest={selectedRequest}
           />
+        </Modal>
+      )}
+      {selectedAction == "details" && (
+        <Modal>
+          <ExamDetailsModal  cancelAction={cancelAction} selectedRequest={selectedRequest} extraInfo={{stage: location.state.stage.stageName,level: location.state.stage.levelName}} />
         </Modal>
       )}
       {selectedAction == "Approve-All" && (
@@ -179,7 +192,7 @@ export default function ExamRequest() {
           />
         </Modal>
       )}
-{selectedAction == "Approve" && (
+     {selectedAction == "Approve" && (
         <Modal>
           <ExamModal
             cancelAction={cancelAction}
@@ -189,16 +202,22 @@ export default function ExamRequest() {
       )}
       <div className="p-6 min-h-screen text-gray-900 dark:text-gray-100">
         <div className="max-w-7xl mx-auto">
+           <div className="flex items-center gap-2 p-3 mb-5">
+                      <Back
+                        text="Back to  Exam Stages"
+                        onClick={() => navigate("/dashboard/seniorExaminer/exams-stages")}
+                      />
+                    </div>
           <div className="mb-6 flex justify-between items-center">
             <Title>Exam Request Management</Title>
             <button
               onClick={() => {
                 setSelectedAction("Approve-All");
               }}
-              disabled={filteredRequests.length === 0}
+              disabled={filteredRequests?.length === 0}
               className="cursor-pointer hover:text-blue-500 dark:text-white disabled:bg-gray-400 disabled:cursor-not-allowed text-gray-900 px-4 py-2 rounded-lg transition-colors font-medium"
             >
-              Approve All ({filteredRequests.length})
+              Approve All ({filteredRequests?.length})
             </button>
           </div>
 
@@ -246,7 +265,7 @@ export default function ExamRequest() {
           </div>
 
           <div className="rounded-lg shadow-md overflow-hidden bg-white dark:bg-gray-900">
-            {filteredRequests.length > 0 ? (
+            {filteredRequests?.length > 0 ? (
               <Table cols={columns} data={filteredRequests} row={renderRow} />
             ) : (
               <div className="p-8 text-center text-gray-500 dark:text-gray-400">

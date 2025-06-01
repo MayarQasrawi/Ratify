@@ -3,7 +3,7 @@ import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function fetchCriteria(id){
     console.log('fetch task criteria /////////////////////////////////////////',id)
-    const { data } = await axiosInstance.get(`Stages/${id}/criteria`);
+    const { data } = await axiosInstance.get(`EvaluationCriteria/stage/${id}`);
     return data;
 }
 export default function useFetchCriteria(id){

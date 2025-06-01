@@ -19,7 +19,7 @@ export default function useDeleteWorkload(){
         mutationFn:(id)=> deleteWorkload(id),
         retry: false,
         onError: (error) => {
-                console.error("error in delete workload", error);
+                console.error("error in delete workload", error?.response.data);
         },
         onSuccess: (data) => {
             console.log("delete work load done", data);

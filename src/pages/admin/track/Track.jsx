@@ -18,51 +18,7 @@ import NoResultFound from "../../../components/shared/NoResultFound";
 import useActivateTrack from "../../../hooks/Admin/tracks/useActivateTrack";
 import AssignMangerModal from "../../../components/admin/track/AssignMangerModal";
 import useDeleteManager from "../../../hooks/Admin/tracks/useDeleteManager";
-const tracks = [
-  {
-    id: 1,
-    name: "Frontend Development",
-    image: img,
-    isActive: true,
-    DatePublished: "2/4/2025",
-    description: "testkkkkkkkkkkkkkkkkkkk",
-    objectives: "test1",
-    associatedSkills: [{ name: "html", description: "hhhhhhhh" }],
-    examinerId: 1,
-  },
-  {
-    id: 2,
-    name: "Backend Development",
-    img: img,
-    isActive: true,
-    DatePublished: "2/4/2025",
-    examinerId: null,
-  },
-  {
-    id: 3,
-    name: "Full Stack Development",
-    img: img,
-    isActive: false,
-    DatePublished: "2/4/2025",
-    examinerId: 1,
-  },
-  {
-    id: 4,
-    name: "Data Science",
-    img: img,
-    isActive: true,
-    DatePublished: "2/4/2025",
-    examinerId: 1,
-  },
-  {
-    id: 5,
-    name: "Cybersecurity",
-    img: img,
-    isActive: false,
-    DatePublished: "2/4/2025",
-    examinerId: null,
-  },
-];
+
 const cols = ["Track", "Status", " "];
 export default function Track() {
   const [search, setSearch] = useState("");

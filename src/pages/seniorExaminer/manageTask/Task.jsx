@@ -1,16 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import { FaPlus, FaSearch, FaChevronRight, FaCheck, FaClock } from "react-icons/fa";
+import {
+  FaPlus,
+  FaSearch,
+  FaChevronRight,
+  FaCheck,
+  FaClock,
+} from "react-icons/fa";
 import Title from "../../../components/admin/shared/Title";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import Search from "../../../components/admin/shared/Search";
-import NoResultFound from "../../../components/shared/NoResultFound";
-import { useLocation, useNavigate } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
-import useFetchTaskStage from "../../../hooks/seniorExaminer/manageTask/useFetchTaskStage";
-import Spinner from "../../../components/shared/dashboard/Spinner";
-import { useAuthContext } from "../../../contexts/AuthProvider";
 import Extract from "../../../utils/Extract";
 import useFetchExaminerById from "../../../hooks/examiner/useFetchExaminerById";
+import useFetchTaskStage from '../../../hooks/seniorExaminer/manageTask/useFetchTaskStage'
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../contexts/AuthProvider";
+import Spinner from "../../../components/shared/dashboard/Spinner";
+import Search from "../../../components/admin/shared/Search";
+import NoResultFound from "../../../components/shared/NoResultFound";
 
 const initialStages = [
   {
@@ -75,29 +80,29 @@ export default function Task() {
   const [stages, setStages] = useState(initialStages);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStage, setSelectedStage] = useState(null);
-   const { auth } = useAuthContext();
-    let role;
-    let id;
-    let isExaminer = false;
-    if (auth) {
-      id = Extract(auth, "nameid");
-      role = Extract(auth, "role");
-      isExaminer = role === "Examiner" || role === "SeniorExaminer";
-    }
-   const { data: examinerInfo } = useFetchExaminerById(id, isExaminer);
-  console.log(examinerInfo,'inside task view //////////////////////////////////')
-  const { data: trackTaskStage, isLoading } = useFetchTaskStage(examinerInfo.data.workingTracks[0].id);
-  console.log(
-    trackTaskStage?.data.length,
-    "llllllllllllllllllllllllllllllllllllllll;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
+  const { auth } = useAuthContext();
+  let role;
+  let id;
+  let isExaminer = false;
+  if (auth) {
+    id = Extract(auth, "nameid");
+    role = Extract(auth, "role");
+    isExaminer = role === "Examiner" || role === "SeniorExaminer";
+  }
+  const { data: examinerInfo } = useFetchExaminerById(id, isExaminer);
+  const { data: trackTaskStage, isLoading } = useFetchTaskStage(
+    examinerInfo.data.workingTracks[0].id
   );
+
   const selectElement = useRef();
   const navigate = useNavigate();
   const location = useLocation();
   const isSenior = location.pathname.includes("/senior");
-  const filteredStages = trackTaskStage?.data && trackTaskStage?.data.filter((t) =>
+  const filteredStages =
+    trackTaskStage?.data &&
+    trackTaskStage?.data.filter((t) =>
       t.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ); ;
+    );
   useEffect(() => {
     if (selectedStage && selectElement.current) {
       selectElement.current.scrollIntoView({ behavior: "smooth" });
@@ -108,24 +113,24 @@ export default function Task() {
     setSelectedStage(stage.id == selectedStage?.id ? null : stage);
   };
   if (isLoading) return <Spinner text={"Stage Task Page"} />;
-  if ( trackTaskStage?.data.length == 0)
-      return (
-        <>
-          <Title>Task Stages</Title>
-          <div className="h-[70vh] flex items-center justify-center">
-            <div className="p-8 text-center  text-gray-500 dark:text-gray-400">
-              <FaClock className="mx-auto text-4xl mb-4" />
-              <p className="text-lg">No Task Stage Found</p>
-            </div>
+  if (trackTaskStage?.data.length == 0)
+    return (
+      <>
+        <Title>Task Stages</Title>
+        <div className="h-[70vh] flex items-center justify-center">
+          <div className="p-8 text-center  text-gray-500 dark:text-gray-400">
+            <FaClock className="mx-auto text-4xl mb-4" />
+            <p className="text-lg">No Task Stage Found</p>
           </div>
-        </>
-      );
+        </div>
+      </>
+    );
   return (
     <div className="flex flex-col min-h-screen  text-gray-900  dark:text-white">
       <header>
         <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <Title>Task Stages</Title>
+            <Title> {examinerInfo.data.workingTracks[0].name} Task Stages</Title>
             {isSenior && selectedStage && (
               <span
                 onClick={() =>
@@ -216,8 +221,6 @@ export default function Task() {
                 Selected Task Stage :
               </h3>
               <button
-                // smooth
-                // to="/dashboard/Examiner/add-task#top"
                 onClick={() =>
                   navigate("/dashboard/Examiner/add-task", {
                     state: { stage: selectedStage },

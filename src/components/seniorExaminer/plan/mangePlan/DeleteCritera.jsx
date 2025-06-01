@@ -1,13 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiAlertTriangle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import Alert from "../../../shared/Alert";
+import useHandleDeleteCriteria from "../../../../hooks/seniorExaminer/plan/useHandleDeleteCriteria";
+import Spinner from "../../../shared/Spinner";
 
 export default function DeleteCritera({ onClose, criteriaIndex,handleAddCriteria,stageIndex,levelIndex }) {
   const [option, setOption] = useState(false);
   const navigate = useNavigate();
-
+  console.log(criteriaIndex.current.id,'criteriaIndex yt kkkkkkkkkkkkkkkkkkkk',criteriaIndex,stageIndex.current)
+ const {
+    data:deleteCriteriaData ,
+    error: updateError,
+    isError:isDeleteCriteriaError,
+    mutate:deleteCriteria,
+    isPending:isDeleteCriteriaPending,
+    isSuccess:isDeleteCriteriaSuccess,
+  } = useHandleDeleteCriteria();
+  console.log(deleteCriteriaData,'deleteCriteriaData')
+  useEffect(()=>{
+  if(isDeleteCriteriaSuccess)
+   setTimeout(()=>window.location.reload(),1500) 
+  },[isDeleteCriteriaSuccess])
   return (
+    <>
+      {isDeleteCriteriaError  && (
+        <Alert type="error" message="Request Fail" />
+      )}
+      {isDeleteCriteriaSuccess  && (
+        <Alert message='success' />
+      )}
     <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-slide-up space-y-6 ">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
@@ -32,7 +55,7 @@ export default function DeleteCritera({ onClose, criteriaIndex,handleAddCriteria
         </span>{" "}
         Criteria ?
       </p>
-      <div className="space-y-4 max-h-45 overflow-y-auto pr-2 ">
+      <div className="space-y-4 max-h-45 overflow-y-auto pr-2 scrollbar-custom ">
         {[
           {
             value: "distribute",
@@ -70,19 +93,16 @@ export default function DeleteCritera({ onClose, criteriaIndex,handleAddCriteria
           </label>
         ))}
       </div>
-      <div className="text-sm font-medium text-[var(--main-color)] bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-        Note: For the last two options, deletion will only complete after
-        successful weight adjustment.
-      </div>
       <div className="flex justify-end gap-3 pt-2">
-        <button
+   {!isDeleteCriteriaPending &&<button
           onClick={onClose}
           className="cursor-pointer px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 transition font-medium"
         >
           Cancel
-        </button>
+        </button>}     
         {option && (
           <button
+           disabled={isDeleteCriteriaPending}
             onClick={() =>
               option == "manual"
                 ? navigate("/dashboard/SeniorExaminer/edit-criteria", {
@@ -93,15 +113,17 @@ export default function DeleteCritera({ onClose, criteriaIndex,handleAddCriteria
                           (cri) => cri.id != criteriaIndex.current.id
                         ),
                       w: criteriaIndex.current.weight,
-                      id:criteriaIndex.current.id
+                      id:criteriaIndex.current.id,
+                      stageId:stageIndex.current
                     },
                   })
                 : option == "create"
                 ? handleAddCriteria()
-                : navigate("kjj")
+                : deleteCriteria({id:stageIndex.current,info:{criteriaIdToDelete:criteriaIndex.current.id,deletionMode:'DistributeWeight',stageId:stageIndex.current}})
             }
-            className="cursor-pointer px-4 py-2 bg-blue-500  text-white border border-gray-300 rounded-md hover:bg-blue-600 transition font-medium"
+            className="cursor-pointer px-4 py-2 bg-blue-500 flex items-center gap-1 disabled:cursor-not-allowed  text-white border border-gray-300 rounded-md hover:bg-blue-600 transition font-medium"
           >
+            {isDeleteCriteriaPending && <Spinner />}
             {option == "create" && "Create new criteria"}
             {option == "manual" && "Manual adjustment"}
             {option == "distribute" && "Distribute automatically"}
@@ -109,5 +131,6 @@ export default function DeleteCritera({ onClose, criteriaIndex,handleAddCriteria
         )}
       </div>
     </div>
+    </>
   );
 }

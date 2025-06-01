@@ -50,7 +50,7 @@ export default function Accordion({ title, description,isActive, children, onDel
       </div>
       <div 
         className={`overflow-hidden transition-all duration-300 ${
-          toggle ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+          toggle ? "max-h-[2000px] opacity-100 overflow-y-auto scrollbar-custom" : "max-h-0 opacity-0"
         }`}
       >
         <div className="p-5  bg-[var(--sidebar-bg)] dark:border-gray-700 border-t border-gray-100">
