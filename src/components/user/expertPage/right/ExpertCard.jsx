@@ -4,7 +4,7 @@ export default function ExpertCard({expert,index}) {
   return (
     <div className='border-3 max-w-[320px] relative group cursor-pointer border-r-4 odd:border-[var(--main-color)] even:border-[#003F7D]  rounded-2xl overflow-hidden '>
     <div className='relative'>
-      <img src={expert.image} className='w-full inline-block  ' alt={expert.fullName} />
+      <img src={expert.image || `https://www.gravatar.com/avatar/?d=mp&s=180`} className='w-full inline-block  ' alt={expert.fullName} />
       <h2 
         className={`absolute w-full text-white font-medium py-2   rounded-tl-xl rounded-tr-none  text-center bottom-0 left-0 ${
           index % 2 === 0 ? 'bg-[var(--main-color)]' : 'bg-[#003F7D]'

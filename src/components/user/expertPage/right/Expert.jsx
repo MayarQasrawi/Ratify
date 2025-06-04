@@ -4,6 +4,8 @@ import ExpertCard from "./ExpertCard";
 import Search from "./Search";
 import { FaSadTear } from "react-icons/fa";
 import { MdClose} from "react-icons/md";
+import Pagination from "./Pagination";
+import useGetExaminers from "../../../../hooks/Admin/useGetExaminers";
 const experts = [
   {
     id: 1,
@@ -63,12 +65,16 @@ const experts = [
   },
 ];
 export default function Expert({ searchParams ,setSearchParams }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const {data:Teams, isLoading, isError,error}=useGetExaminers({currentPage,itemsPerPage:10})
   const [searchQuery, setsearchQuery] = useState('');
   const specialtyFilter = searchParams.get("specialty");
   const searchFilter=searchParams.get('query')
   console.log(specialtyFilter);
-  const loading=false;
-  if(loading){
+  // const loading=false;
+  console.log(isLoading,'insude team page')
+  console.log(Teams,'inside expert page check .......................',currentPage)
+  if(isLoading){
     return (
       <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-8">
         {Array.from({length:8},(_,ind)=>
@@ -81,10 +87,11 @@ export default function Expert({ searchParams ,setSearchParams }) {
       </div>
     )
   }
-  let expertsFilter = experts.slice();
+  let expertsFilter =Teams && Teams.data.data.slice()  ;
   if ( specialtyFilter) {
     expertsFilter = expertsFilter.filter(
-      (expert) => expert.trackId == specialtyFilter
+      (expert) => expert.
+workingTracks.map(exp=>exp.id)[0] == specialtyFilter
     );
   }
   if (searchFilter) {
@@ -110,6 +117,9 @@ export default function Expert({ searchParams ,setSearchParams }) {
         {expertsFilter.length>0 && expertsFilter.map((expert, index) => (
           <ExpertCard key={expert.id} expert={expert} index={index} />
         ))}
+      </div>
+      <div className="mt-5  p-5">
+       {Teams?.data?.totalPages >1 && <Pagination  totalPage={Teams?.data?.totalPages || 5} currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
       </div>
     </section>
   );

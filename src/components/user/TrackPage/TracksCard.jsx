@@ -3,13 +3,20 @@ import { BiShowAlt } from "react-icons/bi";
 import Button from "../trackDetailsPage/shared/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../contexts/AuthProvider";
-import Modal from '../../shared/modal/Modal'
-import EnrollmentModal from '../trackDetailsPage/shared/EnrollmentModal'
+import Modal from "../../shared/modal/Modal";
+import EnrollmentModal from "../trackDetailsPage/shared/EnrollmentModal";
+import Extract from "../../../utils/Extract";
+import useGetApplicantTrack from "../../../hooks/applicant/enroll/useGetApplicantTrack";
 function TracksCard({ header, description, img, id }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  // const { auth } = useAuthContext();
-  let auth='hhh'
+  const { auth } = useAuthContext();
+  let authId=null;
+    if(auth)
+      authId = Extract(auth, "nameid");
+      const {data:MyTracks,isLoading}=useGetApplicantTrack(authId)
+  console.log(id, "iside track card ddddddddddddddddddd", auth);
+  console.log(MyTracks?.data?.data?.map(tr=>tr.trackId),'iside card test jjjjjjjjjjjjj ')
   return (
     <>
       {show && (
@@ -19,35 +26,44 @@ function TracksCard({ header, description, img, id }) {
               setShow={setShow}
               title="Enroll Now &#10148;"
               description="Our unique assessment tracks are not just about learning—they're about discovering the essence of your strengths and matching them against the pulse of today's market demands. Register and log in to experience an evaluation crafted by industry visionaries, and step confidently into a future aligned with professional excellence."
+              trackId={id}
             />
           ) : (
             <EnrollmentModal
               title="&#128274; Login Required"
               description="Please Login First."
               setShow={setShow}
-              trackId={id}
             />
           )}
         </Modal>
       )}
       <div>
-        <div className="rounded-lg bg-[var(--secondary-color)]  h-65 p-6 transition-transform hover:shadow-lg">
-          <img src={img} className="w-30 h-30 block mx-auto" />
+        <div className="rounded-lg bg-[var(--secondary-color)]  h-72 p-6 transition-transform hover:shadow-lg">
+          <img src={`https://4b2a-85-113-123-99.ngrok-free.app/${img}`} className="w-30 h-30 block mx-auto" />
         </div>
-        <div className="bg-white relative -mt-24 shadow text-center  text-xl  h-50 rounded-lg p-3  w-[90%] mx-auto ">
+        <div className="bg-white relative -mt-24 shadow text-center  text-xl  h-60 rounded-lg p-3  w-[90%] mx-auto ">
           <div className="h-24">
             <h1 className="font-bold">{header}</h1>
             <p className="text-gray-600 text-sm  ">{description}</p>
           </div>
-          <div className="mt-5 ">
+          <div className="mt-14 ">
             <button
-              onClick={() =>{ navigate(`/track-details/${id}`);scrollTo(0, 0)}}
+              onClick={() => {
+                navigate(`/track-details/${id}`);
+                scrollTo(0, 0);
+              }}
               className="text-[#3B82F6] cursor-pointer  text-sm border-1 items-center border-[#3B82F6] py-1 px-4 rounded-lg hover:border-[#2A5C8A] hover:text-[#2A5C8A]"
             >
               Details <BiShowAlt className="inline text-xl" />
             </button>
             <div className="mt-3.5">
-              <Button px="28" py="6" showModal={() =>{ setShow(true)}} />
+            {auth && MyTracks.data.data.length >0 && MyTracks?.data?.data?.map(tr=>tr.trackId).includes(id)?<button className="inline-block cursor-pointer bg-blue-500 text-white text-sm  font-medium px-6 py-2 rounded-2xl">Go To Track</button>:<Button
+                px="28"
+                py="6"
+                showModal={() => {
+                  setShow(true);
+                }}
+              />}    
             </div>
           </div>
         </div>

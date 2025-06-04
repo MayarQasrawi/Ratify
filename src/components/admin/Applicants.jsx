@@ -1,4 +1,3 @@
-
 import axiosInstance from "../../hooks/auth/utils/axiosInstance";
 import { useState, useEffect } from "react";
 import Action from "../../components/admin/shared/Action";
@@ -10,6 +9,7 @@ import Pagination from "../../components/admin/shared/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../components/admin/shared/Loading";
 import Error from "../../components/admin/shared/Error";
+import Title from './shared/Title';
 
 export default function Applicants() {
   const [search, setSearch] = useState("");
@@ -96,10 +96,8 @@ export default function Applicants() {
     <section className="pr-3">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
-          <div>
-            <h2 className="lg:text-3xl mb-2 text-xl font-bold text-[var(--main-color)]">
-              Applicants
-            </h2>
+          <div className="mt-8">
+            <Title>Applicants</Title>
           </div>
         </div>
       </div>

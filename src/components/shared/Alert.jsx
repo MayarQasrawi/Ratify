@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
-
+ const animationClasses = {
+    entering: "opacity-0 translate-y-2",
+    entered: "opacity-100 translate-y-0",
+    exiting: "opacity-0 translate-y-2",
+  };
 function Alert({ type = "success", message }) {
   const [visible, setVisible] = useState(true);
   const [animationState, setAnimationState] = useState("entering");
-
   useEffect(() => {
     let timer;
     setTimeout(() => {
@@ -18,25 +21,17 @@ function Alert({ type = "success", message }) {
         }, 300);
       }, 3000);
     }
-
     return () => {
       clearTimeout(timer);
     };
   }, [visible]);
 
   if (!visible) return null;
-
-  const animationClasses = {
-    entering: "opacity-0 translate-y-2",
-    entered: "opacity-100 translate-y-0",
-    exiting: "opacity-0 translate-y-2",
-  };
-
   return (
     <div
       className={`${
-        type == "success" ? "border-green-500" : "border-red-500"
-      } bg-white border-l-4 shadow-md rounded-md px-4 py-6 fixed top-4 right-4 transition-all duration-300 ease-in-out ${
+        type == "success" ? "border-green-500 dark:border-green-600" : "border-red-500 dark:border-red-600"
+      } bg-white dark:bg-gray-800 border-l-4 shadow-md rounded-md px-4 py-6 fixed top-4 right-4 transition-all duration-300 ease-in-out ${
         animationClasses[animationState]
       } max-w-sm min-w-[300px] z-50`}
     >
@@ -57,7 +52,7 @@ function Alert({ type = "success", message }) {
         <div className="ml-3 flex-1">
           <div
             className={`${
-              type == "success" ? "text-green-700" : "text-red-500"
+              type == "success" ? "text-green-700" : "text-red-500 dark:text-red-700 dark:font-medium"
             } text-sm font-medium`}
           >
             {message}
@@ -67,5 +62,4 @@ function Alert({ type = "success", message }) {
     </div>
   );
 }
-
 export default Alert;

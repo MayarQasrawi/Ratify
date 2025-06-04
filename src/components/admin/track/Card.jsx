@@ -4,9 +4,7 @@ import Modal from "../../shared/modal/Modal";
 import ConfirmationModal from "../../shared/modal/ConfirmationModal";
 import useDeleteTrack from "../../../hooks/admin/tracks/useDeleteTrack";
 import { useNavigate } from "react-router-dom";
-export default function Card({ data }) {
-  const [selected, setSelected] = useState(null);
-  const [trackId, setTrackId] = useState(null);
+export default function Card({ data,setTrack,setSelected }) {
   const { mutate: deleteTrack, isPending, isSuccess, error } = useDeleteTrack();
   const navigate=useNavigate()
 
@@ -20,67 +18,76 @@ export default function Card({ data }) {
     console.log("View Details action clicked");
   };
 
-  const handleDelete = (id) => {
-    console.log(`card ${id}`);
+  const handleDelete = (track) => {
     setSelected("delete");
-    setTrackId(id);
+    setTrack(track);
   };
+   const handleToggle = (track) => {
+    console.log(track);
+    setSelected("toggle");
+    setTrack(track);
+  };
+  const handleAssignManger = (track, isMangerAssign) => {
+    console.log("assign manger", track.id);
+    console.log(isMangerAssign);
+    if (isMangerAssign == false) setSelected("assign-manger");
+    else {
+      setSelected("edit-manger");
+    }
+    setTrack(track);
+  };
+  const handleDeleteManager=(track)=>{
+   setSelected("delete-manager");
+    setTrack(track);
+  }
   console.log("card error",error);
   return (
     <div className="mt-4 grid sm:grid-cols-2 md:grid-cols-3  gap-4 text-center">
-      {selected == "delete" && (
-        <Modal>
-          <ConfirmationModal
-            view={true}
-            Cancle={() => {
-              setSelected(null);
-              setTrackId(null);
-            }}
-            Confirm={() => deleteTrack(trackId)}
-            isPending={isPending}
-            isSuccess={isSuccess}
-            isError={error}
-          >
-            Are you sure you want to delete this track?
-          </ConfirmationModal>
-        </Modal>
-      )}
       {data.map((track) => {
-        const actions = [
-          ...(track.isActive
-            ? [
-                {
-                  name: "Edit Track",
-                  onClick: () => handleEdit(track),
-                },
-                {
-                  name: "Delete Track",
-                  onClick: () => handleDelete(track.id),
-                },
-              ]
-            : [
-                {
-                  name: "Toggle Track",
-                  onClick: () => handleEdit(track),
-                },
-              ]),
-          {
-            name: "View Details",
-            onClick: () => handleViewDetails(track.id),
-          },
-        ];
+         const isMangerAssign = track.examinerId != null;
+      const actions = [
+      ...(track.isActive
+        ? [
+            {
+              name: "Edit Track",
+              onClick: () => handleEdit(track),
+            },
+            {
+              name: "Delete Track",
+              onClick: () => handleDelete(track),
+            },
+            {
+              name: isMangerAssign ? "Edit Manager" : "Add Manager",
+              onClick: () => handleAssignManger(track, isMangerAssign),
+            },
+          ]
+        : [
+            {
+              name: "Toggle Track",
+              onClick: () => handleToggle(track),
+            },
+             {
+              name: "Delete Manager",
+              onClick: () => handleDeleteManager(track),
+            },
+          ]),
+      {
+        name: "View Details",
+        onClick: () => handleViewDetails(track),
+      },
+    ];
         return (
-          <div key={track.id} className="rounded-lg  bg-white shadow ">
+          <div key={track.id} className="rounded-lg  bg-[var(--sidebar-bg)] shadow ">
             <div className="flex justify-between ">
               <img
-                src={track.image}
+                src={`https://40b8-85-113-123-99.ngrok-free.app/${track.image}`}
                 alt={track.name}
                 className="w-1/4 sm:w-1/2 block mx-auto h-auto object-cover"
               />
               <Action actions={actions} icon={false} />
             </div>
             <div className="p-3">
-              <h3 className="font-medium text-gray-900 truncate">
+              <h3 className="font-medium text-gray-900 truncate dark:text-white">
                 {track.name}
               </h3>
             </div>

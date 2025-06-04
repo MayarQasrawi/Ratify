@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function addPlan(info) {
@@ -10,7 +10,7 @@ export default function useAddPlan() {
     mutationFn: (info) => addPlan(info),
     retry: false,
     onError: (error) => {
-      console.log(error,'error add plan');
+      console.log(error, "error add plan");
     },
     onSuccess: (data) => {
       console.log(data, "plan add");

@@ -30,7 +30,7 @@ function ViewExaminerWorkLoad({ setOpen, isOpen, state }) {
               </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300"
                 aria-label="Close modal"
               >
                 <FaTimes size={20} />

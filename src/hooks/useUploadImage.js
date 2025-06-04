@@ -6,7 +6,7 @@ async function uploadImage(info) {
   const { data } = await axiosInstance.post(
     `Users/${info.id}/profile-image`,
     info.body,
-    // { headers: { "Content-Type": "multipart/form-data" } }
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   return data;
 }
@@ -15,7 +15,7 @@ export default function useUploadImage() {
     mutationFn: (info) => uploadImage(info),
     retry: false,
     onError: (error) => {
-      console.log(error, "put examiner img");
+      console.log(error, "put examiner img mmmmmmmmmmmmmmmmmmmm");
     },
     onSuccess: (data) => {
       console.log(data, "examiner upload done");

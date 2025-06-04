@@ -35,11 +35,25 @@ const ErrorPage = lazy(() => import('../pages/general/ErrorPage'));
 import SchedulingView from '@/components/seniorExaminer/appointments/SchedulingView';
 import AppointmentDashboard from '@/components/allExaminer/appointment/AppointmentDashboard';
 import Derivers from '@/components/applicant/dashboard/Deriver';
+
+const  TrackStructureDetails= lazy(() => import("../pages/seniorExaminer/plan/TrackStructureDetails"));
+
+
+import AssignCreationAssignments from "../pages/seniorExaminer/assignCreation/AssignCreationAssignments";
+import AssignedWork from "../pages/examiner/AssignedWork";
+const  EvaluationRequests =lazy(() => import("../pages/examiner/task/evaluationRequest/EvaluationRequests")); 
+const  ExamRequest= lazy(() => import("../pages/seniorExaminer/exam/ExamRequest")); 
+const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")); 
+const Task = lazy(() => import("../pages/seniorExaminer/manageTask/Task"));
+const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
+const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
+
+
 const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <AuthProvider>
         <ScrollRestoration />
@@ -49,9 +63,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-            <Home />
-        ),
+        element: <Home />,
       },
       {
  path: 'test',
@@ -66,22 +78,25 @@ export const routes = createBrowserRouter([
         ),
       },
       {
-        path: 'our-experts',
+        path: "our-experts",
+        element: <ExpertsPage />,
+      },
+      {
+        path: "my-tracks",
         element: (
-            <ExpertsPage />
+          <Suspense fallback={null}>
+            <MyTracksPage />
+          </Suspense>
         ),
       },
-     
       {
-        path: 'track-details/:id',
-        element: (
-            <TrackDetailsPage />
-        ),
+        path: "track-details/:id",
+        element: <TrackDetailsPage />,
       },
     ],
   },
   {
-    path: 'login',
+    path: "login",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Login />
@@ -89,7 +104,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'signup',
+    path: "signup",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Register />
@@ -97,7 +112,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'forgetPassword',
+    path: "forgetPassword",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <ForgetPassword />
@@ -105,7 +120,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'resetPassword',
+    path: "resetPassword",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <ResetPassword />
@@ -113,7 +128,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: 'unAuthorized',
+    path: "unAuthorized",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <UnAuthorized />
@@ -121,7 +136,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: '/dashboard',
+    path: "/dashboard",
     element: (
       <AuthProvider>
         <Dashboard />
@@ -129,8 +144,7 @@ export const routes = createBrowserRouter([
     ),
     children: [
       {
-        path: 'admin',
-
+        path: "admin",
         element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
@@ -142,15 +156,16 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'teams',
+            path: "teams",
             element: (
               <Suspense fallback={null}>
                 <Team />
               </Suspense>
             ),
           },
+
           {
-            path: 'applicants',
+            path: "applicants",
             element: (
               <Suspense fallback={null}>
                 <Applicants />
@@ -158,7 +173,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'tracks',
+            path: "tracks",
             element: (
               <Suspense fallback={null}>
                 <AdminTrack />
@@ -166,7 +181,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'tracks/setup',
+            path: "tracks/setup",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <TrackSetup />
@@ -174,7 +189,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'track-details',
+            path: "track-details",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <TrackDetails />
@@ -185,7 +200,7 @@ export const routes = createBrowserRouter([
       },
       
       {
-        path: 'seniorExaminer',
+        path: "seniorExaminer",
         // element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
@@ -197,7 +212,23 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan',
+            path: "workload-management",
+            element: (
+              // <Suspense fallback={<LoadingFallback />}>
+                <TeamWorkload />
+              // </Suspense>
+            ),
+          },
+           {
+            path: "assign-creation",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <AssignCreationAssignments />
+              </Suspense>
+            ),
+          },
+          {
+            path: "plan",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <Plan />
@@ -205,7 +236,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan-setup',
+            path: "plan-setup",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <PlanSetup />
@@ -213,7 +244,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'plan-structure',
+            path: "plan-structure",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <PlanStructure />
@@ -221,7 +252,7 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'edit-criteria',
+            path: "edit-criteria",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <EditCriteria />
@@ -235,12 +266,44 @@ export const routes = createBrowserRouter([
                 <SchedulingView />
               </Suspense>
             ),
-          }
+          },
+            {
+            path: "manage-task",
+            element: (
+              <Suspense fallback={null}>
+                <ManageTask />
+              </Suspense>
+            ),
+          },
+           {
+            path: "stage-tasks",
+            element: (
+              <Suspense fallback={null}>
+                <Task />
+              </Suspense>
+            ),
+          },
+             {
+            path: "exams-stages",
+            element: (
+              <Suspense fallback={null}>
+                < ExamStages />
+              </Suspense>
+            ),
+          },
+           {
+            path: "exams-request",
+            element: (
+              <Suspense fallback={null}>
+                < ExamRequest />
+              </Suspense>
+            ),
+          },
         ],
       },
       {
-        path: 'examiner',
-        // element: <ProtectedRoute allowRole="Examiner" />, 
+        path: "examiner",
+        // element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
             index: true,
@@ -255,7 +318,39 @@ export const routes = createBrowserRouter([
             element: (
                 <AppointmentDashboard />
             ),
+          },{
+            path: "stage-tasks",
+            element: (
+              <Suspense fallback={null}>
+                <Task />
+              </Suspense>
+            ),
           },
+          {
+            path: "add-task",
+            element: (
+              <Suspense fallback={null}>
+                <CreateTask />
+              </Suspense>
+            ),
+          },
+             {
+            path: "pending-evaluations",
+            element: (
+              <Suspense fallback={null}>
+                <EvaluationRequests />
+              </Suspense>
+            ),
+          },
+           {
+            path: "todo-assignments",
+            element: (
+              <Suspense fallback={null}>
+                <AssignedWork  />
+              </Suspense>
+            ),
+          },
+         
         ],
       },
     ],
@@ -328,7 +423,7 @@ export const routes = createBrowserRouter([
   },
   
   {
-    path: '*',
+    path: "*",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <NotFoundPage />
@@ -337,7 +432,3 @@ export const routes = createBrowserRouter([
     ),
   },
 ]);
-
-
-
-

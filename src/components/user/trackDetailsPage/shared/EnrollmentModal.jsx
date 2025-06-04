@@ -6,23 +6,27 @@ import { useAuthContext } from "../../../../contexts/AuthProvider";
 import Extract from "../../../../utils/Extract";
 import Spinner from "../../../shared/Spinner";
 import Alert from "../../../shared/Alert";
+import SuccessEnroll from "../../shared/enroll/SuccessEnroll";
+import Modal from "../../../shared/modal/Modal";
 
-export default function EnrollmentModal({ setShow, title, description , trackId}) {
+export default function EnrollmentModal({ setShow, title, description , trackId=9}) {
   const { isPending, isError, mutate:registerInTrack, isSuccess } =
     useRegisterInTrack();
   const navigate = useNavigate();
-  let userId = "8";
+  let userId ;
   const { auth } = useAuthContext();
   if (auth) userId = Extract(auth, "nameid");
-  console.log(isError, "inside enroll");
-  console.log(trackId, "inside enroll");
+  console.log(isError, "inside enroll,",userId );
+  console.log(trackId, "inside enroll lllllllllllllllllmmmmmmmmml");
   if(isError){
     setTimeout(()=>setShow(false),1000)
    return  <Alert type='error' message='error'/>
   }
+  if(isSuccess){
+    return <SuccessEnroll setShow={setShow} /> 
+  }
   return (
     <>
-      {isSuccess  && <Alert type='error' message='Success'/>}
       <div className="w-full relative  max-w-md mx-auto pb-8 bg-white shadow-lg rounded-lg overflow-hidden ">
         <button
           onClick={() => setShow(false)}
@@ -42,7 +46,7 @@ export default function EnrollmentModal({ setShow, title, description , trackId}
               navigate("/login");
               setShow(false);
             } else {
-              registerInTrack({ trackId, userId })}
+              registerInTrack({ trackId:trackId, userId:userId })}
           }}
           disabled={isPending}
           className="w-[95%] disabled:cursor-not-allowed ml-3 mt-5 flex gap-.5 items-center justify-center font-medium cursor-pointer px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"

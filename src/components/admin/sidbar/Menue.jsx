@@ -1,20 +1,21 @@
 import {
-  HiOutlineViewGrid,
   HiOutlineUsers,
-  HiOutlineCollection,
-  HiOutlineUserGroup,
   HiOutlineCalendar,
-  HiOutlineDocumentText,
   HiOutlineFolder,
   HiOutlineCheckCircle,
   HiOutlinePlusCircle,
   HiOutlineCog,
-  HiUsers 
+  HiUsers,
+  HiPlusCircle, 
+   HiOutlineClipboardList
 } from "react-icons/hi";
-import { MdOutlineHome } from "react-icons/md";
-import { MdHome } from "react-icons/md";
+import { MdHome, MdWork } from "react-icons/md";
 import { RiTeamFill,RiTeamLine  } from "react-icons/ri";
-import { MdOutlineDashboardCustomize,MdDashboardCustomize } from "react-icons/md";
+import { MdOutlineDashboardCustomize,MdDashboardCustomize ,MdOutlineHome, MdWorkOutline} from "react-icons/md";
+import { FaRegListAlt,FaClipboardList } from "react-icons/fa";
+import { FaFolder, FaRegFolder } from "react-icons/fa";
+import { FiClock } from "react-icons/fi"
+import { MdPendingActions , MdAssignment,  MdOutlineAssignment } from "react-icons/md"
 
 const menue = [
   {
@@ -53,48 +54,61 @@ const menue = [
     link: "tracks",
     visible: ["Admin"],
   },
-  {
+   {
     title: "Mange Plan",
-    icon: <HiOutlineUserGroup />,
+    icon: <FaRegListAlt />,
+    active:<FaRegListAlt />,
     link: "plan",
     visible: ["SeniorExaminer"],
   },
   {
-    title: "Examiners",
-    icon: <HiOutlineUsers />,
-    link: "examiners",
+    title: "Manage Workload",
+    icon: <MdWorkOutline />,
+    link: "workload-management",
+    active:<MdWork />,
+    visible: ["SeniorExaminer"],
+  },
+   {
+    title: "Assign Creation Assignments",
+    icon: <MdOutlineAssignment/>,
+    link: "assign-creation",
+    active:<MdAssignment />,
     visible: ["SeniorExaminer"],
   },
 
   {
     title: "Exam Requests",
-    icon: <HiOutlineDocumentText />,
-    link: "exams",
+    icon: < HiOutlineClipboardList/>,
+    link: "exams-stages",
+     active:<FaClipboardList />,
     visible: ["SeniorExaminer"],
   },
   {
     title: "Task Repo",
-    icon: <HiOutlineFolder className="w-4"/>,
-    link: "tasks",
+    icon: <FaRegFolder  />,
+    active:<FaFolder />,
+    link: "stage-tasks",
     visible: ["SeniorExaminer"],
   },
   {
     title: "Pending Evaluations",
-    icon: <HiOutlineCheckCircle />,
-    link: "evaluation",
+    icon: <MdPendingActions  />,
+     active:<FiClock />,
+     link: "pending-evaluations",
     visible: ["Examiner"],
   },
-  {
-    title: "Add Task",
-    icon: <HiOutlinePlusCircle />,
-    link: "tasks",
+ {
+    title: "Assigned Work",
+    icon: <MdOutlineAssignment/>,
+    link: "todo-assignments",
+    active:<MdAssignment />,
     visible: ["Examiner"],
   },
   {
     title: "Setting",
     icon: <HiOutlineCog />,
     link: "setting",
-    visible: ["SeniorExaminer", "Examiner"],
+    visible: [ "Examiner"],
   }
  
 ];

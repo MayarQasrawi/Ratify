@@ -17,6 +17,8 @@ import useGetExaminers from "../../hooks/Admin/useGetExaminers";
 import EmptyState from "../../components/admin/shared/EmptyState";
 import ViewExaminerWorkLoad from "../../components/admin/Team/ViewExaminerWorkLoad";
 
+import { set } from "react-hook-form";
+import Title from "../../components/admin/shared/Title";
 
 export default function Teams() {
   const [search, setSearch] = useState("");
@@ -167,7 +169,6 @@ export default function Teams() {
           color="green"
         />
       </td>
-  
       {/* Action */}
       <td className="py-3 px-1 lg:px-3 text-center">
         <Link
@@ -200,10 +201,10 @@ export default function Teams() {
     <section className="pr-3">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
-          <div>
-            <h2 className="lg:text-3xl mb-2 text-xl font-bold text-[var(--main-color)]">
+          <div className="mt-8">
+            <Title>
               Team Members
-            </h2>
+            </Title>
           </div>
         </div>
       </div>

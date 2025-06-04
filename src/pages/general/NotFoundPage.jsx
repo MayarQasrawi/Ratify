@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function NotFoundPage() {
   const navigate = useNavigate();
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 items-center justify-center p-4">
+    <div className="flex min-h-screen  items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl overflow-hidden">
         <div className="bg-[#3B82F6] p-6">
           <div className="flex items-center justify-center">

@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
-async function updateTrack(info) {
-  const { data } = await axiosInstance.put("Tracks", info, {
+async function updateTrack({ formData, id }) {
+  console.log(formData, "inside update track end point", id);
+  const { data } = await axiosInstance.put(`Tracks/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -10,6 +11,7 @@ async function updateTrack(info) {
   return data;
 }
 export default function useUpdateTrack() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateTrack(data),
     retry: false,
@@ -17,7 +19,8 @@ export default function useUpdateTrack() {
       console.log(error, "put track info");
     },
     onSuccess: (data) => {
-      console.log(data,"put track info");
+      console.log(data, "put track info");
+      queryClient.invalidateQueries(["tracks"]);
     },
   });
 }

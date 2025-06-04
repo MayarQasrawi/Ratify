@@ -34,10 +34,10 @@ function countStageTypes(plan) {
 }
 
 const associatedSkills = [
-  { skill: "HTML", description: "jgggggggggggggg" },
-  { skill: "Css", description: "jgggggggggggggg" },
-  { skill: "HTML", description: "jgggggggggggggg" },
-  { skill: "CSS", description: "jgggggggggggggg" },
+  { name: "HTML", description: "jgggggggggggggg" },
+  { name: "Css", description: "jgggggggggggggg" },
+  { name: "HTML", description: "jgggggggggggggg" },
+  { name: "CSS", description: "jgggggggggggggg" },
 ];
 const initialPlan = {
   levels:[{
@@ -106,10 +106,10 @@ beginners and professionals looking to enhance their knowledge.`
 export default function TrackDetailsPage() {
   const { id } = useParams();
   console.log(id, "id inside track details");
-  const {data, isLoading } = useFetchTrackById(2);
+  const {data, isLoading } = useFetchTrackById(id);
   console.log(data,isLoading,'inside track details')
  const stageType= getThreeTypes(data?.data || initialPlan);
- const countTypes = countStageTypes(initialPlan);
+ const countTypes = countStageTypes(data?.data || initialPlan);
  console.log( stageType,'stage type')
  console.log( countTypes,'stage count')
   // if(isLoading )

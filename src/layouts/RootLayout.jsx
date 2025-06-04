@@ -11,10 +11,9 @@ export default function RootLayout() {
   let id=null;
   if(auth)
     id = Extract(auth, "nameid");
-   const {data:tracks,isLoading}=useGetApplicantTrack(id)
-  console.log(isLoading,'inside root')
-  const location = useLocation();
-  
+    const {data:tracks,isLoading}=useGetApplicantTrack(id)
+    console.log(isLoading,'inside root',tracks?.data?.data,'applicant track id///////////////////////////')
+    const location = useLocation();
   return (
     <>
       <TopLoader isLoading={isLoading} />
