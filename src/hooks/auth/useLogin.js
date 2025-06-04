@@ -18,11 +18,11 @@ export default function useSignin(){
         onSuccess: (data) => {
             console.log("Signup successful:", data)
             localStorage.setItem('token', data.data);
-           const role= Extract(data.data,'role')
-           console.log(role)
+            const role= Extract(data.data,'role')
+            console.log(role)
             switch(role){
                 case 'Applicant':
-                    navigate('/');
+                    navigate('/Applicant');
                     break;
                 case 'Admin':
                     navigate('/dashboard/admin');

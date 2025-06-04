@@ -14,6 +14,6 @@ export default function useGetTrackProgress(enrollId) {
     staleTime: 5 * 60 * 1000,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    retry: false,
+    retry: true,
   });
 }

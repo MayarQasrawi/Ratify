@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { resetPasswordSchema } from "../../validation/validation";
-import Input from "../../components/Input";
 import { FaLock } from "react-icons/fa";
-import Header from "../../components/Header";
+import { useSearchParams } from "react-router-dom";
 import Button from "../../components/Button";
 import FormContainer from "../../components/FormContainer";
-import useResetPassword from "../../hooks/auth/forgetpassword/useResetPassword";
-import { useSearchParams } from "react-router-dom";
-import useAutoFocus from "../../hooks/useAutoFocus";
-import PasswordResetStepper from "../../components/shared/PasswordResetStepper";
+import Header from "../../components/Header";
+import Input from "../../components/Input";
 import Alert from "../../components/shared/Alert";
+import PasswordResetStepper from "../../components/shared/PasswordResetStepper";
+import useResetPassword from "../../hooks/auth/forgetpassword/useResetPassword";
+import useAutoFocus from "../../hooks/useAutoFocus";
+import { resetPasswordSchema } from "../../validation/validation";
 
 export default function ResetPassword() {
   const {

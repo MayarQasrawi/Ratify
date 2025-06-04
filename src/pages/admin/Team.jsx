@@ -1,27 +1,22 @@
 // In Teams.jsx
-import { useState, useEffect } from "react";
-import Table from "../../components/admin/shared/Table";
-import Search from "../../components/admin/shared/Search";
-import Add from "../../components/admin/shared/Add";
+import { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { MdOutlineFindInPage } from "react-icons/md";
-import ItemsPerPageSelector from "../../components/admin/shared/ItemsPerPageSelector";
-import Pagination from "../../components/admin/shared/Pagination";
-import { Link } from "react-router-dom";
-import Loading from "../../components/admin/shared/Loading";
-import Error from "../../components/admin/shared/Error";
-import { RiEyeFill } from "react-icons/ri";
-import { RiEyeCloseLine } from "react-icons/ri";
-import useGetExaminers from "../../hooks/Admin/useGetExaminers";
-import { FaUserClock } from "react-icons/fa6";
-import IconActionButton from "../../components/Button/IconActionButton";
-import { FaUser, FaUserTie, FaUserShield } from 'react-icons/fa';
 import { IoSearch } from "react-icons/io5";
-
+import { MdOutlineFindInPage } from "react-icons/md";
+import { RiEyeCloseLine, RiEyeFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import Add from "../../components/admin/shared/Add";
+import Error from "../../components/admin/shared/Error";
+import ItemsPerPageSelector from "../../components/admin/shared/ItemsPerPageSelector";
+import Loading from "../../components/admin/shared/Loading";
+import Pagination from "../../components/admin/shared/Pagination";
+import Search from "../../components/admin/shared/Search";
+import Table from "../../components/admin/shared/Table";
+import IconActionButton from "../../components/Button/IconActionButton";
+import useGetExaminers from "../../hooks/Admin/useGetExaminers";
 import EmptyState from "../../components/admin/shared/EmptyState";
-
 import ViewExaminerWorkLoad from "../../components/admin/Team/ViewExaminerWorkLoad";
-import { set } from "react-hook-form";
+
 
 export default function Teams() {
   const [search, setSearch] = useState("");
@@ -66,6 +61,43 @@ export default function Teams() {
     setWorkLoad(member );
     setWorkLoadModal(true);
   };
+  // Example data
+ const MOCK_EXAMINERS = [
+  {
+    id: "1",
+    fullName: "Alice Johnson",
+    email: "alice@example.com",
+    specialization: "Mathematics",
+    userType: "Examiner",
+    dateOfBirth: "1990-05-20",
+    gendar: "Female",
+    image: "",
+    examinerLoads: [{ subject: "Algebra", students: 25 }],
+  },
+  {
+    id: "2",
+    fullName: "Bob Smith",
+    email: "bob@example.com",
+    specialization: "Physics",
+    userType: "Senior Examiner",
+    dateOfBirth: "1985-09-15",
+    gendar: "Male",
+    image: "",
+    examinerLoads: [{ subject: "Quantum Physics", students: 15 }],
+  },
+  {
+    id: "3",
+    fullName: "Charlie Lee",
+    email: "charlie@example.com",
+    specialization: "Chemistry",
+    userType: "Examiner",
+    dateOfBirth: "1992-11-10",
+    gendar: "Male",
+    image: "",
+    examinerLoads: [{ subject: "Organic Chemistry", students: 20 }],
+  },
+];
+
 
   const renderRow = (member) => (
     <tr
@@ -205,7 +237,7 @@ export default function Teams() {
           />
         ))}
       </div>
-    {  isLoading ? (
+    {/* {  isLoading ? (
         <Loading text={"Assembling Your Team..."} />
       ) : isError ? (
         <Error message={error.message || "Failed to fetch team members"} errorCode={error.errorCode||"error code"} onRetry={()=>{}}/>
@@ -213,10 +245,12 @@ export default function Teams() {
         <EmptyState search={search} setSearch={setSearch} roleFilter={roleFilter} setRoleFilter={setRoleFilter} />
       ) : (
         <>
-          <Table data={filteredData} cols={col} row={renderRow} />
+          <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
           <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </>
-      )}
+      )} */}
+          <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
+          <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
 
       {workLoadModal && 
         <ViewExaminerWorkLoad 

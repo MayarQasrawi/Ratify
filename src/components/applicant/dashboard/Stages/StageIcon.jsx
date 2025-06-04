@@ -6,7 +6,7 @@ import {
 } from 'react-icons/hi';
 
 const StageIcon = ({ type }) => {
-  switch (type) {
+  switch (type.toLowerCase()) {
     case "exam":
       return (
         <div className="rounded-full bg-blue-100 p-3">

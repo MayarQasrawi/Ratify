@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, ScrollRestoration } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthProvider';
 import ProtectedRoute from './ProtectedRoute';
 import RootLayout from '../layouts/RootLayout';
@@ -8,6 +8,10 @@ import Home from '../pages/user/Home';
 import  ExpertsPage from '../pages/user/ExpertsPage';
 import TrackPage from '../pages/user/TrackPage';
 import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
+
+const ExamStage= lazy(()=> import('../pages/applicant/ExamStage')); 
+const InterviewStage =lazy(()=> import('../pages/applicant/InterviewStage'));
+const TaskStage =lazy(()=>import('../pages/applicant/TaskStage'));
 const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
 const Login = lazy(() => import('../components/view/Login'));
 const Register = lazy(() => import('../components/view/Register'));
@@ -26,7 +30,11 @@ const PlanSetup = lazy(() => import('../pages/seniorExaminer/plan/definePlan/Pla
 const PlanStructure = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanStructure'));
 const EditCriteria = lazy(() => import('../pages/seniorExaminer/plan/definePlan/EditCriteria'));
 const Applicants=lazy(()=> import('../components/admin/Applicants'));
-
+const Deriver=lazy(()=> import('../components/applicant/dashboard/deriver'));
+const ErrorPage = lazy(() => import('../pages/general/ErrorPage'));
+import SchedulingView from '@/components/seniorExaminer/appointments/SchedulingView';
+import AppointmentDashboard from '@/components/allExaminer/appointment/AppointmentDashboard';
+import Derivers from '@/components/applicant/dashboard/Deriver';
 const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
@@ -34,6 +42,7 @@ export const routes = createBrowserRouter([
     path: '/',
     element: (
       <AuthProvider>
+        <ScrollRestoration />
         <RootLayout />
       </AuthProvider>
     ),
@@ -42,6 +51,12 @@ export const routes = createBrowserRouter([
         index: true,
         element: (
             <Home />
+        ),
+      },
+      {
+ path: 'test',
+ element: (
+          <Derivers/>
         ),
       },
       {
@@ -56,14 +71,7 @@ export const routes = createBrowserRouter([
             <ExpertsPage />
         ),
       },
-      {
-        path: 'my-tracks',
-        element: (
-          <Suspense fallback={null}>
-            <MyTracksPage />
-          </Suspense>
-        ),
-      },
+     
       {
         path: 'track-details/:id',
         element: (
@@ -122,7 +130,8 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'admin',
-         element: <ProtectedRoute allowRole="Admin" />,
+
+        element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
             index: true,
@@ -174,6 +183,7 @@ export const routes = createBrowserRouter([
           },
         ],
       },
+      
       {
         path: 'seniorExaminer',
         // element: <ProtectedRoute allowRole="Examiner" />,
@@ -218,6 +228,14 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: 'appointments',
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <SchedulingView />
+              </Suspense>
+            ),
+          }
         ],
       },
       {
@@ -232,15 +250,89 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: 'appointments',
+            element: (
+                <AppointmentDashboard />
+            ),
+          },
         ],
       },
     ],
   },
+
+  {
+    path: 'applicant',
+    
+    children: [
+      {
+        path: '',
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <AuthProvider>
+            <ScrollRestoration />
+            <RootLayout />
+           </AuthProvider>
+          </Suspense>
+        ),
+        children: [
+         
+          {
+            
+           index: true,
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <MyTracksPage />
+              </Suspense>
+            ),
+          },
+         
+            {
+              path: 'my-tracks/:name/:enrollmentId',
+              element: (
+                <Suspense fallback={<LoadingFallback />}>
+                 <Deriver /> 
+                </Suspense>
+              ),
+            }
+            ,
+            {
+              path: 'interview/:stageId',
+              element: (
+                <Suspense fallback={<LoadingFallback />}>
+                 <InterviewStage /> 
+                </Suspense>
+              ),
+            },
+            {
+              path: 'task/:stageProgressId',
+              element: (
+                <Suspense fallback={<LoadingFallback />}>
+                 <TaskStage /> 
+                </Suspense>
+              ),
+            },
+            {
+              path: 'exam/:stageId',
+              element: (
+                <Suspense fallback={<LoadingFallback />}>
+                 <ExamStage /> 
+                </Suspense>
+              ),
+            }
+        
+          
+        ]
+      },
+    ],
+  },
+  
   {
     path: '*',
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <NotFoundPage />
+        {/* <ErrorPage error={{"type":"not-found"}}  /> */}
       </Suspense>
     ),
   },

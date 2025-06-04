@@ -18,7 +18,7 @@ const allNavLinks = [
   { name: "HOME", to: "/" },
   { name: "OUR TRACKS", to: "/our-tracks" },
   { name: "OUR TEAMS", to: "/our-experts" },
-  { name: "DASHBOARD", to: "/my-tracks" },
+  { name: "DASHBOARD", to: "/applicant" },
 ];
 function Navbar() {
   const { auth, logout, setAuth } = useAuthContext();
@@ -44,7 +44,7 @@ function Navbar() {
 
   const navLinks = allNavLinks.filter((link) => {
     if (link.name === "DASHBOARD") {
-      return id && tracks?.data?.length>0;
+      return id && tracks?.data?.data.length>0;
     }
     return true;
   });

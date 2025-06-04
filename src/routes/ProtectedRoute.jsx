@@ -16,7 +16,5 @@ export default function ProtectedRoute({allowRole}) {
   if (role.toLowerCase() !== allowRole.toLowerCase()) {
     return <Navigate to="/unAuthorized"  />;
   }
-  return <Outlet />; 
+  return <Outlet />;
 };
-  
-

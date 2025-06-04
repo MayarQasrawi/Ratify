@@ -1,21 +1,21 @@
 import React from "react";
-export default function Table({ cols, data, row }) {
+export default function Table({ cols, data, row, headerColor="" ,headerTextColor="" }) {
   return (
-    <div className="rounded-lg border border-[var(--table-border)] ">
-      <table className="w-full  bg-[var(--table-header-bg)] shadow-md rounded-lg  ">
-        <thead className="text-md text-center">
-          <tr className="text-[var(--text-color)] font-bold rounded-lg  border-b border-b-[var(--table-border)]">
+    <div className="rounded-lg border border-[var(--table-border)] overflow-auto  ">
+      <table className="min-w-full  bg-[var(--table-header-bg)] shadow-md rounded-lg  ">
+        <thead className="text-md  overflow-hidden ">
+          <tr className={`text-[var(--text-color)] ${headerColor}    border-b border-b-[var(--table-border)] `}>
             {cols.map((col, index) => (
               <th
                 key={index}
-                className="py-3 px-1 lg:px-3   whitespace-nowrap  "
+                className={`py-3 px-1 lg:px-3   whitespace-nowrap text-xs text-start  uppercase tracking-wider ${headerTextColor}`}
               >
                 {col}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody >
           {/* {here I add fragmet and key for each row rendered} */}
           {data &&
             data.map((item, index) => (

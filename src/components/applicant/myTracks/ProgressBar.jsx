@@ -5,7 +5,7 @@ export default function ProgressBar() {
   const [showProgress, setShowProgress] = useState(false);
 
   return (
-    <div className="w-[65%]  relative bg-[#E7ECFF] h-2 rounded-full cursor-pointer">
+    <div className="lg:w-[65%] w-full  relative bg-[#E7ECFF] h-2 rounded-full cursor-pointer">
       <div
         onMouseEnter={() => setShowProgress(true)}
         onMouseLeave={() => setShowProgress(false)}

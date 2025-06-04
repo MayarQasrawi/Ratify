@@ -5,26 +5,38 @@ import useGetApplicantTrack from "../../../hooks/applicant/enroll/useGetApplican
 import Extract from "../../../utils/Extract";
 import ProgressBar from "./ProgressBar";
 import TrackItem from "./TrackItem";
-const myTracks = [
-  { trackId: 1, trackName: "Front End ", img ,status:'Active'},
-  { trackId: 2, trackName: "Basics ", img ,status:'Active'},
-];
+
 export default function RegisterTrack() {
-  const {auth}= useAuthContext();
-  let id=null;
-  if(auth)
-    id=Extract(auth, "nameid");
-  // const {data:myTracks,isLoading}=useGetApplicantTrack(id);
-  console.log(auth,'insude my track page')
-  // if(auth==null)
-  //  return  <Navigate to='/login' />
-  // if(tracks?.data?.length==0 && !isLoading)
-  //   return <Navigate />
+  const { auth } = useAuthContext();
+
+  if (!auth) return <Navigate to="/login" />;
+
+  const id = Extract(auth, "nameid");
+  const { data, isLoading } = useGetApplicantTrack(id);
+  console.log("track data", data);
+
+  const myTrack = data?.data?.data || [];
+  
+
+
+  if (!isLoading && myTrack.length === 0) {
+    return <Navigate to="/some-page" />; // 👈in progress must be handdle
+  }
 
   return (
-    <div className="mt-8 flex flex-col items-center xl:items-start gap-y-8  ">
-      {myTracks.map((myTrack, ind) => (
-        <TrackItem key={ind} name={myTrack.trackName} trackId={myTrack.trackId}  img={myTrack.img} status={myTrack.status}/>
+    <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center gap-y-8">
+      {myTrack.map((track, ind) => (
+        <TrackItem
+          key={ind}
+          enrollmentId={track.id}
+          name={track.trackName}
+          trackId={track.trackId}
+          img={track.img || img}
+          status={track.status}
+          enrollmentDate={track.enrollmentDate}
+
+
+        />
       ))}
     </div>
   );

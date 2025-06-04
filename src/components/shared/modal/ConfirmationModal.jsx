@@ -13,7 +13,7 @@ export default function ConfirmationModal({
   error,
   data
 }) {
-  console.log(isError,'gggggg')
+  
   return (
     <>
       {isError && <Alert type="error" message={error?.response?.data?.message ||'Delete Request Fails' } />}
@@ -21,16 +21,16 @@ export default function ConfirmationModal({
       <div
         className={`${
           view
-            ? "flex flex-col text-center items-center py-10 px-12 bg-gradient-to-br from-blue-50 to-white shadow-lg rounded-2xl w-96 border  border-gray-200"
+            ? "flex flex-col text-center items-center py-10 px-12 bg-gradient-to-br bg-white shadow-lg rounded-2xl w-96 border  border-gray-200"
             : "text-center w-full"
         }`}
       >
         <p className="text-lg font-medium ">{children}</p>
-        <div className="flex mt-9 gap-4 justify-center">
+        <div className="flex mt-9 gap-4 justify-center font-bold">
           <button
             disabled={isPending}
             onClick={() => Confirm()}
-            className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1"
+            className="bg-[var(--main-color)] text-white px-3 py-2 rounded-lg hover:bg-[var(--secondary-color)] transition cursor-pointer flex items-center justify-center gap-2 flex-1"
           >
             {isPending ? (
               <Spinner />
@@ -45,7 +45,7 @@ export default function ConfirmationModal({
             onClick={() => {
               Cancle();
             }}
-            className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition cursor-pointer flex items-center justify-center gap-2 flex-1"
+            className=" border-3  border-[var(--main-color)] text-[var(--main-color)]  px-3 py-2 rounded-lg hover:border-[var(--secondary-color)]  hover:text-[var(--secondary-color)] transition cursor-pointer flex items-center justify-center gap-2 flex-1"
           >
             <MdClose className="w-5 h-5" />
             Cancel

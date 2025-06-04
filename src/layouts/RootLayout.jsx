@@ -11,14 +11,18 @@ export default function RootLayout() {
   let id=null;
   if(auth)
     id = Extract(auth, "nameid");
-    const {data:tracks,isLoading}=useGetApplicantTrack(id)
-    console.log(isLoading,'inside root')
+   const {data:tracks,isLoading}=useGetApplicantTrack(id)
+  console.log(isLoading,'inside root')
   const location = useLocation();
+  
   return (
     <>
       <TopLoader isLoading={isLoading} />
       {!location.pathname.includes("track-details") && <Navbar />}
-       <Outlet />
+      <div className="min-h-screen ">
+      <Outlet />
+      </div>
+       
       <Footer /> 
       </> 
   );

@@ -32,6 +32,14 @@ const menue = [
     visible: ["Admin"],
   },
   {
+    title: "Appointments",
+    icon: <HiOutlineCalendar />,
+    active:<HiOutlineCalendar/>,
+    link: "appointments",
+    visible: ["Examiner", "SeniorExaminer"],
+
+  },
+  {
     title: "Applicants",
     icon: <HiOutlineUsers />,
     active:<HiUsers  />,
@@ -57,12 +65,7 @@ const menue = [
     link: "examiners",
     visible: ["SeniorExaminer"],
   },
-  {
-    title: "Appointments",
-    icon: <HiOutlineCalendar />,
-    link: "examiners",
-    visible: ["SeniorExaminer"],
-  },
+
   {
     title: "Exam Requests",
     icon: <HiOutlineDocumentText />,

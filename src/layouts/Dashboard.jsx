@@ -51,7 +51,7 @@ export default function Dashboard() {
   return (
     <>
      <ThemeProvider>
-      <div className="flex flex-row  gap-2 md:gap-10 bg-[var(--background-color)] h-screen  text-[var(--text-color)] font-medium">
+      <div className="flex flex-row  gap-2 md:gap-10 bg-[var(--background-color)]  min-h-screen  text-[var(--text-color)] font-medium">
         
         {/* {sidebar} */}
         <div className="bg-[var(--sidebar-bg)]   fixed  h-[98vh] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">

@@ -77,7 +77,7 @@ function Footer() {
 
   return (
     <>
-      <footer className="bg-[#003F7D] text-white py-8 mt-32 ">
+      <footer className="bg-[var(--secondary-color)] text-white py-8 mt-32 ">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* About Section */}
