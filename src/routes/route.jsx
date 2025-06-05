@@ -47,7 +47,7 @@ const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")
 const Task = lazy(() => import("../pages/seniorExaminer/manageTask/Task"));
 const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
 const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
-
+const TeamWorkload= lazy(()=> import("../pages/seniorExaminer/teams/TeamWorkload"))
 
 const LoadingFallback = () => <div>Loading...</div>;
 
