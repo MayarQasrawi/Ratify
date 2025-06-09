@@ -104,7 +104,7 @@ const CandidateAssessment = () => {
       <div className="mb-3 mt-5 bg-[var(--main-color)] rounded-lg p-6 shadow-lg">
         <div className="flex items-center gap-3">
           <MdRocketLaunch className="text-white text-3xl" />
-          <h1 className="text-2xl font-bold text-white">{trackName}</h1>
+          <h1 className="text-2xl font-bold text-white">{trackName.toLocaleUpperCase()}</h1>
         </div>
         <div className="h-1 w-24 bg-white/30 rounded-full mt-2"></div>
       </div>
@@ -119,7 +119,7 @@ const CandidateAssessment = () => {
                     {/* <div className="w-14 h-14 rounded-full bg-[var(--main-color)] flex items-center justify-center text-white text-2xl font-bold">
                       {selectedLevel.order}
                     </div> */}
-                    <h1 className="md:text-5xl text-4xl font-normal mb-4 text-[var(--main-color)]">
+                    <h1 className="md:text-4xl text-4xl font-normal mb-4 text-[var(--main-color)]">
                       {selectedLevel.levelName}
                     </h1>
                   </div>

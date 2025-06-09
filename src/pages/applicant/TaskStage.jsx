@@ -41,6 +41,7 @@ const StatusContainer = ({ stage, color, message }) => (
 function TaskStage() {
   const { state } = useLocation();
   const stageData = state?.stage || {};
+  
   const stage = state?.stage?.actionStatus;
   const stageProgressId = stageData?.id || null;
 

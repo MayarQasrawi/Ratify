@@ -7,6 +7,7 @@ const bookInterview = async ({ applicantId, interviewId, appointmentId }) => {
     `/InterviewBookings/${applicantId}`,
     {
       interviewId,
+      applicantId,
       appointmentId,
     }
   );
@@ -18,6 +19,7 @@ const useBookInterview = (options = {}) => {
     mutationFn: bookInterview,
     ...options,
   });
+
 };
 
 export default useBookInterview;

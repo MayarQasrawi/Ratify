@@ -1,20 +1,30 @@
-import { useState } from "react"
-import { useForm, Controller } from "react-hook-form"
-import { Calendar } from "@/components/ui/calendar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { format, eachDayOfInterval, addMinutes, parse } from "date-fns"
-import { FaRegCalendarAlt } from "react-icons/fa"
-import AppointmentsPreview from "@/components/seniorExaminer/appointments/shared/Preview"
-import usePutAppointmentBulk from "@/hooks/seniorExaminer/appointment/usePutAppointmentBulk"
-import Toast from "@/components/applicant/dashboard/Stages/Exam/Toast"
-import ExaminerSelect from "./shared/ExaminerSelect"
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { format, eachDayOfInterval, addMinutes, parse } from "date-fns";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import AppointmentsPreview from "@/components/seniorExaminer/appointments/shared/Preview";
+import usePutAppointmentBulk from "@/hooks/seniorExaminer/appointment/usePutAppointmentBulk";
+import Toast from "@/components/applicant/dashboard/Stages/Exam/Toast";
+import ExaminerSelect from "./shared/ExaminerSelect";
 
 export default function MultipleAppointmentsForm() {
-  console.log("usePutSingleAppointment")
+  console.log("usePutSingleAppointment");
 
   const {
     register,
@@ -30,109 +40,180 @@ export default function MultipleAppointmentsForm() {
       endDate: null,
       slotDuration: 50,
       weeklySchedule: [
-        { dayOfWeek: "Sunday", startTime: "09:00", endTime: "17:00" },
-        { dayOfWeek: "Monday", startTime: "09:00", endTime: "17:00" },
-        { dayOfWeek: "Tuesday", startTime: "09:00", endTime: "17:00" },
-        { dayOfWeek: "Wednesday", startTime: "09:00", endTime: "17:00" },
-        { dayOfWeek: "Thursday", startTime: "09:00", endTime: "17:00" },
-        { dayOfWeek: "Friday", startTime: "09:00", endTime: "17:00" }, 
-        { dayOfWeek: "Saturday", startTime: "09:00", endTime: "17:00" },
-      ]
+        { dayOfWeek: "Sunday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Monday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Tuesday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Wednesday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Thursday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Friday", startTime: undefined, endTime: undefined },
+        { dayOfWeek: "Saturday", startTime: undefined, endTime: undefined },
+      ],
     },
-  })
+  });
 
   const daysOfWeek = [
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-  ]
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
-  const [showPreview, setShowPreview] = useState(false)
-  const [previewData, setPreviewData] = useState(null) // حفظ بيانات الـ preview
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
+  const [toasts, setToasts] = useState([]); // State لإدارة الـ toasts
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const generateTimeSlots = (data) => {
-    const { startDate, endDate, slotDuration, weeklySchedule } = data
-    if (!startDate || !endDate || !slotDuration || !weeklySchedule) return []
+    const { startDate, endDate, slotDuration, weeklySchedule } = data;
+    if (!startDate || !endDate || !slotDuration || !weeklySchedule) return [];
 
-    const days = eachDayOfInterval({ start: startDate, end: endDate })
-    const slots = []
+    const days = eachDayOfInterval({ start: startDate, end: endDate });
+    const slots = [];
 
     days.forEach((day) => {
-      const dayName = format(day, "EEEE")
-      const schedule = weeklySchedule.find((s) => s.dayOfWeek === dayName)
-      if (!schedule || !schedule.startTime || !schedule.endTime) return
+      const dayName = format(day, "EEEE");
+      const schedule = weeklySchedule.find((s) => s.dayOfWeek === dayName);
+      
+      if (!schedule || !schedule.startTime || !schedule.endTime) {
+        return;
+      }
 
-      const [startHour, startMinute] = schedule.startTime.split(":").map(Number)
-      const [endHour, endMinute] = schedule.endTime.split(":").map(Number)
+      const [startHour, startMinute] = schedule.startTime
+        .split(":")
+        .map(Number);
+      const [endHour, endMinute] = schedule.endTime.split(":").map(Number);
 
-      let currentTime = new Date(day)
-      currentTime.setHours(startHour, startMinute, 0, 0)
-      const dayEnd = new Date(day)
-      dayEnd.setHours(endHour, endMinute, 0, 0)
+      let currentTime = new Date(day);
+      currentTime.setHours(startHour, startMinute, 0, 0);
+      const dayEnd = new Date(day);
+      dayEnd.setHours(endHour, endMinute, 0, 0);
 
       while (currentTime < dayEnd) {
-        const slotEnd = addMinutes(currentTime, slotDuration)
+        const slotEnd = addMinutes(currentTime, slotDuration);
         if (slotEnd <= dayEnd) {
-          slots.push({ start: new Date(currentTime), end: slotEnd })
+          slots.push({ start: new Date(currentTime), end: slotEnd });
         }
-        currentTime = addMinutes(currentTime, slotDuration)
+        currentTime = addMinutes(currentTime, slotDuration);
       }
-    })
+    });
 
-    return slots
-  }
+    return slots;
+  };
 
-  const { mutate: sendBulkAppointments, isPending } = usePutAppointmentBulk()
+  const { mutate: sendBulkAppointments, isPending } = usePutAppointmentBulk();
 
   const onSubmit = (data) => {
+    const today = new Date().setHours(0, 0, 0, 0);
+    const selectedStart = new Date(data.startDate).setHours(0, 0, 0, 0);
+
+    if (selectedStart < today) {
+      const id = Date.now();
+      setToasts((prev) => [
+        ...prev,
+        { id, message: "Start date cannot be in the past", type: "error" },
+      ]);
+      setTimeout(() => removeToast(id), 3000);
+      return;
+    }
+
+    const activeSchedule = data.weeklySchedule.filter(
+      (schedule) => schedule.startTime && schedule.endTime
+    );
+
+    if (activeSchedule.length === 0) {
+      const id = Date.now();
+      setToasts((prev) => [
+        ...prev,
+        { id, message: "Please configure at least one day of the week", type: "error" },
+      ]);
+      setTimeout(() => removeToast(id), 3000);
+      return;
+    }
+
     const appointmentData = {
       examinerId: data.examinerId,
       startDate: data.startDate.toISOString(),
       endDate: data.endDate.toISOString(),
       slotDurationMinutes: parseInt(data.slotDuration),
-      weeklySchedule: data.weeklySchedule.map((schedule) => ({
+      weeklySchedule: activeSchedule.map((schedule) => ({
         dayOfWeek: schedule.dayOfWeek,
-        startTime: schedule.startTime,
-        endTime: schedule.endTime,
+        startTime: schedule.startTime.length === 5
+          ? `${schedule.startTime}:00`
+          : schedule.startTime,
+        endTime: schedule.endTime.length === 5
+          ? `${schedule.endTime}:00`
+          : schedule.endTime,
       })),
-    }
+    };
 
+    console.log("submit bulk:", appointmentData);
     sendBulkAppointments(appointmentData, {
       onSuccess: () => {
-        Toast("Appointments scheduled successfully!")
-        reset()
-        setShowPreview(false)
-        setPreviewData(null)
+        const id = Date.now();
+        setToasts((prev) => [
+          ...prev,
+          { id, message: "Appointments scheduled successfully!", type: "success" },
+        ]);
+        setTimeout(() => removeToast(id), 3000);
+        reset();
+        setShowPreview(false);
+        setPreviewData(null);
       },
       onError: (error) => {
-        Toast(`Failed to schedule appointments: ${error.message}`)
+        const id = Date.now();
+        setToasts((prev) => [
+          ...prev,
+          { id, message: `Failed to schedule appointments: ${error?.message || "Unknown error"}`, type: "error" },
+        ]);
+        setTimeout(() => removeToast(id), 3000);
       },
-    })
-  }
+    });
+  };
 
-  // دالة للتأكيد من الـ preview
   const handleConfirmFromPreview = () => {
     if (previewData) {
-      onSubmit(previewData.formData)
+      onSubmit(previewData.formData);
     }
-  }
+  };
 
   const handlePreview = () => {
-    const data = watch()
-    const slots = generateTimeSlots(data)
+    const data = watch();
     
-    // حفظ البيانات في الـ state
+    const activeSchedule = data.weeklySchedule.filter(
+      (schedule) => schedule.startTime && schedule.endTime
+    );
+
+    if (activeSchedule.length === 0) {
+      const id = Date.now();
+      setToasts((prev) => [
+        ...prev,
+        { id, message: "Please configure at least one day of the week before previewing", type: "error" },
+      ]);
+      setTimeout(() => removeToast(id), 3000);
+      return;
+    }
+
+    const slots = generateTimeSlots(data);
+
     setPreviewData({
       formData: data,
       slots: slots,
-      totalSlots: slots.length
-    })
-    setShowPreview(true)
-  }
+      totalSlots: slots.length,
+    });
+    setShowPreview(true);
+  };
 
   const timeOptions = Array.from({ length: 24 * 2 }, (_, i) => {
-    const hour = Math.floor(i / 2)
-    const minute = i % 2 === 0 ? "00" : "30"
-    return `${hour.toString().padStart(2, "0")}:${minute}`
-  })
+    const hour = Math.floor(i / 2);
+    const minute = i % 2 === 0 ? "00" : "30";
+    return `${hour.toString().padStart(2, "0")}:${minute}`;
+  });
 
   return (
     <div className="space-y-6">
@@ -149,9 +230,14 @@ export default function MultipleAppointmentsForm() {
               render={({ field }) => (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
                       <FaRegCalendarAlt className="mr-2 h-4 w-4" />
-                      {field.value ? format(field.value, "PPP") : "Select start date"}
+                      {field.value
+                        ? format(field.value, "PPP")
+                        : "Select start date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -160,6 +246,9 @@ export default function MultipleAppointmentsForm() {
                       onSelect={field.onChange}
                       mode="single"
                       initialFocus
+                      disabled={(date) =>
+                        date < new Date().setHours(0, 0, 0, 0)
+                      }
                     />
                   </PopoverContent>
                 </Popover>
@@ -179,9 +268,14 @@ export default function MultipleAppointmentsForm() {
               render={({ field }) => (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
+                    >
                       <FaRegCalendarAlt className="mr-2 h-4 w-4" />
-                      {field.value ? format(field.value, "PPP") : "Select end date"}
+                      {field.value
+                        ? format(field.value, "PPP")
+                        : "Select end date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -190,7 +284,9 @@ export default function MultipleAppointmentsForm() {
                       onSelect={field.onChange}
                       mode="single"
                       initialFocus
-                      disabled={(date) => date < (watch("startDate") || new Date())}
+                      disabled={(date) =>
+                        date < (watch("startDate") || new Date())
+                      }
                     />
                   </PopoverContent>
                 </Popover>
@@ -215,17 +311,26 @@ export default function MultipleAppointmentsForm() {
             className="w-full"
           />
           {errors.slotDuration && (
-            <p className="text-red-500 text-sm">{errors.slotDuration.message}</p>
+            <p className="text-red-500 text-sm">
+              {errors.slotDuration.message}
+            </p>
           )}
         </div>
 
         <div className="space-y-2">
           <Label>Weekly Schedule</Label>
+          <p className="text-xs text-gray-500 mt-3 mb-3">
+            Leave start and end times empty for days you don't want to schedule appointments
+          </p>
           <div className="space-y-2">
             {daysOfWeek.map((day, index) => (
               <div
                 key={day}
-                className="flex flex-col sm:flex-row items-center gap-2 bg-[var(--sidebar-bg)] p-3 rounded-lg"
+                className={`flex flex-col sm:flex-row items-center gap-2 p-3 rounded-lg transition-colors ${
+                  watch(`weeklySchedule[${index}].startTime`) && watch(`weeklySchedule[${index}].endTime`)
+                    ? 'bg-blue-50 border border-blue-200'
+                    : 'bg-[var(--sidebar-bg)]'
+                }`}
               >
                 <div className="w-24 sm:w-28">
                   <Label className="text-sm font-medium">{day}</Label>
@@ -240,15 +345,24 @@ export default function MultipleAppointmentsForm() {
                     <Controller
                       control={control}
                       name={`weeklySchedule[${index}].startTime`}
-                      rules={{ required: `Start time for ${day} is required` }}
                       render={({ field }) => (
-                        <Select value={field.value} onValueChange={field.onChange}>
+                        <Select
+                          value={field.value || ""}
+                          onValueChange={(value) => field.onChange(value === "clear" ? undefined : value)}
+                        >
                           <SelectTrigger className="h-9 text-sm">
                             <SelectValue placeholder="Start" />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="clear" className="text-sm text-gray-500">
+                              Clear selection
+                            </SelectItem>
                             {timeOptions.map((time) => (
-                              <SelectItem key={time} value={time} className="text-sm">
+                              <SelectItem
+                                key={time}
+                                value={time}
+                                className="text-sm"
+                              >
                                 {time}
                               </SelectItem>
                             ))}
@@ -256,34 +370,49 @@ export default function MultipleAppointmentsForm() {
                         </Select>
                       )}
                     />
-                    {errors.weeklySchedule?.[index]?.startTime && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.weeklySchedule[index].startTime.message}
-                      </p>
-                    )}
                   </div>
-                  <div className="flex items-center text-sm text-gray-500">to</div>
+                  <div className="flex items-center text-sm text-gray-500">
+                    to
+                  </div>
                   <div className="flex-1">
                     <Controller
                       control={control}
                       name={`weeklySchedule[${index}].endTime`}
                       rules={{
-                        required: `End time for ${day} is required`,
-                        validate: (value) =>
-                          value > watch(`weeklySchedule[${index}].startTime`) ||
-                          `End time for ${day} must be after start time`,
+                        validate: (value) => {
+                          const startTime = watch(`weeklySchedule[${index}].startTime`);
+                          
+                          if (!startTime) {
+                            return true;
+                          }
+                          
+                          if (!value) {
+                            return `End time is required when start time is set for ${day}`;
+                          }
+                          
+                          return value > startTime || `End time for ${day} must be after start time`;
+                        }
                       }}
                       render={({ field }) => (
-                        <Select value={field.value} onValueChange={field.onChange}>
+                        <Select
+                          value={field.value || ""}
+                          onValueChange={(value) => field.onChange(value === "clear" ? undefined : value)}
+                        >
                           <SelectTrigger className="h-9 text-sm">
                             <SelectValue placeholder="End" />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="clear" className="text-sm text-gray-500">
+                              Clear selection
+                            </SelectItem>
                             {timeOptions.map((time) => (
                               <SelectItem
                                 key={time}
                                 value={time}
-                                disabled={time <= watch(`weeklySchedule[${index}].startTime`)}
+                                disabled={
+                                  watch(`weeklySchedule[${index}].startTime`) && 
+                                  time <= watch(`weeklySchedule[${index}].startTime`)
+                                }
                                 className="text-sm"
                               >
                                 {time}
@@ -322,16 +451,32 @@ export default function MultipleAppointmentsForm() {
           examinerId={previewData.formData.examinerId}
           dateRange={
             previewData.formData.startDate && previewData.formData.endDate
-              ? `${format(previewData.formData.startDate, "PPP")} to ${format(previewData.formData.endDate, "PPP")}`
+              ? `${format(previewData.formData.startDate, "PPP")} to ${format(
+                  previewData.formData.endDate,
+                  "PPP"
+                )}`
               : ""
           }
           slotDuration={previewData.formData.slotDuration}
           timeRange="Varies by day"
           totalSlots={previewData.totalSlots}
           setShowPreview={setShowPreview}
-          onConfirm={handleConfirmFromPreview} // إضافة دالة التأكيد
+          onConfirm={handleConfirmFromPreview}
         />
       )}
+
+      {/* عرض الـ Toasts */}
+      <div className="fixed top-5 right-5 space-y-2 z-50">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            id={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={removeToast}
+          />
+        ))}
+      </div>
     </div>
-  )
+  );
 }
