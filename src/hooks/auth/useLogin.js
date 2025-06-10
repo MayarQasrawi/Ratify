@@ -22,7 +22,7 @@ export default function useSignin(){
             console.log(role)
             switch(role){
                 case 'Applicant':
-                    navigate('/Applicant');
+                    navigate('/');
                     break;
                 case 'Admin':
                     navigate('/dashboard/admin');

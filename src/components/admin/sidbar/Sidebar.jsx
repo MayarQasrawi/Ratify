@@ -5,9 +5,11 @@ import Extract from "../../../utils/Extract";
 
 export default function Sidebar({ ind }) {
   const { auth } = useAuthContext();
-  let role='SeniorExaminer';
+  let role='Examiner';
   if(auth)
     role=Extract(auth ,'role')
+
+  console.log(ind,'ind ind ')
   // if (!auth || typeof auth !== "string") {
   //   return <Navigate to="/login" />;
   // }
@@ -20,7 +22,6 @@ export default function Sidebar({ ind }) {
           if (menueItem.title === "Assigned Work" && !ind) {
             return null;
           }
-
           return (
             <NavLink
               end

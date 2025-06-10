@@ -18,7 +18,7 @@ export default function TrackCard({isLoading,tracks,isError}) {
             <br />
             <span className="text-[#003F7D]">Developing</span>
           </h3>
-          <img src={tracks[currentIndex].image} className="w-[160px]" />
+          <img src={`${import.meta.env.VITE_API}${tracks[currentIndex].image}`} className="w-[160px]" />
         </div>
         <div className="flex gap-2.5 absolute left-36 -bottom-5 ">
           {Array.from({ length: tracks.length }, (_, ind) => (
@@ -69,7 +69,7 @@ export default function TrackCard({isLoading,tracks,isError}) {
                 <span className="text-[#003F7D]">Developing</span>
               </h3>
             </div>
-            <img src={track.image} alt={track.name} className="w-[140px]" />
+            <img src={`${import.meta.env.VITE_API}${track.image}`} alt={track.name} className="w-[140px]" />
           </div>
         ))}
         <button onClick={()=>{navigate('/our-tracks')}} className="text-white lg:hidden text-sm bg-[var(--main-color)] px-6 py-3 lg:py-2 rounded-full font-semibold cursor-pointer">

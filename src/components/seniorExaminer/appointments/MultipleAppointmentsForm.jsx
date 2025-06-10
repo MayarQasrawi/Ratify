@@ -15,7 +15,6 @@ import ExaminerSelect from "./shared/ExaminerSelect"
 
 export default function MultipleAppointmentsForm() {
   console.log("usePutSingleAppointment")
-
   const {
     register,
     handleSubmit,

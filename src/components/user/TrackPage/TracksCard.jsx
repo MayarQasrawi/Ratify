@@ -9,6 +9,7 @@ import Extract from "../../../utils/Extract";
 import useGetApplicantTrack from "../../../hooks/applicant/enroll/useGetApplicantTrack";
 function TracksCard({ header, description, img, id }) {
   const navigate = useNavigate();
+  console.log(import.meta.env.VITE_API,'import.meta.env.VITE_API')
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
   let authId=null;
@@ -39,7 +40,7 @@ function TracksCard({ header, description, img, id }) {
       )}
       <div>
         <div className="rounded-lg bg-[var(--secondary-color)]  h-72 p-6 transition-transform hover:shadow-lg">
-          <img src={`https://4b2a-85-113-123-99.ngrok-free.app/${img}`} className="w-30 h-30 block mx-auto" />
+          <img src={`${import.meta.env.VITE_API}${img}`} className="w-30 h-30 block mx-auto" />
         </div>
         <div className="bg-white relative -mt-24 shadow text-center  text-xl  h-60 rounded-lg p-3  w-[90%] mx-auto ">
           <div className="h-24">

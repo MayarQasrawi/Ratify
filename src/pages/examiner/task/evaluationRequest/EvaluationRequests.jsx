@@ -13,16 +13,18 @@ import Table from "../../../../components/admin/shared/Table";
 import Title from "../../../../components/admin/shared/Title";
 import useGetPendingRequest from "../../../../hooks/examiner/evaluationRequest/useGetPendingRequest";
 import Loading from "../../../../components/admin/shared/Loading";
+import Spinner from "../../../../components/shared/dashboard/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function EvaluationRequests() {
   const [activeTab, setActiveTab] = useState("exams");
+  const navigate=useNavigate()
   const [loading, setLoading] = useState({
     taskSubmissions: false,
     examReviews: false,
     scheduledInterviews: false,
   });
   const [taskSubmissions, setTaskSubmissions] = useState([]);
-  const [examReviews, setExamReviews] = useState([]);
   const [scheduledInterviews, setScheduledInterviews] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     tasks: { key: null, direction: null },
@@ -44,7 +46,7 @@ export default function EvaluationRequests() {
     enable:
       activeTab == "tasks" || activeTab == "interviews" || activeTab == "exams",
   });
-  console.log(pendingRequest, ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;pending request evalc");
+  console.log(pendingRequest?.data, ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;pending request evalc");
   console.log(activeTab, "///");
 
   const handleSort = (key, tabType) => {
@@ -100,70 +102,6 @@ export default function EvaluationRequests() {
     return <FaSortDown className="text-blue-600" size={12} />;
   };
 
-  const fetchTaskSubmissions = async () => {
-    try {
-      const mockData = [
-        {
-          id: 1,
-          taskId: 101,
-          taskTitle: "Frontend React Component",
-          applicantId: "APP001",
-          submissionUrl: "https://github.com/user/task-101",
-          submissionDate: "2024-05-20T10:30:00Z",
-          dueDate: "2024-05-22T23:59:59Z",
-          daysWaiting: 3,
-          isLate: false,
-          status: "Submitted",
-          stageName: "Technical Assessment",
-          trackName: "Frontend Development",
-        },
-        {
-          id: 2,
-          taskId: 102,
-          taskTitle: "API Development Task",
-          applicantId: "APP002",
-          submissionUrl: "https://github.com/user/task-102",
-          submissionDate: "2024-05-21T14:15:00Z",
-          dueDate: "2024-05-20T23:59:59Z",
-          daysWaiting: 2,
-          isLate: true,
-          status: "Submitted",
-          stageName: "Technical Assessment",
-          trackName: "Backend Development",
-        },
-      ];
-      setTaskSubmissions(mockData);
-    } catch (error) {
-      console.error("Error fetching task submissions:", error);
-    }
-  };
-
-  const fetchExamReviews = async () => {
-    try {
-      const mockData = [
-        {
-          id: 1,
-          applicantName: "Abrar",
-          durationMinutes: "2 hours",
-          status: "Pending Review",
-          stageName: "Technical Assessment",
-          trackName: "Backend Development",
-        },
-        {
-          id: 2,
-          applicantName: "Abrar",
-          durationMinutes: "3 hours",
-          status: "Pending Review",
-          stageName: "Technical Assessment",
-          trackName: "Backend Development",
-        },
-      ];
-      setExamReviews(mockData);
-    } catch (error) {
-      console.error("Error fetching exam reviews:", error);
-    }
-  };
-
   const fetchScheduledInterviews = async () => {
     try {
       const mockData = [
@@ -193,8 +131,6 @@ export default function EvaluationRequests() {
   };
 
   useEffect(() => {
-    fetchTaskSubmissions();
-    fetchExamReviews();
     fetchScheduledInterviews();
   }, []);
 
@@ -202,7 +138,7 @@ export default function EvaluationRequests() {
     {
       id: "tasks",
       label: "Tasks",
-      count: taskSubmissions.length,
+      count: pendingRequest?.data.length,
       icon: FaTasks,
     },
     {
@@ -214,7 +150,7 @@ export default function EvaluationRequests() {
     {
       id: "exams",
       label: "Exams",
-      count: examReviews.length,
+      count: pendingRequest?.data.length,
       icon: FaBookOpen,
     },
   ];
@@ -277,7 +213,9 @@ export default function EvaluationRequests() {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button className="inline-flex cursor-pointer  items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
+        <button onClick={()=>navigate('/dashboard/examiner/evaluation-work',{state:{stageProgressId:item.stageProgressId,taskSubmissionId:item.id,type:'Task',stageId:item.stageId,submissionUrl:item.submissionUrl
+
+}})} className="inline-flex cursor-pointer  items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
           Evaluate
         </button>
       </td>
@@ -321,19 +259,12 @@ export default function EvaluationRequests() {
             size={16}
           />
           <span className="text-sm text-gray-900 dark:text-gray-100 text-center">
-            {item.durationMinutes}
-          </span>
-        </div>
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap ">
-        <div className="flex justify-center">
-          <span className=" px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
-            {item.status}
+            {item.daysWaiting} days
           </span>
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button className="inline-flex cursor-pointer items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
+        <button  onClick={()=>navigate('/dashboard/examiner/evaluation-work',{state:{stageId:item.stageId,stageProgressId:item.stageProgressId,examRequestId:item.id,type:'Exam',applicantName:item.applicantName}})} className="inline-flex cursor-pointer items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
           Evaluate
         </button>
       </td>
@@ -427,7 +358,7 @@ export default function EvaluationRequests() {
     }
     switch (activeTab) {
       case "tasks":
-        if (taskSubmissions.length === 0) return <EmptyState />;
+        if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
           <div className="max-w-[900px] scrollbar-custom">
             <Table
@@ -438,7 +369,7 @@ export default function EvaluationRequests() {
                 "Waiting Time",
                 " ",
               ]}
-              data={taskSubmissions}
+              data={pendingRequest?.data}
               row={renderTaskSubmissionRow}
             />
           </div>
@@ -455,12 +386,12 @@ export default function EvaluationRequests() {
           </div>
         );
       case "exams":
-        if (examReviews.length === 0) return <EmptyState />;
+        if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
           <div className="max-w-[900px] scrollbar-custom">
             <Table
-              cols={["Candidate", "Track/ Stage", "Duration", "Status", " "]}
-              data={examReviews}
+              cols={["Candidate", "Track/ Stage", "Waiting Time", " "]}
+              data={pendingRequest?.data}
               row={renderExamReviewRow}
             />
           </div>
@@ -469,18 +400,19 @@ export default function EvaluationRequests() {
         return <EmptyState />;
     }
   };
-
+ 
   return (
     <div className="min-h-screen  p-6">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8 flex justify-between items-center">
-          <Title>Pending Evaluations</Title>
+        <header className="mb-8 flex justify-between items-center capitalize">
+          <Title>Pending {activeTab.slice(0,activeTab.length-1)} Evaluations</Title>
         </header>
         {!isLoading && (
           <div className="flex gap-2 mb-6">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
+              console.log(tab.count,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjj')
               return (
                 <button
                   key={tab.id}
@@ -494,18 +426,7 @@ export default function EvaluationRequests() {
                 >
                   {Icon && <Icon size={16} />}
                   {tab.label}
-                  {tab.count > 0 && (
-                    <span
-                      className={`text-xs w-5 h-5 flex items-center justify-center rounded-full font-semibold
-              ${
-                isActive
-                  ? "bg-blue-500 text-white dark:bg-blue-600"
-                  : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
-              }`}
-                    >
-                      {tab.count}
-                    </span>
-                  )}
+                
                 </button>
               );
             })}

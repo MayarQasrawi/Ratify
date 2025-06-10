@@ -679,10 +679,10 @@ export default function TrackStructureDetails({ structure }) {
                       description={
                         <>
                           {stg.description}{" "}
-                          <div className="p-4 my-5 rounded-lg bg-blue-50 shadow-md flex items-center justify-between">
+                          <div className="p-4 my-5 rounded-lg bg-[var(--sidebar-bg)]  shadow-md flex items-center justify-between">
                             <div>
                               {stg.type == "Interview" && (
-                                <div className="flex items-center mb-2 text-gray-900">
+                                <div className="flex items-center mb-2 text-gray-900 dark:text-white">
                                   <FaCalendarAlt className="mr-2" />
                                   <span>
                                     Max Day To Booking:{" "}
@@ -692,7 +692,7 @@ export default function TrackStructureDetails({ structure }) {
                                   </span>
                                 </div>
                               )}
-                              <div className="flex items-center mb-2 gap-1.5 text-gray-900">
+                              <div className="flex items-center mb-2 gap-1.5 text-gray-900 dark:text-white">
                                 <FaClock />
                                 <span>
                                   Duration:
@@ -700,7 +700,7 @@ export default function TrackStructureDetails({ structure }) {
                                     {stg.type == "Interview"
                                       ? `${stg.interview.durationMinutes}mins`
                                       : stg.type == "Task"
-                                      ? `${stg.tasksPool.daysToSubmit}days`
+                                      ? ` ${stg.tasksPool.daysToSubmit} days`
                                       : `${stg.exam.durationMinutes}mins`}
                                   </strong>
                                 </span>

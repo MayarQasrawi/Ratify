@@ -8,19 +8,13 @@ import TrackItem from "./TrackItem";
 
 export default function RegisterTrack() {
   const { auth } = useAuthContext();
-
-  if (!auth) return <Navigate to="/login" />;
-
   const id = Extract(auth, "nameid");
   const { data, isLoading } = useGetApplicantTrack(id);
   console.log("track data", data);
-
   const myTrack = data?.data?.data || [];
-  
-
-
+  if (!auth) return <Navigate to="/login" />;
   if (!isLoading && myTrack.length === 0) {
-    return <Navigate to="/some-page" />; // 👈in progress must be handdle
+    return <Navigate to="/unAuthorized" />; 
   }
 
   return (
@@ -34,8 +28,6 @@ export default function RegisterTrack() {
           img={track.img || img}
           status={track.status}
           enrollmentDate={track.enrollmentDate}
-
-
         />
       ))}
     </div>

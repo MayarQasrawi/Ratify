@@ -5,7 +5,7 @@ import Outcome from "../../components/user/trackDetailsPage/details/Outcome";
 import AdditionalInformation from "../../components/user/trackDetailsPage/details/AdditionalInformation";
 import TrackMap from "../../components/user/trackDetailsPage/details/TrackMap";
 import { useParams } from "react-router-dom";
-import useFetchTrackById from "../../hooks/admin/tracks/useFetchTrackById";
+import useFetchTrackById from "../../hooks/Admin/tracks/useFetchTrackById";
 import TopLoader from "../../components/shared/TopLoader";
 
 function getThreeTypes(plan) {

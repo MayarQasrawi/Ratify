@@ -12,11 +12,11 @@ export default function Header({name,image}) {
         <Navbar />
         <div className="flex h-full gap-10 items-center justify-center">
           <div>
-            <img src={img} className="lg:w-[140px] xl:w-[180px]" />
+            <img src={`${import.meta.env.VITE_API}${image}`}className="lg:w-[140px] xl:w-[180px]" />
           </div>
           <div>
             <h1 className="font-medium text-4xl text-[#3B82F6]">
-              Front-End <br /> <span className="text-white">Development</span>
+              {name}
             </h1>
           </div>
         </div>
