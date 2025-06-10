@@ -7,7 +7,7 @@ const useGetStage = (stageId) => {
     queryKey: ['stageProgress', stageId],
     queryFn: async () => {
       const response = await axiosInstance.get(`/stage-progresses/${stageId}`);
-      return response;
+      return response.data.data;
     },
     enabled: !!stageId, // يتم تنشيط الطلب فقط إذا كان stageId موجودًا
   });

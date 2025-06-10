@@ -8,7 +8,14 @@ import { IoReload } from "react-icons/io5";
 const StatusBadge = ({ status }) => {
   const commonClasses = "flex items-center px-2.5 py-1 rounded-full text-xs font-medium max-w-24 justify-center"
 
-  switch (status) {
+  switch (status.toLowerCase()) {
+    case "scheduled":
+      return (
+        <span className={`${commonClasses} bg-blue-100 text-blue-600`}>
+          <LuTimerReset className="mr-1" size={14} />
+          Scheduled
+        </span>
+      )
     case "pending":
       return (
         <span className={`${commonClasses} bg-yellow-100 text-yellow-600`}>
@@ -23,7 +30,7 @@ const StatusBadge = ({ status }) => {
           Approved
         </span>
       )
-    case "rejected":
+    case "canceled":
       return (
         <span className={`${commonClasses} bg-red-100 text-red-600`}>
           <TiDeleteOutline className="mr-1" size={16} />

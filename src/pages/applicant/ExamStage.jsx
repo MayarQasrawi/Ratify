@@ -11,7 +11,6 @@ import ExamRequestCard from "../../components/applicant/dashboard/Stages/Exam/Ex
 import useGetStage from "../../hooks/applicant/progress/useGetStage";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
-import { set } from "date-fns";
 // زر الإجراءات
 const ActionButton = ({ text, onClick }) => (
   <button
@@ -38,16 +37,16 @@ const StatusDisplay = ({ status, color, message }) => (
 );
 
 function ExamStage() {
-  const [isLoading, setLoading] = useState(true);
+  // const [isLoading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [toasts, setToasts] = useState([]);
 
   const { state } = useLocation();
-  const stage = state?.stage?.actionStatus;
-  const stageData = state?.stage;
+  const [stageData, setStageData] = useState(state?.stage);
 
-  const [currentStage, setCurrentStage] = useState(stage);
+  
+
 
   // useEffect({
 
@@ -68,7 +67,7 @@ function ExamStage() {
     FeedbackAvailable: { bg: "bg-yellow-100", text: "text-yellow-600" },
   };
 
-  const color = statusColors[stage] || statusColors["ReadyToRequest"];
+  const color = statusColors[stageData?.actionStatus] || statusColors["ReadyToRequest"];
 
   const addToast = (message, type = "success") => {
     const id = Date.now();
@@ -87,32 +86,38 @@ function ExamStage() {
   const { auth } = useAuthContext();
   const id = Extract(auth, "nameid");
 
-  const { mutate: requestExam, isPending } = useExamRequest();
+  const { mutate: requestExam, isLoading } = useExamRequest();
+// فوق الكومبوننت مباشرة
 
-  const confirmExamRequest = () => {
-    setIsLoadingModal(true);
+  
+const confirmExamRequest = () => {
+  setIsLoadingModal(true);
 
-    const payload = {
-      stageId: stageData?.stageId,
-      applicantId: id,
-    };
-
-    requestExam(payload, {
-      onSuccess: async () => {
-        addToast("Exam request submitted successfully!", "success");
-        setIsModalOpen(false);
-        setCurrentStage("RequestPending");
-      },
-
-      onError: (error) => {
-        addToast("Failed to submit exam request", "error");
-        console.error(error);
-      },
-      onSettled: () => {
-        setIsLoadingModal(false);
-      },
-    });
+  const payload = {
+    stageId: stageData?.stageId,
+    applicantId: id,
   };
+
+  requestExam(payload, {
+    onSuccess: async (examRequestId) => {
+      addToast("Exam request submitted successfully!", "success");
+      setIsModalOpen(false);
+      setStageData((prev) => ({
+        ...prev,
+        actionStatus: "RequestPending",
+        additionalData: { ...prev.additionalData, examRequestId: examRequestId },
+      }));
+    },
+
+    onError: (error) => {
+      addToast("Failed to submit exam request", "error");
+      console.error(error);
+    },
+    onSettled: () => {
+      setIsLoadingModal(false);
+    },
+  });
+}
 
   const getExamRequestContent = (stage) => {
     const baseConfig = {
@@ -179,32 +184,32 @@ function ExamStage() {
     buttonText,
     buttonAction,
     statusMessage,
-  } = getExamRequestContent(stage);
+  } = getExamRequestContent(stageData?.actionStatus || "ReadyToRequest");
 
-  if (!isLoading) {
-    return (
-      <main className="flex flex-col items-center justify-center p-2 animate-pulse">
-        <div className="bg-blue-500/10 w-[96%] mx-4 my-2 rounded-lg py-5 mt-8">
-          <div className="h-8 bg-blue-300/30 w-2/3 mx-auto rounded" />
-        </div>
-        <section className="w-full flex flex-col items-center gap-4 mt-4">
-          <div className="bg-gray-200 h-32 w-[90%] rounded-lg" />
-          <div className="bg-gray-200 h-24 w-[90%] rounded-lg" />
-        </section>
-        <div className="w-[90%] mt-10 p-4 bg-gray-200 rounded-lg">
-          <div className="h-5 bg-gray-300 w-1/3 mb-3 rounded"></div>
-          <div className="h-4 bg-gray-300 w-full rounded"></div>
-        </div>
-      </main>
-    );
-  }
+  // if (!isLoading) {
+  //   return (
+  //     <main className="flex flex-col items-center justify-center p-2 animate-pulse">
+  //       <div className="bg-blue-500/10 w-[96%] mx-4 my-2 rounded-lg py-5 mt-8">
+  //         <div className="h-8 bg-blue-300/30 w-2/3 mx-auto rounded" />
+  //       </div>
+  //       <section className="w-full flex flex-col items-center gap-4 mt-4">
+  //         <div className="bg-gray-200 h-32 w-[90%] rounded-lg" />
+  //         <div className="bg-gray-200 h-24 w-[90%] rounded-lg" />
+  //       </section>
+  //       <div className="w-[90%] mt-10 p-4 bg-gray-200 rounded-lg">
+  //         <div className="h-5 bg-gray-300 w-1/3 mb-3 rounded"></div>
+  //         <div className="h-4 bg-gray-300 w-full rounded"></div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
 
   return (
     <div>
       <StageLayout
         feedbackId={
           ["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
-            stage
+           stageData?.actionStatus
           )
             ? stageData?.additionalData?.FeedbackId
             : null
@@ -212,70 +217,54 @@ function ExamStage() {
         header="Exam"
         Children={
           <>
-            {!["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
-              currentStage
-            ) && (
+            {!["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(stageData?.actionStatus) && (
               <Container
                 header={header}
-                descriptions={description}
-                children={
-                  <div className="flex flex-col gap-8 mt-4 items-center justify-center">
-                    {showButton && (
-                      <ActionButton
-                        text={buttonText}
-                        onClick={handleExamRequest}
-                      />
-                    )}
-                    <StatusDisplay
-                      status={stage}
-                      color={color}
-                      message={statusMessage}
-                    />
-                  </div>
-                }
-              />
-            )}
+    descriptions={description}
+    children={
+      <div className="flex flex-col gap-8 mt-4 items-center justify-center">
+        {showButton && (
+          <ActionButton text={buttonText} onClick={handleExamRequest} />
+        )}
+        <StatusDisplay status={stageData?.actionStatus} color={color} message={statusMessage} />
+      </div>
+    }
+  />
+)}
 
-            {[
-              "RequestApproved",
-              "RequestRejected",
-              "RequestPending",
-              "ReadyToRequest",
-             
-            ].includes(currentStage) && (
-              <Container
-                header="Exam Details"
-                descriptions="Here you'll find information about the exam format and guidelines."
-                children={<ExamCard stageId={stageData?.stageId} />}
-              />
-            )}
-            {["Completed", "Failed", "Reviewed","FeedbackAvailable"].includes(currentStage) && (
-              <Container
-                header="Exam Status"
-                descriptions="This is the final status of your exam stage."
-                children={
-                  <div className="flex justify-center">
-                    <StatusDisplay
-                      status={stage}
-                      color={color}
-                      message={`This is your final exam status`}
-                    />
-                  </div>
-                }
-              />
-            )}
+{["RequestApproved", "RequestRejected", "RequestPending", "ReadyToRequest"].includes(stageData?.actionStatus) && (
+  <Container
+    header="Exam Details"
+    descriptions="Here you'll find information about the exam format and guidelines."
+    children={<ExamCard stageId={stageData?.stageId} />}
+  />
+)}
 
-            {["RequestApproved"].includes(currentStage) && (
-              <Container
-                header="Exam Request"
-                descriptions="Here you'll find your exam request details."
-                children={
-                  <ExamRequestCard
-                    requestId={stageData?.additionalData?.examRequestId}
-                  />
-                }
-              />
-            )}
+{["Completed", "Failed", "Reviewed", "FeedbackAvailable"].includes(stageData?.actionStatus) && (
+  <Container
+    header="Exam Status"
+    descriptions="This is the final status of your exam stage."
+    children={
+      <div className="flex justify-center">
+        <StatusDisplay
+          status={stageData?.actionStatus}
+          color={color}
+          message={`This is your final exam status`}
+        />
+      </div>
+    }
+  />
+)}
+
+{["RequestApproved"].includes(stageData?.actionStatus) && (
+  <Container
+    header="Exam Request"
+    descriptions="Here you'll find your exam request details."
+    children={
+      <ExamRequestCard requestId={stageData?.additionalData?.examRequestId} />
+    }
+  />
+)}
           </>
         }
       />

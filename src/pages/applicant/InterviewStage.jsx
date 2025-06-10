@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StageLayout from "../../components/applicant/dashboard/Stages/StageLayout";
 import Container from "../../components/applicant/dashboard/general/Container";
 import InterviewCard from "@/components/applicant/dashboard/Stages/interview/InterviewCard";
@@ -9,25 +9,46 @@ import Lottie from "lottie-react";
 import animationData from "@/assets/img/animation/Appointment.json"; // Adjust the path as necessary
 import StatusBadge from "@/components/applicant/dashboard/Stages/interview/StatusBadge ";
 import useGetStage from "@/hooks/applicant/progress/useGetStage";
-import { useState } from "react";
+
 function InterviewStage() {
   const { state } = useLocation();
   console.log("State from location:", state);
-  // Extract stage from state, default to "ReadyToBook" if not found or invalid
-  const stageData = state?.stage 
-  const stage = stageData?.actionStatus || "ReadyToBook";
-  const stageId = stageData?.stageId || null;
-
-  // const { 
-  //   data, 
-  //   isLoading: isStageLoading, 
-  //   refetch: refetchStage 
-  // } = useGetStage(stageData?.stageId);
-
-
   
-  // const [currentStage, setCurrentStage] = useState(stage);
-  // const [currentStageData, setCurrentStageData] = useState(stageData);
+  // Initialize stageData from location state
+  const [stageData, setStageData] = useState(state?.stage);
+  const stageId = state?.stage?.stageId || null;
+  console.log("Stage ID:", stageId);
+  const interviewId = state?.stage?.additionalData?.interviewId;
+  console.log("Interview ID 1:", interviewId);
+
+  // Fetch stage data from API
+  const {
+    data,
+    isLoading: isStageLoading,
+    isSuccess,
+    error
+  } = useGetStage(state?.stage?.id);
+  
+  console.log("API data:", data);
+  console.log("Is loading:", isStageLoading);
+  console.log("Is success:", isSuccess);
+  console.log("Error:", error);
+
+  // Update stageData when API data is fetched successfully
+  useEffect(() => {
+    if (isSuccess && data) {
+      console.log("Updating stageData with API data:", data);
+      setStageData(prevStageData => ({
+        ...prevStageData,
+        ...data
+      }));
+    }
+  }, [isSuccess, data]);
+
+  // Log updated stageData
+  useEffect(() => {
+    console.log("Updated stageData:", stageData);
+  }, [stageData]);
 
   const statusColors = {
     ReadyToBook: { bg: "bg-gray-100", text: "text-gray-600" },
@@ -35,20 +56,31 @@ function InterviewStage() {
     BookingScheduled: { bg: "bg-blue-100", text: "text-blue-600" },
     BookingCanceled: { bg: "bg-red-100", text: "text-red-600" },
     InterviewCompleted: { bg: "bg-green-100", text: "text-green-600" },
+    Failed: { bg: "bg-red-100", text: "text-red-600" },
+    Completed: { bg: "bg-green-100", text: "text-green-600" },
   };
 
-  const color = statusColors[stage] || statusColors["ReadyToBook"];
+  const color = statusColors[stageData?.actionStatus] || statusColors["ReadyToBook"];
  
   // Reusable container config
-  const getContainerContent = (stage, stageData) => {
-    switch (stage) {
+  const getContainerContent = (actionStatus, stageData) => {
+    console.log("stageData?.actionStatus", actionStatus);
+    
+    switch (actionStatus) {
       case "ReadyToBook":
         return {
           header: "Interview Request",
           description:
             "No interview booking exists. Submit your request for an interview. Our team will review and schedule it for you.",
-          children: <CalendarBooking />,
+          children: (
+            <CalendarBooking 
+              stageId={stageId} 
+              setStageData={setStageData} 
+              interviewId={interviewId} 
+            />
+          ),
         };
+        
       case "BookingPending":
         return {
           header: "Interview Request",
@@ -64,7 +96,7 @@ function InterviewStage() {
                   <span
                     className={`text-sm font-semibold px-8 py-1 lg:px-[80px] rounded-md ${color.bg} ${color.text}`}
                   >
-                    {stage}
+                    {actionStatus}
                   </span>
                 </div>
                 <p className="text-xs mt-4 text-gray-500">
@@ -74,13 +106,14 @@ function InterviewStage() {
             </div>
           ),
         };
+        
       case "BookingScheduled":
         return {
           header: "Your Interview",
           description: `Interview scheduled for ${
-            stageData.additionalData.scheduledDate || "TBD"
+            stageData?.additionalData?.scheduledDate || "TBD"
           }. Join via: ${
-            stageData.additionalData.meetingLink || "Link not available"
+            stageData?.additionalData?.meetingLink || "Link not available"
           }`,
           children: (
             <div className="flex flex-col md:flex-row gap-6 items-center justify-between mt-4">
@@ -96,7 +129,7 @@ function InterviewStage() {
                       Scheduled Date
                     </p>
                     <p className="text-gray-900 font-semibold">
-                      {stageData.additionalData.scheduledDate || "Not set"}
+                      {stageData?.additionalData?.scheduledDate || "Not set"}
                     </p>
                   </div>
                 </div>
@@ -104,7 +137,7 @@ function InterviewStage() {
                 {/* Meeting Link */}
                 <div className="pt-2">
                   <a
-                    href={stageData.additionalData.meetingLink}
+                    href={stageData?.additionalData?.meetingLink}
                     className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-[var(--main-color)] hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -120,21 +153,31 @@ function InterviewStage() {
             </div>
           ),
         };
+        
       case "BookingCanceled":
         return {
           header: "Interview Request",
           description: "Booking canceled. You can book again.",
-          children: <CalendarBooking />,
+          children: (
+            <CalendarBooking 
+              stageId={stageId} 
+              setStageData={setStageData} 
+              interviewId={interviewId} 
+            />
+          ),
         };
 
       case "Failed":
       case "Completed":
         return {
           header: "Interview Status",
-          // description: `Interview ${stage.toLowerCase()}.`,
+          description: `Interview ${actionStatus?.toLowerCase()}.`,
           children: (
-            <div className="flex items-center justify-center p-10  gap-10 bg-gray-200/30 rounded-lg">
-              <p className="text-gray-400 font-light text-2xl">Your interview status is </p> <StatusBadge status={stage} />
+            <div className="flex items-center justify-center p-10 gap-10 bg-gray-200/30 rounded-lg">
+              <p className="text-gray-400 font-light text-2xl">
+                Your interview status is 
+              </p> 
+              <StatusBadge status={actionStatus} />
             </div>
           )
         };
@@ -144,42 +187,73 @@ function InterviewStage() {
           header: "Interview Request",
           description:
             "No interview booking exists. Submit your request for an interview.",
-          children: <CalendarBooking stageId={stageId}  />,
+          children: (
+            <CalendarBooking 
+              stageId={stageId} 
+              setStageData={setStageData} 
+              interviewId={interviewId} 
+            />
+          ),
         };
     }
   };
 
+  // Show loading state while fetching data
+  if (isStageLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-96">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="w-12 h-12 bg-gray-300 rounded-full mb-4"></div>
+          <div className="h-4 bg-gray-300 rounded w-32"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if there's an error
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-96">
+        <div className="text-center">
+          <div className="text-red-500 text-lg mb-2">Error loading stage data</div>
+          <p className="text-gray-600">{error.message || "Something went wrong"}</p>
+        </div>
+      </div>
+    );
+  }
+
   const { header, description, children } = getContainerContent(
-    stage,
+    stageData?.actionStatus,
     stageData
   );
 
   return (
     <div>
       <StageLayout
-      
-        feedbackId={stage === "Reviewed"||stage === "Completed"||stage === "Failed" ? stageData?.additionalData?.FeedbackId : null}
+        feedbackId={
+          stageData?.actionStatus === "Reviewed" ||
+          stageData?.actionStatus === "Completed" ||
+          stageData?.actionStatus === "Failed" 
+            ? stageData?.additionalData?.FeedbackId 
+            : null
+        }
         header="Interview"
         Children={
-          
           <>
-           {(["ReadyToBook", "BookingPending", "BookingScheduled", "BookingCanceled","Failed","Completed"].includes(stage.actionStatus || stage)) && (
-           
-           <Container
-              header={header}
-              descriptions={description}
-              children={children}
-            />
-          )}
-          {(["ReadyToBook", "BookingPending", "BookingScheduled",""].includes(stage.actionStatus || stage)) && (
-            <Container
-              header="Interview Details"
-              children={<InterviewCard id={stageId} />}
-            />
-          )}
-{/* <CalendarBooking stageId={stageId}  /> */}
-
-         
+            {(["ReadyToBook", "BookingPending", "BookingScheduled", "BookingCanceled", "Failed", "Completed"].includes(stageData?.actionStatus || stageData)) && (
+              <Container
+                header={header}
+                descriptions={description}
+                children={children}
+              />
+            )}
+            
+            {(["ReadyToBook", "BookingPending", "BookingScheduled","BookingCanceled"].includes(stageData?.actionStatus)) && (
+              <Container
+                header="Interview Details"
+                children={<InterviewCard id={stageId} />}
+              />
+            )}
           </>
         }
       />

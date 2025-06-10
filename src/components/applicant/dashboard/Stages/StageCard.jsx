@@ -14,6 +14,7 @@ const StageCard = ({ stage, onClick,isLoading=true}) => {
     case "interview":
       navigate(`/applicant/interview/${stage.stageId}`, { state: { stage } });
       break;
+      
     case "task":
       navigate(`/applicant/task/${stage.id}`, { state: { stage } });  //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
       break;

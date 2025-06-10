@@ -1,4 +1,5 @@
-# Ratify
+# Ratify 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MayarQasrawi/Ratify)
 
 **Ratify** is a modern **skills assessment platform** currently under active development, built using **React.js** and **Tailwind CSS**.  
 It enables users to showcase, validate, and manage their professional skills and credentials in a secure, streamlined way.

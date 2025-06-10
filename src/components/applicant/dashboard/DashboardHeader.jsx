@@ -42,12 +42,12 @@ function DashboardHeader() {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-6 flex flex-wrap gap-4">
+          {/* <div className="mt-6 flex flex-wrap gap-4">
             <IconActionButton label="Notifications" Icon={FaBell} color="yellow" onClick={() => console.log('Notifications')} />
             <IconActionButton label="Applied Tracks" Icon={FaBriefcase} color="yellow" onClick={() => console.log('Applied Tracks')} />
             <IconActionButton label="Completed" Icon={FaClipboardCheck} color="yellow" onClick={() => console.log('Completed')} />
             <IconActionButton label="Pending" Icon={FaClock} color="yellow" onClick={() => console.log('Pending')} />
-          </div>
+          </div> */}
         </div>
 
       

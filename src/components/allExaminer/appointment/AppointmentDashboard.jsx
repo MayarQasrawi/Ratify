@@ -1,66 +1,102 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { FaCalendarAlt, FaSearch, FaList, FaTh } from "react-icons/fa"
 import AppointmentList from "./List"
 import AppointmentCalendar from "./AppointmentCalendar"
 import FilterPanel from "./shared/FilterPanel"
-//  import ConfirmationModal from "./confirmation-modal"
+import ConfirmationModal from "./ConfirmationModal"
 import { LuFilter } from "react-icons/lu";
 import SeniorAppointment from "@/assets/img/animation/SeniorAppointment.json"
 import Lottie from "lottie-react"
 import useApproveInterviewBooking from "@/hooks/examiner/interview/useApproveInterviewBooking"
 import useRejectInterviewBooking from "@/hooks/examiner/interview/useRejectInterviewBooking"
-import useApplicantInterviewBookings from "@/hooks/examiner/interview/useApplicantInterviewBookings"
- 
+import useExaminerInterviewBookings from "@/hooks/examiner/interview/useExaminerInterviewBookings"
+import Extract from "@/utils/Extract"
+import { useAuthContext } from "@/contexts/AuthProvider"
+import useExaminerInterviewRequest from "@/hooks/examiner/interview/useExaminerInterviewRequest"
+import ErrorPage from "@/pages/general/ErrorPage"
+import Loading from "@/components/admin/shared/Loading"
+
+
 export default function AppointmentDashboard() {
   const [appointments, setAppointments] = useState([])
+  const [requests, setRequests] = useState([])
   const [filteredAppointments, setFilteredAppointments] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [filteredRequests, setFilteredRequests] = useState([])
   const [viewMode, setViewMode] = useState("list") // list or calendar
+  const [activeTab, setActiveTab] = useState("bookings") // bookings or requests
   const [searchQuery, setSearchQuery] = useState("")
+  const { auth } = useAuthContext();
+  const id = Extract(auth, "nameid");
+    
+  const { data: bookings, isLoading: isLoadingAppointments, isError,error:berror } = useExaminerInterviewBookings();
+  const { data: requestsData, isLoading: isLoadingRequests, isError: isErrorRequests ,error:rerror} = useExaminerInterviewRequest();
 
-const approveBooking = useApproveInterviewBooking();
-const rejectBooking = useRejectInterviewBooking();
-// const { data: bookings, isLoading:isLoadingAppointments, isError } = useApplicantInterviewBookings(applicantId);
-// console.log(bookings)
 
-// const handleApprove = (id) => {
-//   approveBooking.mutate(id, {
-//     onSuccess: () => {
-//       console.log("Booking approved successfully");
-//     },
-//     onError: (error) => {
-//       console.error("Error approving booking:", error);
-//     }
-//   });
-// };
+  if (isErrorRequests && activeTab!=="bookings") {
+<ErrorPage  error={rerror?.errorDetails}/> 
+ }
+ else if( isError && activeTab==="bookings") {
+  <ErrorPage error={berror?.errorDetails} />
+  }
+    if (isLoadingAppointments && activeTab!=="bookings") {
+<Loading/> 
+ }
+ else if( isLoadingRequests && activeTab ==="bookings") {
+  <Loading/>
+  }
 
-// // للرفض
-// const handleReject = (id) => {
-//   rejectBooking.mutate(id, {
-//     onSuccess: () => {
-//       console.log("Booking rejected successfully");
-//     },
-//     onError: (error) => {
-//       console.error("Error rejecting booking:", error);
-//     }
-//   });
-// };
 
+  useEffect(() => {
+    if (bookings) {
+      setAppointments(bookings);
+    }
+  }, [bookings]);
+
+  useEffect(() => {
+    if (requestsData) {
+      setRequests(requestsData);
+    }
+  }, [requestsData]);
+
+  const isLoading = activeTab === "bookings" ? isLoadingAppointments : isLoadingRequests;
+  console.log("Get Booking for examiner: ", bookings);
+  console.log("Get Requests for examiner: ", requestsData);
+
+  const approveBooking = useApproveInterviewBooking();
+  const rejectBooking = useRejectInterviewBooking();
 
   const handleReject = (id) => {
     openModal({
-      title: "Provide Rejection Reason",
-      message: "Please provide a reason for rejecting this appointment.",
+      title: "Confirm Rejection ",
+      message: "Are you sure you want to reject this appointment?",
       confirmText: "Reject Appointment",
       cancelText: "Cancel",
       confirmButtonClass: "bg-red-600 hover:bg-red-700",
-      showTextArea: true,
-      textAreaLabel: "Rejection Reason",
-      textAreaPlaceholder: "Enter reason for rejection...",
-      onConfirm: (reason) => {
-        updateAppointmentStatus(id, "rejected", reason || "No reason provided")
+     
+      onConfirm: () => {
+        rejectBooking.mutate(id, {
+          onSuccess: (updatedAppointment) => {
+            if (activeTab === "bookings") {
+              setAppointments((prev) =>
+                prev.map((appt) =>
+                  appt.id === id ? updatedAppointment : appt
+                )
+              )
+            } else {
+              setRequests((prev) =>
+                prev.map((req) =>
+                  req.id === id ? updatedAppointment : req
+                )
+              )
+            }
+            console.log("Booking rejected successfully");
+          },
+          onError: (error) => {
+            console.error("Error rejecting booking:", error);
+          }
+        });
         closeModal()
       },
     })
@@ -73,10 +109,30 @@ const rejectBooking = useRejectInterviewBooking();
       confirmText: "Approve",
       cancelText: "Cancel",
       confirmButtonClass: "bg-green-600 hover:bg-green-700",
-      showTextArea: false,
       onConfirm: () => {
-        updateAppointmentStatus(id, "approved")
-        closeModal()
+        approveBooking.mutate(id, {
+          onSuccess: (updatedAppointment) => {
+            if (activeTab === "bookings") {
+              setAppointments((prev) =>
+                prev.map((appt) =>
+                  appt.id === id ? updatedAppointment : appt
+                )
+              )
+            } else {
+              setRequests((prev) =>
+                prev.map((req) =>
+                  req.id === id ? updatedAppointment : req
+                )
+              )
+            }
+            console.log("Booking approved successfully");
+            closeModal()
+          },
+          onError: (error) => {
+            console.error("Error approving booking:", error);
+            closeModal()
+          },
+        });
       },
     })
   }
@@ -100,78 +156,14 @@ const rejectBooking = useRejectInterviewBooking();
     onConfirm: () => {},
   })
 
+  // Filter appointments based on active tab
   useEffect(() => {
-    async function fetchAppointments() {
-      setIsLoading(true)
-      try {
-        // Mock data
-        const mockData = [
-          {
-            id: "1",
-            examinerName: "Dr. Smith",
-            userName: "John Doe",
-            startTime: "2025-05-18T09:00:00.000Z",
-            endTime: "2025-05-18T10:00:00.000Z",
-            status: "pending",
-            createdAt: "2025-05-15T14:30:00.000Z",
-          },
-          {
-            id: "2",
-            examinerName: "Dr. Smith",
-            userName: "Jane Wilson",
-            startTime: "2025-05-18T10:30:00.000Z",
-            endTime: "2025-05-18T11:30:00.000Z",
-            status: "approved",
-            createdAt: "2025-05-15T15:45:00.000Z",
-          },
-          {
-            id: "3",
-            examinerName: "Dr. Johnson",
-            userName: "John Doe",
-            startTime: "2025-05-19T13:00:00.000Z",
-            endTime: "2025-05-19T14:00:00.000Z",
-            status: "rejected",
-            createdAt: "2025-05-16T09:20:00.000Z",
-            rejectionReason: "Schedule conflict",
-          },
-          {
-            id: "4",
-            examinerName: "Dr. Johnson",
-            userName: "Robert Brown",
-            startTime: "2025-05-20T15:00:00.000Z",
-            endTime: "2025-05-20T16:00:00.000Z",
-            status: "pending",
-            createdAt: "2025-05-16T10:15:00.000Z",
-          },
-          {
-            id: "5",
-            examinerName: "Dr. Smith",
-            userName: "Emily Davis",
-            startTime: "2025-05-21T11:00:00.000Z",
-            endTime: "2025-05-21T12:00:00.000Z",
-            status: "approved",
-            createdAt: "2025-05-17T08:30:00.000Z",
-          },
-        ]
-
-        setAppointments(mockData)
-        setFilteredAppointments(mockData)
-      } catch (error) {
-        console.error("Failed to fetch appointments:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchAppointments()
-  }, [])
-
-  useEffect(() => {
-    let result = [...appointments]
+    const currentData = activeTab === "bookings" ? appointments : requests;
+    let result = [...currentData];
 
     // Filter by status
     if (filters.status !== "all") {
-      result = result.filter((appt) => appt.status === filters.status)
+      result = result.filter((item) => item.status === filters.status)
     }
 
     // Filter by date
@@ -179,13 +171,13 @@ const rejectBooking = useRejectInterviewBooking();
       const today = new Date()
       today.setHours(0, 0, 0, 0)
 
-      const apptDate = (appt) => new Date(appt.startTime)
+      const itemDate = (item) => new Date(item.startTime)
 
       if (filters.date === "today") {
         const tomorrow = new Date(today)
         tomorrow.setDate(tomorrow.getDate() + 1)
-        result = result.filter((appt) => {
-          const d = apptDate(appt)
+        result = result.filter((item) => {
+          const d = itemDate(item)
           return d >= today && d < tomorrow
         })
       } else if (filters.date === "thisWeek") {
@@ -193,15 +185,15 @@ const rejectBooking = useRejectInterviewBooking();
         startOfWeek.setDate(today.getDate() - today.getDay()) // Sunday start
         const endOfWeek = new Date(startOfWeek)
         endOfWeek.setDate(startOfWeek.getDate() + 7)
-        result = result.filter((appt) => {
-          const d = apptDate(appt)
+        result = result.filter((item) => {
+          const d = itemDate(item)
           return d >= startOfWeek && d < endOfWeek
         })
       } else if (filters.date === "thisMonth") {
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
         const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-        result = result.filter((appt) => {
-          const d = apptDate(appt)
+        result = result.filter((item) => {
+          const d = itemDate(item)
           return d >= startOfMonth && d <= endOfMonth
         })
       }
@@ -211,44 +203,56 @@ const rejectBooking = useRejectInterviewBooking();
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       result = result.filter(
-        (appt) =>
-          appt.userName.toLowerCase().includes(query) ||
-          appt.examinerName.toLowerCase().includes(query),
+        (item) =>
+          item.userName?.toLowerCase().includes(query) ||
+          item.examinerName?.toLowerCase().includes(query),
       )
     }
 
-    setFilteredAppointments(result)
-  }, [appointments, filters, searchQuery])
+    if (activeTab === "bookings") {
+      setFilteredAppointments(result);
+    } else {
+      setFilteredRequests(result);
+    }
+  }, [appointments, requests, filters, searchQuery, activeTab])
 
-  const updateAppointmentStatus = (id, status, rejectionReason = "") => {
-    setAppointments((prev) =>
-      prev.map((appt) =>
-        appt.id === id
-          ? { ...appt, status, rejectionReason: status === "rejected" ? rejectionReason : undefined }
-          : appt,
-      ),
-    )
-    console.log(`Appointment ${id} status changed to ${status}`)
-  }
+  // const updateAppointmentStatus = (id, status, rejectionReason = "") => {
+  //   if (activeTab === "bookings") {
+  //     setAppointments((prev) =>
+  //       prev.map((appt) =>
+  //         appt.id === id
+  //           ? { ...appt, status, rejectionReason: status === "rejected" ? rejectionReason : undefined }
+  //           : appt,
+  //       ),
+  //     )
+  //   } else {
+  //     setRequests((prev) =>
+  //       prev.map((req) =>
+  //         req.id === id
+  //           ? { ...req, status, rejectionReason: status === "rejected" ? rejectionReason : undefined }
+  //           : req,
+  //       ),
+  //     )
+  //   }
+  //   console.log(`${activeTab === "bookings" ? "Appointment" : "Request"} ${id} status changed to ${status}`)
+  // }
 
   const openModal = (config) => setModalConfig({ ...config, isOpen: true })
 
   const closeModal = () => setModalConfig((prev) => ({ ...prev, isOpen: false }))
 
-
+  const getCurrentData = () => {
+    return activeTab === "bookings" ? filteredAppointments : filteredRequests;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* <ConfirmationModal {...modalConfig} onClose={closeModal} /> */}
-      
-         
+      <ConfirmationModal {...modalConfig} onClose={closeModal} />
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0 text-[var(--main-color)] ">
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-0 text-[var(--main-color)]">
           Manage Appointments
-
         </h1>
-
 
         <div className="flex items-center space-x-2">
           <button
@@ -268,65 +272,95 @@ const rejectBooking = useRejectInterviewBooking();
         </div>
       </div>
 
-      <div className="bg-[var(--sidebar-bg)] rounded-lg shadow-md p-4 mb-6">
-        <div className="flex flex-col md:flex-row justify-between mb-4">
-          <div className="relative w-full md:w-64 mb-4 md:mb-0">
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search appointments..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
+      {/* Tab Navigation */}
+      <div className="bg-[var(--sidebar-bg)] rounded-lg shadow-md mb-6">
+        <div className="flex border-b border-gray-200 dark:border-gray-700">
           <button
-            onClick={() => setShowFilters((v) => !v)}
-            className="flex items-center space-x-1 px-4 py-2 bg-gray-100 dark:bg-[var(--input-border)]  hover:bg-gray-200 dark:hover:bg-gray-500 rounded-md"
-            aria-expanded={showFilters}
+            className={`px-6 py-3 font-medium  text-sm ${
+              activeTab === "bookings"
+                ? "text-[var(--main-color)] border-b-2 border-[var(--main-color)] bg-white dark:bg-[var(--sidebar-bg)]"
+                : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            }`}
+            onClick={() => setActiveTab("bookings")}
           >
-            <LuFilter size={18} />
-            <span>Filters</span>
-            <FaChevronDown className={`transform transition-transform ${showFilters ? "rotate-180" : ""}`} />
+            Interview Bookings ({appointments.length})
+          </button>
+          <button
+            className={`px-6 py-3 font-medium text-sm ${
+              activeTab === "requests"
+                ? "text-[var(--main-color)] border-b-2 border-[var(--main-color)] bg-white dark:bg-[var(--sidebar-bg)]"
+                : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            }`}
+            onClick={() => setActiveTab("requests")}
+          >
+            Interview Requests ({requests.length})
           </button>
         </div>
 
-        {showFilters && <FilterPanel filters={filters} setFilters={setFilters} />}
+        {/* Search and Filters */}
+        <div className="p-4">
+          <div className="flex flex-col md:flex-row justify-between mb-4">
+            <div className="relative w-full md:w-64 mb-4 md:mb-0">
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <input
+                type="text"
+                placeholder={`Search ${activeTab}...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <button
+              onClick={() => setShowFilters((v) => !v)}
+              className="flex items-center space-x-1 px-4 py-2 bg-gray-100 dark:bg-[var(--input-border)] hover:bg-gray-200 dark:hover:bg-gray-500 rounded-md"
+              aria-expanded={showFilters}
+            >
+              <LuFilter size={18} />
+              <span>Filters</span>
+              <FaChevronDown className={`transform transition-transform ${showFilters ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+
+          {showFilters && <FilterPanel filters={filters} setFilters={setFilters} />}
+        </div>
       </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      ) : filteredAppointments.length === 0 ? (
+      ) : getCurrentData().length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <div className="flex justify-center mb-4">
             <FaCalendarAlt size={48} className="text-gray-400" />
           </div>
-          <h3 className="text-xl font-medium text-gray-700 mb-2">No appointments found</h3>
+          <h3 className="text-xl font-medium text-gray-700 mb-2">
+            No {activeTab === "bookings" ? "bookings" : "requests"} found
+          </h3>
           <p className="text-gray-500">Try adjusting your filters or search query</p>
         </div>
       ) : viewMode === "list" ? (
         <AppointmentList
-          appointments={filteredAppointments}
+          appointments={getCurrentData()}
           onApprove={handleApprove}
           onReject={handleReject}
         />
       ) : (
         <AppointmentCalendar
-          appointments={filteredAppointments}
+          appointments={getCurrentData()}
           onApprove={handleApprove}
           onReject={handleReject}
         />
       )}
-        <div className="hidden md:flex justify-center items-center mt-10">
-              <Lottie
-                animationData={SeniorAppointment}
-                loop={true}
-                className="w-32 h-32 md:w-100 md:h-60" 
-              />
-            </div>
+      
+      <div className="hidden md:flex justify-center items-center mt-10">
+        <Lottie
+          animationData={SeniorAppointment}
+          loop={true}
+          className="w-32 h-32 md:w-100 md:h-60"
+        />
+      </div>
     </div>
   )
 }

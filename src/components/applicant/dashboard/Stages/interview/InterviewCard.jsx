@@ -46,9 +46,9 @@ export default function InterviewCard({ id }) {
         ))} 
       </div> 
         {interview?.instructions && (
-        <div className="mt-6 p-4 border-gray-200">
-          <h3 className="text-2xl font-bold mb-3 text-[var(--main-color)]" >
-           instructions
+        <div className="mt-6 p-8 bg-gray-100 rounded-lg ">
+          <h3 className="text-xl font-bold mb-3 " >
+         {  "Instructions".toUpperCase() }
           </h3>
           <div 
             className="text-md leading-relaxed text-[#5F5D5D]" 
