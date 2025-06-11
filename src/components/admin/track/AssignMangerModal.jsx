@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../../shared/Spinner";
 import Alert from "../../shared/Alert";
 import { useAssignManagerToTrack } from "../../../hooks/Admin/tracks/useAssignManagerToTrack";
 import useUpdateManager from "../../../hooks/Admin/tracks/useUpdateManager";
 import Header from "../../seniorExaminer/workload/shared/Header";
 import useGetExaminersByTrack from "../../../hooks/Admin/tracks/useGetExaminersByTrack";
+import useGetSenior from "@/hooks/Admin/tracks/useGetSenior";
 const managers = [
   { id: "1", name: "Alice Johnson" },
   { id: "2", name: "Bob Smith" },
@@ -31,6 +32,7 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
     isPending: updatePending,
     isSuccess: updateIsSuccess,
     isError: updateIsError,
+    data
   } = useUpdateManager();
   const handleAssign = () => {
     if (isEdit) {
@@ -49,12 +51,18 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
       );
     }
   };
+useEffect(()=>{
+if(updateIsSuccess || isSuccess)
+  setTimeout(()=>onClose(),1400)
+},[updateIsSuccess,isSuccess])
 
-  console.log("track inside assign manger", track);
+
+  console.log("track inside assign manger /////", track,data);
   // let isLoading=false
   return (
     <>
       {isSuccess && <Alert message="Manager assigned successfully!" />}
+       {updateIsSuccess && <Alert message={data.message}/>}
       {(isError || updateIsError) && (
         <Alert
           type="error"

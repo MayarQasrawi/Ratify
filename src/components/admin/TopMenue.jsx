@@ -17,6 +17,7 @@ import PasswordChangeModal from "../shared/modal/PasswordChangeModal";
 import Extract from "../../utils/Extract";
 import EmailChangeModal from "../shared/modal/EmailChangeModal";
 import ExaminerInfoModal from "../allExaminer/ExaminerInfoModal";
+import Notification from "../shared/Notification";
 function TopMenue() {
   const { logout, auth } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
@@ -44,8 +45,8 @@ function TopMenue() {
       {selectedModel == "UpdateInfo" && (
         <ExaminerInfoModal  setShowModal={()=>setSelectedModel(null)} isUpdate={true} />
       )}
-      <nav className="flex flex-row-reverse gap-3 mb-5 ">
-        <div className="relative   ">
+      <nav className="flex flex-row-reverse gap-3 mb-5 p-2 ">
+        <div className="relative ">
           <button
             className="flex relative items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
             onClick={() => {
@@ -120,19 +121,7 @@ function TopMenue() {
             </div>
           )}
         </div>
-        {/* User Page Button */}
-        <button
-          className="flex items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
-          onClick={() => {
-            // Add navigation logic for the User page
-            console.log("Navigate to User Page");
-          }}
-        >
-          <span className="text-lg">
-            <FaRegUser />
-          </span>
-        </button>
-        {/* Dark Mode Toggle Button */}
+        <Notification />
         <button
           className="flex items-center p-2 text-[var(--text-color)] rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
           onClick={toggleDarkMode}

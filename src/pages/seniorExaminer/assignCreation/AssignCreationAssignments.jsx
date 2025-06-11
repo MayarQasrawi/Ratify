@@ -119,7 +119,7 @@ export default function AssignCreationAssignments() {
         className="border border-[var(--table-border)] text-sm text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600"
       >
         <td className="py-3 px-3">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 justify-center">
             <FiUser className="w-4 h-4 text-gray-500" />
             <span className="font-medium capitalize">{item.examinerName}</span>
           </div>

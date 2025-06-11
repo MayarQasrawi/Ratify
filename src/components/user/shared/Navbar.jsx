@@ -14,6 +14,7 @@ import Extract from "../../../utils/Extract";
 import getFirstCharacter from "../../../utils/getFirstCharacter";
 import Alert from "../../shared/Alert";
 import useGetApplicantTrack from '../../../hooks/applicant/enroll/useGetApplicantTrack'
+import Notification from "@/components/shared/Notification";
 const allNavLinks = [
   { name: "HOME", to: "/" },
   { name: "OUR TRACKS", to: "/our-tracks" },
@@ -132,7 +133,7 @@ function Navbar() {
             </div>
 
             {/* Action Buttons (Desktop) */}
-            {auth ? (
+            {auth ?  (<div className="flex gap-3 items-center">
               <div className="relative hidden lg:block">
                 <div
                   onClick={() => setviewOption(!viewOption)}
@@ -204,6 +205,8 @@ function Navbar() {
                     </button>
                   </div>
                 )}
+              </div>
+              {tracks?.data?.data.length>0 &&  <Notification size={true}/>} 
               </div>
             ) : (
               <div className="hidden lg:flex items-center text-md  font-bold space-x-4">

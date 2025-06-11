@@ -56,10 +56,11 @@ export default function Dashboard() {
   return (
     <>
      <ThemeProvider>
+
       <div className="flex flex-row  gap-2 md:gap-10 bg-[var(--background-color)] min-h-screen  text-[var(--text-color)] font-medium">
         
         {/* {sidebar} */}
-        <div className="bg-[var(--sidebar-bg)]   fixed  h-[98vh] md:py-4 w-8 sm:w-48 md:w-64 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
+        <div className="bg-[var(--sidebar-bg)]   fixed  h-[98vh] md:py-4 w-8 sm:w-48 md:w-66 p-1.5 md:p-2 min-w-[70px] shadow rounded-xl lg:m-[0.5%] m-[1%]">
           <div className="hidden  sm:flex flex-col items-center gap-2 pb-5 pl-3">
             <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
             {(role == "Examiner" ||role == "SeniorExaminer")

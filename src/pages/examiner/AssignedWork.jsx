@@ -75,11 +75,11 @@ export default function AssignedWork() {
       return acc;
     }, {});
 console.log(filteredData,'filteredData filteredData')
-  
+  console.log(selected,'selected selected selected kkkkkkkkkkkkkkkkkkk')
   if (isExamCreationLoading || isTaskCreationLoading)
     return <Spinner text={"Assigned Work Page"} />;
   return (
-    <div className="min-h-screen  text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen  text-gray-900 dark:text-gray-100" id='sec'>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div>
           <header className="flex justify-between">
@@ -113,7 +113,7 @@ console.log(filteredData,'filteredData filteredData')
             }`}
           >
             <FaGraduationCap className="w-4 h-4" />
-            Exams ({examCreation?.data.length})
+            Exams ({examCreation?.data.filter(exam=>exam.status !='Overdue').length})
           </button>
           <button
             onClick={() => setActiveTab("task")}
@@ -124,7 +124,7 @@ console.log(filteredData,'filteredData filteredData')
             }`}
           >
             <FaTasks className="w-4 h-4" />
-            Tasks {activeTab == "task" && taskCreation?.data.length}
+            Tasks {activeTab == "task" && `(${taskCreation?.data.filter(task=>task.status !='Overdue').length})`}
           </button>
         </div>
       </div>
@@ -152,13 +152,14 @@ console.log(filteredData,'filteredData filteredData')
                   {filteredData[stageName]
                     .filter((stg) => stg.status != "Overdue").
                    map((item) => (
-                      <div
+                      <a
                         key={item.id}
+                        href='#sec'
                         onClick={
                           activeTab == "task" ? () => setSelected(item) : null
                         }
                         className={`bg-white dark:bg-gray-700 cursor-pointer ${
-                          selected && "border-blue-500"
+                          selected?.id ==item.id && "border-blue-500 border-2"
                         } rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
                       >
                         <div className="flex items-center justify-between mb-3">
@@ -235,7 +236,7 @@ console.log(filteredData,'filteredData filteredData')
                             Assigned: {item.assignedDate.split("T")[0]}
                           </div>
                         </div>
-                      </div>
+                      </a>
                     ))}
                 </div>
               </div>
@@ -243,8 +244,8 @@ console.log(filteredData,'filteredData filteredData')
           ))}
         </div>
         {Object.keys(filteredData).length === 0 && (
-          <div className="text-center py-12">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 max-w-md mx-auto">
+          <div className="text-center py-12 w-full">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 ">
               <div className="bg-gray-100 dark:bg-gray-700 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <FaSearch className="w-6 h-6 text-gray-400 dark:text-gray-300" />
               </div>

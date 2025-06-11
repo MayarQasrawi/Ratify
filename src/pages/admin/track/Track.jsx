@@ -26,8 +26,12 @@ export default function Track() {
   const [selected, setSelected] = useState(null);
   const [track, setTrack] = useState(null);
   const navigate = useNavigate();
-  const {data:trackd,isLoading:isTrackArrive,isError:isTrackError}= useGetAllTraks();
-  console.log(trackd?.data,'from api endhbbjjjjjjj')
+  const {
+    data: trackd,
+    isLoading: isTrackArrive,
+    isError: isTrackError,
+  } = useGetAllTraks();
+  console.log(trackd?.data, "from api endhbbjjjjjjj");
   const {
     mutate: deleteTrack,
     isPending,
@@ -35,14 +39,14 @@ export default function Track() {
     error,
     isError,
     reset,
-    data:deleteRequestData
+    data: deleteRequestData,
   } = useDeleteTrack();
   const {
     mutate: deleteTrackManger,
-    isPending:isTrackManagerPending,
-    isSuccess:isTrackManagerSuccess,
-    isError:isTrackManagerError,
-    reset:resetTrackManager,
+    isPending: isTrackManagerPending,
+    isSuccess: isTrackManagerSuccess,
+    isError: isTrackManagerError,
+    reset: resetTrackManager,
   } = useDeleteManager();
   const {
     mutate: toggleTrack,
@@ -50,10 +54,10 @@ export default function Track() {
     isSuccess: isToggleTrackSuccess,
     error: isToggleTrackError,
     reset: resetToggleTrack,
-    data:toggleTrackData
+    data: toggleTrackData,
   } = useActivateTrack();
   //trackd?.data
-  let trackFilter= trackd?.data ;
+  let trackFilter = trackd?.data;
   const handleEdit = (track) => {
     console.log("Edit action clicked");
     console.log(track);
@@ -77,45 +81,45 @@ export default function Track() {
   const handleAssignManger = (track, isMangerAssign) => {
     console.log("assign manger ///////////////////////////////", track.id);
     console.log(isMangerAssign);
-    if (isMangerAssign ) {
-      setSelected("assign-manger");}
-    else {
+    if (isMangerAssign) {
+      setSelected("assign-manger");
+    } else {
       setSelected("edit-manger");
     }
     setTrack(track);
   };
-  const handleDeleteManager=(track)=>{
-   setSelected("delete-manager");
+  const handleDeleteManager = (track) => {
+    setSelected("delete-manager");
     setTrack(track);
-  }
-   if (isTrackArrive) {
-      return (
-        <>
-          <div className="mt-8 pl-4 mb-6">
-            <Title>Our Tracks</Title>
-          </div>
-          <div className="h-[50vh] flex items-center w-full ">
-            <div className="flex-1">
-          <Loading text={"Fetching Tracks..."} />
-            </div>
-          </div>
-        </>
-      );
-    }
-    if (isTrackError) {
-      return (
-        <>
+  };
+  if (isTrackArrive) {
+    return (
+      <>
         <div className="mt-8 pl-4 mb-6">
-            <Title>Our Tracks</Title>
-          </div>
-        <div className="h-[50vh]  flex items-center justify-center ">
-            <Error />
+          <Title>Our Tracks</Title>
         </div>
-        </>
-      );
-    }
+        <div className="h-[50vh] flex items-center w-full ">
+          <div className="flex-1">
+            <Loading text={"Fetching Tracks..."} />
+          </div>
+        </div>
+      </>
+    );
+  }
+  if (isTrackError) {
+    return (
+      <>
+        <div className="mt-8 pl-4 mb-6">
+          <Title>Our Tracks</Title>
+        </div>
+        <div className="h-[50vh]  flex items-center justify-center ">
+          <Error />
+        </div>
+      </>
+    );
+  }
   if (search)
-    trackFilter =  trackd?.data?.filter((track) =>
+    trackFilter = trackd?.data?.filter((track) =>
       track.name.toUpperCase().includes(search.toUpperCase())
     );
   if (trackFilter?.length == 0 && isTrackArrive == false) {
@@ -132,8 +136,9 @@ export default function Track() {
     );
   }
   const renderRow = (track) => {
-    const isMangerAssign = track.seniorExaminerID ;
-    console.log(isMangerAssign,'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+    const isMangerAssign = track.seniorExaminerID;
+    console.log(isMangerAssign, "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+    const hasSenior = Boolean(track.seniorExaminerID);
     const actions = [
       ...(track.isActive
         ? [
@@ -146,33 +151,39 @@ export default function Track() {
               onClick: () => handleDelete(track),
             },
             {
-              name: isMangerAssign ? "Edit Manager" : "Add Manager",
-              onClick: () => handleAssignManger(track, isMangerAssign),
+              name: hasSenior ? "Edit Manager" : "Add Manager",
+              onClick: () => handleAssignManger(track, hasSenior),
             },
           ]
-        : [
-            {
-              name: "Toggle Track",
-              onClick: () => handleToggle(track),
-            },
-             {
-              name: "Delete Manager",
-              onClick: () => handleDeleteManager(track),
-            },
+        : [{
+                    name: "Toggle Track",
+                    onClick: () => handleToggle(track),
+                  },
+            ...(hasSenior
+              ? [
+                  {
+                    name: "Delete Manager",
+                    onClick: () => handleDeleteManager(track),
+                  },
+                ]
+              : [
+                  
+                ]),
           ]),
       {
         name: "View Details",
         onClick: () => handleViewDetails(track),
       },
     ];
+
     return (
-      <tr className="border border-[var(--table-border)] text-sm text-center ">
+      <tr className="border border-[var(--table-border)] text-sm text-center hover:bg-gray-100 dark:hover:bg-gray-600 ">
         <td className="p-3 text-[var(--text-color)] text-center ">
           <div className="flex justify-center">
             <div className="flex flex-col items-center gap-2 max-w-[200px]">
               <img
                 className="w-15 h-15 object-cover"
-                src={`https://4b2a-85-113-123-99.ngrok-free.app/${track.image}`}
+                src={`${import.meta.env.VITE_API}${track.image}`}
                 alt={track.name}
               />
               <h2 className="font-semibold">{track.name}</h2>
@@ -206,8 +217,8 @@ export default function Track() {
       </tr>
     );
   };
-  console.log(`selected track ${track}`, track,selected,'llllllllllllllll');
-  console.log(toggleTrackData,'toggleTrackData responce ')
+  console.log(`selected track ${track}`, track, selected, "llllllllllllllll");
+  console.log(toggleTrackData, "toggleTrackData responce ");
   return (
     <>
       {selected == "delete" && (
@@ -225,7 +236,8 @@ export default function Track() {
             isError={isError}
             data={deleteRequestData}
           >
-            Are you sure you want to delete <span className="capitalize"> {track.name}</span> Track?
+            Are you sure you want to delete{" "}
+            <span className="capitalize"> {track.name}</span> Track?
           </ConfirmationModal>
         </Modal>
       )}
@@ -244,7 +256,8 @@ export default function Track() {
             isError={isToggleTrackError}
             data={toggleTrackData}
           >
-            Are you sure you want to Activate <span className="capitalize">{track.name}</span>?
+            Are you sure you want to Activate{" "}
+            <span className="capitalize">{track.name}</span>?
           </ConfirmationModal>
         </Modal>
       )}
@@ -260,7 +273,7 @@ export default function Track() {
           />
         </Modal>
       )}
-        {selected == "delete-manager" && (
+      {selected == "delete-manager" && (
         <Modal>
           <ConfirmationModal
             view={true}
@@ -325,7 +338,11 @@ export default function Track() {
             </div>
           </div>
         ) : (
-          <Card data={trackFilter} setSelected={setSelected} setTrack={setTrack} />
+          <Card
+            data={trackFilter}
+            setSelected={setSelected}
+            setTrack={setTrack}
+          />
         )}
       </section>
     </>

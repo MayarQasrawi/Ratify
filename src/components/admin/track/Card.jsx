@@ -77,10 +77,10 @@ export default function Card({ data,setTrack,setSelected }) {
       },
     ];
         return (
-          <div key={track.id} className="rounded-lg  bg-[var(--sidebar-bg)] shadow ">
+          <div key={track.id} className="rounded-lg  bg-[var(--sidebar-bg)] shadow  ">
             <div className="flex justify-between ">
               <img
-                src={`https://40b8-85-113-123-99.ngrok-free.app/${track.image}`}
+                src={`${import.meta.env.VITE_API}${track.image}`}
                 alt={track.name}
                 className="w-1/4 sm:w-1/2 block mx-auto h-auto object-cover"
               />

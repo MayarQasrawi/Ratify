@@ -22,6 +22,8 @@ export default function AddEmployee({ setIsOpen }) {
     isPending,
     isSuccess,
     isError,
+    data,
+    error,
   } = useAddEmployee();
   const [password, setPassword] = useState({
     show: false,
@@ -54,14 +56,19 @@ export default function AddEmployee({ setIsOpen }) {
   const onSubmit = ({ fullName, email }) => {
     console.log({ fullName, email, password: password.passwordValue });
     console.log(workingTrackId.current, "working track id");
-    addEmployee({fullName, email, password: password.passwordValue,workingTrackIds:[workingTrackId.current] });
+    addEmployee({
+      fullName,
+      email,
+      password: password.passwordValue,
+      workingTrackIds: [workingTrackId.current],
+    });
   };
-
+  console.log(data, "resp add empl", error);
   return (
     <>
-      {isSuccess && <Alert message="Employee added successfully" />}
-      {isError && <Alert type="error" message="kkkkk" />}
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 mx-auto max-h-[90vh] overflow-y-auto">
+      {isSuccess && <Alert message={data.data.message} />}
+      {isError && <Alert type="error" message={error?.response?.data?.message || "Network Error"}/>}
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 mx-auto max-h-[90vh] overflow-y-auto scrollbar-custom">
         <h2 className="text-2xl font-extrabold mb-6 text-center text-blue-500 tracking-tight">
           Add New Employee
         </h2>
@@ -89,7 +96,7 @@ export default function AddEmployee({ setIsOpen }) {
             </div>
           ))}
 
-          <div className="relative">
+          <div className="relative ">
             <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
               Password<span className="text-red-500">*</span>
             </label>
@@ -108,25 +115,29 @@ export default function AddEmployee({ setIsOpen }) {
                 }
                 className="absolute right-5 top-2 text-[var(--text-color)] hover:text-[var(--main-color)]"
               >
-                {password.show ? (
-                  <FaEye size={20} className="cursor-pointer" />
-                ) : (
-                  <FaEyeSlash size={20} className="cursor-pointer" />
-                )}
+                {!(password.passwordValue == "") ? (
+                  password.show ? (
+                    <FaEye size={20} className="cursor-pointer" />
+                  ) : (
+                    <FaEyeSlash size={20} className="cursor-pointer" />
+                  )
+                ) : null}
               </button>
             </div>
-            <div className="flex gap-1.5 justify-start items-start ">
-              <input
-                type="checkbox"
-                onClick={generatePassword}
-                className="relative top-4"
-              />
-              <p className="text-xs text-[var(--text-color)] mt-1 mb-8">
-                Auto-generated 8-character password with letters, numbers, and
-                special characters
-              </p>
-            </div>
-            <div>
+            {password.passwordValue == "" && (
+              <div className="flex gap-1.5 justify-start items-start ">
+                <input
+                  type="checkbox"
+                  onClick={generatePassword}
+                  className="relative top-4"
+                />
+                <p className="text-xs text-[var(--text-color)] mt-1 mb-8">
+                  Auto-generated 8-character password with letters, numbers, and
+                  special characters
+                </p>
+              </div>
+            )}
+            <div className="mt-3">
               <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">
                 Track<span className="text-red-500">*</span>
               </label>

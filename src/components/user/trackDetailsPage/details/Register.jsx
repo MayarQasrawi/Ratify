@@ -12,14 +12,14 @@ import useGetApplicantTrack from "../../../../hooks/applicant/enroll/useGetAppli
 export default function Register() {
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
+  const { id } = useParams();
   let authId = null;
   if (auth) authId = Extract(auth, "nameid");
   const { data: MyTracks, isLoading } = useGetApplicantTrack(authId);
   console.log(
-    MyTracks?.data?.data?.map((tr) => tr.trackId),
-    "iside card test jjjjjjjjjjjjj "
+    MyTracks?.data?.data?.map((tr) => tr.trackId).includes(+id),
+    "inside card test jjjjjjjjjjjjj ",+id
   );
-  const { id } = useParams();
   return (
     <>
       {show && (
@@ -41,7 +41,7 @@ export default function Register() {
         </Modal>
       )}
       {
-       !( MyTracks?.data?.data?.map((tr) => tr.trackId).includes(id)) && (
+       !( MyTracks?.data?.data?.map((tr) => tr.trackId).includes(+id)) && (
           <section className="mt-24 w-[90%] mx-auto py-18 px-5 bg-[#003F7D] rounded-2xl">
             <div className="flex flex-wrap justify-center gap-9 items-center">
               <div className="text-white w-[60%] text-2xl font-medium ">

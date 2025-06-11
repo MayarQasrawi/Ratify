@@ -1,53 +1,69 @@
-import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, ScrollRestoration } from 'react-router-dom';
-import { AuthProvider } from '../contexts/AuthProvider';
-import ProtectedRoute from './ProtectedRoute';
-import RootLayout from '../layouts/RootLayout';
-import Dashboard from '../layouts/Dashboard';
-import Home from '../pages/user/Home';
-import  ExpertsPage from '../pages/user/ExpertsPage';
-import TrackPage from '../pages/user/TrackPage';
-import  TrackDetailsPage from '../pages/user/TrackDetailsPage';
-
-const ExamStage= lazy(()=> import('../pages/applicant/ExamStage')); 
-const InterviewStage =lazy(()=> import('../pages/applicant/InterviewStage'));
-const TaskStage =lazy(()=>import('../pages/applicant/TaskStage'));
-const MyTracksPage = lazy(() => import('../pages/applicant/MyTracksPage'));
-const Login = lazy(() => import('../components/view/Login'));
-const Register = lazy(() => import('../components/view/Register'));
-const ForgetPassword = lazy(() => import('../pages/general/ForgetPassword'));
-const ResetPassword = lazy(() => import('../pages/general/ResetPassword'));
-const UnAuthorized = lazy(() => import('../pages/general/UnAuthorized'));
-const NotFoundPage = lazy(() => import('../pages/general/NotFoundPage'));
-const AdminHome = lazy(() => import('../pages/admin/AdminHome'));
-const Team = lazy(() => import('../pages/admin/Team'));
-const AdminTrack = lazy(() => import('../pages/admin/track/Track'));
-const TrackSetup = lazy(() => import('../pages/admin/track/TrackSetup'));
-const TrackDetails = lazy(() => import('../pages/admin/track/TrackDetails'));
-const SeniorHome = lazy(() => import('../pages/seniorExaminer/SeniorHome'));
-const Plan = lazy(() => import('../pages/seniorExaminer/plan/Plan'));
-const PlanSetup = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanSetup'));
-const PlanStructure = lazy(() => import('../pages/seniorExaminer/plan/definePlan/PlanStructure'));
-const EditCriteria = lazy(() => import('../pages/seniorExaminer/plan/definePlan/EditCriteria'));
-const Applicants=lazy(()=> import('../components/admin/Applicants'));
-const Deriver=lazy(()=> import('../components/applicant/dashboard/deriver'));
-const ErrorPage = lazy(() => import('../pages/general/ErrorPage'));
-import SchedulingView from '@/components/seniorExaminer/appointments/SchedulingView';
-import AppointmentDashboard from '@/components/allExaminer/appointment/AppointmentDashboard';
-import Derivers from '@/components/applicant/dashboard/Deriver';
-
-const  TrackStructureDetails= lazy(() => import("../pages/seniorExaminer/plan/TrackStructureDetails"));
-
-
+import React, { Suspense, lazy } from "react";
+import { createBrowserRouter, ScrollRestoration } from "react-router-dom";
+import { AuthProvider } from "../contexts/AuthProvider";
+import ProtectedRoute from "./ProtectedRoute";
+import RootLayout from "../layouts/RootLayout";
+import Dashboard from "../layouts/Dashboard";
+import Home from "../pages/user/Home";
+import ExpertsPage from "../pages/user/ExpertsPage";
+import TrackPage from "../pages/user/TrackPage";
+import TrackDetailsPage from "../pages/user/TrackDetailsPage";
+const ExamStage = lazy(() => import("../pages/applicant/ExamStage"));
+const InterviewStage = lazy(() => import("../pages/applicant/InterviewStage"));
+const TaskStage = lazy(() => import("../pages/applicant/TaskStage"));
+const MyTracksPage = lazy(() => import("../pages/applicant/MyTracksPage"));
+const Login = lazy(() => import("../components/view/Login"));
+const Register = lazy(() => import("../components/view/Register"));
+const ForgetPassword = lazy(() => import("../pages/general/ForgetPassword"));
+const ResetPassword = lazy(() => import("../pages/general/ResetPassword"));
+const UnAuthorized = lazy(() => import("../pages/general/UnAuthorized"));
+const NotFoundPage = lazy(() => import("../pages/general/NotFoundPage"));
+const AdminHome = lazy(() => import("../pages/admin/AdminHome"));
+const Team = lazy(() => import("../pages/admin/Team"));
+const AdminTrack = lazy(() => import("../pages/admin/track/Track"));
+const TrackSetup = lazy(() => import("../pages/admin/track/TrackSetup"));
+const TrackDetails = lazy(() => import("../pages/admin/track/TrackDetails"));
+const SeniorHome = lazy(() => import("../pages/seniorExaminer/SeniorHome"));
+const Plan = lazy(() => import("../pages/seniorExaminer/plan/Plan"));
+const PlanSetup = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/PlanSetup")
+);
+const PlanStructure = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/PlanStructure")
+);
+const EditCriteria = lazy(() =>
+  import("../pages/seniorExaminer/plan/definePlan/EditCriteria")
+);
+const Applicants = lazy(() => import("../components/admin/Applicants"));
+const Deriver = lazy(() => import("../components/applicant/dashboard/deriver"));
+const ErrorPage = lazy(() => import("../pages/general/ErrorPage"));
+import SchedulingView from "@/components/seniorExaminer/appointments/SchedulingView";
+import AppointmentDashboard from "@/components/allExaminer/appointment/AppointmentDashboard";
+import Derivers from "@/components/applicant/dashboard/Deriver";
+const TrackStructureDetails = lazy(() =>
+  import("../pages/seniorExaminer/plan/TrackStructureDetails")
+);
 import AssignCreationAssignments from "../pages/seniorExaminer/assignCreation/AssignCreationAssignments";
 import AssignedWork from "../pages/examiner/AssignedWork";
-const  EvaluationRequests =lazy(() => import("../pages/examiner/task/evaluationRequest/EvaluationRequests")); 
-const  ExamRequest= lazy(() => import("../pages/seniorExaminer/exam/ExamRequest")); 
-const   ExamStages= lazy(() => import("../pages/seniorExaminer/exam/ExamStages")); 
+import ExaminerHome from "@/pages/examiner/ExaminerHome";
+const EvaluationWork = lazy(() => import("../pages/examiner/EvaluationWork"));
+const EvaluationRequests = lazy(() =>
+  import("../pages/examiner/task/evaluationRequest/EvaluationRequests")
+);
+const ExamRequest = lazy(() =>
+  import("../pages/seniorExaminer/exam/ExamRequest")
+);
+const ExamStages = lazy(() =>
+  import("../pages/seniorExaminer/exam/ExamStages")
+);
 const Task = lazy(() => import("../pages/seniorExaminer/manageTask/Task"));
 const CreateTask = lazy(() => import("../pages/examiner/task/CreateTask"));
-const  ManageTask=lazy(() => import("../pages/seniorExaminer/manageTask/ManageTask"));
-const TeamWorkload= lazy(()=> import("../pages/seniorExaminer/teams/TeamWorkload"))
+const ManageTask = lazy(() =>
+  import("../pages/seniorExaminer/manageTask/ManageTask")
+);
+const TeamWorkload = lazy(() =>
+  import("../pages/seniorExaminer/teams/TeamWorkload")
+);
 
 const LoadingFallback = () => <div>Loading...</div>;
 
@@ -66,16 +82,12 @@ export const routes = createBrowserRouter([
         element: <Home />,
       },
       {
- path: 'test',
- element: (
-          <Derivers/>
-        ),
+        path: "test",
+        element: <Derivers />,
       },
       {
-        path: 'our-tracks',
-        element: (
-            <TrackPage />
-        ),
+        path: "our-tracks",
+        element: <TrackPage />,
       },
       {
         path: "our-experts",
@@ -139,6 +151,7 @@ export const routes = createBrowserRouter([
     path: "/dashboard",
     element: (
       <AuthProvider>
+        <ScrollRestoration />
         <Dashboard />
       </AuthProvider>
     ),
@@ -198,7 +211,7 @@ export const routes = createBrowserRouter([
           },
         ],
       },
-      
+
       {
         path: "seniorExaminer",
         // element: <ProtectedRoute allowRole="Examiner" />,
@@ -215,11 +228,11 @@ export const routes = createBrowserRouter([
             path: "workload-management",
             element: (
               // <Suspense fallback={<LoadingFallback />}>
-                <TeamWorkload />
+              <TeamWorkload />
               // </Suspense>
             ),
           },
-           {
+          {
             path: "assign-creation",
             element: (
               <Suspense fallback={<LoadingFallback />}>
@@ -260,14 +273,14 @@ export const routes = createBrowserRouter([
             ),
           },
           {
-            path: 'appointments',
+            path: "appointments",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <SchedulingView />
               </Suspense>
             ),
           },
-            {
+          {
             path: "manage-task",
             element: (
               <Suspense fallback={null}>
@@ -275,7 +288,7 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-           {
+          {
             path: "stage-tasks",
             element: (
               <Suspense fallback={null}>
@@ -283,19 +296,19 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-             {
+          {
             path: "exams-stages",
             element: (
               <Suspense fallback={null}>
-                < ExamStages />
+                <ExamStages />
               </Suspense>
             ),
           },
-           {
+          {
             path: "exams-request",
             element: (
               <Suspense fallback={null}>
-                < ExamRequest />
+                <ExamRequest />
               </Suspense>
             ),
           },
@@ -309,16 +322,15 @@ export const routes = createBrowserRouter([
             index: true,
             element: (
               <Suspense fallback={<LoadingFallback />}>
-                <SeniorHome />
+                <ExaminerHome />
               </Suspense>
             ),
           },
           {
-            path: 'appointments',
-            element: (
-                <AppointmentDashboard />
-            ),
-          },{
+            path: "appointments",
+            element: <AppointmentDashboard />,
+          },
+          {
             path: "stage-tasks",
             element: (
               <Suspense fallback={null}>
@@ -334,7 +346,7 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-             {
+          {
             path: "pending-evaluations",
             element: (
               <Suspense fallback={null}>
@@ -342,86 +354,88 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-           {
+          {
             path: "todo-assignments",
             element: (
               <Suspense fallback={null}>
-                <AssignedWork  />
+                <AssignedWork />
               </Suspense>
             ),
           },
-         
+          {
+            path: "evaluation-work",
+            element: (
+              <Suspense fallback={null}>
+                <EvaluationWork />
+              </Suspense>
+            ),
+          },
         ],
       },
     ],
   },
 
   {
-    path: 'applicant',
-    
+    path: "applicant",
+
     children: [
       {
-        path: '',
+        path: "",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <AuthProvider>
-            <ScrollRestoration />
-            <RootLayout />
-           </AuthProvider>
+              <ScrollRestoration />
+              <RootLayout />
+            </AuthProvider>
           </Suspense>
         ),
         children: [
-         
           {
-            
-           index: true,
+            index: true,
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <MyTracksPage />
               </Suspense>
             ),
           },
-         
-            {
-              path: 'my-tracks/:name/:enrollmentId',
-              element: (
-                <Suspense fallback={<LoadingFallback />}>
-                 <Deriver /> 
-                </Suspense>
-              ),
-            }
-            ,
-            {
-              path: 'interview/:stageId',
-              element: (
-                <Suspense fallback={<LoadingFallback />}>
-                 <InterviewStage /> 
-                </Suspense>
-              ),
-            },
-            {
-              path: 'task/:stageProgressId',
-              element: (
-                <Suspense fallback={<LoadingFallback />}>
-                 <TaskStage /> 
-                </Suspense>
-              ),
-            },
-            {
-              path: 'exam/:stageId',
-              element: (
-                <Suspense fallback={<LoadingFallback />}>
-                 <ExamStage /> 
-                </Suspense>
-              ),
-            }
-        
-          
-        ]
+
+          {
+            path: "my-tracks/:name/:enrollmentId",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <Deriver />
+              </Suspense>
+            ),
+          },
+          {
+            path: "interview/:stageId",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <InterviewStage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "task/:stageProgressId",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <TaskStage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "exam/:stageId",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <ExamStage />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
-  
+
   {
     path: "*",
     element: (

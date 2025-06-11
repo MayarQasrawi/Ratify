@@ -45,7 +45,7 @@ isActive
                 </div>
 
                 <img
-                  src={`https://4b2a-85-113-123-99.ngrok-free.app/${trackData.image}`}
+                  src={`${import.meta.env.VITE_API}${trackData.image}`}
                   alt={trackData.name}
                   className="w-[35%] min-w-[80px] block sm:hidden md:block md:w-[35%] lg:w-[40%] mx-auto lg:mt-4"
                 />

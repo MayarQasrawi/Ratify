@@ -24,7 +24,7 @@ export default function LearningJourneyMap({ plan }) {
         <div className=" sm:w-[50%] lg:w-[70%]  border-t-2 border-[var(--main-color)]"></div>
       </div>
       <div className=" p-6 mb-8">
-        <div className="relative flex items-center justify-between min-h-48 overflow-x-auto pb-2">
+        <div className="relative flex items-center justify-between min-h-48 overflow-x-auto scrollbar-custom pb-2">
           <div className=" mx-4 min-w-max">
             <div className="w-22 h-22 rounded-full bg-green-400 flex items-center justify-center shadow-md">
               <span className="text-white text-3xl">&#128640;</span>

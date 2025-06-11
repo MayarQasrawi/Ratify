@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function updateTrackManager(info) {
@@ -13,6 +13,7 @@ async function updateTrackManager(info) {
   return data;
 }
 export default function useUpdateManager() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateTrackManager(data),
     retry: false,
@@ -21,6 +22,7 @@ export default function useUpdateManager() {
     },
     onSuccess: (data) => {
       console.log(data, "update manager");
+      queryClient.invalidateQueries(["tracks"]);
     },
   });
 }
