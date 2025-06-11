@@ -34,13 +34,14 @@ export default function Teams() {
 
   // Fetch data from API
   const { data, isLoading, isError, error } = useGetExaminers({
-    page: currentPage, 
-    itemsPerPage
+    page: currentPage,
+    itemsPerPage,
   });
 
   // Store original data when API response is received
   useEffect(() => {
     if (data) {
+      console.log("Fetched data:", data.data.data);
       setOriginalData(data.data.data);
       setTotalPages(data.data.totalPages);
     }
@@ -49,9 +50,10 @@ export default function Teams() {
   // Apply filters when search, roleFilter or original data changes
   useEffect(() => {
     if (originalData.length > 0) {
-      const filtered = originalData.filter(member => 
-        member.fullName.toLowerCase().includes(search.toLowerCase()) &&
-        (roleFilter === null || member.userType === roleFilter)
+      const filtered = originalData.filter(
+        (member) =>
+          member.fullName.toLowerCase().includes(search.toLowerCase()) &&
+          (roleFilter === null || member.userType === roleFilter)
       );
       setFilteredData(filtered);
     }
@@ -60,46 +62,47 @@ export default function Teams() {
   const handelWorkLoad = (member) => {
     console.log("Member data:", member);
     console.log("Examiner loads:", member.examinerLoads);
-    setWorkLoad(member );
+    setWorkLoad(member);
     setWorkLoadModal(true);
   };
   // Example data
- const MOCK_EXAMINERS = [
-  {
-    id: "1",
-    fullName: "Alice Johnson",
-    email: "alice@example.com",
-    specialization: "Mathematics",
-    userType: "Examiner",
-    dateOfBirth: "1990-05-20",
-    gendar: "Female",
-    image: "",
-    examinerLoads: [{ subject: "Algebra", students: 25 }],
-  },
-  {
-    id: "2",
-    fullName: "Bob Smith",
-    email: "bob@example.com",
-    specialization: "Physics",
-    userType: "Senior Examiner",
-    dateOfBirth: "1985-09-15",
-    gendar: "Male",
-    image: "",
-    examinerLoads: [{ subject: "Quantum Physics", students: 15 }],
-  },
-  {
-    id: "3",
-    fullName: "Charlie Lee",
-    email: "charlie@example.com",
-    specialization: "Chemistry",
-    userType: "Examiner",
-    dateOfBirth: "1992-11-10",
-    gendar: "Male",
-    image: "",
-    examinerLoads: [{ subject: "Organic Chemistry", students: 20 }],
-  },
-];
-
+  const MOCK_EXAMINERS = [
+    {
+      id: "1",
+      fullName: "Alice Johnson",
+      email: "alice@example.com",
+      specialization: "Mathematics",
+      userType: "Examiner",
+      dateOfBirth: "1990-05-20",
+      gendar: "Female",
+      image: "",
+      examinerLoads: [{ subject: "Algebra", students: 25 }],
+    },
+    {
+      id: "2",
+      fullName: "Bob Smith",
+      email: "bob@example.com",
+      specialization: "Physics",
+      userType: "Senior Examiner",
+      dateOfBirth: "1985-09-15",
+      gendar: "Male",
+      image: "",
+      examinerLoads: [{ subject: "Quantum Physics", students: 15 }],
+    },
+    {
+      id: "3",
+      fullName: "Charlie Lee",
+      email: "charlie@example.com",
+      specialization: "Chemistry",
+      userType: "Examiner",
+      dateOfBirth: "1992-11-10",
+      gendar: "Male",
+      image: "",
+      examinerLoads: [{ subject: "Organic Chemistry", students: 20 }],
+    },
+  ];
+  const BASE_URL = import.meta.env.VITE_BAPI ;
+  console.log("Base URL:", BASE_URL);
 
   const renderRow = (member) => (
     <tr
@@ -107,20 +110,26 @@ export default function Teams() {
       key={member.id}
       id={member.id}
     >
+      {console.log(`${BASE_URL}${member.image}`)}
       {/* Name & Email */}
       <td className="py-3 px-1 lg:px-3">
-        <div className="flex gap-1 items-center justify-start ml-[4%] md:ml-[10%]">
-          {member.image ? (
-            <img 
-              src={member.image} 
-              alt="Profile" 
+        <div className="flex gap-1 items-center justify-start ml-[4%] md:ml-[10%] ">
+          {member.image && member.image !== "null" ? (
+            <img
+              src={`${BASE_URL}${member.image}`}
+              alt="Profile"
               className="h-8 w-8 rounded-lg object-cover"
+              // onError={(e) => {
+              //   e.target.onerror = null;
+              //   e.target.src = "/public/default-profile.jpeg"; // صورة افتراضية محلية
+              // }}
             />
           ) : (
-            <div className="h-8 w-8 items-center justify-center font-bold rounded-lg bg-[var(--sidebar-icon-bg)] text-[var(--main-color)] lg:flex hidden">
+            <div className="h-8 w-8 items-center justify-center font-bold rounded-lg bg-[var(--sidebar-icon-bg)] text-[var(--main-color)] flex">
               {member.fullName.split(" ")[0].slice(0, 1).toUpperCase()}
             </div>
           )}
+
           <div className="ml-3 flex flex-col">
             <div className="font-medium text-[var(--text-color)]">
               {member.fullName}
@@ -131,40 +140,40 @@ export default function Teams() {
           </div>
         </div>
       </td>
-  
+
       {/* Specialization */}
       <td className="py-3 px-1 lg:px-3 text-center">
-        {member.specialization || 'N/A'}
+        {member.specialization || "N/A"}
       </td>
-     
+
       {/* User Type */}
       <td className="py-3 px-1 lg:px-3 text-center">
         <span
           className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${
-            member.userType === "Senior Examiner" 
-              ? "bg-[var(--button-bg)] text-white" 
+            member.userType === "Senior Examiner"
+              ? "bg-[var(--button-bg)] text-white"
               : "bg-green-600 text-white"
           }`}
         >
           {member.userType}
         </span>
       </td>
-  
+
       {/* Date of Birth */}
       <td className="py-3 px-1 lg:px-3 text-center">
-        {new Date(member.dateOfBirth).toLocaleDateString() || 'N/A'}
+        {new Date(member.dateOfBirth).toLocaleDateString() || "N/A"}
       </td>
-  
+
       {/* Gender */}
       <td className="py-3 px-1 lg:px-3 text-center">
-        {member.gendar || 'N/A'}
+        {member.gendar || "N/A"}
       </td>
-  
+
       {/* Examiner Loads */}
       <td className="py-3 px-1 lg:px-3 text-center">
         <IconActionButton
           Icon={IoSearch}
-          label="Details" 
+          label="Details"
           onClick={() => handelWorkLoad(member)}
           color="green"
         />
@@ -174,12 +183,15 @@ export default function Teams() {
         <Link
           className="text-[var(--text-color)] p-1 rounded-md relative group overflow-hidden"
           to={`/dashboard/admin/ViewDetailes/${member.id}`}
-          state={{member, page: currentPage}}
+          state={{ member, page: currentPage }}
           onMouseOver={() => setHoveredMemberId(member.id)}
           onMouseLeave={() => setHoveredMemberId(null)}
         >
           {hoveredMemberId === member.id ? (
-            <RiEyeCloseLine className="inline transition-opacity duration-400" size={16} />
+            <RiEyeCloseLine
+              className="inline transition-opacity duration-400"
+              size={16}
+            />
           ) : (
             <RiEyeFill className="inline" size={16} />
           )}
@@ -187,24 +199,33 @@ export default function Teams() {
       </td>
     </tr>
   );
-  
 
-  const col = ["Info", "specialization", "Role", "Date Of Birth", "Gender", "Examiner Loads", ""];
+  const col = [
+    "Info",
+    "specialization",
+    "Role",
+    "Date Of Birth",
+    "Gender",
+    "Examiner Loads",
+    "",
+  ];
 
   const roleOptions = [
-    { label: 'All', value: null, icon: null },
-    { label: 'Examiner', value: 'Examiner', icon: MdOutlineFindInPage },
-    { label: 'Senior Examiner', value: 'Senior Examiner', icon: MdOutlineFindInPage },
+    { label: "All", value: null, icon: null },
+    { label: "Examiner", value: "Examiner", icon: MdOutlineFindInPage },
+    {
+      label: "Senior Examiner",
+      value: "Senior Examiner",
+      icon: MdOutlineFindInPage,
+    },
   ];
-  
+
   return (
     <section className="pr-3">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
           <div className="mt-8">
-            <Title>
-              Team Members
-            </Title>
+            <Title>Team Members</Title>
           </div>
         </div>
       </div>
@@ -220,10 +241,10 @@ export default function Teams() {
       </div>
 
       <div className="mb-3">
-        <ItemsPerPageSelector 
-          options={[5, 10, 20, 50]} 
-          selectedValue={itemsPerPage} 
-          onChange={setItemsPerPage} 
+        <ItemsPerPageSelector
+          options={[5, 10, 20, 50]}
+          selectedValue={itemsPerPage}
+          onChange={setItemsPerPage}
         />
       </div>
 
@@ -233,33 +254,46 @@ export default function Teams() {
             key={label}
             label={label}
             onClick={() => setRoleFilter(value)}
-            color={roleFilter === value ? 'purple' : 'gray'}
+            color={roleFilter === value ? "purple" : "gray"}
             ariaLabel={`Filter by ${label}`}
           />
         ))}
       </div>
-    {/* {  isLoading ? (
+      {isLoading ? (
         <Loading text={"Assembling Your Team..."} />
       ) : isError ? (
-        <Error message={error.message || "Failed to fetch team members"} errorCode={error.errorCode||"error code"} onRetry={()=>{}}/>
+        <Error
+          message={error.message || "Failed to fetch team members"}
+          errorCode={error.errorCode || "error code"}
+          onRetry={() => window.location.reload()}
+        />
       ) : filteredData.length === 0 ? (
-        <EmptyState search={search} setSearch={setSearch} roleFilter={roleFilter} setRoleFilter={setRoleFilter} />
+        <EmptyState
+          search={search}
+          setSearch={setSearch}
+          roleFilter={roleFilter}
+          setRoleFilter={setRoleFilter}
+        />
       ) : (
         <>
-          <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
-          <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+          <Table data={originalData} cols={col} row={renderRow} />
+          <Pagination
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
+          />
         </>
-      )} */}
-          <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
-          <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+      )}
+      {/* <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
+          <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} /> */}
 
-      {workLoadModal && 
-        <ViewExaminerWorkLoad 
-          isOpen={workLoadModal} 
-          setOpen={setWorkLoadModal} 
-          state={workLoad} 
+      {workLoadModal && (
+        <ViewExaminerWorkLoad
+          isOpen={workLoadModal}
+          setOpen={setWorkLoadModal}
+          state={workLoad}
         />
-      }
+      )}
     </section>
   );
 }
