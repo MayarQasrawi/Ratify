@@ -16,9 +16,9 @@ export default function RegisterTrack() {
   if (!isLoading && myTrack.length === 0) {
     return <Navigate to="/unAuthorized" />; 
   }
-
+console.log(myTrack,'myTrack myTrack myTrack')
   return (
-    <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center gap-y-8">
+    <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center gap-y-8 py-3">
       {myTrack.map((track, ind) => (
         <TrackItem
           key={ind}
