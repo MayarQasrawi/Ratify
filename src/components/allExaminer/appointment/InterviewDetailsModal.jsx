@@ -30,7 +30,7 @@ export default function InterviewDetailsModal({ interview, isOpen, onClose }) {
 
   const DetailItem = ({ label, value, icon }) => (
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+      <label className=" text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
         {icon && <span className="mr-2 text-[var(--main-color)]">{icon}</span>}
         {label}
       </label>
