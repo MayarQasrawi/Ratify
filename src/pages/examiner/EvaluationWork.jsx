@@ -30,7 +30,7 @@ export default function EvaluationWork() {
   
   const { data: stageInfo } = useGetStageById(location.state.stageId)
   console.log(stageCriteria, 'stageCriteria')
-  console.log(stageInfo?.data.passingScore, 'stageInfo')
+  console.log(stageInfo, 'stageInfo')
   
   const {
     mutate,

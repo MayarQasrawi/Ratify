@@ -46,6 +46,8 @@ const TrackStructureDetails = lazy(() =>
 import AssignCreationAssignments from "../pages/seniorExaminer/assignCreation/AssignCreationAssignments";
 import AssignedWork from "../pages/examiner/AssignedWork";
 import ExaminerHome from "@/pages/examiner/ExaminerHome";
+import MyCertificate from "@/pages/applicant/MyCertificate";
+import ManageFeadback from "@/pages/examiner/ManageFeadback";
 const EvaluationWork = lazy(() => import("../pages/examiner/EvaluationWork"));
 const EvaluationRequests = lazy(() =>
   import("../pages/examiner/task/evaluationRequest/EvaluationRequests")
@@ -159,7 +161,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "admin",
-        element: <ProtectedRoute allowRole="Admin" />,
+        // element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
             index: true,
@@ -378,6 +380,14 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
+           {
+            path: "manage-feedback",
+            element: (
+              <Suspense fallback={null}>
+                <ManageFeadback />
+              </Suspense>
+            ),
+          },
         ],
       },
     ],
@@ -436,6 +446,14 @@ export const routes = createBrowserRouter([
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <ExamStage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "my-certificate",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                <MyCertificate />
               </Suspense>
             ),
           },

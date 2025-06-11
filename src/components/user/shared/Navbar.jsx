@@ -133,7 +133,7 @@ function Navbar() {
             </div>
 
             {/* Action Buttons (Desktop) */}
-            {auth ?  (<div className="flex gap-3 items-center">
+            {auth ?  (<div className=" gap-3 items-center  hidden lg:flex">
               <div className="relative hidden lg:block">
                 <div
                   onClick={() => setviewOption(!viewOption)}

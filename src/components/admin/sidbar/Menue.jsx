@@ -16,6 +16,7 @@ import { FaRegListAlt,FaClipboardList } from "react-icons/fa";
 import { FaFolder, FaRegFolder } from "react-icons/fa";
 import { FiClock } from "react-icons/fi"
 import { MdPendingActions , MdAssignment,  MdOutlineAssignment } from "react-icons/md"
+import { FiMessageSquare } from "react-icons/fi";
 
 const menue = [
   {
@@ -102,6 +103,13 @@ const menue = [
     icon: <MdOutlineAssignment/>,
     link: "todo-assignments",
     active:<MdAssignment />,
+    visible: ["Examiner"],
+  },
+  {
+    title: "Manage Feadback",
+    icon: <FiMessageSquare/>,
+    link: "manage-feedback",
+    active:<FiMessageSquare  />,
     visible: ["Examiner"],
   },
   {
