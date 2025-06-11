@@ -14,14 +14,14 @@ const fetchTeamMembers = async ({ queryKey }) => {
 
    };
    
-   function useGetExaminers({ currentPage, itemsPerPage }) {
-     return useQuery({
-               queryKey: ["teamMembers", { page: currentPage, pageSize: itemsPerPage }],
-               queryFn: fetchTeamMembers,
-               placeholderData: keepPreviousData,
-               retry:1
-             });
-     
-   }
+function useGetExaminers({ page, itemsPerPage }) {
+  return useQuery({
+    queryKey: ["teamMembers", { page, pageSize: itemsPerPage }],
+    queryFn: fetchTeamMembers,
+    placeholderData: keepPreviousData,
+    retry: 1
+  });
+}
+
    
    export default useGetExaminers
