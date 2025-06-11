@@ -103,7 +103,8 @@ export default function AssignCreationAssignments() {
         name: "Cancel Assignment",
         onClick: () => handleCancelAssignment(item),
       },
-      ...(item.type === "Exam"
+      ...(item.type === "Exam" && item.status !='Overdue'
+
         ? [
             {
               name: "Confirm Assignment",
@@ -150,11 +151,9 @@ export default function AssignCreationAssignments() {
             </span>
           </div>
         </td>
-        {item.status != "Overdue" && (
           <td>
             <Action actions={actions} />
           </td>
-        )}
       </tr>
     );
   };

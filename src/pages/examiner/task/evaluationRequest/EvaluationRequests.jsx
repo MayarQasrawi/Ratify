@@ -102,37 +102,7 @@ export default function EvaluationRequests() {
     return <FaSortDown className="text-blue-600" size={12} />;
   };
 
-  const fetchScheduledInterviews = async () => {
-    try {
-      const mockData = [
-        {
-          id: 1,
-          applicantName: "Abrar",
-          durationMinutes: "2 hours",
-          status: "scheduled",
-          stageName: "Technical Assessment",
-          trackName: "Backend Development",
-          scheduledDate: "2024-05-21T14:15:00Z",
-        },
-        {
-          id: 2,
-          applicantName: "Abrar",
-          durationMinutes: "3 hours",
-          status: "scheduled",
-          stageName: "Technical Assessment",
-          trackName: "Backend Development",
-          scheduledDate: "2024-05-21T14:15:00Z",
-        },
-      ];
-      setScheduledInterviews(mockData);
-    } catch (error) {
-      console.error("Error fetching scheduled interviews:", error);
-    }
-  };
 
-  useEffect(() => {
-    fetchScheduledInterviews();
-  }, []);
 
   const tabs = [
     {
@@ -144,7 +114,7 @@ export default function EvaluationRequests() {
     {
       id: "interviews",
       label: "Interviews",
-      count: scheduledInterviews.length,
+      count: pendingRequest?.data.length,
       icon: FaCalendarAlt,
     },
     {
@@ -292,38 +262,35 @@ export default function EvaluationRequests() {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
+        <div className=" text-center">
         <div className="text-sm text-gray-900 dark:text-gray-100">
           {item.stageName}
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
           {item.trackName}
         </div>
+        </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex justify-center items-center gap-2">
+      <td className="px-6 py-4 whitespace-nowrap text-center ">
+        <div className="flex justify-center items-center gap-2 test-center">
           <div className="text-sm text-gray-900 dark:text-gray-100">
-            {item.scheduledDate.split("T")[0]}
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {item.scheduledDate.split("T")[1].slice(0, -1)}
+            <div className="text-sm text-gray-500 dark:text-gray-400 flex gap-1">
+              <FaClock
+            className="text-gray-400 dark:text-gray-500 mr-1"
+            size={16}
+          /> {item.durationMinutes}
             </div>
           </div>
           <div
             className="cursor-pointer p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
             onClick={() => handleSort("datetime", "interviews")}
           >
-            {getSortIcon("interviews")}
           </div>
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className=" justify-center flex">
-          <span className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300">
-            {item.status}
-          </span>
-        </div>
-      </td>
+    
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button className="inline-flex cursor-pointer items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
+        <button onClick={()=>navigate('/dashboard/examiner/evaluation-work',{state:{stageId:item.stageId,stageProgressId:item.stageProgressId,interviewRequestId:item.id,type:'Interview',applicantName:item.applicantName}})} className="inline-flex cursor-pointer items-center gap-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 px-3 py-1.5 rounded-md hover:bg-green-200 dark:hover:bg-green-800 transition">
           Evaluate
         </button>
       </td>
@@ -375,12 +342,12 @@ export default function EvaluationRequests() {
           </div>
         );
       case "interviews":
-        if (scheduledInterviews.length === 0) return <EmptyState />;
+        if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
           <div className="max-w-[900px] scrollbar-custom">
             <Table
-              cols={["Candidate", "Track/ Stage", "Date & Time", "Status", " "]}
-              data={scheduledInterviews}
+              cols={["Candidate", "Track/ Stage", "Date & Time", " "]}
+              data={pendingRequest?.data}
               row={renderScheduledInterviewRow}
             />
           </div>

@@ -74,16 +74,17 @@ export default function AssignedWork() {
       if (filtered.length > 0) acc[stage] = filtered;
       return acc;
     }, {});
-console.log(filteredData,'filteredData filteredData')
+  console.log(filteredData,'filteredData filteredData')
   console.log(selected,'selected selected selected kkkkkkkkkkkkkkkkkkk')
   if (isExamCreationLoading || isTaskCreationLoading)
     return <Spinner text={"Assigned Work Page"} />;
+  
   return (
     <div className="min-h-screen  text-gray-900 dark:text-gray-100" id='sec'>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div>
-          <header className="flex justify-between">
-            <Title>Assigned Work</Title>
+          <header className="flex justify-between capitalize">
+            <Title>Assigned {activeTab} Work</Title>
             {selected && (
               <button
                 onClick={() =>
@@ -113,7 +114,7 @@ console.log(filteredData,'filteredData filteredData')
             }`}
           >
             <FaGraduationCap className="w-4 h-4" />
-            Exams ({examCreation?.data.filter(exam=>exam.status !='Overdue').length})
+            Exams ({examCreation?.data.length})
           </button>
           <button
             onClick={() => setActiveTab("task")}
@@ -124,7 +125,7 @@ console.log(filteredData,'filteredData filteredData')
             }`}
           >
             <FaTasks className="w-4 h-4" />
-            Tasks {activeTab == "task" && `(${taskCreation?.data.filter(task=>task.status !='Overdue').length})`}
+            Tasks {activeTab == "task" && `(${taskCreation?.data.length})`}
           </button>
         </div>
       </div>
@@ -132,8 +133,7 @@ console.log(filteredData,'filteredData filteredData')
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid gap-6">
           {Object.keys(filteredData).map((stageName) => (
-         filteredData[stageName]
-                    .filter((stg) => stg.status != "Overdue").length > 0  &&  <div
+            <div
               key={stageName}
               className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
             >
@@ -150,8 +150,7 @@ console.log(filteredData,'filteredData filteredData')
               <div className="p-6">
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredData[stageName]
-                    .filter((stg) => stg.status != "Overdue").
-                   map((item) => (
+                    .map((item) => (
                       <a
                         key={item.id}
                         href='#sec'
