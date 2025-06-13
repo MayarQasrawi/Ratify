@@ -138,7 +138,7 @@ export default function Event() {
   console.log("All events loaded:", allEvents);
 
   return (
-    <div className="max-w-4xl  p-4 space-y-6 bg-white  rounded-md flex flex-col items-center">
+    <div className="max-w-4xl  p-4 space-y-6 bg-white  rounded-lg flex flex-col items-center  overflow-auto">
       <div>
         <CardContent>
           <Calendar

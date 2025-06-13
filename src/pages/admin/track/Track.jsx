@@ -10,7 +10,7 @@ import ConfirmationModal from "../../../components/shared/modal/ConfirmationModa
 import useGetAllTraks from "../../../hooks/admin/tracks/useGetAllTracks";
 import Loading from "../../../components/admin/shared/Loading";
 import Error from "../../../components/admin/shared/Error";
-import useDeleteTrack from "../../../hooks/admin/tracks/useDeleteTrack";
+import useDeleteTrack from "../../../hooks/Admin/tracks/useDeleteTrack";
 import Card from "../../../components/admin/track/Card";
 import Title from "../../../components/admin/shared/Title";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -20,18 +20,24 @@ import AssignMangerModal from "../../../components/admin/track/AssignMangerModal
 import useDeleteManager from "../../../hooks/Admin/tracks/useDeleteManager";
 
 const cols = ["Track", "Status", " "];
+
 export default function Track() {
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState("table");
   const [selected, setSelected] = useState(null);
   const [track, setTrack] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("All"); 
+
   const navigate = useNavigate();
+
   const {
     data: trackd,
     isLoading: isTrackArrive,
     isError: isTrackError,
   } = useGetAllTraks();
+
   console.log(trackd?.data, "from api endhbbjjjjjjj");
+
   const {
     mutate: deleteTrack,
     isPending,
@@ -41,6 +47,7 @@ export default function Track() {
     reset,
     data: deleteRequestData,
   } = useDeleteTrack();
+
   const {
     mutate: deleteTrackManger,
     isPending: isTrackManagerPending,
@@ -48,6 +55,7 @@ export default function Track() {
     isError: isTrackManagerError,
     reset: resetTrackManager,
   } = useDeleteManager();
+
   const {
     mutate: toggleTrack,
     isPending: isTogglePending,
@@ -56,8 +64,28 @@ export default function Track() {
     reset: resetToggleTrack,
     data: toggleTrackData,
   } = useActivateTrack();
-  //trackd?.data
+
   let trackFilter = trackd?.data;
+
+  if (search) {
+    trackFilter = trackFilter?.filter((track) =>
+      track.name.toUpperCase().includes(search.toUpperCase())
+    );
+  }
+
+  if (statusFilter !== "All") {
+    trackFilter = trackFilter?.filter((track) => {
+      switch (statusFilter) {
+        case "Active":
+          return track.isActive === true;
+        case "Inactive":
+          return track.isActive === false;
+        default:
+          return true;
+      }
+    });
+  }
+
   const handleEdit = (track) => {
     console.log("Edit action clicked");
     console.log(track);
@@ -68,16 +96,18 @@ export default function Track() {
     console.log("View Details action clicked");
     navigate("/dashboard/admin/track-details", { state: { track } });
   };
-  // const isLoading =false;
+
   const handleDelete = (track) => {
     setSelected("delete");
     setTrack(track);
   };
+
   const handleToggle = (track) => {
     console.log(track);
     setSelected("toggle");
     setTrack(track);
   };
+
   const handleAssignManger = (track, isMangerAssign) => {
     console.log("assign manger ///////////////////////////////", track.id);
     console.log(isMangerAssign);
@@ -88,10 +118,12 @@ export default function Track() {
     }
     setTrack(track);
   };
+
   const handleDeleteManager = (track) => {
     setSelected("delete-manager");
     setTrack(track);
   };
+
   if (isTrackArrive) {
     return (
       <>
@@ -106,6 +138,7 @@ export default function Track() {
       </>
     );
   }
+
   if (isTrackError) {
     return (
       <>
@@ -118,10 +151,7 @@ export default function Track() {
       </>
     );
   }
-  if (search)
-    trackFilter = trackd?.data?.filter((track) =>
-      track.name.toUpperCase().includes(search.toUpperCase())
-    );
+
   if (trackFilter?.length == 0 && isTrackArrive == false) {
     return (
       <>
@@ -135,10 +165,12 @@ export default function Track() {
       </>
     );
   }
+
   const renderRow = (track) => {
     const isMangerAssign = track.seniorExaminerID;
     console.log(isMangerAssign, "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
     const hasSenior = Boolean(track.seniorExaminerID);
+
     const actions = [
       ...(track.isActive
         ? [
@@ -155,10 +187,11 @@ export default function Track() {
               onClick: () => handleAssignManger(track, hasSenior),
             },
           ]
-        : [{
-                    name: "Toggle Track",
-                    onClick: () => handleToggle(track),
-                  },
+        : [
+            {
+              name: "Toggle Track",
+              onClick: () => handleToggle(track),
+            },
             ...(hasSenior
               ? [
                   {
@@ -166,9 +199,7 @@ export default function Track() {
                     onClick: () => handleDeleteManager(track),
                   },
                 ]
-              : [
-                  
-                ]),
+              : []),
           ]),
       {
         name: "View Details",
@@ -217,8 +248,10 @@ export default function Track() {
       </tr>
     );
   };
+
   console.log(`selected track ${track}`, track, selected, "llllllllllllllll");
   console.log(toggleTrackData, "toggleTrackData responce ");
+
   return (
     <>
       {selected == "delete" && (
@@ -306,6 +339,23 @@ export default function Track() {
             <IoMdAddCircleOutline className="mr-1" size={16} /> Add Track
           </button>
         </div>
+        <div className="pl-4 mb-4 mt-2">
+          <div className="flex gap-2">
+            {["All", "Active", "Inactive"].map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setStatusFilter(filter)}
+                className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-full transition-colors ${
+                  statusFilter === filter
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-200"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+          </div>
         <div className="pl-4 mt-2.5 text-sm">
           <div className="flex gap-6">
             <button

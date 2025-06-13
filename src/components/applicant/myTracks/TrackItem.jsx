@@ -17,7 +17,7 @@ export default function TrackItem({ name, img,trackId,status,enrollmentId }) {
     <div className="m-h-100  shadow-sm border border-[var(--table-border)] p-4 lg:px-8  rounded-2xl   md:w-full flex flex-col  justify-between ">
       <div className="flex mt-2.5 lg:flex-wrap gap-3 ">
         <div className="bg-[var(--secondary-color)] justify-center xl:justify-around w-full  h-64  px-4 py-6 rounded-4xl flex gap-3.5 items-center">
-          <img src={img} className="w-[120px]" alt={name} />
+          <img src={`${import.meta.env.VITE_API}${img}`} className="w-[120px]" alt={name} />
           <h2 className="text-2xl  text-[var(--main-color)] font-bold text-center">
             {formattedName}
           </h2>

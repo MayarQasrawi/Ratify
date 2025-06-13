@@ -3,13 +3,13 @@ import ExaminerStatsCard from "@/components/examiner/home/ExaminerStatsCard";
 
 export default function ExaminerHome() {
   return (
-    <div className="flex gap-4 p-3 flex-col lg:flex-row">
+    <div className="flex gap-4 p-6 flex-col lg:flex-row">
       <div className="w-full  lg:w-[65%] ">
-         <ExaminerStatsCard />
+        <ExaminerStatsCard />
       </div>
-   <div>
-    <Event />
-   </div>
+      <div>
+        <Event />
+      </div>
     </div>
-  )
+  );
 }

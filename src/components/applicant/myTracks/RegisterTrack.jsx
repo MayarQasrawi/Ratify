@@ -25,7 +25,7 @@ console.log(myTrack,'myTrack myTrack myTrack')
           enrollmentId={track.id}
           name={track.trackName}
           trackId={track.trackId}
-          img={track.img || img}
+          img={track.trackImage }
           status={track.status}
           enrollmentDate={track.enrollmentDate}
         />

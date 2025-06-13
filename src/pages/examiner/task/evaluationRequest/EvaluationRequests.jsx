@@ -15,6 +15,7 @@ import useGetPendingRequest from "../../../../hooks/examiner/evaluationRequest/u
 import Loading from "../../../../components/admin/shared/Loading";
 import Spinner from "../../../../components/shared/dashboard/Spinner";
 import { useNavigate } from "react-router-dom";
+import Error from "@/components/admin/shared/Error";
 
 export default function EvaluationRequests() {
   const [activeTab, setActiveTab] = useState("exams");
@@ -368,6 +369,18 @@ export default function EvaluationRequests() {
     }
   };
  
+  if (isError) {
+    return (
+      <>
+        <div className="mt-8 pl-4 mb-6">
+          <Title>Pending {activeTab.slice(0,activeTab.length-1)} Evaluations</Title>
+        </div>
+        <div className="h-[50vh]  flex items-center justify-center ">
+          <Error />
+        </div>
+      </>
+    );
+  }
   return (
     <div className="min-h-screen  p-6">
       <div className="max-w-7xl mx-auto">

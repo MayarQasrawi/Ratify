@@ -15,5 +15,6 @@ export default function useGetExaminerFeedback() {
   return useQuery({
     queryKey: ["feedback",id],
     queryFn: () => getExaminerFeedback(id),
+    retry:false
   });
 }
