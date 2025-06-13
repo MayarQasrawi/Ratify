@@ -1,53 +1,54 @@
-// In Teams.jsx
 import { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
+import MemberCard from "../../components/admin/Team/MemberCard";
 import { MdOutlineFindInPage } from "react-icons/md";
-import { RiEyeCloseLine, RiEyeFill } from "react-icons/ri";
+import { RiEyeCloseLine, RiEyeFill, RiGroupLine, RiUserStarLine, RiUserLine, RiTeamLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+
 import Add from "../../components/admin/shared/Add";
 import Error from "../../components/admin/shared/Error";
-import ItemsPerPageSelector from "../../components/admin/shared/ItemsPerPageSelector";
 import Loading from "../../components/admin/shared/Loading";
 import Pagination from "../../components/admin/shared/Pagination";
-import Search from "../../components/admin/shared/Search";
 import Table from "../../components/admin/shared/Table";
 import IconActionButton from "../../components/Button/IconActionButton";
 import useGetExaminers from "../../hooks/Admin/useGetExaminers";
 import EmptyState from "../../components/admin/shared/EmptyState";
 import ViewExaminerWorkLoad from "../../components/admin/Team/ViewExaminerWorkLoad";
-
-import { set } from "react-hook-form";
+import HeroHeader from "../../components/admin/Team/HeroHeader";
 import Title from "../../components/admin/shared/Title";
+import ControlsPanel from "../../components/admin/Team/ControlsPanel";
+
+import SearchInput from "../../components/admin/shared/Search";
+import ItemsPerPageSelector from "../../components/admin/shared/ItemsPerPageSelector";
 
 export default function Teams() {
   const [search, setSearch] = useState("");
-  const [originalData, setOriginalData] = useState([]); // Store the unfiltered data
-  const [filteredData, setFilteredData] = useState([]); // Store filtered data
+  const [originalData, setOriginalData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   const [roleFilter, setRoleFilter] = useState(null);
   const [workLoad, setWorkLoad] = useState([]);
   const [workLoadModal, setWorkLoadModal] = useState(false);
   const [hoveredMemberId, setHoveredMemberId] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
+const [activeView, setActiveView] = useState("table"); // or "card"
 
-  // Fetch data from API
   const { data, isLoading, isError, error } = useGetExaminers({
     page: currentPage,
     itemsPerPage,
   });
 
-  // Store original data when API response is received
   useEffect(() => {
     if (data) {
-      console.log("Fetched data:", data.data.data);
       setOriginalData(data.data.data);
       setTotalPages(data.data.totalPages);
+      setTotalCount(data.data.totalCount);
     }
-  }, [data]);
+  }, [data, currentPage]);
 
-  // Apply filters when search, roleFilter or original data changes
   useEffect(() => {
     if (originalData.length > 0) {
       const filtered = originalData.filter(
@@ -60,49 +61,11 @@ export default function Teams() {
   }, [originalData, search, roleFilter]);
 
   const handelWorkLoad = (member) => {
-    console.log("Member data:", member);
-    console.log("Examiner loads:", member.examinerLoads);
     setWorkLoad(member);
     setWorkLoadModal(true);
   };
-  // Example data
-  const MOCK_EXAMINERS = [
-    {
-      id: "1",
-      fullName: "Alice Johnson",
-      email: "alice@example.com",
-      specialization: "Mathematics",
-      userType: "Examiner",
-      dateOfBirth: "1990-05-20",
-      gendar: "Female",
-      image: "",
-      examinerLoads: [{ subject: "Algebra", students: 25 }],
-    },
-    {
-      id: "2",
-      fullName: "Bob Smith",
-      email: "bob@example.com",
-      specialization: "Physics",
-      userType: "Senior Examiner",
-      dateOfBirth: "1985-09-15",
-      gendar: "Male",
-      image: "",
-      examinerLoads: [{ subject: "Quantum Physics", students: 15 }],
-    },
-    {
-      id: "3",
-      fullName: "Charlie Lee",
-      email: "charlie@example.com",
-      specialization: "Chemistry",
-      userType: "Examiner",
-      dateOfBirth: "1992-11-10",
-      gendar: "Male",
-      image: "",
-      examinerLoads: [{ subject: "Organic Chemistry", students: 20 }],
-    },
-  ];
-  const BASE_URL = import.meta.env.VITE_BAPI ;
-  console.log("Base URL:", BASE_URL);
+
+  const BASE_URL = import.meta.env.VITE_BAPI;
 
   const renderRow = (member) => (
     <tr
@@ -110,88 +73,65 @@ export default function Teams() {
       key={member.id}
       id={member.id}
     >
-      {console.log(`${BASE_URL}${member.image}`)}
-      {/* Name & Email */}
       <td className="py-3 px-1 lg:px-3">
         <div className="flex gap-1 items-center justify-start ml-[4%] md:ml-[10%] ">
           {member.image && member.image !== "null" ? (
             <img
-              src={`${BASE_URL}${member.image}`}
+              src={`${BASE_URL}../${member.image}`}
               alt="Profile"
               className="h-8 w-8 rounded-lg object-cover"
-              // onError={(e) => {
-              //   e.target.onerror = null;
-              //   e.target.src = "/public/default-profile.jpeg"; // صورة افتراضية محلية
-              // }}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/public/default-profile.jpeg";
+              }}
             />
           ) : (
             <div className="h-8 w-8 items-center justify-center font-bold rounded-lg bg-[var(--sidebar-icon-bg)] text-[var(--main-color)] flex">
               {member.fullName.split(" ")[0].slice(0, 1).toUpperCase()}
             </div>
           )}
-
           <div className="ml-3 flex flex-col">
-            <div className="font-medium text-[var(--text-color)]">
-              {member.fullName}
-            </div>
+            <div className="font-medium text-[var(--text-color)]">{member.fullName}</div>
             <div className="font-medium text-[var(--text-color)] text-[12px] hidden md:block">
               {member.email}
             </div>
           </div>
         </div>
       </td>
-
-      {/* Specialization */}
-      <td className="py-3 px-1 lg:px-3 text-center">
-        {member.specialization || "N/A"}
-      </td>
-
-      {/* User Type */}
+      <td className="py-3 px-1 lg:px-3 text-center">{member.specialization || "N/A"}</td>
       <td className="py-3 px-1 lg:px-3 text-center">
         <span
           className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${
-            member.userType === "Senior Examiner"
-              ? "bg-[var(--button-bg)] text-white"
-              : "bg-green-600 text-white"
+            member.userType !== "SeniorExaminer"
+              ? "bg-[var(--main-color)] text-white"
+              : "bg-[var(--secondary-color)] text-white "
           }`}
         >
-          {member.userType}
+          {member.userType === "SeniorExaminer" ? "Senior Examiner" : "Examiner"}
         </span>
       </td>
-
-      {/* Date of Birth */}
       <td className="py-3 px-1 lg:px-3 text-center">
         {new Date(member.dateOfBirth).toLocaleDateString() || "N/A"}
       </td>
-
-      {/* Gender */}
-      <td className="py-3 px-1 lg:px-3 text-center">
-        {member.gendar || "N/A"}
-      </td>
-
-      {/* Examiner Loads */}
+      <td className="py-3 px-1 lg:px-3 text-center">{member.gendar || "N/A"}</td>
       <td className="py-3 px-1 lg:px-3 text-center">
         <IconActionButton
           Icon={IoSearch}
           label="Details"
           onClick={() => handelWorkLoad(member)}
-          color="green"
+          color="purple"
         />
       </td>
-      {/* Action */}
       <td className="py-3 px-1 lg:px-3 text-center">
         <Link
           className="text-[var(--text-color)] p-1 rounded-md relative group overflow-hidden"
-          to={`/dashboard/admin/ViewDetailes/${member.id}`}
+          to={`/dashboard/admin/ViewDetails/${member.id}`}
           state={{ member, page: currentPage }}
           onMouseOver={() => setHoveredMemberId(member.id)}
           onMouseLeave={() => setHoveredMemberId(null)}
         >
           {hoveredMemberId === member.id ? (
-            <RiEyeCloseLine
-              className="inline transition-opacity duration-400"
-              size={16}
-            />
+            <RiEyeCloseLine className="inline transition-opacity duration-400" size={16} />
           ) : (
             <RiEyeFill className="inline" size={16} />
           )}
@@ -200,9 +140,9 @@ export default function Teams() {
     </tr>
   );
 
-  const col = [
+  const cols = [
     "Info",
-    "specialization",
+    "Specialization",
     "Role",
     "Date Of Birth",
     "Gender",
@@ -211,81 +151,121 @@ export default function Teams() {
   ];
 
   const roleOptions = [
-    { label: "All", value: null, icon: null },
-    { label: "Examiner", value: "Examiner", icon: MdOutlineFindInPage },
-    {
-      label: "Senior Examiner",
-      value: "Senior Examiner",
-      icon: MdOutlineFindInPage,
-    },
+    { label: "All", value: null },
+    { label: "Examiner", value: "Examiner" },
+    { label: "Senior Examiner", value: "SeniorExaminer" },
+  ];
+
+  const heroStats = [
+    { icon: RiGroupLine, value: filteredData.length, label: "Showing Members" },
+    { icon: RiTeamLine, value: totalCount, label: "Total Members" },
+    { icon: RiUserStarLine, value: originalData.filter(m => m.userType === "SeniorExaminer").length, label: "Senior Examiners" },
+    { icon: RiUserLine, value: originalData.filter(m => m.userType === "Examiner").length, label: "Examiners" },
   ];
 
   return (
     <section className="pr-3">
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
-          <div className="mt-8">
-            <Title>Team Members</Title>
-          </div>
-        </div>
+      <div className="space-y-4 mb-8">
+        <HeroHeader
+          title="Team Members"
+          subtitle="Manage your examination team and their workloads"
+          icon={RiGroupLine}
+          stats={heroStats}
+        />
       </div>
-      <div className="flex-wrap md:flex items-center justify-between p-1 lg:p-3 my-1">
-        <Search search={search} setSearch={setSearch} />
-        <div className="flex md:gap-3 gap-1 w-full md:w-auto">
+
+      <ControlsPanel
+        title="Team Members"
+        subtitle="Filter, search and manage team"
+      viewMode={activeView}
+  onViewModeChange={setActiveView}
+        searchComponent={<SearchInput search={search} setSearch={setSearch} placeholder="Search by name..." />}
+        addComponent={
           <Add
             text="Add Employee"
             icon={<IoMdAddCircleOutline className="mr-1" size={16} />}
             table="teams"
           />
-        </div>
-      </div>
-
-      <div className="mb-3">
-        <ItemsPerPageSelector
-          options={[5, 10, 20, 50]}
-          selectedValue={itemsPerPage}
-          onChange={setItemsPerPage}
-        />
-      </div>
-
-      <div className="flex flex-wrap gap-4 mb-4 mt-7">
-        {roleOptions.map(({ label, value, icon: Icon }) => (
-          <IconActionButton
-            key={label}
-            label={label}
-            onClick={() => setRoleFilter(value)}
-            color={roleFilter === value ? "purple" : "gray"}
-            ariaLabel={`Filter by ${label}`}
+        }
+        filtersComponent={
+          roleOptions.map(({ label, value }) => (
+            <IconActionButton
+              key={label}
+              label={label}
+              onClick={() => setRoleFilter(value)}
+              color={roleFilter === value ? "purple" : "gray"}
+              ariaLabel={`Filter by ${label}`}
+            />
+          ))
+        }
+        itemsPerPageComponent={
+          <ItemsPerPageSelector
+            options={[5, 10, 20, 50]}
+            selectedValue={itemsPerPage}
+            onChange={setItemsPerPage}
           />
-        ))}
-      </div>
+        }
+      />
+
       {isLoading ? (
         <Loading text={"Assembling Your Team..."} />
       ) : isError ? (
         <Error
           message={error.message || "Failed to fetch team members"}
-          errorCode={error.errorCode || "error code"}
+          errorCode={error.errorCode || "Error Code"}
           onRetry={() => window.location.reload()}
         />
       ) : filteredData.length === 0 ? (
-        <EmptyState
-          search={search}
-          setSearch={setSearch}
-          roleFilter={roleFilter}
-          setRoleFilter={setRoleFilter}
+  <EmptyState
+    search={search}
+    setSearch={setSearch}
+    roleFilter={roleFilter}
+    setRoleFilter={setRoleFilter}
+  />
+) : (
+  <>
+    {activeView === "table" ? (
+      <>
+        <Table
+          data={filteredData}
+          cols={cols}
+          row={renderRow}
+          headerColor="bg-gray-600/10"
+          headerTextColor="text-gray-500"
         />
-      ) : (
-        <>
-          <Table data={originalData} cols={col} row={renderRow} />
-          <Pagination
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
+        <Pagination
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
+      </>
+    ) : (
+      <div className="flex flex-col ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+        {filteredData.map((member) => (
+          <MemberCard
+            key={member.id}
+            member={member}
+            baseUrl={BASE_URL}
+            hoveredMemberId={hoveredMemberId}
+            onHover={setHoveredMemberId}
+            onWorkloadClick={handelWorkLoad}
+            viewDetailsPath={`/dashboard/admin/ViewDetails/${member.id}`}
             currentPage={currentPage}
           />
-        </>
+        ))}
+       
+      </div>
+       <Pagination
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+        />
+      </div>
+    )}
+
+ </>
       )}
-      {/* <Table data={MOCK_EXAMINERS} cols={col} row={renderRow} />
-          <Pagination totalPages={totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} /> */}
 
       {workLoadModal && (
         <ViewExaminerWorkLoad

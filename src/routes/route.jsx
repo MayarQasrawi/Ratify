@@ -66,6 +66,7 @@ const ManageTask = lazy(() =>
 const TeamWorkload = lazy(() =>
   import("../pages/seniorExaminer/teams/TeamWorkload")
 );
+const ViewDetails = lazy(() => import("../pages/admin/ViewDetailes"));
 
 const LoadingFallback = () => <div>Loading...</div>;
 
@@ -178,7 +179,14 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-
+          {
+            path: "ViewDetails/:id",
+            element: (
+              <Suspense fallback={null}>
+                <ViewDetails />
+              </Suspense>
+            ),
+          },
           {
             path: "applicants",
             element: (
