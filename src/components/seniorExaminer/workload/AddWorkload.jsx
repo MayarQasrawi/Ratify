@@ -30,11 +30,11 @@ export default function AddWorkload({ onClose, member }) {
     }));
     onSubmit(payload);
   };
-
+console.log(data,'response data')
   return (
     <>
      {isError && <Alert type='error' message='Failed to update workload. Please try again' />}
-     {isSuccess && <Alert  message='suc'/>}
+     {isSuccess && <Alert  message={data.message}/>}
     <form
       onSubmit={handleSubmit(onFormSubmit)}
       className="max-w-md w-full pb-6 bg-white rounded-lg shadow-lg overflow-hidden"

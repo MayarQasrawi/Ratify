@@ -40,34 +40,38 @@ export default function ExamRequest() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedAction, setSelectedAction] = useState(false);
   const [isApproveAllModalOpen, setIsApproveAllModalOpen] = useState(false);
-  const { data: pendingExamRequest, isLoading,isSuccess } = useGetPendingExamRequest(
-    location.state.stage.stageId
+  const {
+    data: pendingExamRequest,
+    isLoading,
+    isSuccess,
+  } = useGetPendingExamRequest(location.state.stage.stageId);
+  const navigate = useNavigate();
+  console.log(
+    pendingExamRequest?.data,
+    "pendingExamRequest ////////////////////////////////////",
+    location.state
   );
-  const navigate=useNavigate()
-  console.log(pendingExamRequest?.data, "pendingExamRequest ////////////////////////////////////",location.state);
   // useEffect(() => {
   //   const data = generateStaticData();
   //   setRequests(data);
   // }, []);
 
   useEffect(() => {
-    if(isSuccess){
-        const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay() + currentWeek * 7);
-    startOfWeek.setHours(0, 0, 0, 0);
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-    const filtered = pendingExamRequest?.data.filter((request) => {
-      const requestDate = new Date(request.scheduledDate
-);
-      return requestDate >= startOfWeek && requestDate <= endOfWeek;
-    });
-    setFilteredRequests(filtered);
+    if (isSuccess) {
+      const now = new Date();
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - now.getDay() + currentWeek * 7);
+      startOfWeek.setHours(0, 0, 0, 0);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      endOfWeek.setHours(23, 59, 59, 999);
+      const filtered = pendingExamRequest?.data.filter((request) => {
+        const requestDate = new Date(request.scheduledDate);
+        return requestDate >= startOfWeek && requestDate <= endOfWeek;
+      });
+      setFilteredRequests(filtered);
     }
-  
-  }, [currentWeek,isSuccess]);
+  }, [currentWeek, isSuccess]);
 
   const handleApprove = (request) => {
     console.log(request, "handle approve");
@@ -76,7 +80,7 @@ export default function ExamRequest() {
   };
 
   const handleReject = (request) => {
-    console.log(request,'reject modal ,,,,,,,,,,,,,,,,,,,,,,,,')
+    console.log(request, "reject modal ,,,,,,,,,,,,,,,,,,,,,,,,");
     setSelectedRequest(request);
     setSelectedAction("reject");
   };
@@ -142,7 +146,13 @@ export default function ExamRequest() {
           </div>
         </td>
         <td className="py-3 px-3 lg:px-3 text-center">
-          <div className="w-full flex justify-center cursor-pointer" onClick={()=>{setSelectedAction('details'); setSelectedRequest(request)}}>
+          <div
+            className="w-full flex justify-center cursor-pointer"
+            onClick={() => {
+              setSelectedAction("details");
+              setSelectedRequest(request);
+            }}
+          >
             <IconActionButton Icon={IoSearch} label="Details" color="green" />
           </div>
         </td>
@@ -165,8 +175,7 @@ export default function ExamRequest() {
       </tr>
     );
   };
-if(isLoading )
-  return <Spinner text="Exam Pending Request" />
+  if (isLoading) return <Spinner text="Exam Pending Request" />;
   return (
     <>
       {selectedAction == "reject" && (
@@ -179,7 +188,14 @@ if(isLoading )
       )}
       {selectedAction == "details" && (
         <Modal>
-          <ExamDetailsModal  cancelAction={cancelAction} selectedRequest={selectedRequest} extraInfo={{stage: location.state.stage.stageName,level: location.state.stage.levelName}} />
+          <ExamDetailsModal
+            cancelAction={cancelAction}
+            selectedRequest={selectedRequest}
+            extraInfo={{
+              stage: location.state.stage.stageName,
+              level: location.state.stage.levelName,
+            }}
+          />
         </Modal>
       )}
       {selectedAction == "Approve-All" && (
@@ -192,7 +208,7 @@ if(isLoading )
           />
         </Modal>
       )}
-     {selectedAction == "Approve" && (
+      {selectedAction == "Approve" && (
         <Modal>
           <ExamModal
             cancelAction={cancelAction}
@@ -200,14 +216,14 @@ if(isLoading )
           />
         </Modal>
       )}
-      <div className="p-6 min-h-screen text-gray-900 dark:text-gray-100">
+      <div className="p-3 min-h-screen text-gray-900 dark:text-gray-100">
         <div className="max-w-7xl mx-auto">
-           <div className="flex items-center gap-2 p-3 mb-5">
-                      <Back
-                        text="Back to  Exam Stages"
-                        onClick={() => navigate("/dashboard/seniorExaminer/exams-stages")}
-                      />
-                    </div>
+          <div className="flex items-center gap-2 p-3 mb-5">
+            <Back
+              text="Back to  Exam Stages"
+              onClick={() => navigate("/dashboard/seniorExaminer/exams-stages")}
+            />
+          </div>
           <div className="mb-6 flex justify-between items-center">
             <Title>Exam Request Management</Title>
             <button

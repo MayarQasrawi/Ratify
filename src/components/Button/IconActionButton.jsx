@@ -52,7 +52,7 @@ const IconActionButton = ({
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full  text-center
+      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full  text-center cursor-pointer
         ${colorVariants[color]?.bg || colorVariants.blue.bg}
         ${colorVariants[color]?.hover || colorVariants.blue.hover}
         ${colorVariants[color]?.text || colorVariants.blue.text}

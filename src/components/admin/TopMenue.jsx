@@ -1,6 +1,4 @@
-"use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { MdEdit, MdEmail, MdOutlineSettings, MdPassword, MdPhotoCamera } from "react-icons/md"
 import { PiMoonBold, PiListBold } from "react-icons/pi"
 import { useTheme } from "../../contexts/ThemeProvider"
@@ -25,6 +23,8 @@ function TopMenue() {
   let role = "Admin"
   if (auth) role = Extract(auth, "role")
 
+ 
+
   return (
     <>
       {selectedModel == "Password" && (
@@ -48,7 +48,8 @@ function TopMenue() {
         {/* Left side - Sidebar Toggle */}
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded-lg text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+          className={`p-2 rounded-lg cursor-pointer text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 
+          `}
           aria-label="Toggle Sidebar"
         >
           <PiListBold className="text-xl" />
@@ -61,7 +62,7 @@ function TopMenue() {
           {/* Theme Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-lg text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+            className="p-2  cursor-pointer rounded-lg text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
             aria-label="Toggle Theme"
           >
             {!darkMode ? <FiSun className="text-xl" /> : <PiMoonBold className="text-xl" />}
@@ -71,7 +72,7 @@ function TopMenue() {
           <div className="relative">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+              className="p-2 rounded-lg cursor-pointer text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
               aria-label="Settings"
             >
               <MdOutlineSettings className="text-xl" />

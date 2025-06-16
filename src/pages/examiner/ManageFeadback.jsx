@@ -21,8 +21,6 @@ import Loading from "@/components/admin/shared/Loading";
 const columns = ["Applicant", "Type", "Score", "Feedback", " "];
 
 export default function ManageFeedback() {
-  const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [modalContent, setModalContent] = useState();
   const { data: feedback, isLoading, isError } = useGetExaminerFeedback();

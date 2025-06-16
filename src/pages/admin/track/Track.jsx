@@ -26,7 +26,7 @@ export default function Track() {
   const [viewMode, setViewMode] = useState("table");
   const [selected, setSelected] = useState(null);
   const [track, setTrack] = useState(null);
-  const [statusFilter, setStatusFilter] = useState("All"); 
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const navigate = useNavigate();
 
@@ -208,12 +208,12 @@ export default function Track() {
     ];
 
     return (
-      <tr className="border border-[var(--table-border)] text-sm text-center hover:bg-gray-100 dark:hover:bg-gray-600 ">
+      <tr className="border border-[var(--table-border)] text-sm text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
         <td className="p-3 text-[var(--text-color)] text-center ">
           <div className="flex justify-center">
             <div className="flex flex-col items-center gap-2 max-w-[200px]">
               <img
-                className="w-15 h-15 object-cover"
+                className="w-15 h-15 object-cover rounded-md"
                 src={`${import.meta.env.VITE_API}${track.image}`}
                 alt={track.name}
               />
@@ -325,7 +325,7 @@ export default function Track() {
         </Modal>
       )}
       <section className="pr-3">
-        <div className="mt-8 pl-4 mb-6">
+        <div className="mt-4 pl-4 mb-6">
           <Title>Our Tracks</Title>
         </div>
         <div className="pl-4 mt-3 gap-y-3 justify-start flex flex-col md:flex-row md:justify-between md:items-center">
@@ -355,7 +355,7 @@ export default function Track() {
               </button>
             ))}
           </div>
-          </div>
+        </div>
         <div className="pl-4 mt-2.5 text-sm">
           <div className="flex gap-6">
             <button

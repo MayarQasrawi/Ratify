@@ -66,7 +66,7 @@ const experts = [
 ];
 export default function Expert({ searchParams ,setSearchParams }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const {data:Teams, isLoading, isError,error}=useGetExaminers({currentPage,itemsPerPage:10})
+  const {data:Teams, isLoading, isError,error}=useGetExaminers({page:currentPage,itemsPerPage:10})
   const [searchQuery, setsearchQuery] = useState('');
   const specialtyFilter = searchParams.get("specialty");
   const searchFilter=searchParams.get('query')

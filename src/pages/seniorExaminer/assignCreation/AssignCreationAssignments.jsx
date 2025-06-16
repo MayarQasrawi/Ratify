@@ -137,7 +137,7 @@ export default function AssignCreationAssignments() {
           {item.dueDate.split("T")[0]}
         </td>
         <td className="py-3 px-3">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center justify-center space-x-1">
             {item.status == "Overdue" ? (
               <FiAlertCircle className="w-4 h-4 text-red-500" />
             ) : (
@@ -241,7 +241,7 @@ export default function AssignCreationAssignments() {
           </ConfirmationModal>
         </Modal>
       )}
-      <div className="min-h-screen p-6 ">
+      <div className="min-h-screen  ">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="rounded-lg p-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
