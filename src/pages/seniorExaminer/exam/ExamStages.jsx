@@ -17,10 +17,8 @@ import useFetchExaminerById from "../../../hooks/examiner/useFetchExaminerById";
 import Extract from "../../../utils/Extract";
 export default function ExamStages() {
   const { auth } = useAuthContext();
-  // const [examStages, setExamStages] = useState([]);
   const [selectedStage, setSelectedStage] = useState();
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
+
   const navigate = useNavigate();
   let role;
   let id;
@@ -42,32 +40,7 @@ export default function ExamStages() {
     examStagess?.data?.stages,
     ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;exam stages"
   );
-  // useEffect(() => {
-  //   const fetchExamStages = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const mockData = [
-  //         { id: 1, name: "Mathematics Final Exam", totalPending: 45 },
-  //         { id: 2, name: "Physics Midterm", totalPending: 23 },
-  //         { id: 3, name: "Chemistry Lab Test", totalPending: 12 },
-  //         { id: 4, name: "Biology Practical", totalPending: 8 },
-  //         { id: 5, name: "English Literature", totalPending: 34 },
-  //         { id: 6, name: "Computer Science", totalPending: 67 },
-  //         { id: 7, name: "Economics Theory", totalPending: 15 },
-  //       ];
-
-  //       setTimeout(() => {
-  //         setExamStages(mockData);
-  //         setLoading(false);
-  //       }, 800);
-  //     } catch (err) {
-  //       setError("Failed to fetch exam stages");
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchExamStages();
-  // }, []);
+ 
 
   if (isLoading) return <Spinner text="Exam Stage Page" />;
   if (examStagess?.data?.stages.length == 0)
@@ -90,7 +63,6 @@ export default function ExamStages() {
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
             Error Loading Data
           </h2>
-          {/* <p className="text-gray-600 dark:text-gray-300">{error}</p> */}
         </div>
       </div>
     );
@@ -103,7 +75,7 @@ export default function ExamStages() {
   );
   console.log(selectedStage, "inside exam stage task ");
   return (
-    <div className="min-h-screen p-4 sm:p-6" id="top">
+    <div className="min-h-screen p-2 sm:p-6" id="top">
       <div className="max-w-5xl mx-auto">
         <header className="mb-6 sm:mb-10 flex justify-between">
           <Title>Exam Stages</Title>
@@ -121,7 +93,7 @@ export default function ExamStages() {
           )}
         </header>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-10">
-          <div className="flex items-center bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center bg-white cursor-pointer dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
             <div className="bg-blue-600 text-white p-3 rounded-full mr-4">
               <FaFileAlt className="h-6 w-6" />
             </div>
@@ -135,7 +107,7 @@ export default function ExamStages() {
             </div>
           </div>
 
-          <div className="flex items-center bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center cursor-pointer bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
             <div className="bg-blue-500 text-white p-3 rounded-full mr-4">
               <FaHourglassHalf className="h-6 w-6" />
             </div>

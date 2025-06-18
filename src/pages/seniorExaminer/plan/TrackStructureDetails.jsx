@@ -586,8 +586,8 @@ export default function TrackStructureDetails({ structure }) {
             />
           </Modal>
         )}
-        <div className="p-6 pt-2 max-w-4xl mx-auto">
-          <div className="my-8 ">
+        <div className="p-3  max-w-5xl ">
+          <div className="my-3 ">
             <Title> {plan.name} Assessment Plan</Title>
           </div>
           <div className="mb-6">

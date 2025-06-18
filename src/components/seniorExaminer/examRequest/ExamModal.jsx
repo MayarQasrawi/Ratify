@@ -33,6 +33,17 @@ export default function ExamModal({ cancelAction, selectedRequest,all=false }) {
     data:approveAllData
   } = useApproveAllRequest();
   console.log(selectedRequest,'llllllllllllllllllllllllllllllllllllllll selectedRequest')
+  
+  const getTodayDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   const onSubmit = (data) => {
     console.log({...data,status:'Pending'}, selectedRequest.id);
     if(all){
@@ -74,11 +85,21 @@ export default function ExamModal({ cancelAction, selectedRequest,all=false }) {
           </label>
           <input
             type="datetime-local"
-            {...register("scheduledDate", { required: true })}
+            min={getTodayDateTime()}
+            {...register("scheduledDate", { 
+              required: "This field is required",
+              validate: {
+                notInPast: (value) => {
+                  const selectedDate = new Date(value);
+                  const now = new Date();
+                  return selectedDate >= now || "Scheduled date cannot be in the past";
+                }
+              }
+            })}
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 foutline-none transition-colors"
           />
-          {errors.scheduledDateTime && (
-            <p className="text-sm text-red-500 mt-1">This field is required.</p>
+          {errors.scheduledDate && (
+            <p className="text-sm text-red-500 mt-1">{errors.scheduledDate.message}</p>
           )}
         </div>
 

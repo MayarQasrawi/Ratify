@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Eye, Calendar, Award, X, ExternalLink } from "lucide-react";
+import {
+  Eye,
+  Calendar,
+  Award,
+  X,
+  ExternalLink,
+  GraduationCap,
+} from "lucide-react";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
 import useGetAllCertificate from "@/hooks/applicant/certificate/useGetApplicantCertificate";
@@ -7,13 +14,15 @@ import useGetCertificateInHtml from "@/hooks/applicant/certificate/useGetCertifi
 import Modal from "@/components/shared/modal/Modal";
 import Spinner from "@/components/shared/Spinner";
 import useGetApplicantTrack from "@/hooks/applicant/enroll/useGetApplicantTrack";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import useGetCertificate from "@/hooks/applicant/certificate/useGetCertificate";
+import Back from "@/components/shared/dashboard/Back";
 
 import Header from "@/components/applicant/dashboard/Stages/Header";
 export default function MyCertificate() {
   const { auth } = useAuthContext();
-  console.log(auth,'auth auth mmmmm')
+  const navigate = useNavigate();
+  console.log(auth, "auth auth mmmmm");
   if (auth) {
     var name = Extract(auth, "unique_name");
     var id = Extract(auth, "nameid");
@@ -59,10 +68,81 @@ export default function MyCertificate() {
     window.open(certificateUrl, "_blank");
   };
 
-  console.log(tracks, "tracks tracks tracks",getAllCertificate);
-  if (tracks?.data?.length == 0) return <Navigate to="/unAuthorized" />;
-  if (isCertificateLoading) return <Spinner color="blue" />;
+  console.log(tracks, "tracks tracks tracks", getAllCertificate);
   if (!auth) return <Navigate to="/login" />;
+  if (tracks?.data?.length == 0) return <Navigate to="/unAuthorized" />;
+  if (isCertificateLoading)
+    return (
+      <div className="flex items-center justify-center h-[100vh]">
+        <Spinner color="blue" />
+      </div>
+    );
+  if (getAllCertificate?.data.length == 0)
+    return (
+      <div className="px-4 py-6">
+        <div className="flex items-center space-x-2 text-sm text-gray-600 px-4 py-3 "  >
+          <div className="flex items-center space-x-1" onClick={() => navigate("/applicant")}>
+            <svg
+              className="w-4 h-4 text-blue-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              
+            >
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            <span className="text-blue-500 hover:text-blue-600 cursor-pointer">
+              Dashboard
+            </span>
+          </div>
+
+          <span className="text-gray-400">→</span>
+          <div className="flex items-center space-x-1">
+            <div className="w-4 h-4 rounded-full flex items-center justify-center text-blue-500 cursor-pointer ">
+              <GraduationCap className="w-5 h-5" />
+            </div>
+            <span className="text-blue-500 cursor-pointer">My Certificate</span>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+          <div className="text-center max-w-md">
+            <div className="w-24 h-24 mx-auto mb-6 bg-yellow-100 rounded-full flex items-center justify-center">
+              <svg
+                className="w-12 h-12 text-yellow-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              No Certificate Yet
+            </h2>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              You haven't earned your first certificate yet. Keep going - you're
+              on the right track!
+            </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <p className="text-blue-800 text-sm">
+                💡 Complete first level to earn your first certificate
+              </p>
+            </div>
+
+            <button
+              className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              onClick={() => navigate("/applicant")}
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   return (
     <div className="min-h-screen max-w-6xl mt-4 mx-auto sm:mt-8">
 
@@ -87,7 +167,9 @@ export default function MyCertificate() {
                     <div className="space-y-2 text-xs sm:text-sm text-gray-600">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                        <span className="break-words">Issued: {formatDate(cert.issueDate)}</span>
+                        <span className="break-words">
+                          Issued: {formatDate(cert.issueDate)}
+                        </span>
                       </div>
                       <div className="text-xs text-gray-500">
                         Level Progress: {cert.levelProgressId}
@@ -123,7 +205,9 @@ export default function MyCertificate() {
                     }
                   >
                     <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="whitespace-nowrap">Redirect Certificate</span>
+                    <span className="whitespace-nowrap">
+                      Redirect Certificate
+                    </span>
                   </button>
                 </div>
               </div>
@@ -161,13 +245,15 @@ export default function MyCertificate() {
                 {isHtmlLoading ? (
                   <div className=" flex flex-col items-center justify-center h-32 sm:h-64">
                     <Spinner color="blue" />
-                    <div className="text-sm sm:text-lg mt-2">Loading certificate...</div>
+                    <div className="text-sm sm:text-lg mt-2">
+                      Loading certificate...
+                    </div>
                   </div>
                 ) : certificateHtml ? (
                   <div
                     className="p-2 sm:p-4 overflow-x-auto"
                     dangerouslySetInnerHTML={{ __html: certificateHtml }}
-                    style={{ fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }}
+                    style={{ fontSize: "clamp(0.75rem, 2.5vw, 1rem)" }}
                   />
                 ) : (
                   <div className="flex items-center justify-center h-32 sm:h-64">

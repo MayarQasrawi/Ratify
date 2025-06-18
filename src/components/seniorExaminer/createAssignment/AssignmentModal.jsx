@@ -7,6 +7,16 @@ import Alert from "../../shared/Alert";
 
 export default function AssignmentModal({ examiner, onClose, stages, id }) {
   console.log(stages, id,examiner);
+    const getTodayDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   const {
     register,
     handleSubmit,
@@ -27,6 +37,7 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
     isSuccess,
     data,
   } = useCreateAssignment();
+  
   const formFields = [
     {
       name: "examinerId",
@@ -55,6 +66,7 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
       label: "Due Date",
       type: "datetime-local",
       required: true,
+      min: getTodayDateTime(), // Set minimum date to today
     },
     {
       name: "notes",
@@ -64,6 +76,7 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
       rows: 4,
     },
   ];
+  
   const onFormSubmit = async (data) => {
     console.log(stages[0].type);
     console.log(
@@ -112,8 +125,22 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
           type={field.type}
           {...register(field.name, {
             required: field.required ? `${field.label} is required` : false,
+            ...(field.name === "dueDate" && {
+              validate: (value) => {
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                selectedDate.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                  return "Due date cannot be in the past";
+                }
+                return true;
+              }
+            })
           })}
           placeholder={field.placeholder}
+          min={field.min} 
           className={`w-full p-2 border placeholder:text-sm border-[var(--input-border)] rounded-lg outline-none  focus:border-[var(--input-focus)]  transition duration-300 ease-in-out ${
             errors[field.name] ? "border-red-500" : "border-gray-300"
           }`}
@@ -126,11 +153,14 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
       )}
     </div>
   );
+  
  useEffect(()=>{
   if(isAssignError || isSuccess)
   setTimeout(()=> onClose(),1500)
  },[isAssignError,isSuccess])
+ 
  console.log( data,'assign modal data')
+ 
   return (
     <>
      {isAssignError && <Alert message='Request Failed  Please try again' type='error' /> }
