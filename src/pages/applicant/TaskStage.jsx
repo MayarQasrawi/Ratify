@@ -5,38 +5,9 @@ import { useLocation } from "react-router-dom";
 import GetAppTask from "@/components/applicant/dashboard/Stages/Task/GetAppTask";
 import SubmitURL from "@/components/applicant/dashboard/Stages/Task/SubmitURL";
 import { useState, useEffect } from "react";
+import StatusContainer from "@/components/applicant/dashboard/Stages/Task/StatusContainer";
+import SubmissionView from "@/components/applicant/dashboard/Stages/Task/SubmissionView";
 
-const StatusDisplay = ({ status, color, message }) => (
-  <div className="flex items-center justify-center">
-      <div className="border-2 border-gray-200 rounded-xl p-6 max-w-sm flex flex-col items-center ">
-    <div className="flex items-center justify-around gap-3 mb-1">
-      <span className="text-sm font-bold text-gray-700">Status</span>
-      <span
-        className={`text-sm font-semibold px-8 py-1 rounded-md ${color.bg} ${color.text}`}
-      >
-        {status}
-      </span>
-    </div>
-    <p className="text-xs mt-4 text-gray-500">{message}</p>
-  </div>
-  </div>
-
-);
-
-const ActionButton = ({ text, onClick }) => (
-  <button
-    className="bg-[var(--main-color)] text-white px-14 cursor-pointer hover:bg-[var(--secondary-color)] py-2 rounded-lg"
-    onClick={onClick}
-  >
-    {text}
-  </button>
-);
-
-const StatusContainer = ({ stage, color, message }) => (
-  <Container header="Status">
-    <StatusDisplay status={stage} color={color} message={message} />
-  </Container>
-);
 
 function TaskStage() {
   const { state } = useLocation();
@@ -45,7 +16,8 @@ function TaskStage() {
   const stage = state?.stage?.actionStatus;
   const stageProgressId = stageData?.id || null;
 
-  
+  console.log("Stage Data:", stageData);
+  console.log("Stage Action Status:", stage);
 
   const statusColors = {
     TaskSubmitted: { bg: "bg-purple-100", text: "text-purple-600" },
@@ -140,6 +112,12 @@ function TaskStage() {
 
           {taskContent && (
             <StatusContainer stage={stage} color={color} message={taskContent.message} />
+          )}
+           {["TaskSubmitted", "Reviewed","Failed", "Completed","TaskRejected"].includes(stage) && (
+            <Container
+              header="Your Submission"
+              children={<SubmissionView submissionDate={stageData?.additionalData?.submissionDate} submissionId={stageData?.additionalData?.submissionId} />}
+            />
           )}
         </>
       }

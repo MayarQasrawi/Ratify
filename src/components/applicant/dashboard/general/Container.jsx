@@ -50,7 +50,7 @@ function Container({ children, header, className, descriptions, Open=true }) {
           >
             <div className="pt-2">
               {descriptions && (
-                <p className="font-medium mt-3 ">{descriptions}</p>
+                <p className="font-medium mt-3  ">{descriptions}</p>
               )}
               <div className="py-4 mt-3">
               {children}

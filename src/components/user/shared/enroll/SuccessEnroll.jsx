@@ -1,7 +1,8 @@
 import Lottie from "lottie-react";
 import enrollSuccess from "../../../../assets/img/animation/enrollSuccess";
 import { MdClose } from "react-icons/md";
-export default function SuccessEnroll({setShow}) {
+import { Link } from "react-router-dom";
+export default function SuccessEnroll({setShow,link}) {
   return (
     <div className="max-w-sm w-full bg-white rounded-lg shadow-md p-6 text-center">
       <div className="flex justify-end">
@@ -30,9 +31,9 @@ export default function SuccessEnroll({setShow}) {
       <p className="text-gray-600 mb-6">
         We provide AI assistance to help you prepare for your assessments.
       </p>
-      <button className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-medium py-2 px-6 rounded-md w-full">
+      <Link to={link} className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-medium py-2 px-6 rounded-md w-full">
         Get Started
-      </button>
+      </Link>
     </div>
   );
 }

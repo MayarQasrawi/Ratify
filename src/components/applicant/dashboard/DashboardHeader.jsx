@@ -66,8 +66,8 @@ function DashboardHeader() {
             <button
               onClick={handleNavigateToCertificate}
               className="inline-flex items-center cursor-pointer gap-3 px-4 py-2 
-             border-2 border-[var(--secondary-color)] text-blue-600 
-             hover:bg-blue-500 hover:text-white  hover:border-blue-500
+             border-2 border-[var(--main-color)] text-[var(--main-color)] 
+             hover:bg-[var(--main-color)] hover:text-white  hover:border-[var(--main-color)]
              font-medium rounded-full 
              transition-all duration-200 ease-in-out 
              shadow-sm hover:shadow-md"

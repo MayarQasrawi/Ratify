@@ -67,7 +67,9 @@ const TeamWorkload = lazy(() =>
   import("../pages/seniorExaminer/teams/TeamWorkload")
 );
 const ViewDetails = lazy(() => import("../pages/admin/ViewDetailes"));
-
+const SidebarLayout = lazy(() =>
+  import("../layouts/SidebarLayout")
+);
 const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
@@ -417,6 +419,22 @@ export const routes = createBrowserRouter([
             ),
           },
 
+        ],
+      },
+    ],
+  },
+    {
+            path: "applicant",
+            element: (
+              <Suspense fallback={<LoadingFallback />}>
+                 <AuthProvider>
+              <ScrollRestoration />
+                <SidebarLayout />
+            </AuthProvider>
+              </Suspense>
+            ),
+            children: [
+              
           {
             path: "my-tracks/:name/:enrollmentId",
             element: (
@@ -425,16 +443,34 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
+        
           {
-            path: "interview/:stageId",
+            path: "my-certificate",
             element: (
               <Suspense fallback={<LoadingFallback />}>
-                <InterviewStage />
+                <MyCertificate />
               </Suspense>
             ),
           },
-          {
-            path: "task/:stageProgressId",
+              {
+
+                path: "exam/:stageId",
+                element: (
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ExamStage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "interview/:stageId",
+                element: (
+                  <Suspense fallback={<LoadingFallback />}>
+                    <InterviewStage />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "task/:stageProgressId",
             element: (
               <Suspense fallback={<LoadingFallback />}>
                 <TaskStage />
@@ -449,18 +485,8 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-          {
-            path: "my-certificate",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <MyCertificate />
-              </Suspense>
-            ),
+            ],
           },
-        ],
-      },
-    ],
-  },
 
   {
     path: "*",

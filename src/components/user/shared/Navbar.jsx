@@ -23,7 +23,7 @@ const allNavLinks = [
 ];
 function Navbar() {
   const { auth, logout, setAuth } = useAuthContext();
-  console.log(auth, "kkk");
+  // console.log(auth, "kkk");
   let id = "";
   let name = "";
   if (auth) {
@@ -49,16 +49,16 @@ function Navbar() {
     }
     return true;
   });
-  console.log(id);
-  console.log(name);
+  // console.log(id);
+  // console.log(name);
   const style = location.pathname.includes("track-details") && {
     backgroundColor: "transparent",
     boxShadow: "none",
     position: "static",
   };
-  console.log(style);
+  // console.log(style);
  
-  console.log(id);
+  // console.log(id);
   if (isSuccess) {
     setAuth(null);
     localStorage.removeItem("token");

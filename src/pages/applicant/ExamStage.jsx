@@ -11,6 +11,8 @@ import ExamRequestCard from "../../components/applicant/dashboard/Stages/Exam/Ex
 import useGetStage from "../../hooks/applicant/progress/useGetStage";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
+import { StatusDisplay } from "../../components/applicant/dashboard/Stages/Task/StatusContainer";
+
 // زر الإجراءات
 const ActionButton = ({ text, onClick }) => (
   <button
@@ -19,21 +21,6 @@ const ActionButton = ({ text, onClick }) => (
   >
     {text}
   </button>
-);
-
-// عرض الحالة
-const StatusDisplay = ({ status, color, message }) => (
-  <div className="border-2 border-gray-200 rounded-xl p-4 max-w-sm flex flex-col items-center">
-    <div className="flex items-center justify-around gap-3 mb-1">
-      <span className="text-sm font-medium text-gray-700">Status</span>
-      <span
-        className={`text-sm font-semibold px-8 py-1 rounded-md ${color.bg} ${color.text}`}
-      >
-        {status}
-      </span>
-    </div>
-    <p className="text-xs mt-4 text-gray-500">{message}</p>
-  </div>
 );
 
 function ExamStage() {
@@ -45,18 +32,14 @@ function ExamStage() {
   const { state } = useLocation();
   const [stageData, setStageData] = useState(state?.stage);
 
-  
+  const {
+    data,
+    isLoading: isStageLoading,
+    refetch: refetchStage,
+  } = useGetStage({ stageId: stageData?.id, status: stageData?.actionStatus });
 
-
-  // useEffect({
-
-  // const {
-  //   data,
-  //   isLoading: isStageLoading,
-  //   refetch: refetchStage,
-  // } = useGetStage(stageData?.stageId);
-
-  // },[stage])
+  console.log("ExamStage data:", data);
+  console.log("ExamStage isLoading:", refetchStage);
 
   const statusColors = {
     ReadyToRequest: { bg: "bg-gray-100", text: "text-gray-600" },
@@ -66,9 +49,8 @@ function ExamStage() {
     ExamCompleted: { bg: "bg-blue-100", text: "text-blue-600" },
     FeedbackAvailable: { bg: "bg-yellow-100", text: "text-yellow-600" },
   };
-
-  const color = statusColors[stageData?.actionStatus] || statusColors["ReadyToRequest"];
-
+  const color =
+    statusColors[stageData?.actionStatus] || statusColors["ReadyToRequest"];
   const addToast = (message, type = "success") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -87,37 +69,33 @@ function ExamStage() {
   const id = Extract(auth, "nameid");
 
   const { mutate: requestExam, isLoading } = useExamRequest();
-// فوق الكومبوننت مباشرة
+  // فوق الكومبوننت مباشرة
 
-  
-const confirmExamRequest = () => {
-  setIsLoadingModal(true);
+  const confirmExamRequest = () => {
+    setIsLoadingModal(true);
 
-  const payload = {
-    stageId: stageData?.stageId,
-    applicantId: id,
+    const payload = {
+      stageId: stageData?.stageId,
+      applicantId: id,
+    };
+
+    requestExam(payload, {
+      onSuccess: async (examRequestId) => {
+        addToast("Exam request submitted successfully!", "success");
+        setIsModalOpen(false);
+        const refreshed = await refetchStage();
+        setStageData(refreshed);
+      },
+
+      onError: (error) => {
+        addToast("Failed to submit exam request", "error");
+        console.error(error);
+      },
+      onSettled: () => {
+        setIsLoadingModal(false);
+      },
+    });
   };
-
-  requestExam(payload, {
-    onSuccess: async (examRequestId) => {
-      addToast("Exam request submitted successfully!", "success");
-      setIsModalOpen(false);
-      setStageData((prev) => ({
-        ...prev,
-        actionStatus: "RequestPending",
-        additionalData: { ...prev.additionalData, examRequestId: examRequestId },
-      }));
-    },
-
-    onError: (error) => {
-      addToast("Failed to submit exam request", "error");
-      console.error(error);
-    },
-    onSettled: () => {
-      setIsLoadingModal(false);
-    },
-  });
-}
 
   const getExamRequestContent = (stage) => {
     const baseConfig = {
@@ -209,7 +187,7 @@ const confirmExamRequest = () => {
       <StageLayout
         feedbackId={
           ["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
-           stageData?.actionStatus
+            stageData?.actionStatus
           )
             ? stageData?.additionalData?.FeedbackId
             : null
@@ -217,54 +195,71 @@ const confirmExamRequest = () => {
         header="Exam"
         Children={
           <>
-            {!["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(stageData?.actionStatus) && (
+            {!["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
+              stageData?.actionStatus
+            ) && (
               <Container
                 header={header}
-    descriptions={description}
-    children={
-      <div className="flex flex-col gap-8 mt-4 items-center justify-center">
-        {showButton && (
-          <ActionButton text={buttonText} onClick={handleExamRequest} />
-        )}
-        <StatusDisplay status={stageData?.actionStatus} color={color} message={statusMessage} />
-      </div>
-    }
-  />
-)}
+                descriptions={description}
+                children={
+                  <div className="flex flex-col gap-8 mt-4 items-center justify-center">
+                    {showButton && (
+                      <ActionButton
+                        text={buttonText}
+                        onClick={handleExamRequest}
+                      />
+                    )}
+                    <StatusDisplay
+                      status={stageData?.actionStatus}
+                      color={color}
+                      message={statusMessage}
+                    />
+                  </div>
+                }
+              />
+            )}
 
-{["RequestApproved", "RequestRejected", "RequestPending", "ReadyToRequest"].includes(stageData?.actionStatus) && (
-  <Container
-    header="Exam Details"
-    descriptions="Here you'll find information about the exam format and guidelines."
-    children={<ExamCard stageId={stageData?.stageId} />}
-  />
-)}
+            {[
+              "RequestApproved",
+              "RequestRejected",
+              "RequestPending",
+              "ReadyToRequest",
+            ].includes(stageData?.actionStatus) && (
+              <Container
+                header="Exam Details"
+                descriptions="Here you'll find information about the exam format and guidelines."
+                children={<ExamCard stageId={stageData?.stageId} />}
+              />
+            )}
 
-{["Completed", "Failed", "Reviewed", "FeedbackAvailable"].includes(stageData?.actionStatus) && (
-  <Container
-    header="Exam Status"
-    descriptions="This is the final status of your exam stage."
-    children={
-      <div className="flex justify-center">
-        <StatusDisplay
-          status={stageData?.actionStatus}
-          color={color}
-          message={`This is your final exam status`}
-        />
-      </div>
-    }
-  />
-)}
+            {["Completed", "Failed", "Reviewed", "FeedbackAvailable"].includes(
+              stageData?.actionStatus
+            ) && (
+              <Container
+                header="Exam Status"
+                children={
+                  <div className="flex justify-center">
+                    <StatusDisplay
+                      status={stageData?.actionStatus}
+                      color={color}
+                      message={`This is your final exam status`}
+                    />
+                  </div>
+                }
+              />
+            )}
 
-{["RequestApproved"].includes(stageData?.actionStatus) && (
-  <Container
-    header="Exam Request"
-    descriptions="Here you'll find your exam request details."
-    children={
-      <ExamRequestCard requestId={stageData?.additionalData?.examRequestId} />
-    }
-  />
-)}
+            {["RequestApproved"].includes(stageData?.actionStatus) && (
+              <Container
+                header="Exam Request"
+                descriptions="Here you'll find your exam request details."
+                children={
+                  <ExamRequestCard
+                    requestId={stageData?.additionalData?.examRequestId}
+                  />
+                }
+              />
+            )}
           </>
         }
       />

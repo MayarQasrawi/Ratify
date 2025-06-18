@@ -62,7 +62,7 @@ function StageLayout({header ,feedbackId,Children}) {
    
 
 
-   { mockFeedbackData !== null &&
+   { feedbackId &&
     <Feedback data={mockFeedbackData}  id={feedbackId} />}
 
 

@@ -11,15 +11,14 @@ import useGetLevelProgress from "@/hooks/applicant/progress/useGetLevelProgress"
 import LevelMeta from "./Level/LevelMeta";
 import LevelSidebar from "./Level/LevelSidebar";
 import StageList from "./Stages/StageList";
-import LevelProgress from "./Level/LevelProgress";
 import IconActionButton from "@/components/Button/IconActionButton";
+import TopLoader from "@/components/shared/TopLoader";
 const CandidateAssessment = () => {
   const { enrollmentId, name: trackName } = useParams();
   const [levels, setLevels] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showStages, setShowStages] = useState(false);
-
 
   // ✅ MOCK DATA FOR TESTING (Uncomment to use when the server is down)
   const mockData = [
@@ -78,7 +77,6 @@ const CandidateAssessment = () => {
       const maxOrderLevel = data.data.reduce(
         (max, current) => (current.order > max.order ? current : max),
         data.data[0]
-
       );
       setSelectedLevel(maxOrderLevel);
       console.log("Levels fetched:", data.data);
@@ -92,9 +90,9 @@ const CandidateAssessment = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--main-color)]"></div>
-      </div>
+      
+        <TopLoader />
+      
     );
   }
 
@@ -104,7 +102,9 @@ const CandidateAssessment = () => {
       <div className="mb-3 mt-5 bg-[var(--main-color)] rounded-lg p-6 shadow-lg">
         <div className="flex items-center gap-3">
           <MdRocketLaunch className="text-white text-3xl" />
-          <h1 className="text-2xl font-bold text-white">{trackName.toLocaleUpperCase()}</h1>
+          <h1 className="text-2xl font-bold text-white">
+            {trackName.toLocaleUpperCase()}
+          </h1>
         </div>
         <div className="h-1 w-24 bg-white/30 rounded-full mt-2"></div>
       </div>
@@ -115,11 +115,11 @@ const CandidateAssessment = () => {
             {selectedLevel && (
               <>
                 <section className="p-6 min-h-[400px]">
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-center gap-4 mb-6 border-b-1">
                     {/* <div className="w-14 h-14 rounded-full bg-[var(--main-color)] flex items-center justify-center text-white text-2xl font-bold">
                       {selectedLevel.order}
                     </div> */}
-                    <h1 className="md:text-4xl text-4xl font-normal mb-4 text-[var(--main-color)]">
+                    <h1 className="md:text-3xl text-xl font-normal mb-4 text-[var(--main-color)]  ">
                       {selectedLevel.levelName}
                     </h1>
                   </div>
@@ -150,37 +150,35 @@ const CandidateAssessment = () => {
                     ].filter(Boolean)}
                   />
 
-                  <p className="rounded-xl text-[var(--main-color)] mt-8 text-xl p-5 bg-blue-400/10 flex gap-5 items-center relative overflow-hidden">
-                    <MdLightbulbOutline
-                     
-                      className="text-[var(--main-color)] w-32"
-                    />
-                    <span className="text-[var(--main-color)]">
-                      {selectedLevel.description}
-                    </span>
-                  </p>
+                  <div className="mt-8 relative overflow-hidden bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100/50 shadow-sm">
+                   
 
-                  <div className="mt-6">
-                    <LevelProgress
-                      stagesCount={selectedLevel.stagesCount}
-                      stagesProgressesCount={
-                        selectedLevel.stagesProgressesCount
-                      }
+                    <div className="relative p-6 flex gap-4 items-start">
+                      {/* أيقونة محسنة */}
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[var(--main-color)] to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <MdLightbulbOutline className="text-white w-6 h-6" />
+                      </div>
+
+                      {/* النص */}
+                      <div className="flex-1">
+                        <p className="text-[var(--main-color)] text-lg leading-relaxed font-medium">
+                          {selectedLevel.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                
+
+                  <div className=" mt-10">
+                    <IconActionButton
+                      onClick={() => setShowStages(!showStages)}
+                      Icon={showStages ? MdEventBusy : MdCalendarToday}
+                      label={showStages ? "Hide Stages" : "Show Stages"}
+                      ariaLabel={showStages ? "Hide Stages" : "Show Stages"}
+                      color="blue"
+                      className="mt-6"
                     />
                   </div>
-
-
-                  <div className=" mt-6">
-                      <IconActionButton
-                    onClick={() => setShowStages(!showStages)}
-                    Icon={showStages ? MdEventBusy : MdCalendarToday}
-                    label={showStages ? "Hide Stages" : "Show Stages"}
-                    ariaLabel={showStages ? "Hide Stages" : "Show Stages"}
-                    color="purple"
-                    className="mt-6"
-                  />
-                  </div>
-                 
                 </section>
 
                 {showStages && (

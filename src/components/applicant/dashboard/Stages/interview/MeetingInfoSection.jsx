@@ -7,13 +7,13 @@ export default function MeetingInfoSection({
   animationData,
 }) {
   return (
-    <div className="flex flex-col md:flex-row gap-6 items-center justify-between mt-4">
+    <div className="flex flex-col md:grid md:grid-cols-3 gap-2 items-center justify-between mt-4">
       {/* Information Section */}
-      <div className="space-y-4 md:w-96">
+      <div className="space-y-4 w-96 md:col-span-2 md:w-[80%]">
         {/* Scheduled Date */}
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg ">
-          <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-            <FiCalendar className="w-4 h-4 text-purple-600" />
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+            <FiCalendar className="w-4 h-4 text-[var(--main-color)]" />
           </div>
           <div className="flex-1">
             <p className="text-sm text-gray-600 font-medium">Scheduled Date</p>
@@ -23,10 +23,10 @@ export default function MeetingInfoSection({
 
         {/* Meeting Link */}
         {meetingLink && (
-          <div className="pt-2">
+          <div className="  pt-2  ">
             <a
               href={meetingLink}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3  bg-gradient-to-r from-[var(--main-color)] to-purple-600 hover:bg-gradient-to-r hover:from-purple-600 hover:to-[var(--main-color)] text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3  bg-[var(--main-color)]  hover:bg-[var(--secondary-color)] text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -38,7 +38,7 @@ export default function MeetingInfoSection({
       </div>
 
       {/* Animation Section */}
-      <div className="w-48 h-48 md:w-96 md:h-96">
+      <div className="w-32 h-48 md:w-70 md:h-70 col-span-1 flex items-center justify-center">
         <Lottie animationData={animationData} loop={true} />
       </div>
     </div>

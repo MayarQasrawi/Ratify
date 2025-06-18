@@ -10,6 +10,7 @@ import useGetApplicantTrack from "@/hooks/applicant/enroll/useGetApplicantTrack"
 import { Navigate } from "react-router-dom";
 import useGetCertificate from "@/hooks/applicant/certificate/useGetCertificate";
 
+import Header from "@/components/applicant/dashboard/Stages/Header";
 export default function MyCertificate() {
   const { auth } = useAuthContext();
   console.log(auth,'auth auth mmmmm')
@@ -63,13 +64,11 @@ export default function MyCertificate() {
   if (isCertificateLoading) return <Spinner color="blue" />;
   if (!auth) return <Navigate to="/login" />;
   return (
-    <div className="min-h-screen mt-4 sm:mt-8">
-      <div className="bg-[#E7ECFF] border-b py-3 sm:py-4 px-3 sm:px-6 mb-4 sm:mb-8 rounded-lg w-[95%] sm:w-[90%] mx-auto">
-        <h1 className="text-xl sm:text-2xl font-semibold font-mono text-[var(--main-color)] text-center">
-          My Certificate
-        </h1>
-      </div>
-      <div className="max-w-6xl mx-auto px-3 sm:px-6">
+    <div className="min-h-screen max-w-6xl mt-4 mx-auto sm:mt-8">
+
+         <Header header="My Certificates"  className="mb-10"/>
+      
+      <div className=" mx-auto px-3 sm:px-6">
         <div className="space-y-4">
           {getAllCertificate?.data?.map((cert) => (
             <div

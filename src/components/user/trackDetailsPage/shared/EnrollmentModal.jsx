@@ -9,21 +9,21 @@ import Alert from "../../../shared/Alert";
 import SuccessEnroll from "../../shared/enroll/SuccessEnroll";
 import Modal from "../../../shared/modal/Modal";
 
-export default function EnrollmentModal({ setShow, title, description , trackId=9}) {
+export default function EnrollmentModal({ setShow, title, description , trackId=9, link}) {
   const { isPending, isError, mutate:registerInTrack, isSuccess } =
     useRegisterInTrack();
   const navigate = useNavigate();
   let userId ;
   const { auth } = useAuthContext();
   if (auth) userId = Extract(auth, "nameid");
-  console.log(isError, "inside enroll,",userId );
-  console.log(trackId, "inside enroll lllllllllllllllllmmmmmmmmml");
+  // console.log(isError, "inside enroll,",userId );
+  // console.log(trackId, "inside enroll lllllllllllllllllmmmmmmmmml");
   if(isError){
     setTimeout(()=>setShow(false),1000)
    return  <Alert type='error' message='error'/>
   }
   if(isSuccess){
-    return <SuccessEnroll setShow={setShow} /> 
+    return <SuccessEnroll setShow={setShow} link={link} /> 
   }
   return (
     <>

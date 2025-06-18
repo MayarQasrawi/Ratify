@@ -12,7 +12,7 @@ const submissionSchema = z.object({
   notes: z.string().optional(),
 });
 
-function SubmitURL({ AppTaskId }) {
+function SubmitURL({ AppTaskId, refreshStage }) {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState(null);
   const [toasts, setToasts] = useState([]);
@@ -36,6 +36,7 @@ function SubmitURL({ AppTaskId }) {
 
   const { mutate: postAppTask, isLoading: isSubmitting, isSuccess } = usePostAppTask({
     onSuccess: () => {
+        refreshStage();
       addToast("Task submitted successfully", "success");
       setShowModal(false);
     },

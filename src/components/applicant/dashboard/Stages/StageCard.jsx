@@ -3,7 +3,7 @@ import StageIcon from "./StageIcon";
 import StatusBadge from "./StatusBadge";
 import { useNavigate } from "react-router";
 
-const StageCard = ({ stage, onClick,isLoading=true}) => {
+const StageCard = ({ stage, onClick,isLoading=true ,allStages}) => {
  
   const navigate = useNavigate();
 
@@ -12,14 +12,14 @@ const StageCard = ({ stage, onClick,isLoading=true}) => {
  const handleClick = () => {
   switch (stage.stageType.toLowerCase()) {
     case "interview":
-      navigate(`/applicant/interview/${stage.stageId}`, { state: { stage } });
+      navigate(`/applicant/interview/${stage.stageId}`, { state: { stage , allStages } });
       break;
       
     case "task":
-      navigate(`/applicant/task/${stage.id}`, { state: { stage } });  //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
+      navigate(`/applicant/task/${stage.id}`, { state: { stage , allStages } });  //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
       break;
     case "exam":
-      navigate(`/applicant/exam/${stage.stageId}`, { state: { stage } });
+      navigate(`/applicant/exam/${stage.stageId}`, { state: { stage , allStages } });
       break;
     default:
       console.warn("Unknown stage type:", stage.stageType);
@@ -45,7 +45,7 @@ const StageCard = ({ stage, onClick,isLoading=true}) => {
   
   return (
     <div
-      className={`bg-white p-4  border border-[var(--table-border)] m-2 h-[128px] overflow-hidden transition-all duration-300 ease-in-out
+      className={`bg-white p-4  border-2 border-[var(--table-border)] m-2 h-[128px] overflow-hidden transition-all duration-300 ease-in-out
       hover:shadow-xl hover:scale-102 hover:bg-purple-50 cursor-pointer rounded-lg`}
       onClick={handleClick}
     >
@@ -70,7 +70,7 @@ const StageCard = ({ stage, onClick,isLoading=true}) => {
 
                 }
 
-                 {(stage.actionStatus === "Completed" || stage.actionStatus === "Reviewed" || stage.actionStatus === "Failed")?  (
+                 {(stage.actionStatus === "Completed" || stage.actionStatus === "Reviewed" || stage.actionStatus === "Failed"||stage.actionStatus==="Successful")?  (
                    <div className="flex justify-between items-center text-sm mb-1">
                      <span className="text-gray-600">Score</span>
                      <span className="font-medium">
@@ -82,7 +82,7 @@ const StageCard = ({ stage, onClick,isLoading=true}) => {
 
 
                   <div
-                    className={`h-2 rounded-full bg-purple-500
+                    className={`h-2 rounded-full bg-blue-500
                     }`}
 
                     style={{ width: `${progressPercent}%` }}

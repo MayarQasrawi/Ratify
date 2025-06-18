@@ -80,7 +80,7 @@ function InterviewStage() {
             />
           ),
         };
-        
+
       case "BookingPending":
         return {
           header: "Interview Request",

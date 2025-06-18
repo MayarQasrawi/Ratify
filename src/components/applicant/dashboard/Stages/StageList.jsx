@@ -175,6 +175,7 @@ useEffect(() => {
           stage={stage}
           onClick={onStageClick}
           isLoading={isLoading}
+          allStages={stages}
         />
       ))}
     </div>

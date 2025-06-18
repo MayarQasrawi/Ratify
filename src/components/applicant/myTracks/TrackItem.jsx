@@ -19,7 +19,7 @@ export default function TrackItem({ name, img,trackId,status,enrollmentId }) {
         <div className="bg-[var(--secondary-color)] justify-center xl:justify-around w-full  h-64  px-4 py-6 rounded-4xl flex gap-3.5 items-center">
           <img src={img} className="w-[120px]" alt={name} />
           <h2 className="text-2xl  text-[var(--main-color)] font-bold text-center">
-            {formattedName}
+            {formattedName.toUpperCase()}
           </h2>
         </div>
       </div>

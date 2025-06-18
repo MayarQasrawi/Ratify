@@ -13,7 +13,7 @@ const LevelSidebar = ({ selectedLevel, levels, setSelectedLevel }) => {
 
   return (
     <>
-      <aside className=" flex flex-col gap-6  sticky top-28 h-fit overflow-y-auto">
+      <aside className=" flex flex-col gap-6  sticky top-28 h-fit overflow-y-auto ">
         <div
           className={`   ${boxClass}`}
         >
@@ -31,7 +31,14 @@ const LevelSidebar = ({ selectedLevel, levels, setSelectedLevel }) => {
 
            
 
-           
+           <div className="mt-6  mx-4">
+                    <LevelProgress
+                      stagesCount={selectedLevel.stagesCount}
+                      stagesProgressesCount={
+                        selectedLevel.stagesProgressesCount
+                      }
+                    />
+                  </div>
 
             {levels.map((level) => (
               <IconActionButton
@@ -46,7 +53,7 @@ const LevelSidebar = ({ selectedLevel, levels, setSelectedLevel }) => {
             ))}
           </div>
           
-
+  
 
            <Lottie
             animationData={Level}

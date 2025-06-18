@@ -16,8 +16,10 @@ function TracksCard({ header, description, img, id }) {
     if(auth)
       authId = Extract(auth, "nameid");
       const {data:MyTracks,isLoading}=useGetApplicantTrack(authId)
-  console.log(id, "iside track card ddddddddddddddddddd", auth);
-  console.log(MyTracks?.data?.data?.map(tr=>tr.trackId),'iside card test jjjjjjjjjjjjj ')
+  // console.log(id, "iside track card ddddddddddddddddddd", auth);
+  // console.log(MyTracks?.data?.data?.map(tr=>tr.trackId),'iside card test jjjjjjjjjjjjj ')
+  //   console.log(MyTracks?.data?.data )
+
   return (
     <>
       {show && (
@@ -28,6 +30,7 @@ function TracksCard({ header, description, img, id }) {
               title="Enroll Now &#10148;"
               description="Our unique assessment tracks are not just about learning—they're about discovering the essence of your strengths and matching them against the pulse of today's market demands. Register and log in to experience an evaluation crafted by industry visionaries, and step confidently into a future aligned with professional excellence."
               trackId={id}
+              link={`/applicant/my-tracks/${header}/${id}`}
             />
           ) : (
             <EnrollmentModal
