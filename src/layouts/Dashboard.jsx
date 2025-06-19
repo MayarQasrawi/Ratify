@@ -29,13 +29,12 @@ export default function Dashboard() {
   }
   const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer)
   const { data: examinerAssignment, error } = useGetCreationAssignment(id, role === "Examiner")
-
+ console.log(examinerInfo,'examinerInfo examinerInfo')
   console.log(examinerAssignment, "examinerAssignment ...................")
-  console.log(examinerInfo?.specialization, "test bbb is this field contain info////////// ", examinerInfo)
 
   useEffect(() => {
     if (!isLoading && isExaminer && examinerInfo) {
-      const isInfoMissing = !examinerInfo.data.dateOfBirth
+      const isInfoMissing = !examinerInfo.data.image
       console.log(isInfoMissing, "info miss")
       setShowModal(isInfoMissing)
     }
@@ -86,7 +85,6 @@ function DashboardContent({ role, examinerInfo, examinerAssignment }) {
         <Sidebar ind={examinerAssignment?.data?.length > 0} collapsed={!isSidebarOpen} />
       </div>
 
-      {/* Main Content */}
       <div
         className={`transition-all duration-300 ease-in-out h-full w-full overflow-y-auto ${
           isSidebarOpen ? "ml-16 sm:ml-48 md:ml-64" : "ml-16"

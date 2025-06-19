@@ -339,7 +339,7 @@ export default function Track() {
             <IoMdAddCircleOutline className="mr-1" size={16} /> Add Track
           </button>
         </div>
-        <div className="pl-4 mb-4 mt-2">
+        <div className="pl-4 mb-4 mt-2.5">
           <div className="flex gap-2">
             {["All", "Active", "Inactive"].map((filter) => (
               <button
@@ -383,7 +383,7 @@ export default function Track() {
 
         {viewMode == "table" ? (
           <div>
-            <div className="pl-4 mt-1.5 pt-4 pb-6 min-w-[500px]">
+            <div className=" mt-2  shadow-md min-w-[500px]">
               <Table data={trackFilter} cols={cols} row={renderRow} />
             </div>
           </div>

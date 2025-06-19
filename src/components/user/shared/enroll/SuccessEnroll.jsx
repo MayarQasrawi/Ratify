@@ -30,7 +30,10 @@ export default function SuccessEnroll({setShow,link}) {
           />
         </div>
       </div>
-      <Link  className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-medium py-2 px-6 rounded-md w-full">
+       <p className="text-gray-600 mb-6">
+        We provide AI assistance to help you prepare for your assessments.
+      </p>
+      <Link to={link} className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-medium py-2 px-6 rounded-md w-full">
         Get Started
       </Link>
     </div>

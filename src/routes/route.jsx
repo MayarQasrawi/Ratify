@@ -48,6 +48,12 @@ import AssignedWork from "../pages/examiner/AssignedWork";
 import ExaminerHome from "@/pages/examiner/ExaminerHome";
 import MyCertificate from "@/pages/applicant/MyCertificate";
 import ManageFeadback from "@/pages/examiner/ManageFeadback";
+import MaterialProvider from "@/contexts/MaterialProvider";
+import AI from "@/pages/ai/AI";
+import CourseOutline from "@/pages/ai/CourseOutline";
+import Quiz from "@/pages/ai/Quiz";
+import Material from "@/pages/ai/Material";
+import FlashcardPage from "@/pages/ai/Flashcards";
 const EvaluationWork = lazy(() => import("../pages/examiner/EvaluationWork"));
 const EvaluationRequests = lazy(() =>
   import("../pages/examiner/task/evaluationRequest/EvaluationRequests")
@@ -67,9 +73,7 @@ const TeamWorkload = lazy(() =>
   import("../pages/seniorExaminer/teams/TeamWorkload")
 );
 const ViewDetails = lazy(() => import("../pages/admin/ViewDetailes"));
-const SidebarLayout = lazy(() =>
-  import("../layouts/SidebarLayout")
-);
+const SidebarLayout = lazy(() => import("../layouts/SidebarLayout"));
 const LoadingFallback = () => <div>Loading...</div>;
 
 export const routes = createBrowserRouter([
@@ -382,7 +386,7 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-           {
+          {
             path: "manage-feedback",
             element: (
               <Suspense fallback={null}>
@@ -418,75 +422,79 @@ export const routes = createBrowserRouter([
               </Suspense>
             ),
           },
-
         ],
       },
     ],
   },
-    {
-            path: "applicant",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                 <AuthProvider>
-              <ScrollRestoration />
-                <SidebarLayout />
-            </AuthProvider>
-              </Suspense>
-            ),
-            children: [
-              
-          {
-            path: "my-tracks/:name/:enrollmentId",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <Deriver />
-              </Suspense>
-            ),
-          },
-        
-          {
-            path: "my-certificate",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <MyCertificate />
-              </Suspense>
-            ),
-          },
-              {
+  {
+    path: "applicant",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <AuthProvider>
+          <ScrollRestoration />
+          <MaterialProvider>
+            <SidebarLayout />
+          </MaterialProvider>
+        </AuthProvider>
+      </Suspense>
+    ),
+    children: [
+      {
+        path: "my-tracks/:name/:enrollmentId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Deriver />
+          </Suspense>
+        ),
+      },
 
-                path: "exam/:stageId",
-                element: (
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ExamStage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: "interview/:stageId",
-                element: (
-                  <Suspense fallback={<LoadingFallback />}>
-                    <InterviewStage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: "task/:stageProgressId",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <TaskStage />
-              </Suspense>
-            ),
-          },
-          {
-            path: "exam/:stageId",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <ExamStage />
-              </Suspense>
-            ),
-          },
-            ],
-          },
+      {
+        path: "my-certificate",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <MyCertificate />
+          </Suspense>
+        ),
+      },
+      {
+        path: "exam/:stageId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <ExamStage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interview/:stageId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <InterviewStage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "task/:stageProgressId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <TaskStage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "exam/:stageId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <ExamStage />
+          </Suspense>
+        ),
+      },
+      { path: "ai-assistant", element: <AI /> },
+      { path: "ai-courseOutline", element: <CourseOutline /> },
+      { path: "ai-quiz", element: <Quiz /> },
+      { path: "ai-card", element: <FlashcardPage /> },
+      { path: "ai-material", element: <Material /> },
+    ],
+  },
 
   {
     path: "*",

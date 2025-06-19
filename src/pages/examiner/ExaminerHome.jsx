@@ -298,10 +298,22 @@ export default function ExaminerDashboard() {
     });
   };
 
+  // Function to check if a date has events
+  const hasEventsOnDate = (date) => {
+    const dateStr = formatDate(date);
+    return allEvents.some((event) => {
+      const eventAssignedDate = parseAssignedDate(event.assignedDate);
+      return eventAssignedDate === dateStr;
+    });
+  };
+
   const handleDateSelect = (date) => {
     if (!date) return;
-    setSelectedDate(date);
-    setSelectedEvent(null);
+    // Only allow selection if the date has events
+    if (hasEventsOnDate(date)) {
+      setSelectedDate(date);
+      setSelectedEvent(null);
+    }
   };
 
   const handleEventClick = (event) => {
@@ -323,7 +335,9 @@ export default function ExaminerDashboard() {
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
   );
+
   console.log("allEvents", allEvents);
+
   if (isTaskCreationLoading || isExamCreationLoading || isStatsLoading) {
     return <Spinner />;
   }
@@ -366,7 +380,11 @@ export default function ExaminerDashboard() {
                   mode="single"
                   selected={selectedDate}
                   onSelect={handleDateSelect}
-                  modifiers={{ hasEvents: eventDates }}
+                  disabled={(date) => !hasEventsOnDate(date)}
+                  modifiers={{
+                    hasEvents: eventDates,
+                    disabled: (date) => !hasEventsOnDate(date),
+                  }}
                   modifiersStyles={{
                     hasEvents: {
                       backgroundColor: "#dbeafe",
@@ -375,13 +393,24 @@ export default function ExaminerDashboard() {
                       border: "1px solid #3b82f6",
                       borderRadius: "8px",
                     },
+                    disabled: {
+                      backgroundColor: "#f3f4f6",
+                      color: "#9ca3af",
+                      cursor: "not-allowed",
+                      opacity: "0.5",
+                    },
                   }}
                   modifiersClassNames={{
                     hasEvents:
                       "hover:bg-blue-200 transition-colors cursor-pointer",
+                    disabled: "hover:bg-gray-100 cursor-not-allowed",
                   }}
                   className="w-full"
                 />
+                <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-200 border border-blue-500 rounded"></div>
+                  <span>Dates with events</span>
+                </div>
               </div>
             </div>
             <div className="lg:col-span-2 flex flex-col bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-200/50 dark:border-gray-700 max-h-[420px]">
@@ -433,7 +462,7 @@ export default function ExaminerDashboard() {
                       </p>
                       <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        {event.assignedDate.split("T")[0]}
+                        Due: {event.dueDate.split("T")[0]}
                       </div>
                     </div>
                   ))
@@ -460,7 +489,13 @@ export default function ExaminerDashboard() {
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" /> {selectedEvent.date}
                     </span>
-                    <span className="text-xs bg-blue-100 dark:bg-blue-800/30 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded-full">
+                    <span
+                      className={`text-xs bg-blue-100 dark:bg-blue-800/30 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded-full ${
+                        selectedEvent.status === "Overdue"
+                          ? "text-red-500 bg-red-100 dark:bg-red-800/30 dark:text-red-400"
+                          : "text-blue-600 bg-blue-100 dark:bg-blue-800/30 dark:text-blue-400"
+                      }`}
+                    >
                       Status: {selectedEvent.status}
                     </span>
                   </div>

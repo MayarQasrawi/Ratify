@@ -114,7 +114,7 @@ export default function EvaluationWork() {
       stageProgressId: location.state.stageProgressId,
       examinerId: id,
       taskSubmissionId: location.state.taskSubmissionId || null,
-      interviewBookId: location.state.interviewBookId || null,
+      interviewBookId: location.state.interviewRequestId || null,
       examRequestId: location.state.examRequestId || null,
       comments: data.generalFeedback,
       totalScore: calculateTotalScore(),

@@ -21,7 +21,7 @@ export default function TrackCard({isLoading,tracks,isError}) {
           <img src={`${import.meta.env.VITE_API}${tracks[currentIndex].image}`} className="w-[160px]" />
         </div>
         <div className="flex gap-2.5 absolute left-36 -bottom-5 ">
-          {Array.from({ length: tracks.length }, (_, ind) => (
+          {Array.from({ length: 4 }, (_, ind) => (
             <div
               key={ind}
               className={`w-3 h-3 rounded-full  transition-colors duration-300 ${

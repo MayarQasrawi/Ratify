@@ -8,7 +8,7 @@ export const registerSchema = z
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters" })
-      .refine((value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), {
+      .refine((value) => /[@,-,{,},(,),*,$,!,.,#,/,%,&]/.test(value), {
         message: "Password must include at least one unique character like @",
       })
       .refine((value) => /\d/.test(value), {
@@ -34,7 +34,7 @@ export const signinSchema = z.object({
     .string()
     .min(7, { message: "Password must be at least 7 characters" })
     .refine(
-      (value) => /[@,-,{,},(,),*,$,!,.,#,/,]/.test(value), // Ensure at least one unique character
+      (value) => /[@,-,{,},(,),*,$,!,.,#,/,%]/.test(value), // Ensure at least one unique character
       { message: "Password must include at least one unique character like @" }
     )
     .refine(

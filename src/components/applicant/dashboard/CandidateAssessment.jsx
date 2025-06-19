@@ -6,7 +6,7 @@ import {
   MdEventBusy,
   MdLightbulbOutline,
 } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useGetLevelProgress from "@/hooks/applicant/progress/useGetLevelProgress";
 import LevelMeta from "./Level/LevelMeta";
 import LevelSidebar from "./Level/LevelSidebar";
@@ -19,7 +19,8 @@ const CandidateAssessment = () => {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showStages, setShowStages] = useState(false);
-
+const location=useLocation()
+console.log(location,'location')
   // ✅ MOCK DATA FOR TESTING (Uncomment to use when the server is down)
   const mockData = [
     {

@@ -7,6 +7,7 @@ import SubmitURL from "@/components/applicant/dashboard/Stages/Task/SubmitURL";
 import { useState, useEffect } from "react";
 import StatusContainer from "@/components/applicant/dashboard/Stages/Task/StatusContainer";
 import SubmissionView from "@/components/applicant/dashboard/Stages/Task/SubmissionView";
+import AIAssistantButton from "@/components/ai/AIAssistantButton";
 
 
 function TaskStage() {
@@ -79,6 +80,8 @@ function TaskStage() {
   }, []);
 
   return (
+    <>
+    <AIAssistantButton />
     <StageLayout
       header="Task Stage"
      
@@ -122,6 +125,7 @@ function TaskStage() {
         </>
       }
     />
+    </>
   );
 }
 

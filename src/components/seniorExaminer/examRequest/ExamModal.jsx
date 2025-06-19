@@ -45,13 +45,21 @@ export default function ExamModal({ cancelAction, selectedRequest,all=false }) {
   };
 
   const onSubmit = (data) => {
-    console.log({...data,status:'Pending'}, selectedRequest.id);
+    const localDate = new Date(data.scheduledDate);
+    const utcDate = localDate.toISOString();
+    
+    const dataWithUtcDate = {
+      ...data,
+      scheduledDate: utcDate
+    };
+
+    console.log({...dataWithUtcDate,status:'Pending'}, selectedRequest.id);
     if(all){
-      console.log({...data,requestIds:selectedRequest},'all')
-      approveAllRequest({...data,status:'Approved',requestIds:selectedRequest})
+      console.log({...dataWithUtcDate,requestIds:selectedRequest},'all')
+      approveAllRequest({...dataWithUtcDate,status:'Approved',requestIds:selectedRequest})
     }
     else{
-       approveRequest({ ...data,status:'Pending', id: selectedRequest.id });
+       approveRequest({ ...dataWithUtcDate,status:'Pending', id: selectedRequest.id });
     }
   };
   console.log(approveAllData,'approveAllData')

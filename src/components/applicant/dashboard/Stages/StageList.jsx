@@ -167,9 +167,7 @@ useEffect(() => {
 
   return (
     <div className="divide-y-2 divide-[var(--table-border)]">
-      {stages.map((stage) => (
-
-          
+      {stages.map((stage) => (   
         <StageCard
           key={stage.id}
           stage={stage}

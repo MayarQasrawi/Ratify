@@ -26,7 +26,7 @@ export default function TrackItem({ name, img,trackId,status,enrollmentId }) {
       <div className="mt-4 flex flex-wrap gap-3 items-center justify-between mb-3">
         <ProgressBar enrollmentId={enrollmentId} trackId={trackId}/>
         <Link 
-        state={{ name: name, status: status }}
+        state={{ name: name, status: status, trackId:trackId }}
          to={`/applicant/my-tracks/${name}/${enrollmentId}`}
         className="bg-[var(--main-color)] flex  hover:bg-[#2A5C8A] transition items-center gap-2 px-6 rounded-md text-[18px]  font-bold  py-1 text-white cursor-pointer">
          

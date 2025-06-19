@@ -7,19 +7,19 @@ import Modal from "../../shared/modal/Modal";
 import EnrollmentModal from "../trackDetailsPage/shared/EnrollmentModal";
 import Extract from "../../../utils/Extract";
 import useGetApplicantTrack from "../../../hooks/applicant/enroll/useGetApplicantTrack";
-function TracksCard({ header, description, img, id }) {
+function TracksCard({ header, description, img, id, enrollId }) {
   const navigate = useNavigate();
-  console.log(import.meta.env.VITE_API,'import.meta.env.VITE_API')
+  console.log(import.meta.env.VITE_API, 'import.meta.env.VITE_API')
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
-  let authId=null;
-    if(auth)
-      authId = Extract(auth, "nameid");
-      const {data:MyTracks,isLoading}=useGetApplicantTrack(authId)
+  let authId = null;
+  if (auth)
+    authId = Extract(auth, "nameid");
+  const { data: MyTracks, isLoading } = useGetApplicantTrack(authId)
   // console.log(id, "iside track card ddddddddddddddddddd", auth);
   // console.log(MyTracks?.data?.data?.map(tr=>tr.trackId),'iside card test jjjjjjjjjjjjj ')
   //   console.log(MyTracks?.data?.data )
-
+console.log( enrollId,' enrollId  enrollId  enrollId')
   return (
     <>
       {show && (
@@ -30,7 +30,7 @@ function TracksCard({ header, description, img, id }) {
               title="Enroll Now &#10148;"
               description="Our unique assessment tracks are not just about learning—they're about discovering the essence of your strengths and matching them against the pulse of today's market demands. Register and log in to experience an evaluation crafted by industry visionaries, and step confidently into a future aligned with professional excellence."
               trackId={id}
-              link={`/applicant/my-tracks/${header}/${id}`}
+              link={`/applicant/my-tracks/${header}/${enrollId[0]?.id}`}
             />
           ) : (
             <EnrollmentModal
@@ -61,13 +61,14 @@ function TracksCard({ header, description, img, id }) {
               Details <BiShowAlt className="inline text-xl" />
             </button>
             <div className="mt-3.5">
-            {auth && MyTracks.data.data.length >0 && MyTracks?.data?.data?.map(tr=>tr.trackId).includes(id)?<button className="inline-block cursor-pointer bg-blue-500 text-white text-sm  font-medium px-6 py-2 rounded-2xl">Go To Track</button>:<Button
+              {auth && MyTracks.data.data.length > 0 && MyTracks?.data?.data?.map(tr => tr.trackId).includes(id) ?
+               <button onClick={() => {navigate(`/applicant/my-tracks/${header}/${enrollId[0]?.id}`) ;}} className="inline-block cursor-pointer bg-blue-500 text-white text-sm  hover:bg-[#2A5C8A] transition-colors font-medium px-6 py-2 rounded-2xl">Go To Track</button> : <Button
                 px="28"
                 py="6"
                 showModal={() => {
                   setShow(true);
                 }}
-              />}    
+              />}
             </div>
           </div>
         </div>

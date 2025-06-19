@@ -149,7 +149,7 @@ export default function ManageFeedback() {
               <div className="flex justify-between items-start mb-3">
                 <span className="font-medium text-gray-800 dark:text-gray-200 flex items-center">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                  {detail.criterionName || `Criterion ${index + 1}`}
+                  {detail.criterionName || `Criteria ${index + 1}`}
                 </span>
                 <span
                   className={`px-3 py-1 rounded-full text-sm font-semibold border ${getScoreStyle(
@@ -191,7 +191,7 @@ export default function ManageFeedback() {
         });
       }
     };
-
+console.log(feedback,'feedback feedback')
     return (
       <React.Fragment key={fb.id}>
         <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50  cursor-pointer transition-all duration-200">

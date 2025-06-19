@@ -10,6 +10,7 @@ import animationData from "@/assets/img/animation/Appointment.json"; // Adjust t
 import StatusBadge from "@/components/applicant/dashboard/Stages/interview/StatusBadge ";
 import useGetStage from "@/hooks/applicant/progress/useGetStage";
 import MeetingInfoSection from "@/components/applicant/dashboard/Stages/interview/MeetingInfoSection";
+import AIAssistantButton from "@/components/ai/AIAssistantButton";
 function InterviewStage() {
   const { state } = useLocation();
   console.log("State from location:", state);
@@ -200,6 +201,8 @@ function InterviewStage() {
   );
 
   return (
+    <>
+    <AIAssistantButton />
     <div>
       <StageLayout
         feedbackId={
@@ -230,6 +233,7 @@ function InterviewStage() {
         }
       />
     </div>
+    </>
   );
 }
 

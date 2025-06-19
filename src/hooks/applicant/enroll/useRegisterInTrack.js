@@ -23,7 +23,7 @@ export default function useRegisterInTrack() {
       queryClient.invalidateQueries(["applicantTracks", id]);
     },
     onError: (err) => {
-      console.log("error in register"), err;
+      console.log("error in register",err.response);
     },
   });
 }

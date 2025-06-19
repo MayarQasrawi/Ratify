@@ -12,6 +12,7 @@ import useGetStage from "../../hooks/applicant/progress/useGetStage";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
 import { StatusDisplay } from "../../components/applicant/dashboard/Stages/Task/StatusContainer";
+import AIAssistantButton from '../../components/ai/AIAssistantButton'
 
 // زر الإجراءات
 const ActionButton = ({ text, onClick }) => (
@@ -183,6 +184,7 @@ function ExamStage() {
   // }
 
   return (
+    <><AIAssistantButton />
     <div>
       <StageLayout
         feedbackId={
@@ -279,6 +281,7 @@ function ExamStage() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 

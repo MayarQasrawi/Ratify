@@ -34,16 +34,20 @@ export default function AddEmployee({ setIsOpen }) {
   }, [isSuccess, isError]);
   const generatePassword = () => {
     let generatedPassword = "";
-    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    const alphabetSmall = "abcdefghijklmnopqrstuvwxyz";
+       const alphabetCap = "ABC";
     const numbers = "0123456789";
     const specialChars = "!@#$%^&*";
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       generatedPassword += numbers.charAt(
         Math.floor(Math.random() * numbers.length)
       );
     }
-    generatedPassword += alphabet.charAt(
-      Math.floor(Math.random() * alphabet.length)
+    generatedPassword += alphabetSmall.charAt(
+      Math.floor(Math.random() * alphabetSmall.length)
+    );
+      generatedPassword += alphabetCap.charAt(
+      Math.floor(Math.random() * alphabetCap.length)
     );
     for (let i = 0; i < 2; i++) {
       generatedPassword += specialChars.charAt(

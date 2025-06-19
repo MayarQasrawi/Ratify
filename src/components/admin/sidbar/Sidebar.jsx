@@ -23,6 +23,7 @@ export default function Sidebar({ ind, collapsed }) {
               end
               key={index}
               to={`/dashboard/${path}/${menueItem.link}`}
+              title={menueItem.title}
               className={({ isActive }) =>
                 isActive
                   ? "relative w-full text-[var(--main-color)] rounded-xl bg-[var(--sidebar-icon-bg)]"
@@ -41,6 +42,7 @@ export default function Sidebar({ ind, collapsed }) {
                     </div>
 
                     <span
+                    title={menueItem.title}
                       className={`text-sm hidden lg:block transition-all duration-300 ease-in-out ${
                         collapsed
                           ? "opacity-0 transform translate-x-2 pointer-events-none"

@@ -72,7 +72,7 @@ function TopMenue() {
           <div className="relative">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg cursor-pointer text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+              className="p-2  rounded-lg cursor-pointer text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
               aria-label="Settings"
             >
               <MdOutlineSettings className="text-xl" />
@@ -96,7 +96,7 @@ function TopMenue() {
                             setIsOpen(false)
                             setSelectedModel("UpdateInfo")
                           }}
-                          className="flex w-full items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
+                          className="flex cursor-pointer w-full items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
                         >
                           <MdEdit className="w-4 h-4" />
                           <span>Update Info</span>
@@ -106,7 +106,7 @@ function TopMenue() {
                             setIsOpen(false)
                             setSelectedModel("UpdateImage")
                           }}
-                          className="flex w-full items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
+                          className="flex w-full cursor-pointer items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
                         >
                           <MdPhotoCamera className="w-4 h-4" />
                           <span>Update Image</span>
@@ -120,7 +120,7 @@ function TopMenue() {
                             setIsOpen(false)
                             setSelectedModel("Email")
                           }}
-                          className="flex w-full items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
+                          className="flex w-full cursor-pointer items-center px-4 py-2 gap-3 text-[var(--text-color)] hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[var(--main-color)] transition-colors"
                         >
                           <MdEmail className="w-4 h-4" />
                           <span>Change Email</span>

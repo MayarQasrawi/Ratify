@@ -15,7 +15,18 @@
     background-color: #374151; 
   }
 }
-
+.language-js {
+  background-color: #1e1e1e;   
+  color: #d4d4d4;            
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: block;             
+  overflow-x: auto;          
+}
+.language-js .token.comment,
+.language-js .token.punctuation { 
+  opacity: 0.6;
+}
  
 :root {
   --main-color: #3b82f6; /* Light mode main color */

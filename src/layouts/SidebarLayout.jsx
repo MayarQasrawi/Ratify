@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router";
-import { HiArrowLeft, HiHome, HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import {
+  HiArrowLeft,
+  HiHome,
+  HiChevronLeft,
+  HiChevronRight,
+} from "react-icons/hi";
 import StageIcon from "@/components/applicant/dashboard/Stages/StageIcon";
 
 const IconButton = ({ icon: Icon, title, onClick, className = "" }) => (
@@ -19,9 +24,15 @@ const SidebarLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentStage = location.state?.stage;
-
   const [isCollapsed, setIsCollapsed] = useState(true);
-
+  console.log(location, "location.path");
+  if (
+    location.pathname == "/applicant/ai-courseOutline" ||
+    location.pathname == "/applicant/ai-quiz" ||
+    location.pathname == "/applicant/ai-card" ||
+    location.pathname == "/applicant/ai-material"
+  )
+    return <Outlet />;
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
@@ -33,13 +44,29 @@ const SidebarLayout = () => {
         <div className="flex items-center justify-between p-4 ">
           {isCollapsed ? (
             <div className="flex flex-col items-center gap-2 w-full">
-              <IconButton icon={HiArrowLeft} title="Back" onClick={() => navigate(-1)} />
-              <IconButton icon={HiHome} title="Home" onClick={() => navigate("/applicant")} />
+              <IconButton
+                icon={HiArrowLeft}
+                title="Back"
+                onClick={() => navigate(-1)}
+              />
+              <IconButton
+                icon={HiHome}
+                title="Home"
+                onClick={() => navigate("/applicant")}
+              />
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <IconButton icon={HiArrowLeft} title="Back" onClick={() => navigate(-1)} />
-              <IconButton icon={HiHome} title="Home" onClick={() => navigate("/applicant")} />
+              <IconButton
+                icon={HiArrowLeft}
+                title="Back"
+                onClick={() => navigate(-1)}
+              />
+              <IconButton
+                icon={HiHome}
+                title="Home"
+                onClick={() => navigate("/applicant")}
+              />
             </div>
           )}
           {/* Collapse/Expand Button */}
@@ -86,7 +113,11 @@ const SidebarLayout = () => {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-w-0 ${isCollapsed ? "ml-16" : "ml-64"}`}>
+      <div
+        className={`flex-1 flex flex-col min-w-0 ${
+          isCollapsed ? "ml-16" : "ml-64"
+        }`}
+      >
         <main className="flex-1 p-6 overflow-auto">
           <Outlet />
         </main>
