@@ -73,8 +73,8 @@ export default function LearningJourneyMap({ plan }) {
                     {index + 1}
                   </div>
                   <div className="text-center">
-                    <div className="font-bold">{level.name}</div>
-                    <div className="text-xs mt-1">
+                    <div className="font-bold text-sm">{level.name}</div>
+                    <div className="text-[10px] mt-1">
                       {level.stages.length} stages
                     </div>
                   </div>

@@ -42,7 +42,7 @@ export default function TrackInput({ field }) {
       <div className="mt-2.5">
         {update && <p className="">{value}</p>}
         {empty && !update && (
-          <p className="text-gray-600 inline-block text-[10px] sm:text-[12px]">
+          <p className="text-gray-600 inline-block text-[9px] sm:text-[12px]">
             No {field.title}
           </p>
         )}
@@ -51,13 +51,13 @@ export default function TrackInput({ field }) {
             {field.textArea ? (
               <textarea
                 value={value}
-                className="pl-2 py-1 w-[90%] outline-none bg-white rounded-md min-h-[200px]"
+                className="pl-2 py-1 w-[90%] outline-none bg-white rounded-md min-h-[200px] text-sm"
                 onChange={(e) => setValue(e.target.value)}
               ></textarea>
             ) : (
               <input
                 value={value}
-                className="py-1 pl-2 w-[90%] outline-none bg-white rounded-md border border-gray-300"
+                className="py-1 pl-2 w-[90%] text-sm outline-none bg-white rounded-md border border-gray-300"
                 onChange={(e) => setValue(e.target.value)}
               />
             )}

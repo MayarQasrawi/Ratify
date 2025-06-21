@@ -1,5 +1,4 @@
 "use client"
-
 import { Outlet, useLocation } from "react-router-dom"
 import Sidebar from "../components/admin/sidbar/Sidebar"
 import TopMenue from "../components/admin/TopMenue"
@@ -40,7 +39,7 @@ export default function Dashboard() {
     }
   }, [examinerInfo, isLoading, isExaminer])
 
-  if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />
+  // if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />
 
   if (
     currentLocation.pathname === "/dashboard/Admin/tracks/setup" ||

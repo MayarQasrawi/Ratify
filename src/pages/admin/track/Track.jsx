@@ -13,11 +13,18 @@ import Error from "../../../components/admin/shared/Error";
 import useDeleteTrack from "../../../hooks/Admin/tracks/useDeleteTrack";
 import Card from "../../../components/admin/track/Card";
 import Title from "../../../components/admin/shared/Title";
-import { IoMdAddCircleOutline } from "react-icons/io";
+import {
+  IoMdAddCircleOutline,
+  IoMdStats,
+  IoMdCheckmarkCircle,
+  IoMdCloseCircle,
+} from "react-icons/io";
+import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import NoResultFound from "../../../components/shared/NoResultFound";
 import useActivateTrack from "../../../hooks/Admin/tracks/useActivateTrack";
 import AssignMangerModal from "../../../components/admin/track/AssignMangerModal";
 import useDeleteManager from "../../../hooks/Admin/tracks/useDeleteManager";
+import StatCard from "@/components/admin/track/StatisticalCard";
 
 const cols = ["Track", "Status", " "];
 
@@ -35,8 +42,6 @@ export default function Track() {
     isLoading: isTrackArrive,
     isError: isTrackError,
   } = useGetAllTraks();
-
-  console.log(trackd?.data, "from api endhbbjjjjjjj");
 
   const {
     mutate: deleteTrack,
@@ -86,14 +91,16 @@ export default function Track() {
     });
   }
 
+  const totalTracks = trackd?.data?.length || 0;
+  const activeTracks =
+    trackd?.data?.filter((track) => track.isActive)?.length || 0;
+  const inactiveTracks = totalTracks - activeTracks;
+
   const handleEdit = (track) => {
-    console.log("Edit action clicked");
-    console.log(track);
     navigate("/dashboard/Admin/tracks/setup", { state: { track } });
   };
 
   const handleViewDetails = (track) => {
-    console.log("View Details action clicked");
     navigate("/dashboard/admin/track-details", { state: { track } });
   };
 
@@ -103,14 +110,11 @@ export default function Track() {
   };
 
   const handleToggle = (track) => {
-    console.log(track);
     setSelected("toggle");
     setTrack(track);
   };
 
   const handleAssignManger = (track, isMangerAssign) => {
-    console.log("assign manger ///////////////////////////////", track.id);
-    console.log(isMangerAssign);
     if (isMangerAssign) {
       setSelected("assign-manger");
     } else {
@@ -126,49 +130,96 @@ export default function Track() {
 
   if (isTrackArrive) {
     return (
-      <>
-        <div className="mt-8 pl-4 mb-6">
-          <Title>Our Tracks</Title>
-        </div>
-        <div className="h-[50vh] flex items-center w-full ">
-          <div className="flex-1">
-            <Loading text={"Fetching Tracks..."} />
+      <div className="min-h-screen w-full  ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Title>Our Tracks</Title>
+          </div>
+          <div>
+            <div className="mt-5 w-full">
+              <Loading text={"Fetching Tracks..."} />
+            </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   if (isTrackError) {
     return (
-      <>
-        <div className="mt-8 pl-4 mb-6">
-          <Title>Our Tracks</Title>
+      <div className="min-h-screen ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Title>Our Tracks</Title>
+          </div>
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Error />
+          </div>
         </div>
-        <div className="h-[50vh]  flex items-center justify-center ">
-          <Error />
-        </div>
-      </>
+      </div>
     );
   }
 
   if (trackFilter?.length == 0 && isTrackArrive == false) {
     return (
-      <>
-        <div className="mt-8 pl-4 mb-6">
-          <Title>Our Tracks</Title>
+      <div className="min-h-screen ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Title>Our Tracks</Title>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StatCard
+              title="Total Tracks"
+              count={totalTracks}
+              icon={IoMdStats}
+              color="text-blue-600 dark:text-blue-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+            <StatCard
+              title="Active Tracks"
+              count={activeTracks}
+              icon={IoMdCheckmarkCircle}
+              color="text-green-600 dark:text-green-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+            <StatCard
+              title="Inactive Tracks"
+              count={inactiveTracks}
+              icon={IoMdCloseCircle}
+              color="text-red-600 dark:text-red-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+          </div>
+            <div className="flex flex-wrap gap-2 mt-4 mb-3">
+                {["All", "Active", "Inactive"].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setStatusFilter(filter)}
+                    className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-lg transition-colors ${
+                      statusFilter === filter
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+                </div>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
+              <div className="flex-1 max-w-md">
+                <Search search={search} setSearch={setSearch} />
+              </div>
+            </div>
+            <NoResultFound text="track" />
+          </div>
         </div>
-        <div className="w-[90%] md:w-[36%] lg:w-[44%] md:min-w-70 md:max-w-[340px]">
-          <Search search={search} setSearch={setSearch} />
-        </div>
-        <NoResultFound text="track" />
-      </>
+      </div>
     );
   }
 
   const renderRow = (track) => {
     const isMangerAssign = track.seniorExaminerID;
-    console.log(isMangerAssign, "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
     const hasSenior = Boolean(track.seniorExaminerID);
 
     const actions = [
@@ -208,49 +259,47 @@ export default function Track() {
     ];
 
     return (
-      <tr className="border border-[var(--table-border)] text-sm text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600">
-        <td className="p-3 text-[var(--text-color)] text-center ">
-          <div className="flex justify-center">
-            <div className="flex flex-col items-center gap-2 max-w-[200px]">
+      <tr className="border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+        <td className="p-4 ">
+          <div className="flex items-center justify-center  space-x-4">
+            <div >
               <img
-                className="w-15 h-15 object-cover rounded-md"
+                className="w-12 h-12 object-cover rounded-lg shadow-sm"
                 src={`${import.meta.env.VITE_API}${track.image}`}
                 alt={track.name}
               />
-              <h2 className="font-semibold">{track.name}</h2>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                {track.name}
+              </h3>
             </div>
           </div>
         </td>
-        <td className="py-3 px-1 lg:px-3  text-center">
-          <div className=" flex justify-center ">
-            <div
-              className={`flex items-center  justify-center w-fit gap-1 p-1 md:px-3 font-medium py-1 text-xs rounded-full ${
-                track.isActive
-                  ? "sm:bg-green-100 dark:sm:bg-green-200 text-green-800"
-                  : "sm:bg-red-100 dark:sm:bg-red-200 text-red-800"
+        <td className="p-4 text-center ">
+          <span
+            className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium ${
+              track.isActive
+                ? "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100"
+                : "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full mr-2 ${
+                track.isActive ? "bg-green-500" : "bg-red-500"
               }`}
-            >
-              {track.isActive === true ? (
-                <span className="block w-1.5 h-1.5 rounded-full bg-green-600"></span>
-              ) : (
-                <span className="block w-1.5 h-1.5 rounded-full bg-red-600"></span>
-              )}
-              <span className="">
-                {" "}
-                {track.isActive ? "Active" : "Inactive"}
-              </span>
-            </div>
-          </div>
+            ></span>
+            {track.isActive ? "Active" : "Inactive"}
+          </span>
         </td>
-        <td className="p-3">
-          <Action actions={actions} />
+        <td className="p-4 text-center ">
+          <div className="flex justify-center">
+            <Action actions={actions} />
+          </div>
         </td>
       </tr>
     );
   };
-
-  console.log(`selected track ${track}`, track, selected, "llllllllllllllll");
-  console.log(toggleTrackData, "toggleTrackData responce ");
 
   return (
     <>
@@ -324,77 +373,109 @@ export default function Track() {
           </ConfirmationModal>
         </Modal>
       )}
-      <section className="pr-3">
-        <div className="mt-4 pl-4 mb-6">
-          <Title>Our Tracks</Title>
-        </div>
-        <div className="pl-4 mt-3 gap-y-3 justify-start flex flex-col md:flex-row md:justify-between md:items-center">
-          <div className="w-[90%] md:w-[36%] lg:w-[44%] md:min-w-70 md:max-w-[340px]">
-            <Search search={search} setSearch={setSearch} />
-          </div>
-          <button
-            onClick={() => navigate("/dashboard/Admin/tracks/setup")}
-            className="cursor-pointer flex items-center px-3.5 py-2 text-sm hover:text-[var(--main-color)] transition"
-          >
-            <IoMdAddCircleOutline className="mr-1" size={16} /> Add Track
-          </button>
-        </div>
-        <div className="pl-4 mb-4 mt-2.5">
-          <div className="flex gap-2">
-            {["All", "Active", "Inactive"].map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setStatusFilter(filter)}
-                className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-full transition-colors ${
-                  statusFilter === filter
-                    ? "bg-blue-100 text-blue-800 dark:bg-blue-200"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="pl-4 mt-2.5 text-sm">
-          <div className="flex gap-6">
-            <button
-              onClick={() => setViewMode("table")}
-              className={`cursor-pointer pb-2 ${
-                viewMode === "table"
-                  ? "border-b-2 border-blue-600 text-gray-900 dark:text-white font-medium"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              Table
-            </button>
-            <button
-              onClick={() => setViewMode("card")}
-              className={`cursor-pointer pb-2 ${
-                viewMode === "card"
-                  ? "border-b-2 border-blue-600 text-gray-900 dark:text-white font-medium"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              Cards
-            </button>
-          </div>
-        </div>
 
-        {viewMode == "table" ? (
-          <div>
-            <div className=" mt-2  shadow-md min-w-[500px]">
-              <Table data={trackFilter} cols={cols} row={renderRow} />
+      <div className="min-h-screen ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Title>Our Tracks</Title>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StatCard
+              title="Total Tracks"
+              count={totalTracks}
+              icon={IoMdStats}
+              color="text-blue-600 dark:text-blue-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+            <StatCard
+              title="Active Tracks"
+              count={activeTracks}
+              icon={IoMdCheckmarkCircle}
+              color="text-green-600 dark:text-green-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+            <StatCard
+              title="Inactive Tracks"
+              count={inactiveTracks}
+              icon={IoMdCloseCircle}
+              color="text-red-600 dark:text-red-400"
+              bgColor="bg-white dark:bg-gray-800"
+            />
+          </div>
+
+          <div className="rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                <div className="flex-1 max-w-md">
+                  <Search search={search} setSearch={setSearch} />
+                </div>
+                <button
+                  onClick={() => navigate("/dashboard/Admin/tracks/setup")}
+                  className="inline-flex items-center px-4 py-2 dark:text-white  text-black cursor-pointer hover:text-blue-500 text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  <IoMdAddCircleOutline className="w-5 h-5 mr-2" />
+                  Add Track
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                {["All", "Active", "Inactive"].map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setStatusFilter(filter)}
+                    className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-lg transition-colors ${
+                      statusFilter === filter
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex  items-center gap-1 mt-4 p-1 bg-gray-100 dark:bg-gray-700 rounded-lg w-fit">
+                <button
+                  onClick={() => setViewMode("table")}
+                  className={`flex items-center cursor-pointer px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    viewMode === "table"
+                      ? "bg-white text-gray-900 shadow-sm dark:bg-gray-600 dark:text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+                  }`}
+                >
+                  <HiOutlineViewList className="w-4 h-4 mr-2" />
+                  Table
+                </button>
+                <button
+                  onClick={() => setViewMode("card")}
+                  className={`flex items-center cursor-pointer px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    viewMode === "card"
+                      ? "bg-white text-gray-900 shadow-sm dark:bg-gray-600 dark:text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+                  }`}
+                >
+                  <HiOutlineViewGrid className="w-4 h-4 mr-2" />
+                  Cards
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {viewMode === "table" ? (
+                <div className="shadow-md">
+                  <Table data={trackFilter} cols={cols} row={renderRow} />
+                </div>
+              ) : (
+                <Card
+                  data={trackFilter}
+                  setSelected={setSelected}
+                  setTrack={setTrack}
+                />
+              )}
             </div>
           </div>
-        ) : (
-          <Card
-            data={trackFilter}
-            setSelected={setSelected}
-            setTrack={setTrack}
-          />
-        )}
-      </section>
+        </div>
+      </div>
     </>
   );
 }
