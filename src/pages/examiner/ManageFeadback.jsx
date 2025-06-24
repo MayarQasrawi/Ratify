@@ -11,6 +11,9 @@ import {
   BarChart3,
   Star,
   Eye,
+  MessageSquare,
+  Users,
+  ClipboardList,
 } from "lucide-react";
 import Title from "@/components/admin/shared/Title";
 import Table from "@/components/admin/shared/Table";
@@ -24,12 +27,23 @@ export default function ManageFeedback() {
   const [expandedRows, setExpandedRows] = useState(new Set());
   const [modalContent, setModalContent] = useState();
   const { data: feedback, isLoading, isError } = useGetExaminerFeedback();
+  
   const statistics = useMemo(() => {
     const data = feedback?.data;
-    const totalFeedback = feedback && data.length;
+    if (!data || data.length === 0) {
+      return {
+        totalFeedback: 0,
+        averageScore: 0,
+        typeStats: {},
+        scoreRanges: { excellent: 0, good: 0, satisfactory: 0, needsImprovement: 0 },
+        recentFeedback: 0,
+      };
+    }
+
+    const totalFeedback = data.length;
     const averageScore =
-      data?.reduce((sum, fb) => sum + fb.totalScore, 0) / totalFeedback;
-    const typeStats = data?.reduce((acc, fb) => {
+      data.reduce((sum, fb) => sum + fb.totalScore, 0) / totalFeedback;
+    const typeStats = data.reduce((acc, fb) => {
       let type = "General";
       if (fb.examInfo) type = "Exam";
       else if (fb.taskSubmissionInfo) type = "Task";
@@ -38,7 +52,7 @@ export default function ManageFeedback() {
       return acc;
     }, {});
 
-    const scoreRanges = data?.reduce(
+    const scoreRanges = data.reduce(
       (acc, fb) => {
         if (fb.totalScore >= 90) acc.excellent++;
         else if (fb.totalScore >= 80) acc.good++;
@@ -49,7 +63,7 @@ export default function ManageFeedback() {
       { excellent: 0, good: 0, satisfactory: 0, needsImprovement: 0 }
     );
 
-    const recentFeedback = data?.filter((fb) => {
+    const recentFeedback = data.filter((fb) => {
       const feedbackDate = new Date(fb.feedbackDate);
       const weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
@@ -191,7 +205,7 @@ export default function ManageFeedback() {
         });
       }
     };
-console.log(feedback,'feedback feedback')
+    console.log(feedback,'feedback feedback')
     return (
       <React.Fragment key={fb.id}>
         <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50  cursor-pointer transition-all duration-200">
@@ -291,6 +305,69 @@ console.log(feedback,'feedback feedback')
       </React.Fragment>
     );
   };
+
+  const EmptyState = () => (
+    <div className="p-3 md:p-6 min-h-screen text-gray-800 dark:text-gray-100">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <Title>Manage Feedback</Title>
+        </div>
+        
+        <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+          <div className="w-25 h-25 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-full flex items-center justify-center mb-8">
+            <MessageSquare className="w-10 h-10 text-blue-500 dark:text-blue-400" />
+          </div>
+          
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            No Feedback Yet
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
+            Once you start providing feedback for exams, tasks, and interviews, you'll see all the feedback data and analytics here.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl">
+            <div className="bg-white cursor-pointer dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <HelpCircle className="text-blue-600 dark:text-blue-400" size={24} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Exam Feedback
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Provide detailed feedback on exam performances
+              </p>
+            </div>
+            
+            <div className="bg-white cursor-pointer dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <FileText className="text-purple-600 dark:text-purple-400" size={24} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Task Feedback
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Review and score submitted tasks
+              </p>
+            </div>
+            
+            <div className="bg-white cursor-pointer dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Video className="text-green-600 dark:text-green-400" size={24} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Interview Feedback
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Document interview assessments
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   if (isLoading) {
     return (
       <>
@@ -317,6 +394,11 @@ console.log(feedback,'feedback feedback')
         </div>
       </>
     );
+  }
+
+  // Show empty state when no feedback exists
+  if (!feedback?.data || feedback.data.length === 0) {
+    return <EmptyState />;
   }
 
   return (
@@ -483,7 +565,7 @@ console.log(feedback,'feedback feedback')
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    70
+                    &lt;70
                   </span>
                   <div className="flex items-center space-x-2">
                     <div className="w-32 bg-gray-200 dark:bg-gray-700 rounded-full h-2">

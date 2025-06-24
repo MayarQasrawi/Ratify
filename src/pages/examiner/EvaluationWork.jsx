@@ -135,8 +135,8 @@ export default function EvaluationWork() {
     <>
       {isSuccess && <Alert message="Evaluation Done" />}
       {evaluateError && <Alert type='error' message={evaluateError.message} />}
-      <section className="min-h-screen px-4 py-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="min-h-screen px-4  ">
+        <div className="max-w-5xl ">
           <Back
             text="Back To Pending Evaluation"
             onClick={() => navigate("/dashboard/Examiner/pending-evaluations")}

@@ -1,3 +1,4 @@
+import { FaStickyNote } from "react-icons/fa";
 import {
   FiUser,
   FiBookOpen,
@@ -46,6 +47,17 @@ export default function ExamDetailsModal({
             {selectedRequest.applicant.email}
           </p>
         </div>
+             <div className="bg-yellow-50 dark:bg-yellow-950 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <FaStickyNote className="w-3 h-3 text-yellow-600 dark:text-yellow-300 mt-0.5 flex-shrink-0" />
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+              Note
+            </h3>
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 ml-8">
+            <span className="font-medium">Note:</span> { selectedRequest.instructions}
+          </p>
+        </div>
         <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
           <div className="flex items-center gap-3 mb-3">
             <FiAward className="w-5 h-5 text-green-600" />
@@ -69,7 +81,6 @@ export default function ExamDetailsModal({
             <span className="font-medium">Stage:</span> {extraInfo.stage}
           </p>
         </div>
-
         <div className="bg-orange-50 dark:bg-orange-950 rounded-lg p-4">
           <div className="flex items-center gap-3 mb-4">
             <FiBookOpen className="w-5 h-5 text-orange-600" />

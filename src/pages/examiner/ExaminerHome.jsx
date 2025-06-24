@@ -10,22 +10,14 @@ import {
   BarChart3,
   TrendingUp,
   AlertCircle,
-  Eye,
   BookOpen,
-  Award,
-  ChevronLeft,
-  ChevronRight,
-  Bell,
-  Settings,
   Search,
-  Filter,
 } from "lucide-react";
 import { format } from "date-fns";
 
 import useGetTaskCreation from "@/hooks/examiner/task/useGetTaskCreation";
 import useGetExamCreation from "@/hooks/examiner/exam/useGetExamCreation";
 import useGetStatisticalInfo from "@/hooks/examiner/useGetStatisticalInfo";
-import Title from "@/components/admin/shared/Title";
 import Welcome from "@/components/admin/shared/Welcome";
 import Spinner from "@/components/shared/dashboard/Spinner";
 
@@ -85,113 +77,6 @@ function StatsCard({ config, value, isLoading }) {
   );
 }
 
-function EventCard({ event, index, isSelected, onEventClick }) {
-  const isEven = index % 2 === 0;
-
-  const getStatusColor = (status) => {
-    if (!status) return "bg-gray-100 text-gray-800 border-gray-200";
-
-    switch (status.toLowerCase()) {
-      case "overdue":
-        return "bg-red-100 text-red-800 border-red-200";
-      case "assigned":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "completed":
-        return "bg-green-100 text-green-800 border-green-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
-  const getPriorityColor = (daysRemaining) => {
-    if (daysRemaining < 0) return "text-red-600 bg-red-50";
-    if (daysRemaining <= 3) return "text-orange-600 bg-orange-50";
-    return "text-green-600 bg-green-50";
-  };
-
-  return (
-    <div
-      className={`border-2 transition-all w-full max-w-md rounded-xl duration-300 cursor-pointer 
-        hover:shadow-lg hover:-translate-y-1 backdrop-blur-sm
-        ${
-          isSelected
-            ? "bg-blue-50/80 border-blue-500 shadow-lg"
-            : "bg-white/90 border-gray-200 hover:border-blue-300"
-        }
-        ${
-          isEven
-            ? "border-t-4 border-t-blue-500"
-            : "border-t-4 border-t-indigo-600"
-        }`}
-      onClick={() => onEventClick(event)}
-    >
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <h3 className="font-semibold text-gray-900 text-base leading-tight">
-                {event.stageName || event.title || "Untitled Event"}
-              </h3>
-              {event.status && (
-                <span
-                  className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border-2 ${getStatusColor(
-                    event.status
-                  )}`}
-                >
-                  {event.status}
-                </span>
-              )}
-            </div>
-
-            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-              {event.notes || event.description || "No description available"}
-            </p>
-
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Clock className="w-4 h-4 text-blue-500" />
-                <span className="font-medium">
-                  {event.assignedDate?.split("T")[0]}
-                </span>
-                {event.trackName && (
-                  <>
-                    <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                    <span className="text-blue-600 font-medium">
-                      {event.trackName}
-                    </span>
-                  </>
-                )}
-              </div>
-
-              {event.dueDate && (
-                <div
-                  className={`flex items-center gap-2 text-sm px-2 py-1 rounded-md ${getPriorityColor(
-                    event.daysRemaining
-                  )}`}
-                >
-                  <AlertCircle className="w-4 h-4" />
-                  <span className="font-medium">
-                    Due: {event.dueDate.split("T")[0]}
-                    {event.daysRemaining !== null &&
-                      event.daysRemaining !== undefined &&
-                      ` (${
-                        event.daysRemaining < 0
-                          ? `${Math.abs(event.daysRemaining)} days overdue`
-                          : `${event.daysRemaining} days remaining`
-                      })`}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </div>
-  );
-}
-
 export default function ExaminerDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -212,7 +97,7 @@ export default function ExaminerDashboard() {
 
   const statsConfig = [
     {
-      label: "Pending Reviews",
+      label: "Exam Reviews",
       key: "pendingExamReviews",
       icon: CheckCircle,
       bgColor: "bg-gradient-to-br from-yellow-400/20 to-yellow-600/20",
@@ -351,8 +236,8 @@ export default function ExaminerDashboard() {
         {activeTab === "overview" && (
           <div className="space-y-8">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2 dark:text-white">
-                <BarChart3 className="w-5 h-5 text-blue-600" />
+              <h2 className="text-[22px] font-semibold  text-gray-800 mb-6 flex items-center gap-2 dark:text-white">
+                <BarChart3 className="w-5 h-5 text-blue-600 " />
                 Statistical Overview
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -445,7 +330,11 @@ export default function ExaminerDashboard() {
                     >
                       <div className="flex justify-between items-center mb-1">
                         <h4 className="text-base font-semibold text-gray-800 dark:text-white">
-                          {event.stageName}
+                          {event.stageName} (
+                          <span className="text-sm font-bold">
+                            {event.type}
+                          </span>
+                          )
                         </h4>
                         <span
                           className={`text-xs px-2 py-0.5 rounded-full ${

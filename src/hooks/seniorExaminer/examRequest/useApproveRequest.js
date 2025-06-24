@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function approveRequest(request) {
-  console.log('ibside approve exam end point',request)
+  console.log('inside approve exam end point /////',request)
   const {scheduledDate,instructions,status}=request
   const info={scheduledDate,instructions,status}
   console.log(info,'info ,,,,,,,,,,,')

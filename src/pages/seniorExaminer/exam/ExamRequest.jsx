@@ -213,6 +213,7 @@ export default function ExamRequest() {
           <ExamModal
             cancelAction={cancelAction}
             selectedRequest={selectedRequest}
+
           />
         </Modal>
       )}
