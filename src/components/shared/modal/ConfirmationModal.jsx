@@ -19,7 +19,7 @@ export default function ConfirmationModal({
       {isError && (
         <Alert
           type="error"
-          message={error?.response?.data?.message || "Delete Request Fails"}
+          message={error?.message || "Delete Request Fails"}
         />
       )}
       {isSuccess && (

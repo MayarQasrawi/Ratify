@@ -18,6 +18,15 @@ import useExaminerInterviewRequest from "@/hooks/examiner/interview/useExaminerI
 import ErrorPage from "@/pages/general/ErrorPage";
 import Loading from "@/components/admin/shared/Loading";
 import DashboardTabsAndFilters from "./DashboardTabsAndFilters";
+import {
+  processApiResponse,
+  formatLocalDateTime,
+  formatDateOnly,
+  formatTimeOnly,
+  isSameDay,
+  getTodayLocal,
+} from "@/utils/timezoneUtils";
+
 export default function AppointmentDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -53,15 +62,19 @@ export default function AppointmentDashboard() {
     <Loading />;
   }
 
+  // Process bookings data with timezone utils
   useEffect(() => {
     if (bookings) {
-      setAppointments(bookings);
+      const processedBookings = processApiResponse(bookings);
+      setAppointments(processedBookings);
     }
   }, [bookings]);
 
+  // Process requests data with timezone utils
   useEffect(() => {
     if (requestsData) {
-      setRequests(requestsData);
+      const processedRequests = processApiResponse(requestsData);
+      setRequests(processedRequests);
     }
   }, [requestsData]);
 
@@ -84,13 +97,18 @@ export default function AppointmentDashboard() {
       onConfirm: () => {
         rejectBooking.mutate(id, {
           onSuccess: (updatedAppointment) => {
+            // Process the updated appointment with timezone utils
+            const processedAppointment = processApiResponse(updatedAppointment);
+
             if (activeTab === "bookings") {
               setAppointments((prev) =>
-                prev.map((appt) => (appt.id === id ? updatedAppointment : appt))
+                prev.map((appt) =>
+                  appt.id === id ? processedAppointment : appt
+                )
               );
             } else {
               setRequests((prev) =>
-                prev.map((req) => (req.id === id ? updatedAppointment : req))
+                prev.map((req) => (req.id === id ? processedAppointment : req))
               );
             }
             console.log("Booking rejected successfully");
@@ -114,13 +132,18 @@ export default function AppointmentDashboard() {
       onConfirm: () => {
         approveBooking.mutate(id, {
           onSuccess: (updatedAppointment) => {
+            // Process the updated appointment with timezone utils
+            const processedAppointment = processApiResponse(updatedAppointment);
+
             if (activeTab === "bookings") {
               setAppointments((prev) =>
-                prev.map((appt) => (appt.id === id ? updatedAppointment : appt))
+                prev.map((appt) =>
+                  appt.id === id ? processedAppointment : appt
+                )
               );
             } else {
               setRequests((prev) =>
-                prev.map((req) => (req.id === id ? updatedAppointment : req))
+                prev.map((req) => (req.id === id ? processedAppointment : req))
               );
             }
             console.log("Booking approved successfully");
@@ -154,7 +177,7 @@ export default function AppointmentDashboard() {
     onConfirm: () => {},
   });
 
-  // Filter appointments based on active tab
+  // Filter appointments based on active tab with timezone fixes
   useEffect(() => {
     const currentData = activeTab === "bookings" ? appointments : requests;
     let result = [...currentData];
@@ -164,19 +187,16 @@ export default function AppointmentDashboard() {
       result = result.filter((item) => item.status === filters.status);
     }
 
-    // Filter by date
+    // Filter by date using timezone utils
     if (filters.date !== "all") {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const itemDate = (item) => new Date(item.startTime);
+      const today = getTodayLocal();
 
       if (filters.date === "today") {
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         result = result.filter((item) => {
-          const d = itemDate(item);
-          return d >= today && d < tomorrow;
+          const itemDate = new Date(item.localStartTime);
+          return itemDate >= today && itemDate < tomorrow;
         });
       } else if (filters.date === "thisWeek") {
         const startOfWeek = new Date(today);
@@ -184,8 +204,8 @@ export default function AppointmentDashboard() {
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 7);
         result = result.filter((item) => {
-          const d = itemDate(item);
-          return d >= startOfWeek && d < endOfWeek;
+          const itemDate = new Date(item.localStartTime);
+          return itemDate >= startOfWeek && itemDate < endOfWeek;
         });
       } else if (filters.date === "thisMonth") {
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -195,8 +215,8 @@ export default function AppointmentDashboard() {
           0
         );
         result = result.filter((item) => {
-          const d = itemDate(item);
-          return d >= startOfMonth && d <= endOfMonth;
+          const itemDate = new Date(item.localStartTime);
+          return itemDate >= startOfMonth && itemDate <= endOfMonth;
         });
       }
     }

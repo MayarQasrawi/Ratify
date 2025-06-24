@@ -2,12 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../auth/utils/axiosInstance";
 
 async function deletePlanStructer(endPoint) {
-  console.log(endPoint,'end point inside delete')
+  console.log(endPoint, "end point inside delete");
   const { data } = await axiosInstance.delete(endPoint);
   return data;
 }
 export default function useDeletePlanStructer(id) {
-   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (endPoint) => deletePlanStructer(endPoint),
     retry: false,
@@ -16,12 +16,12 @@ export default function useDeletePlanStructer(id) {
     },
     onSuccess: (data) => {
       console.log("Delete Plan Structer successful:", data);
-     queryClient.invalidateQueries(['trackStructure', id], { exact: true })
-  queryClient.refetchQueries({
-    queryKey: ['trackStructure', id],
-    exact: true,
-    throwOnError: false,   
-  })
+      queryClient.invalidateQueries(["trackStructure", id], { exact: true });
+      queryClient.refetchQueries({
+        queryKey: ["trackStructure", id],
+        exact: true,
+        throwOnError: false,
+      });
     },
   });
 }

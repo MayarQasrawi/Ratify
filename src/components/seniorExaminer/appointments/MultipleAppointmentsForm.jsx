@@ -23,8 +23,46 @@ import usePutAppointmentBulk from "@/hooks/seniorExaminer/appointment/usePutAppo
 import Toast from "@/components/applicant/dashboard/Stages/Exam/Toast";
 import ExaminerSelect from "./shared/ExaminerSelect";
 
-export default function MultipleAppointmentsForm() {
+// دوال مساعدة لمعالجة التوقيت
+const timezoneHelper = {
+  // تحويل التاريخ المحلي إلى UTC للإرسال إلى الـ API
+  localToUTC: (localDate) => {
+    if (!localDate) return null;
+    const date = new Date(localDate);
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return utcDate;
+  },
 
+  // تحويل التاريخ من UTC إلى التوقيت المحلي للعرض
+  utcToLocal: (utcString) => {
+    if (!utcString) return null;
+    return new Date(utcString);
+  },
+
+  // دمج التاريخ مع الوقت وتحويله إلى UTC
+  combineDateTime: (date, timeString) => {
+    if (!date || !timeString) return null;
+    
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const localDateTime = new Date(date);
+    localDateTime.setHours(hours, minutes, 0, 0);
+    
+    return timezoneHelper.localToUTC(localDateTime);
+  },
+
+  // تحويل التاريخ والوقت من UTC إلى نص وقت محلي
+  utcToLocalTimeString: (utcDateTime) => {
+    if (!utcDateTime) return "";
+    const localDate = new Date(utcDateTime);
+    return localDate.toLocaleTimeString("en-GB", { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
+  }
+};
+
+export default function MultipleAppointmentsForm() {
   console.log("usePutSingleAppointment");
 
   const {
@@ -64,7 +102,7 @@ export default function MultipleAppointmentsForm() {
 
   const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState(null);
-  const [toasts, setToasts] = useState([]); // State لإدارة الـ toasts
+  const [toasts, setToasts] = useState([]);
 
   const removeToast = (id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -98,7 +136,11 @@ export default function MultipleAppointmentsForm() {
       while (currentTime < dayEnd) {
         const slotEnd = addMinutes(currentTime, slotDuration);
         if (slotEnd <= dayEnd) {
-          slots.push({ start: new Date(currentTime), end: slotEnd });
+          // تحويل الأوقات إلى UTC قبل إضافتها للمصفوفة
+          slots.push({ 
+            start: timezoneHelper.localToUTC(currentTime), 
+            end: timezoneHelper.localToUTC(slotEnd) 
+          });
         }
         currentTime = addMinutes(currentTime, slotDuration);
       }
@@ -137,13 +179,16 @@ export default function MultipleAppointmentsForm() {
       return;
     }
 
+    // تحويل البيانات إلى UTC قبل الإرسال
     const appointmentData = {
       examinerId: data.examinerId,
-      startDate: data.startDate.toISOString(),
-      endDate: data.endDate.toISOString(),
+      // تحويل التواريخ إلى UTC
+      startDate: timezoneHelper.localToUTC(data.startDate).toISOString(),
+      endDate: timezoneHelper.localToUTC(data.endDate).toISOString(),
       slotDurationMinutes: parseInt(data.slotDuration),
       weeklySchedule: activeSchedule.map((schedule) => ({
         dayOfWeek: schedule.dayOfWeek,
+        // الأوقات تبقى كما هي لأنها تمثل الوقت المحلي المطلوب
         startTime: schedule.startTime.length === 5
           ? `${schedule.startTime}:00`
           : schedule.startTime,
@@ -153,7 +198,7 @@ export default function MultipleAppointmentsForm() {
       })),
     };
 
-    console.log("submit bulk:", appointmentData);
+    console.log("submit bulk (converted to UTC):", appointmentData);
     sendBulkAppointments(appointmentData, {
       onSuccess: () => {
         const id = Date.now();
@@ -321,7 +366,8 @@ export default function MultipleAppointmentsForm() {
         <div className="space-y-2">
           <Label>Weekly Schedule</Label>
           <p className="text-xs text-gray-500 mt-3 mb-3">
-            Leave start and end times empty for days you don't want to schedule appointments
+            Leave start and end times empty for days you don't want to schedule appointments.
+            All times are in your local timezone ({Intl.DateTimeFormat().resolvedOptions().timeZone}).
           </p>
           <div className="space-y-2">
             {daysOfWeek.map((day, index) => (

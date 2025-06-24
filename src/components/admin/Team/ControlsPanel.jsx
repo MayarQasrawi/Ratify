@@ -17,7 +17,7 @@ const ControlsPanel = ({
         <div className="flex items-center justify-between">
           {/* Left: Icon + Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 bg-gradient-to-br from-[var(--main-color)] to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
               <FiFilter className="w-5 h-5 text-white" />
             </div>
             <div>

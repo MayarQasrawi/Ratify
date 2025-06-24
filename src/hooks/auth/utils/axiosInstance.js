@@ -74,7 +74,7 @@ axiosInstance.interceptors.response.use(
 // Request Interceptor to attach token
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // أو حسب مكان التخزين
+    const token = localStorage.getItem("token"); 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

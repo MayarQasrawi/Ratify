@@ -51,16 +51,27 @@ export default function SingleAppointmentForm() {
     const [sh, sm] = data.startTime.split(":").map(Number);
     const [eh, em] = data.endTime.split(":").map(Number);
 
-    const startDate = new Date(data.date);
-    startDate.setHours(sh, sm, 0);
+    const localDate = new Date(data.date);
 
-    const endDate = new Date(data.date);
-    endDate.setHours(eh, em, 0);
+    // ✅ عيّن الوقت يدويًا
+    const startDate = new Date(localDate);
+    startDate.setHours(sh, sm, 0, 0);
+
+    const endDate = new Date(localDate);
+    endDate.setHours(eh, em, 0, 0);
+
+    // ✅ حول للـ UTC بصيغة ISO
+    const utcStart = new Date(
+      startDate.getTime() - startDate.getTimezoneOffset() * 60000
+    ).toISOString();
+    const utcEnd = new Date(
+      endDate.getTime() - endDate.getTimezoneOffset() * 60000
+    ).toISOString();
 
     const appointmentData = {
       examinerId: data.examinerId,
-      startTime: startDate.toISOString(),
-      endTime: endDate.toISOString(),
+      startTime: utcStart,
+      endTime: utcEnd,
     };
 
     const id = Date.now();
@@ -118,10 +129,10 @@ export default function SingleAppointmentForm() {
     <div className="space-y-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Examiner ID */}
-        <ExaminerSelect 
-          control={control} 
-          errors={errors} 
-          onExaminerChange={setSelectedExaminerName} // تمرير دالة لحفظ اسم الممتحن
+        <ExaminerSelect
+          control={control}
+          errors={errors}
+          onExaminerChange={(name) => setSelectedExaminerName(name)}
         />
 
         {/* Date */}

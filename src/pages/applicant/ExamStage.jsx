@@ -12,7 +12,8 @@ import useGetStage from "../../hooks/applicant/progress/useGetStage";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
 import { StatusDisplay } from "../../components/applicant/dashboard/Stages/Task/StatusContainer";
-
+import { useParams } from "react-router-dom";
+import LoadingStage from "./LoadingStage";
 // زر الإجراءات
 const ActionButton = ({ text, onClick }) => (
   <button
@@ -28,18 +29,26 @@ function ExamStage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [toasts, setToasts] = useState([]);
-
-  const { state } = useLocation();
-  const [stageData, setStageData] = useState(state?.stage);
-
+  const { stageProgressId } = useParams(); // rename to match naming
+console.log("Stage Progress ID:", stageProgressId);
+  
+  const [stageData, setStageData] = useState([]);
   const {
     data,
     isLoading: isStageLoading,
     refetch: refetchStage,
-  } = useGetStage({ stageId: stageData?.id, status: stageData?.actionStatus });
+    isSuccess
+  } = useGetStage({ stageProgressId });
 
-  console.log("ExamStage data:", data);
-  console.log("ExamStage isLoading:", refetchStage);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setStageData(data);
+      console.log("Stage Data updated:", data);
+    }
+  }, [isSuccess, data]);
+
+  console.log("ExamStage data:",stageData);
 
   const statusColors = {
     ReadyToRequest: { bg: "bg-gray-100", text: "text-gray-600" },
@@ -69,33 +78,37 @@ function ExamStage() {
   const id = Extract(auth, "nameid");
 
   const { mutate: requestExam, isLoading } = useExamRequest();
-  // فوق الكومبوننت مباشرة
+ 
 
-  const confirmExamRequest = () => {
-    setIsLoadingModal(true);
+  const confirmExamRequest = (notes) => {
+  setIsLoadingModal(true);
 
-    const payload = {
-      stageId: stageData?.stageId,
-      applicantId: id,
-    };
-
-    requestExam(payload, {
-      onSuccess: async (examRequestId) => {
-        addToast("Exam request submitted successfully!", "success");
-        setIsModalOpen(false);
-        const refreshed = await refetchStage();
-        setStageData(refreshed);
-      },
-
-      onError: (error) => {
-        addToast("Failed to submit exam request", "error");
-        console.error(error);
-      },
-      onSettled: () => {
-        setIsLoadingModal(false);
-      },
-    });
+  const payload = {
+    stageId: stageData?.stageId,
+    applicantId: id,
+    instructions: notes ,
+    stageProgressId: stageData?.id,
   };
+
+console.log("Payload being sent:", payload);
+
+  requestExam(payload, {
+
+    onSuccess: async () => {
+      addToast("Exam request submitted successfully!", "success");
+      setIsModalOpen(false);
+      const refreshed = await refetchStage();
+      setStageData(refreshed.data);
+    },
+    onError: (error) => {
+      addToast("Failed to submit exam request", "error");
+    },
+    onSettled: () => {
+      setIsLoadingModal(false);
+    },
+  });
+};
+
 
   const getExamRequestContent = (stage) => {
     const baseConfig = {
@@ -160,27 +173,14 @@ function ExamStage() {
     description,
     showButton,
     buttonText,
-    buttonAction,
     statusMessage,
   } = getExamRequestContent(stageData?.actionStatus || "ReadyToRequest");
 
-  // if (!isLoading) {
-  //   return (
-  //     <main className="flex flex-col items-center justify-center p-2 animate-pulse">
-  //       <div className="bg-blue-500/10 w-[96%] mx-4 my-2 rounded-lg py-5 mt-8">
-  //         <div className="h-8 bg-blue-300/30 w-2/3 mx-auto rounded" />
-  //       </div>
-  //       <section className="w-full flex flex-col items-center gap-4 mt-4">
-  //         <div className="bg-gray-200 h-32 w-[90%] rounded-lg" />
-  //         <div className="bg-gray-200 h-24 w-[90%] rounded-lg" />
-  //       </section>
-  //       <div className="w-[90%] mt-10 p-4 bg-gray-200 rounded-lg">
-  //         <div className="h-5 bg-gray-300 w-1/3 mb-3 rounded"></div>
-  //         <div className="h-4 bg-gray-300 w-full rounded"></div>
-  //       </div>
-  //     </main>
-  //   );
-  // }
+  if (isLoading || isStageLoading) {
+    return (
+      <LoadingStage/>
+    );
+  }
 
   return (
     <div>
@@ -189,7 +189,7 @@ function ExamStage() {
           ["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
             stageData?.actionStatus
           )
-            ? stageData?.additionalData?.FeedbackId
+            ? stageData?.additionalData?.feedbackId
             : null
         }
         header="Exam"

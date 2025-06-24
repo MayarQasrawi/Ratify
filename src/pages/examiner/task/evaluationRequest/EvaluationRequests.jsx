@@ -328,7 +328,7 @@ export default function EvaluationRequests() {
       case "tasks":
         if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
-          <div className="max-w-[900px] scrollbar-custom">
+          <div className="scrollbar-custom">
             <Table
               cols={[
                 "Task Title",
@@ -345,7 +345,7 @@ export default function EvaluationRequests() {
       case "interviews":
         if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
-          <div className="max-w-[900px] scrollbar-custom">
+          <div className=" scrollbar-custom">
             <Table
               cols={["Candidate", "Track/ Stage", "Date & Time", " "]}
               data={pendingRequest?.data}
@@ -356,7 +356,7 @@ export default function EvaluationRequests() {
       case "exams":
         if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
-          <div className="max-w-[900px] scrollbar-custom">
+          <div className="scrollbar-custom">
             <Table
               cols={["Candidate", "Track/ Stage", "Waiting Time", " "]}
               data={pendingRequest?.data}

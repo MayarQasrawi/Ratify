@@ -14,8 +14,6 @@ import {
 import {
   FaChevronLeft,
   FaChevronRight,
-  FaCheckCircle,
-  FaTimesCircle,
 
 } from "react-icons/fa"
 import StatusBadge from "@/components/allExaminer/appointment/shared/StatusBage"
