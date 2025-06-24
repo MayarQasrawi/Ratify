@@ -35,12 +35,14 @@ export default function ExaminerInfoModal({
     isPending: isInfoLoading,
     isError,
     isSuccess,
+    data:dataInfo
   } = useUpdateExaminerInfo();
   const {
     mutateAsync: uploadImage,
     isPending: isImageLoading,
     isError: isUploadImageError,
     isSuccess: isUpdateImageSuccess,
+    data,
   } = useUploadImage();
   // useEffect(() => {
   //   if (isUploadImageError || isUpdateImageSuccess) {
@@ -125,9 +127,12 @@ export default function ExaminerInfoModal({
       updateInfo({ id, body: data });
     }
   };
+  console.log(data, " isUpdateImageSuccess",dataInfo);
   return (
     <>
       {imageError && <Alert type="error" message={imageError} />}
+      {updateImage && isUpdateImageSuccess && <Alert message={data.message} />}
+      {!updateImage &&  isSuccess && <Alert message={dataInfo.message} />}
       {isUploadImageError && (
         <Alert
           type="error"
@@ -145,7 +150,7 @@ export default function ExaminerInfoModal({
           <div
             className={`${
               !isUpdate && "pt-6"
-            } relative w-full max-w-md mx-4 bg-[var(--sidebar-bg)]  bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto scrollbar-custom border border-white dark:border-gray-700 border-opacity-20`}
+            } relative w-full max-w-md mx-4 bg-[var(--sidebar-bg)]  bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto  border border-white dark:border-gray-700 border-opacity-20`}
           >
             {isUpdate && (
               <div className="flex justify-end p-4 ">
@@ -240,16 +245,16 @@ export default function ExaminerInfoModal({
                       <label className="block text-gray-700 font-medium mb-2 dark:text-white">
                         Full Name <span className="text-red-500">*</span>
                       </label>
-                     <input
-                     type="text"
-                      {...register("fullName", { required: true })}
-                    className="w-full px-4 py-3 
+                      <input
+                        type="text"
+                        {...register("fullName", { required: true })}
+                        className="w-full px-4 py-3 
                     bg-white bg-opacity-80 
                    dark:bg-gray-800 dark:bg-opacity-90 
                   border border-gray-300 dark:border-gray-700 
                    text-gray-900 dark:text-gray-100 
                    rounded-xl outline-none"
-/>
+                      />
 
                       {errors.fullName && (
                         <p className="text-red-500 text-sm">
@@ -259,13 +264,11 @@ export default function ExaminerInfoModal({
                     </div>
                     <div>
                       <label className="block text-gray-700 font-medium mb-2 dark:text-white">
-                        Specialization <span className="text-red-500">*</span>
+                        Bio <span className="text-red-500">*</span>
                       </label>
-                      <input
-                        type="text"
-                        {...register("specialization", { required: true })}
+                      <textarea
+                        {...register("bio", { required: true })}
                         className="w-full px-4 py-3 bg-white bg-opacity-80 dark:border-gray-700  dark:bg-gray-800 dark:bg-opacity-90 border border-gray-300 rounded-xl outline-none placeholder:text-sm"
-                        placeholder="e.g. Front‑end, Data Science…"
                       />
                       {errors.specialization && (
                         <p className="text-red-500 text-sm">

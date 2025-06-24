@@ -130,10 +130,10 @@ export default function AssignCreationAssignments() {
             {item.stageName} ({item.type})
           </span>
         </td>
-        <td className="py-3 px-3 text-sm text-gray-600">
+        <td className="py-3 px-3 text-sm text-gray-600 dark:text-white">
           {item.assignedDate.split("T")[0]}
         </td>
-        <td className="py-3 px-3 text-sm text-gray-600">
+        <td className="py-3 px-3 text-sm text-gray-600 dark:text-white">
           {item.dueDate.split("T")[0]}
         </td>
         <td className="py-3 px-3">

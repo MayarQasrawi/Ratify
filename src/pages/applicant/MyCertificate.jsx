@@ -30,7 +30,7 @@ export default function MyCertificate() {
   const { data: tracks } = useGetApplicantTrack(id);
   const [selectedCertificateCode, setSelectedCertificateCode] = useState(null);
   const [showCertificateModal, setShowCertificateModal] = useState(false);
-  const { data: getAllCertificate, isLoading: isCertificateLoading } =
+  const { data: getAllCertificate, isLoading: isCertificateLoading ,error} =
     useGetAllCertificate();
   const { data: certificateHtml, isLoading: isHtmlLoading } =
     useGetCertificateInHtml(selectedCertificateCode, !!selectedCertificateCode);
@@ -68,7 +68,7 @@ export default function MyCertificate() {
     window.open(certificateUrl, "_blank");
   };
 
-  console.log(tracks, "tracks tracks tracks", getAllCertificate);
+  console.log(tracks, "tracks tracks tracks", getAllCertificate,error);
   if (!auth) return <Navigate to="/login" />;
   if (tracks?.data?.length == 0) return <Navigate to="/unAuthorized" />;
   if (isCertificateLoading)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { Outlet, useLocation } from "react-router-dom";
@@ -14,6 +15,23 @@ import ExaminerInfoModal from "../components/allExaminer/ExaminerInfoModal";
 import getFirstCharacter from "../utils/getFirstCharacter";
 import useGetCreationAssignment from "../hooks/examiner/useGetCreationAssignments";
 import { useSidebar } from "../contexts/SidebarProvider";
+=======
+"use client"
+import { Outlet, useLocation } from "react-router-dom"
+import Sidebar from "../components/admin/sidbar/Sidebar"
+import TopMenue from "../components/admin/TopMenue"
+import { ThemeProvider } from "../contexts/ThemeProvider"
+import { SidebarProvider } from "../contexts/SidebarProvider"
+import { useAuthContext } from "../contexts/AuthProvider"
+import Extract from "../utils/Extract"
+import useFetchExaminerById from "../hooks/examiner/useFetchExaminerById"
+import { useEffect, useState } from "react"
+import TopLoader from "../components/shared/TopLoader"
+import ExaminerInfoModal from "../components/allExaminer/ExaminerInfoModal"
+import getFirstCharacter from "../utils/getFirstCharacter"
+import useGetCreationAssignment from "../hooks/examiner/useGetCreationAssignments"
+import { useSidebar } from "../contexts/SidebarProvider"
+>>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
 
 export default function Dashboard() {
   const { auth } = useAuthContext();
@@ -27,6 +45,7 @@ export default function Dashboard() {
     id = Extract(auth, "nameid");
     isExaminer = role === "Examiner" || role === "SeniorExaminer";
   }
+<<<<<<< HEAD
   const { data: examinerInfo, isLoading } = useFetchExaminerById(
     id,
     isExaminer
@@ -48,10 +67,26 @@ export default function Dashboard() {
       const isInfoMissing = !examinerInfo.data.dateOfBirth;
       console.log(isInfoMissing, "info miss");
       setShowModal(isInfoMissing);
+=======
+  const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer)
+  const { data: examinerAssignment, error } = useGetCreationAssignment(id, role === "Examiner")
+ console.log(examinerInfo,'examinerInfo examinerInfo')
+  console.log(examinerAssignment, "examinerAssignment ...................")
+
+  useEffect(() => {
+    if (!isLoading && isExaminer && examinerInfo) {
+      const isInfoMissing = !examinerInfo.data.image
+      console.log(isInfoMissing, "info miss")
+      setShowModal(isInfoMissing)
+>>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
     }
   }, [examinerInfo, isLoading, isExaminer]);
 
+<<<<<<< HEAD
   if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />;
+=======
+  // if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />
+>>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
 
   if (
     currentLocation.pathname === "/dashboard/Admin/tracks/setup" ||
@@ -113,7 +148,6 @@ function DashboardContent({ role, examinerInfo, examinerAssignment }) {
         />
       </div>
 
-      {/* Main Content */}
       <div
         className={`transition-all duration-300 ease-in-out h-full w-full overflow-y-auto ${
           isSidebarOpen ? "ml-16 sm:ml-48 md:ml-64" : "ml-16"

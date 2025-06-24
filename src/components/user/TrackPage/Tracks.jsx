@@ -7,6 +7,9 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import useAutoFocus from "../../../hooks/useAutoFocus";
 import useGetAllTraks from "../../../hooks/admin/tracks/useGetAllTracks";
 import useGetActiveTraks from "../../../hooks/user/useGetActiveTrack";
+import { useAuthContext } from "@/contexts/AuthProvider";
+import Extract from "@/utils/Extract";
+import useGetApplicantTrack from "@/hooks/applicant/enroll/useGetApplicantTrack";
 
 const tracks = [
   {
@@ -49,8 +52,21 @@ const tracks = [
 export default function Tracks() {
   const [searchQuery, setSearchQuery] = useState("");
   const inputSearch = useAutoFocus();
-  const {data:track,isLoading:isTrackLoading,isError}= useGetActiveTraks()
-    console.log(track?.data,'active hhhhhhhhhhhhhhhhhhhhhhhhkkkkkkkkkkkkkkkkkk',isTrackLoading)
+  const { auth } = useAuthContext();
+  let authId = null;
+  if (auth) authId = Extract(auth, "nameid");
+  const { data: MyTracks, isLoading } = useGetApplicantTrack(authId);
+console.log(MyTracks,'MyTracks MyTracks MyTracks')
+  const {
+    data: track,
+    isLoading: isTrackLoading,
+    isError,
+  } = useGetActiveTraks();
+  console.log(
+    track?.data,
+    "active hhhhhhhhhhhhhhhhhhhhhhhhkkkkkkkkkkkkkkkkkk",
+    isTrackLoading
+  );
 
   // let isLoading = false;
   let filteredTracks = track?.data;
@@ -90,21 +106,23 @@ export default function Tracks() {
     <>
       {/* Search Input */}
       <div className="flex justify-between p-10 ">
-       {!isTrackLoading && <div className="relative">
-          <span className="absolute inset-y-0 left-0 text-gray-500 flex items-center pl-3">
-            {<BiSearchAlt2 />}
-          </span>
-          <input
-            ref={inputSearch}
-            type="text"
-            placeholder="Search tracks..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className=" transition-shadow duration-200
+        {!isTrackLoading && (
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 text-gray-500 flex items-center pl-3">
+              {<BiSearchAlt2 />}
+            </span>
+            <input
+              ref={inputSearch}
+              type="text"
+              placeholder="Search tracks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className=" transition-shadow duration-200
             pl-10
             w-80 px-4 bg-gray-200 py-2 border focus:caret-blue-500 border-gray-300 rounded-lg outline-none "
-          />
-        </div>}
+            />
+          </div>
+        )}
       </div>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16  p-10 ">
         {isTrackLoading
@@ -121,6 +139,7 @@ export default function Tracks() {
                 description={track.description}
                 img={track.image}
                 id={track.id}
+                enrollId={MyTracks?.data?.data.filter(myTrack=>myTrack.trackId ==track.id)}
               />
             ))}
       </div>

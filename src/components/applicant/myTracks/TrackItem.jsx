@@ -33,6 +33,7 @@ export default function TrackItem({ name, img, trackId, status, enrollmentId }) 
       <div className="mt-4 flex flex-wrap gap-3 items-center justify-between mb-3">
         <ProgressBar enrollmentId={enrollmentId} trackId={trackId}/>
         <Link 
+<<<<<<< HEAD
           state={{ name: name, status: status }}
           to={`/applicant/my-tracks/${name}/${enrollmentId}`}
           className="bg-[var(--main-color)] flex hover:bg-[#2A5C8A] transition items-center gap-2 px-6 rounded-md text-[18px] font-bold py-1 text-white cursor-pointer">
@@ -43,6 +44,19 @@ export default function TrackItem({ name, img, trackId, status, enrollmentId }) 
           ) : (
             "View"
           )}
+=======
+        state={{ name: name, status: status, trackId:trackId }}
+         to={`/applicant/my-tracks/${name}/${enrollmentId}`}
+        className="bg-[var(--main-color)] flex  hover:bg-[#2A5C8A] transition items-center gap-2 px-6 rounded-md text-[18px]  font-bold  py-1 text-white cursor-pointer">
+         
+         {status.toLowerCase() !== "completed" ? (
+           <>
+             Continue <RiArrowRightLine className="font-bold text-2xl" />
+           </>
+         ) : (
+           "View"
+         )}
+>>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
         </Link>
       </div>
     </div>

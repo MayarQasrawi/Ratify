@@ -4,7 +4,7 @@ import axiosInstance from "../../auth/utils/axiosInstance";
 async function getCreationAssignment() {
   console.log("inside get CreationAssignments/senior end point");
   const token = localStorage.getItem("token");
-  const { data } = await axiosInstance.get(`CreationAssignments/senior`, {
+  const { data } = await axiosInstance.get(`CreationAssignments`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

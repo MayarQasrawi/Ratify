@@ -1,18 +1,13 @@
 import { useState } from "react";
-import Search from "../../../components/admin/shared/Search";
 import Title from "../../../components/admin/shared/Title";
 import Table from "../../../components/admin/shared/Table";
 import {
   FaFileAlt,
   FaTasks,
   FaUserTie,
-  FaEdit,
-  FaUsers,
-  FaChartBar,
   FaExclamationTriangle,
   FaClipboardList,
   FaPercentage,
-  FaSearch,
 } from "react-icons/fa";
 import {
   FiPlusCircle,
@@ -25,8 +20,7 @@ import {
 } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { AiOutlineEdit } from "react-icons/ai";
-import { BsGraphUp, BsPeople } from "react-icons/bs";
-import { MdAssignment, MdQuiz } from "react-icons/md";
+import {  BsPeople } from "react-icons/bs";
 import Modal from "../../../components/shared/modal/Modal";
 import AddWorkload from "../../../components/seniorExaminer/workload/AddWorkload";
 import Header from "../../../components/seniorExaminer/workload/shared/Header";
@@ -41,7 +35,7 @@ import { useAuthContext } from "../../../contexts/AuthProvider";
 import Extract from "../../../utils/Extract";
 import useFetchExaminerById from "../../../hooks/examiner/useFetchExaminerById";
 
-const cols = ["Info", "Specialization", "Examiner Loads"];
+const cols = ["Info", "Examiner Loads"];
 
 const getWorkloadTypeIcon = (type, size = 14) => {
   switch (type.toLowerCase()) {
@@ -311,13 +305,8 @@ const calculateStats = () => {
           </div>
         </div>
       </td>
-      <td className="px-6 py-4">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-          {member.specialization }
-        </span>
-      </td>
-      <td className="px-6 py-4 ">
-        <div className="space-y-3 flex justify-center w-[90%] ">
+      <td className="px-6 py-4  flex justify-center ">
+        <div className="space-y-3 flex justify-center w-[70%] ">
           {member.examinerLoads.length === 0 ? (
                 <button
               onClick={() => {
@@ -396,7 +385,7 @@ const calculateStats = () => {
                               <span className="text-xs text-gray-500">
                                 {item.currWorkLoad}/{item.maxWorkLoad}
                               </span>
-                              <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div className="w-36 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                                 <div
                                   className={`h-full transition-all duration-300 ${
                                     isHighLoad
@@ -581,12 +570,8 @@ const calculateStats = () => {
             />
           </div>
         </div>
-        <div className="pl-4 mt-3 gap-y-3 justify-start flex flex-col md:flex-row md:justify-between md:items-center">
-          <div className="w-[90%] md:w-[36%] lg:w-[44%] md:min-w-70 md:max-w-[400px]">
-            <Search search={search} setSearch={setSearch} />
-          </div>
-        </div>
-        <div className="pl-4 mt-6 pt-4 pb-6 min-w-[500px]">
+       
+        <div className="rounded-lg  min-w-[500px] shadow">
           <Table data={teamFilter} cols={cols} row={renderRow}  headerColor="bg-gray-400/10"
            />
         </div>

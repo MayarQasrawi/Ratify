@@ -1,45 +1,84 @@
-import React from "react";
+import Modal from "@/components/shared/modal/Modal";
+import React, { useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
+import { FaEye } from "react-icons/fa";
 
 export default function ExpertCard({ expert, index }) {
+  const [showModal, setShowModal] = useState(false);
   console.log(expert.image, "expert.image");
+  const handleCardClick = () => {
+    setShowModal(true);
+  };
+  
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  
   return (
-    <div className="border-3 max-w-[320px] h-[200px] relative group cursor-pointer border-r-4 odd:border-[var(--main-color)] even:border-[#003F7D]  rounded-2xl overflow-hidden ">
-      <div className="relative">
-        <img
-          src={
-            expert.image && expert.image.trim() !== ""
-              ? `${import.meta.env.VITE_API}${expert.image}`
-              : `https://www.gravatar.com/avatar/?d=mp&s=180`
-          }
-          className="w-full h-[200px] object-cover"
-          alt={expert.fullName}
-        />
-
-        <h2
-          className={`absolute w-full text-white font-medium py-2 text-center bottom-0 left-0 ${
-            index % 2 === 0 ? "bg-[var(--main-color)]" : "bg-[#003F7D]"
-          }`}
-        >
-          {expert.fullName}
-        </h2>
-      </div>
-      {/* <div 
-      className={`bg-white shadow-lg z-10 opacity-0 group-hover:opacity-100 
-        w-[110%] absolute -top-3 
-        ${index % 2 === 0 ? 'left-1/2 transform -translate-x-1/2' : 'right-1/2 transform translate-x-1/2'} 
-        rounded-lg border border-gray-300 p-4 h-[110%] transition-opacity duration-300 ease-in-out`}
-    >
-      <div className="h-full flex flex-col justify-between">
-        <p className="text-[#0E2A46] text-center">{expert.Bio}</p>
-         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-          <div 
-            className={`w-0 h-0 border-l-8 border-r-8 border-t-8 
-              ${index % 2 === 0 ? 'border-t-[#3B82F6]' : 'border-t-[#003F7D]'} 
-              border-l-transparent border-r-transparent`}
+    <>
+      <div 
+        className="border-3 max-w-[320px] h-[200px] relative group cursor-pointer border-r-4 odd:border-[var(--main-color)] even:border-[#003F7D] rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg"
+        onClick={handleCardClick}
+      >
+        <div className="relative">
+          <img
+            src={
+              expert.image && expert.image.trim() !== ""
+                ? `${import.meta.env.VITE_API}${expert.image}`
+                : `https://www.gravatar.com/avatar/?d=mp&s=180`
+            }
+            className="w-full h-[200px] object-cover"
+            alt={expert.fullName}
           />
+          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <FaEye className={`text-white text-2xl drop-shadow-lg ${index % 2 === 0 ? "hover:text-[var(--main-color)]" : "hover:text-[#003F7D]"} `} />
+          </div>
+
+          <h2
+            className={`absolute w-full text-white font-medium py-2 text-center bottom-0 left-0 transition-all duration-300 ${
+              index % 2 === 0 ? "bg-[var(--main-color)]" : "bg-[#003F7D]"
+            }`}
+          >
+            {expert.fullName}
+          </h2>
         </div>
       </div>
-    </div> */}
-    </div>
+
+      {showModal && (
+       <Modal>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold font-mono">{expert.fullName}</h3>
+              <button 
+                onClick={handleCloseModal}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                 <AiOutlineClose size={20} className="cursor-pointer"  />
+              </button>
+            </div>
+            
+            <div className="flex flex-col items-center">
+              <img
+                src={
+                  expert.image && expert.image.trim() !== ""
+                    ? `${import.meta.env.VITE_API}${expert.image}`
+                    : `https://www.gravatar.com/avatar/?d=mp&s=180`
+                }
+                className="w-32 h-32 rounded-full object-cover mb-4"
+                alt={expert.fullName}
+              />
+              
+              <div className="text-center">
+                <h4 className="font-semibold text-lg mb-2 font-mono">{expert.fullName}</h4>
+                <p className="text-gray-600 leading-relaxed">
+                  {expert.bio !== '----' ? expert.bio : null}
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </>
   );
 }

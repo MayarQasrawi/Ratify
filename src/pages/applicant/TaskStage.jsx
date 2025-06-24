@@ -6,9 +6,14 @@ import GetAppTask from "@/components/applicant/dashboard/Stages/Task/GetAppTask"
 import SubmitURL from "@/components/applicant/dashboard/Stages/Task/SubmitURL";
 import StatusContainer from "@/components/applicant/dashboard/Stages/Task/StatusContainer";
 import SubmissionView from "@/components/applicant/dashboard/Stages/Task/SubmissionView";
+<<<<<<< HEAD
 import useGetStage from "@/hooks/applicant/progress/useGetStage";
 import ErrorPage from "../general/ErrorPage";
 import LoadingStage from "./LoadingStage";
+=======
+import AIAssistantButton from "@/components/ai/AIAssistantButton";
+
+>>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
 
 function TaskStage() {
   const { stageProgressId } = useParams();
@@ -150,6 +155,8 @@ if(isLoading){
   const shouldShowFeedback = ["Reviewed", "Completed", "Failed", "TaskRejected"].includes(stage) && additionalData.feedbackId;
 
   return (
+    <>
+    <AIAssistantButton />
     <StageLayout
       header="Task Stage"
       feedbackId={shouldShowFeedback ? additionalData.feedbackId : null}
@@ -208,6 +215,7 @@ if(isLoading){
         </>
       }
     />
+    </>
   );
 }
 

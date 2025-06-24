@@ -12,7 +12,7 @@ export default function Welcome() {
     <div className="bg-[var(--sidebar-icon-bg)] sm:py-12 py-8 sm:mt-5 md:mt-8 rounded-lg relative">
       <div className="px-4 flex items-center sm:justify-between justify-center">
         <p className="text-[var(--main-color)] font-bold capitalize text-[22px] sm:text-[24px] md:text-[26px] lg:text-3xl">
-        Welcome back {name.split(' ')[0]},
+        Welcome back {name},
         </p>
         <Lottie
           animationData={image}
