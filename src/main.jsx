@@ -17,14 +17,9 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
-<<<<<<< HEAD
     
        <RouterProvider router={routes} />
     
     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-=======
-    <RouterProvider router={routes} />
-    <ReactQueryDevtools initialIsOpen={false} />
->>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
   </QueryClientProvider>
 );

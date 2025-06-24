@@ -8,30 +8,8 @@ const StageCard = ({ stage, onClick, isLoading = true, allStages }) => {
   const location = useLocation();
   console.log("StageCard", location);
 
-  const handleClick = () => {
-    switch (stage.stageType.toLowerCase()) {
-      case "interview":
-        navigate(`/applicant/interview/${stage.stageId}`, {
-          state: { stage, allStages,trackId:location.state.trackId },
-        });
-        break;
 
-      case "task":
-        navigate(`/applicant/task/${stage.id}`, {
-          state: { stage, allStages,trackId:location.state.trackId },
-        }); //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
-        break;
-      case "exam":
-        navigate(`/applicant/exam/${stage.stageId}`, {
-          state: { stage, allStages ,trackId:location.state.trackId},
-        });
-        break;
-      default:
-        console.warn("Unknown stage type:", stage.stageType);
-    }
-  };
 
-<<<<<<< HEAD
  const handleClick = () => {
   switch (stage.stageType.toLowerCase()) {
     case "interview":
@@ -50,8 +28,6 @@ const StageCard = ({ stage, onClick, isLoading = true, allStages }) => {
 };
 
   
-=======
->>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
   const progressPercent =
     stage.score !== undefined ? (stage.score / 100) * 100 : 0;
 
