@@ -12,13 +12,11 @@ import useGetStage from "../../hooks/applicant/progress/useGetStage";
 import { useAuthContext } from "@/contexts/AuthProvider";
 import Extract from "@/utils/Extract";
 import { StatusDisplay } from "../../components/applicant/dashboard/Stages/Task/StatusContainer";
-<<<<<<< HEAD
 import { useParams } from "react-router-dom";
 import LoadingStage from "./LoadingStage";
-=======
 import AIAssistantButton from '../../components/ai/AIAssistantButton'
 
->>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
+
 // زر الإجراءات
 const ActionButton = ({ text, onClick }) => (
   <button

@@ -9,17 +9,16 @@ import Extract from "../../../utils/Extract";
 import useGetApplicantTrack from "../../../hooks/applicant/enroll/useGetApplicantTrack";
 function TracksCard({ header, description, img, id, enrollId }) {
   const navigate = useNavigate();
-  console.log(import.meta.env.VITE_API, 'import.meta.env.VITE_API')
+  console.log(import.meta.env.VITE_API, "import.meta.env.VITE_API");
   const [show, setShow] = useState(false);
   const { auth } = useAuthContext();
   let authId = null;
-  if (auth)
-    authId = Extract(auth, "nameid");
-  const { data: MyTracks, isLoading } = useGetApplicantTrack(authId)
+  if (auth) authId = Extract(auth, "nameid");
+  const { data: MyTracks, isLoading } = useGetApplicantTrack(authId);
   // console.log(id, "iside track card ddddddddddddddddddd", auth);
   // console.log(MyTracks?.data?.data?.map(tr=>tr.trackId),'iside card test jjjjjjjjjjjjj ')
   //   console.log(MyTracks?.data?.data )
-console.log( enrollId,' enrollId  enrollId  enrollId')
+  console.log(enrollId, " enrollId  enrollId  enrollId");
   return (
     <>
       {show && (
@@ -43,7 +42,10 @@ console.log( enrollId,' enrollId  enrollId  enrollId')
       )}
       <div>
         <div className="rounded-lg bg-[var(--secondary-color)]  h-72 p-6 transition-transform hover:shadow-lg">
-          <img src={`${import.meta.env.VITE_API}${img}`} className="w-40 h-30 block mx-auto rounded" />
+          <img
+            src={`${import.meta.env.VITE_API}${img}`}
+            className="w-40 h-30 block mx-auto rounded"
+          />
         </div>
         <div className="bg-white relative -mt-24 shadow text-center  text-xl  h-60 rounded-lg p-3  w-[90%] mx-auto ">
           <div className="h-24">
@@ -61,14 +63,31 @@ console.log( enrollId,' enrollId  enrollId  enrollId')
               Details <BiShowAlt className="inline text-xl" />
             </button>
             <div className="mt-3.5">
-              {auth && MyTracks.data.data.length > 0 && MyTracks?.data?.data?.map(tr => tr.trackId).includes(id) ?
-               <button onClick={() => {navigate(`/applicant/my-tracks/${header}/${enrollId[0]?.id}`) ;}} className="inline-block cursor-pointer bg-blue-500 text-white text-sm  hover:bg-[#2A5C8A] transition-colors font-medium px-6 py-2 rounded-2xl">Go To Track</button> : <Button
-                px="28"
-                py="6"
-                showModal={() => {
-                  setShow(true);
-                }}
-              />}
+              {auth &&
+              MyTracks.data.data.length > 0 &&
+              MyTracks?.data?.data?.map((tr) => tr.trackId).includes(id) ? (
+                <button
+                  onClick={() => {
+                    navigate(
+                      `/applicant/my-tracks/${header}/${enrollId[0]?.id}`,
+                      {
+                        state: { trackId: id },
+                      }
+                    );
+                  }}
+                  className="inline-block cursor-pointer bg-blue-500 text-white text-sm  hover:bg-[#2A5C8A] transition-colors font-medium px-6 py-2 rounded-2xl"
+                >
+                  Go To Track
+                </button>
+              ) : (
+                <Button
+                  px="28"
+                  py="6"
+                  showModal={() => {
+                    setShow(true);
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
