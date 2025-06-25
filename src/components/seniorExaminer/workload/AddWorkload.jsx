@@ -11,6 +11,8 @@ export default function AddWorkload({ onClose, member }) {
     task: { selected: false, count: 1 },
     exam: { selected: false, count: 1 },
     interview: { selected: false, count: 1 },
+    examCreation:{ selected: false, count: 1 },
+    taskCreation:{ selected: false, count: 1 },
   });
 
   const {
@@ -53,7 +55,6 @@ export default function AddWorkload({ onClose, member }) {
 
   const onFormSubmit = (data) => {
     const payload = [];
-
     Object.keys(selectedTypes).forEach((type) => {
       if (selectedTypes[type].selected) {
         for (let i = 1; i <= selectedTypes[type].count; i++) {
@@ -71,7 +72,7 @@ export default function AddWorkload({ onClose, member }) {
     });
 
     if (payload.length === 0) {
-      alert("Please select at least one workload type and enter values");
+      
       return;
     }
 
@@ -118,7 +119,7 @@ export default function AddWorkload({ onClose, member }) {
                     onChange={() => toggleType(type)}
                     className="mr-2"
                   />
-                  <span className="font-medium capitalize">{type}</span>
+                  <span className="text-sm font-mono font-medium capitalize">{type=='task' ||type=='exam' || type=='interview'?`Number of ${type} stages supervised`:`Number of ${type} assigned ` }</span>
                 </label>
               </div>
 

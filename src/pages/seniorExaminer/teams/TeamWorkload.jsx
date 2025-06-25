@@ -41,8 +41,12 @@ const getWorkloadTypeIcon = (type, size = 14) => {
   switch (type.toLowerCase()) {
     case "exam":
       return <FaFileAlt size={size} className="text-blue-600" title="Exam" />;
+       case "examcreation":
+      return <FaFileAlt size={size} className="text-blue-600" title="Exam" />;
     case "task":
-      return <FaTasks size={size} className="text-green-600" title="Task" />;
+      return <FaTasks size={size} className="text-green-600" title="ExamCreation" />;
+       case "taskcreation":
+      return <FaTasks size={size} className="text-green-600" title="TaskCreation" />;
     case "interview":
       return (
         <FaUserTie size={size} className="text-purple-600" title="Interview" />

@@ -6,14 +6,10 @@ import CalendarBooking from "@/components/applicant/dashboard/Stages/interview/C
 import animationData from "@/assets/img/animation/Appointment.json"; // Adjust the path as necessary
 import useGetStage from "@/hooks/applicant/progress/useGetStage";
 import MeetingInfoSection from "@/components/applicant/dashboard/Stages/interview/MeetingInfoSection";
-<<<<<<< HEAD
 import { useParams } from "react-router-dom";
 import LoadingStage from "@/pages/applicant/LoadingStage";
 import { StatusDisplay } from "@/components/applicant/dashboard/Stages/Task/StatusContainer";
-
-=======
 import AIAssistantButton from "@/components/ai/AIAssistantButton";
->>>>>>> a333b403dd5f8f90af4276665c0c4606c2ea2bab
 function InterviewStage() {
   
    const { stageProgressId } = useParams(); 

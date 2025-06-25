@@ -356,7 +356,11 @@ export default function EvaluationRequests() {
       case "exams":
         if (pendingRequest?.data.length === 0) return <EmptyState />;
         return (
+
+        
+
           <div className=" scrollbar-custom">
+
             <Table
               cols={["Candidate", "Track/ Stage", "Waiting Time", " "]}
               data={pendingRequest?.data}

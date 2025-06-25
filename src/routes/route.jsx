@@ -127,7 +127,7 @@ export const routes = createBrowserRouter([
   {
     path: "login",
     element: (
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={null}>
         <Login />
       </Suspense>
     ),

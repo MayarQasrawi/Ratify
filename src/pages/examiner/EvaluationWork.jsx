@@ -64,7 +64,7 @@ export default function EvaluationWork() {
       reset({ 
         generalFeedback: "", 
         details: initDetails,
-        resultStatus: ""
+        resultStatus: " "
       });
     }
   }, [stageCriteria, reset]);
@@ -76,13 +76,12 @@ export default function EvaluationWork() {
 
   const details = watch("details");
   const watchedResultStatus = watch("resultStatus");
-
   const calculateTotalScore = () =>
     stageCriteria?.data?.filter(stg => stg.isActive == true).reduce((sum, c) => sum + (+details[c.id]?.score || 0), 0);
 
   const getAutoResultStatus = () => {
     const pct = calculateTotalScore();
-    console.log(pct >= stageInfo?.data?.passingScore)  
+    console.log(pct >= stageInfo?.data?.passingScore,'getAutoResultStatus getAutoResultStatus')  
     if (pct >= stageInfo?.data.passingScore && location.state.type !== 'Task') {
       return "Passed";
     } else if (pct < stageInfo?.data.passingScore && location.state.type !== 'Task') {
@@ -104,12 +103,14 @@ export default function EvaluationWork() {
   }, [details, stageInfo?.data.passingScore]);
 
   const isTaskBelowThreshold = () => {
+    console.log(location.state.type === 'Task' && 
+           calculateTotalScore() < stageInfo?.data.passingScore,'jjjjjjjjj,,jjjjjjjjjjjjjjjjjjjjjjjj')
     return location.state.type === 'Task' && 
            calculateTotalScore() < stageInfo?.data.passingScore;
   };
 
   const onSubmit = (data) => {
-    console.log(data.resultStatus,'data.resultStatus ...,m,')
+    console.log(data,'data.resultStatus ...,m,/////////////')
     const payload = {
       stageProgressId: location.state.stageProgressId,
       examinerId: id,
@@ -118,14 +119,14 @@ export default function EvaluationWork() {
       examRequestId: location.state.examRequestId || null,
       comments: data.generalFeedback,
       totalScore: calculateTotalScore(),
-      resultStatus:location.state.type!='Task' ? getAutoResultStatus(): data.resultStatus, 
+      resultStatus:location.state.type!='Task' ? getAutoResultStatus():isTaskBelowThreshold() ? data.resultStatus:'Passed', 
       detailedFeedbacks: stageCriteria.data.filter(stg => stg.isActive == true).map((c) => ({
         evaluationCriteriaId: c.id,
         score: +data.details[c.id].score,
         comments: data.details[c.id].comments,
       })),
     };
-    console.log(payload)
+    console.log(payload,'payload')
     mutate(payload);
   };
 
