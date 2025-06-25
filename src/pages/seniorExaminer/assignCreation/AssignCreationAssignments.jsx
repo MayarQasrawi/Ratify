@@ -188,7 +188,7 @@ export default function AssignCreationAssignments() {
           />
         </Modal>
       )}
-      {selectedModal == "show Details" && (
+      {selectedModal == "showDetails" && (
         <Modal>
           <AssignmentDetails
             examiner={selectedExaminer}
@@ -322,7 +322,7 @@ export default function AssignCreationAssignments() {
 
                         <div
                           onClick={() => {
-                            setSelectedModal("show Details");
+                            setSelectedModal("showDetails");
                             setSelectedExaminer(examiner);
                           }}
                           className="ml-4 p-2 text-gray-400 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"

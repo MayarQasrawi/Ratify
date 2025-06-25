@@ -155,9 +155,9 @@ export default function AssignmentModal({ examiner, onClose, stages, id }) {
   );
   
  useEffect(()=>{
-  if(isAssignError || isSuccess)
+  if( isSuccess)
   setTimeout(()=> onClose(),1500)
- },[isAssignError,isSuccess])
+ },[isSuccess])
  
  console.log( data,'assign modal data')
  
