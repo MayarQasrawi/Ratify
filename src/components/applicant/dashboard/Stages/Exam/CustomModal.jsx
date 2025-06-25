@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineBook } from "react-icons/ai";
 
-const CustomModal= ({ isOpen, onClose, onConfirm, isLoading }) => {
+const CustomModal = ({ isOpen, onClose, onConfirm, isLoading }) => {
+  const [notes, setNotes] = useState("");
+
   if (!isOpen) return null;
+
+  const handleConfirm = () => {
+    onConfirm(notes); // نرسل الملاحظات
+    setNotes("");     // نعيد تعيينها بعد الإرسال
+  };
 
   return (
     <div className="fixed inset-0 bg-white/80 bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -21,7 +28,17 @@ const CustomModal= ({ isOpen, onClose, onConfirm, isLoading }) => {
             <AiOutlineBook size={32} className="text-blue-600" />
           </div>
           <p className="text-gray-600 text-lg">Are you sure you want to submit an exam request?</p>
-          <p className="text-gray-500 text-sm mt-2">This action will notify the administration team.</p>
+          <p className="text-gray-500 text-sm mt-2 mb-4">This action will notify the administration team.</p>
+
+          {/* ✅ textarea for notes */}
+          <textarea
+            className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-200"
+            rows="4"
+            placeholder="Add any notes or comments (optional)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            disabled={isLoading}
+          />
         </div>
 
         <div className="flex gap-3 p-6 pt-0">
@@ -33,7 +50,7 @@ const CustomModal= ({ isOpen, onClose, onConfirm, isLoading }) => {
             Cancel
           </button>
           <button
-            onClick={onConfirm}
+            onClick={handleConfirm}
             disabled={isLoading}
             className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >

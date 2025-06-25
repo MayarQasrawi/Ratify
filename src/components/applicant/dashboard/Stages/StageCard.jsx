@@ -8,29 +8,26 @@ const StageCard = ({ stage, onClick, isLoading = true, allStages }) => {
   const location = useLocation();
   console.log("StageCard", location);
 
-  const handleClick = () => {
-    switch (stage.stageType.toLowerCase()) {
-      case "interview":
-        navigate(`/applicant/interview/${stage.stageId}`, {
-          state: { stage, allStages,trackId:location.state.trackId },
-        });
-        break;
 
-      case "task":
-        navigate(`/applicant/task/${stage.id}`, {
-          state: { stage, allStages,trackId:location.state.trackId },
-        }); //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
-        break;
-      case "exam":
-        navigate(`/applicant/exam/${stage.stageId}`, {
-          state: { stage, allStages ,trackId:location.state.trackId},
-        });
-        break;
-      default:
-        console.warn("Unknown stage type:", stage.stageType);
-    }
-  };
 
+ const handleClick = () => {
+  switch (stage.stageType.toLowerCase()) {
+    case "interview":
+      navigate(`/applicant/interview/${stage.id}`, { state: { stage , allStages } });
+      break;
+      
+    case "task":
+      navigate(`/applicant/task/${stage.id}`, { state: { stage , allStages } });  //التاسك باحتاج مفتاح البروغرسس مش الستيج نفسه مشان  أوصله
+      break;
+    case "exam":
+      navigate(`/applicant/exam/${stage.id}`, { state: { stage , allStages } });
+      break;
+    default:
+      console.warn("Unknown stage type:", stage.stageType);
+  }
+};
+
+  
   const progressPercent =
     stage.score !== undefined ? (stage.score / 100) * 100 : 0;
 

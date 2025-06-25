@@ -1,4 +1,4 @@
-"use client"
+
 import { Outlet, useLocation } from "react-router-dom"
 import Sidebar from "../components/admin/sidbar/Sidebar"
 import TopMenue from "../components/admin/TopMenue"
@@ -15,16 +15,16 @@ import useGetCreationAssignment from "../hooks/examiner/useGetCreationAssignment
 import { useSidebar } from "../contexts/SidebarProvider"
 
 export default function Dashboard() {
-  const { auth } = useAuthContext()
-  const [showModal, setShowModal] = useState(false)
-  const currentLocation = useLocation()
-  let role = "jjjjj"
-  let id
-  let isExaminer = false
+  const { auth } = useAuthContext();
+  const [showModal, setShowModal] = useState(false);
+  const currentLocation = useLocation();
+  let role = "jjjjj";
+  let id;
+  let isExaminer = false;
   if (auth) {
-    role = Extract(auth, "role")
-    id = Extract(auth, "nameid")
-    isExaminer = role === "Examiner" || role === "SeniorExaminer"
+    role = Extract(auth, "role");
+    id = Extract(auth, "nameid");
+    isExaminer = role === "Examiner" || role === "SeniorExaminer";
   }
   const { data: examinerInfo, isLoading } = useFetchExaminerById(id, isExaminer)
   const { data: examinerAssignment, error } = useGetCreationAssignment(id, role === "Examiner")
@@ -37,7 +37,7 @@ export default function Dashboard() {
       console.log(isInfoMissing, "info miss")
       setShowModal(isInfoMissing)
     }
-  }, [examinerInfo, isLoading, isExaminer])
+  }, [examinerInfo, isLoading, isExaminer]);
 
   // if (showModal) return <ExaminerInfoModal setShowModal={setShowModal} />
 
@@ -45,43 +45,60 @@ export default function Dashboard() {
     currentLocation.pathname === "/dashboard/Admin/tracks/setup" ||
     currentLocation.pathname === "/dashboard/seniorExaminer/plan-setup"
   ) {
-    return <Outlet />
+    return <Outlet />;
   }
   if (isLoading) {
-    return <TopLoader isLoading={isLoading} />
+    return <TopLoader isLoading={isLoading} />;
   }
 
   return (
     <>
       <ThemeProvider>
         <SidebarProvider>
-          <DashboardContent role={role} examinerInfo={examinerInfo} examinerAssignment={examinerAssignment} />
+          <DashboardContent
+            role={role}
+            examinerInfo={examinerInfo}
+            examinerAssignment={examinerAssignment}
+          />
         </SidebarProvider>
       </ThemeProvider>
     </>
-  )
+  );
 }
 
 function DashboardContent({ role, examinerInfo, examinerAssignment }) {
-  const { isSidebarOpen } = useSidebar()
+  const { isSidebarOpen } = useSidebar();
 
   return (
     <div className="flex flex-row gap-2 md:gap-10 bg-[var(--background-color)] min-h-screen text-[var(--text-color)] font-medium">
       {/* Sidebar */}
       <div
         className={`bg-[var(--sidebar-bg)] fixed h-[98vh] md:py-4 shadow rounded-xl lg:m-[0.5%] m-[1%] transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "w-8 sm:w-48 md:w-66 p-1.5 md:p-2 min-w-[70px]" : "w-8 p-1.5 min-w-[70px]"
+          isSidebarOpen
+            ? "w-8 sm:w-48 md:w-66 p-1.5 md:p-2 min-w-[70px]"
+            : "w-8 p-1.5 min-w-[70px]"
         }`}
       >
-        <div className={`${isSidebarOpen ? "hidden sm:flex" : "hidden"} flex-col items-center gap-2 pb-5 pl-3`}>
+        <div
+          className={`${
+            isSidebarOpen ? "hidden sm:flex" : "hidden"
+          } flex-col items-center gap-2 pb-5 pl-3`}
+        >
           <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
-            {role == "Examiner" || role == "SeniorExaminer" ? getFirstCharacter(examinerInfo?.data?.fullName) : "Y"}
+            {role == "Examiner" || role == "SeniorExaminer"
+              ? getFirstCharacter(examinerInfo?.data?.fullName)
+              : "Y"}
           </div>
           <h1 className="text-2xl text-[var(--sidebar-text)] font-medium">
-            {role == "Examiner" || role == "SeniorExaminer" ? examinerInfo?.data?.fullName.split(" ")[0] : "Abrar"}
+            {role == "Examiner" || role == "SeniorExaminer"
+              ? examinerInfo?.data?.fullName.split(" ")[0]
+              : "Abrar"}
           </h1>
         </div>
-        <Sidebar ind={examinerAssignment?.data?.length > 0} collapsed={!isSidebarOpen} />
+        <Sidebar
+          ind={examinerAssignment?.data?.length > 0}
+          collapsed={!isSidebarOpen}
+        />
       </div>
 
       <div
@@ -98,5 +115,5 @@ function DashboardContent({ role, examinerInfo, examinerAssignment }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

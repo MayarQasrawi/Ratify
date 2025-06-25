@@ -1,6 +1,6 @@
 import { MdCalendarToday, MdEmojiEvents, MdDescription } from 'react-icons/md';
 
-export default function TaskTable({dueDate, difficulty, requirements,title}) {
+export default function TaskTable({dueDate, difficulty, description,title}) {
 
 
   return (
@@ -42,8 +42,8 @@ export default function TaskTable({dueDate, difficulty, requirements,title}) {
           <div className="flex items-start gap-3">
             <MdDescription className="mt-1 flex-shrink-0 text-[var(--main-color)]" size={20} />
             <div>
-              <p className="font-semibold text-gray-700">Requirements</p>
-              <p className="text-gray-600">{requirements}</p>
+              <p className="font-semibold text-gray-700">Description</p>
+              <p className="text-gray-600">{description} </p>
             </div>
           </div>
         </div>

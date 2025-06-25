@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const LevelProgress = ({ stagesCount, stagesProgressesCount }) => {
   const totalStages = stagesCount;
   const completedStages = stagesProgressesCount;
-  const progressPercentage = totalStages > 0 ? (completedStages / totalStages) * 100 : 0;
+  const progressPercentage = totalStages > 0 ? Math.round((completedStages / totalStages) * 100) : 0;
 
   return (
     <div className="mb-6">

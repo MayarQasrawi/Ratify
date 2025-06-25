@@ -24,6 +24,7 @@ export default function Sidebar({ ind, collapsed }) {
               key={index}
               to={`/dashboard/${path}/${menueItem.link}`}
               title={menueItem.title}
+        
               className={({ isActive }) =>
                 isActive
                   ? "relative w-full text-[var(--main-color)] rounded-xl bg-[var(--sidebar-icon-bg)]"

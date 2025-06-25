@@ -11,7 +11,7 @@ export default function SinglePreview({ open, onClose, data ,onConfirm}) {
   console.log("preview", data)
   
   const { examinerName, date, startTime, endTime } = data
-
+console.log("examinerName", examinerName)
   return (
     <AnimatePresence>
       {open && (

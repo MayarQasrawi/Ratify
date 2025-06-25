@@ -98,7 +98,7 @@ const [activeView, setActiveView] = useState("table"); // or "card"
           </div>
         </div>
       </td>
-      <td className="py-3 px-1 lg:px-3 text-center">{member.specialization || "N/A"}</td>
+      <td className="py-3 px-1 lg:px-3 text-center">{member.bio || "N/A"}</td>
       <td className="py-3 px-1 lg:px-3 text-center">
         <span
           className={`inline-flex px-2 py-1 text-xs rounded-full font-medium ${
@@ -142,12 +142,12 @@ const [activeView, setActiveView] = useState("table"); // or "card"
 
   const cols = [
     "Info",
-    "Specialization",
+    "Bio",
     "Role",
     "Date Of Birth",
     "Gender",
     "Examiner Loads",
-    "",
+    " ",
   ];
 
   const roleOptions = [

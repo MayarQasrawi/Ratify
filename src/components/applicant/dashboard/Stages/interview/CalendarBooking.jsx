@@ -8,6 +8,13 @@ import ErrorPage from "@/pages/general/ErrorPage";
 import useBookInterview from "@/hooks/applicant/interview/useBookInterview";
 import ConfirmationModal from "@/components/shared/modal/ConfirmationModal";
 import Alert from "@/components/shared/Alert";
+import { 
+  processAvailableDates, 
+  processTimeSlots, 
+  prepareBookingData,
+  formatLocalDateTime,
+  getTodayLocal
+} from "@/utils/timezoneUtils";
 
 export default function CalendarBooking({
   stageId,
@@ -51,61 +58,14 @@ export default function CalendarBooking({
     },
   });
 
-  // ... rest of your component logic stays the same ...
-
-  // Extract available dates from server data
+  // Extract available dates from server data using timezone utils
   const getAvailableDates = () => {
-    if (!data || !Array.isArray(data)) return [];
-
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-    return data
-      .map((dateItem) => {
-        // Parse the date string (e.g., "2025-05-21T00:00:00")
-        const dateStr = dateItem.date;
-        return new Date(dateStr);
-      })
-      .filter((date) => {
-        // Filter out invalid dates and past dates
-        return !isNaN(date.getTime()) && date >= today;
-      });
+    return processAvailableDates(data);
   };
 
-  // Get available time slots for selected date
+  // Get available time slots for selected date using timezone utils
   const getAvailableTimeSlotsForDate = (selectedDate) => {
-    if (!data || !Array.isArray(data) || !selectedDate) return [];
-
-    const selectedDateStr = selectedDate.toISOString().split("T")[0];
-    const dateItem = data.find((item) => {
-      const itemDateStr = new Date(item.date).toISOString().split("T")[0];
-      return itemDateStr === selectedDateStr;
-    });
-
-    if (!dateItem || !dateItem.slots) return [];
-
-    const now = new Date();
-
-    return dateItem.slots
-      .filter((slot) => {
-        // Filter out booked slots and past time slots
-        if (slot.isBooked) return false;
-
-        const slotDateTime = new Date(slot.startTime);
-        return slotDateTime > now; // Only show future time slots
-      })
-      .map((slot) => {
-        // Extract time from startTime (e.g., "2025-05-21T15:00:00" -> "15:00")
-        const startTime = new Date(slot.startTime);
-        const hours = startTime.getHours().toString().padStart(2, "0");
-        const minutes = startTime.getMinutes().toString().padStart(2, "0");
-        return {
-          time: `${hours}:${minutes}`,
-          appointmentId: slot.appointmentId,
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-        };
-      });
+    return processTimeSlots(data, selectedDate);
   };
 
   const availableDates = getAvailableDates();
@@ -114,10 +74,10 @@ export default function CalendarBooking({
   const isDateAvailable = (date) => {
     if (!date) return false;
     return availableDates.some(
-      (availableDate) =>
-        availableDate.getDate() === date.getDate() &&
-        availableDate.getMonth() === date.getMonth() &&
-        availableDate.getFullYear() === date.getFullYear()
+      (availableItem) =>
+        availableItem.localDate.getDate() === date.getDate() &&
+        availableItem.localDate.getMonth() === date.getMonth() &&
+        availableItem.localDate.getFullYear() === date.getFullYear()
     );
   };
 
@@ -135,11 +95,15 @@ export default function CalendarBooking({
 
   const handleConfirmBooking = () => {
     if (selectedTime && date) {
-      bookInterview({
+      const bookingData = prepareBookingData({
         applicantId,
         interviewId,
         appointmentId: selectedTime.appointmentId,
+        startTime: selectedTime.startTime,
+        endTime: selectedTime.endTime
       });
+      
+      bookInterview(bookingData);
       setShowModal(false);
     }
   };
@@ -276,7 +240,7 @@ Your interview has been scheduled successfully.          </p>
             className="mx-auto"
             disabled={disableUnavailableDates}
             defaultMonth={
-              availableDates.length > 0 ? availableDates[0] : new Date()
+              availableDates.length > 0 ? availableDates[0].localDate : new Date()
             }
             style={{ color: "var(--text-color)" }}
           />
@@ -316,7 +280,7 @@ Your interview has been scheduled successfully.          </p>
                             : "var(--table-border)",
                       }}
                     >
-                      {timeSlot.time}
+                      {timeSlot.displayTime}
                     </button>
                   ))}
                 </div>
@@ -390,7 +354,7 @@ Your interview has been scheduled successfully.          </p>
           >
             Are you sure you want to book an interview on{" "}
             <span className="font-semibold">{date.toDateString()}</span> at{" "}
-            <span className="font-semibold">{selectedTime.time}</span>?
+            <span className="font-semibold">{selectedTime?.displayTime}</span>?
           </ConfirmationModal>
         </div>
       )}

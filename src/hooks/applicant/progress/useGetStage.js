@@ -2,14 +2,14 @@
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/hooks/auth/utils/axiosInstance';
 
-const useGetStage = ({stageId,status}) => {
+const useGetStage = ({stageProgressId,status}) => {
   return useQuery({
-    queryKey: ['stageProgress', stageId,status],
+    queryKey: ['stageProgress', stageProgressId,status],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/stage-progresses/${stageId}`);
+      const response = await axiosInstance.get(`/stage-progresses/${stageProgressId}`);
       return response.data.data;
     },
-    enabled: !!stageId, // يتم تنشيط الطلب فقط إذا كان stageId موجودًا
+    enabled: !!stageProgressId, 
   });
 };
 
