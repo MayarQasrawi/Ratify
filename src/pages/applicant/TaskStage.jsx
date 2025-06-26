@@ -120,6 +120,7 @@ console.log('🔍 Debug Info:', {
       />
     );
   }
+
 if(isLoading){
   <LoadingStage />
 }
@@ -157,7 +158,7 @@ if(isLoading){
     <StageLayout
       header="Task Stage"
       feedbackId={shouldShowFeedback ? additionalData.feedbackId : null}
-    stagePassingScore={additionalData.stagePassingScore}
+     stagePassingScore={stageData.stagePassingScore}
 
       Children={
         <>

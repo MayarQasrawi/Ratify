@@ -17,10 +17,7 @@ function InterviewStage() {
 
   // Initialize stageData from location state
   const [stageData, setStageData] = useState({});
-  const stageId = stageData?.stageId || null;
-  console.log("Stage ID:", stageId);
-  const interviewId = stageData?.additionalData?.interviewId;
-  console.log("Interview ID 1:", interviewId);
+ 
 
   // Fetch stage data from API
   const {
@@ -28,20 +25,23 @@ function InterviewStage() {
     isLoading: isStageLoading,
     isSuccess,
     error,
-  } = useGetStage(stageProgressId);
+    isError
+  } = useGetStage({stageProgressId});
 
   console.log("API data:", data);
   console.log("Is loading:", isStageLoading);
   console.log("Is success:", isSuccess);
-  console.log("Error:", error);
+  console.log("isError:", isError);
 
+useEffect(() => {
+    // If stageData is empty and data is available, update stageData
   // Update stageData when API data is fetched successfully
-  useEffect(() => {
     if (isSuccess && data) {
       console.log("Updating stageData with API data:", data);
       setStageData(data);
     }
-  }, [isSuccess, data]);
+  }, [data, isSuccess]);
+
 
   if(isStageLoading) {
     return <LoadingStage />;
@@ -61,6 +61,7 @@ function InterviewStage() {
   const color =
     statusColors[stageData?.actionStatus] || statusColors["ReadyToBook"];
 
+    
   // Reusable container config
   const getContainerContent = (actionStatus, stageData) => {
     console.log("stageData?.actionStatus", actionStatus);
@@ -73,9 +74,10 @@ function InterviewStage() {
             "No interview booking exists. Submit your request for an interview. Our team will review and schedule it for you.",
           children: (
             <CalendarBooking
-              stageId={stageId}
+              stageProgressId={stageProgressId}
               setStageData={setStageData}
-              interviewId={interviewId}
+              interviewId={stageData?.additionalData?.interviewId}
+              stageId={stageData.stageId}
             />
           ),
         };
@@ -123,9 +125,10 @@ function InterviewStage() {
           description: "Booking canceled. You can book again.",
           children: (
             <CalendarBooking
-              stageId={stageId}
+              stageId={stageData?.stageId}
               setStageData={setStageData}
-              interviewId={interviewId}
+              interviewId={stageData?.additionalData?.interviewId}
+              stageProgressId={stageProgressId}
             />
           ),
         };
@@ -151,9 +154,11 @@ function InterviewStage() {
             "No interview booking exists. Submit your request for an interview.",
           children: (
             <CalendarBooking
-              stageId={stageId}
+              stageId={stageData?.stageId}
               setStageData={setStageData}
-              interviewId={interviewId}
+              interviewId={stageData?.additionalData?.interviewId}
+                            stageProgressId={stageProgressId}
+
             />
           ),
         };
@@ -196,6 +201,7 @@ function InterviewStage() {
       <StageLayout
         feedbackId={stageData?.additionalData?.feedbackId}
         header="Interview"
+        stagePassingScore={stageData?.stagePassingScore}
         Children={
           <>
             {[
@@ -221,7 +227,7 @@ function InterviewStage() {
             ].includes(stageData?.actionStatus) && (
               <Container
                 header="Interview Details"
-                children={<InterviewCard id={stageId} />}
+                children={<InterviewCard id={stageData?.stageId} />}
               />
             )}
           </>

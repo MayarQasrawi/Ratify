@@ -12,6 +12,8 @@ function Feedback({ id, stagePassingScore }) {
   const [expandAll, setExpandAll] = useState(false);
   
   console.log("feedback", data)
+  console.log("stagePassingScore", stagePassingScore)
+  
   
   useEffect(() => {
     if (data) {
@@ -56,7 +58,7 @@ function Feedback({ id, stagePassingScore }) {
 
   const border = "rounded-lg p-4 border-2 border-[var(--table-border)]";
 
-  if (isLoading) return <div>Loading feedback...</div>;
+ 
   if (error) return <div>Failed to load feedback.</div>;
   if (!id || !feedback) return <div>No Feedback!</div>;
 
@@ -95,7 +97,7 @@ function Feedback({ id, stagePassingScore }) {
               {/* Expand All Button */}
               <button
                 onClick={toggleExpandAll}
-                className="flex items-center gap-2 px-4 py-2  text-black rounded-lg hover:bg-[var(--main-color)] transition-colors duration-200"
+                className="flex items-center gap-2 px-4 py-2  text-black rounded-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 {expandAll ? (
                   <>

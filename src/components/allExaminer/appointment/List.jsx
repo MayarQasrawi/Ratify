@@ -29,7 +29,7 @@ function List({ appointments, onApprove, onReject }) {
   };
 
   let tableColumns;
-  if (appointments?.some(apt => apt.scheduledDateTime)) {
+  if (appointments?.some((apt) => apt.scheduledDate)) {
     tableColumns = ["User Name", "Date & Time", "Status", "Actions"];
   } else {
     tableColumns = ["User Name", "Status", "Actions", "Details"];
@@ -40,7 +40,7 @@ function List({ appointments, onApprove, onReject }) {
   const renderRow = (appointment) => (
     <tr
       key={appointment.id}
-      className="text-sm text-start hover:bg-gray-50 dark:hover:bg-gray-700/20 border-b"
+      className="text-sm text-center hover:bg-gray-50 dark:hover:bg-gray-700/20 border-b "
     >
       <td className="py-4 px-2 whitespace-nowrap font-medium text-gray-900">
         {appointment.applicantName || "Mayar Yaser"}
@@ -48,20 +48,23 @@ function List({ appointments, onApprove, onReject }) {
           User ID: {appointment.applicantId}
         </div>
       </td>
-      {appointment.scheduledDateTime && (
-        <td className="py-4 px-2 whitespace-nowrap">
-          <div className="flex flex-col items-start text-sm">
-            <div className="flex items-center font-medium">
-              <MdOutlineCalendarToday className="mr-1 text-gray-500 font-bold" />
-              {format(parseISO(appointment.scheduledDateTime), "MMM d, yyyy")}
+      {
+        appointment.scheduledDate && (
+          <td className="py-4 px-2 whitespace-nowrap">
+            <div className="flex flex-col items-start text-sm">
+              <div className="flex items-center font-medium">
+                <MdOutlineCalendarToday className="mr-1 text-gray-500 font-bold" />
+                {format(parseISO(appointment.scheduledDate), "MMM d, yyyy")}
+              </div>
+              <div className="flex items-center text-gray-500">
+                <TfiTime className="mr-1" />
+                {format(parseISO(appointment.scheduledDate), "h:mm a")}
+              </div>
             </div>
-            <div className="flex items-center text-gray-500">
-              <TfiTime className="mr-1" />
-              {format(parseISO(appointment.scheduledDateTime), "h:mm a")}
-            </div>
-          </div>
-        </td>
-      )}
+          </td>
+        )
+      }
+
       <td className="py-4 px-2 whitespace-nowrap">
         <StatusBadge status={appointment.status} />
       </td>

@@ -197,6 +197,8 @@ console.log("Payload being sent:", payload);
             : null
         }
         header="Exam"
+        stagePassingScore={stageData?.stagePassingScore}
+
         Children={
           <>
             {!["FeedbackAvailable", "Completed", "Failed", "Reviewed"].includes(
