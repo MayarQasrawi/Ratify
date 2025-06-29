@@ -21,7 +21,7 @@ export default function Applicants() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const cols = ["Info", "Application Date", "Status", " "];
+  const cols = ["Info", "Status"];
 
   const fetchApplicants = async ({ queryKey }) => {
     const [_key, { page, pageSize }] = queryKey;
@@ -65,11 +65,11 @@ export default function Applicants() {
           </div>
         </div>
       </td>
-      <td className="py-3 px-1 lg:px-3 text-center table-cell">
+      {/* <td className="py-3 px-1 lg:px-3 text-center table-cell">
         <span className="text-[var(--text-color)]">
           {new Date(applicant.applicationDate).toLocaleDateString()}
         </span>
-      </td>
+      </td> */}
       <td className="py-3 px-1 lg:px-3 flex justify-center text-center">
         <div
           className={`flex items-center justify-center w-fit gap-1 p-1 md:px-3 font-medium py-1 text-xs rounded-full ${
@@ -86,9 +86,9 @@ export default function Applicants() {
           <span className=""> {applicant.status}</span>
         </div>
       </td>
-      <td className="py-3 px-1 lg:px-3 text-center">
+      {/* <td className="py-3 px-1 lg:px-3 text-center">
         <Action actions={actions} />
-      </td>
+      </td> */}
     </tr>
   );
 
@@ -102,12 +102,12 @@ export default function Applicants() {
         </div>
       </div>
       <div className="flex-wrap md:flex items-center justify-between p-1 lg:p-3 my-1">
-        <Search search={search} setSearch={setSearch} />
+        {/* <Search search={search} setSearch={setSearch} /> */}
         <div className="flex md:gap-3 gap-1 w-full md:w-auto">
-          <button className="flex items-center cursor-pointer justify-center lg:px-3 lg:py-2 px-2 py-1 text-[var(--text-color)] hover:text-[var(--button-hover)] transition-colors font-medium">
+          {/* <button className="flex items-center cursor-pointer justify-center lg:px-3 lg:py-2 px-2 py-1 text-[var(--text-color)] hover:text-[var(--button-hover)] transition-colors font-medium">
             <MdOutlineFindInPage className="mr-1 inline" />
             Filters
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="mb-3">

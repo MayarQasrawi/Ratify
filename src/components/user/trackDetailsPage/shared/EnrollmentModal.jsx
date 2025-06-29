@@ -10,7 +10,7 @@ import SuccessEnroll from "../../shared/enroll/SuccessEnroll";
 import Modal from "../../../shared/modal/Modal";
 
 export default function EnrollmentModal({ setShow, title, description , trackId=9, link}) {
-  const { isPending, isError, mutate:registerInTrack, isSuccess } =
+  const { isPending, isError, mutate:registerInTrack, isSuccess,data,error } =
     useRegisterInTrack();
   const navigate = useNavigate();
   let userId ;
@@ -18,9 +18,10 @@ export default function EnrollmentModal({ setShow, title, description , trackId=
   if (auth) userId = Extract(auth, "nameid");
   // console.log(isError, "inside enroll,",userId );
   // console.log(trackId, "inside enroll lllllllllllllllllmmmmmmmmml");
+
   if(isError){
     setTimeout(()=>setShow(false),1000)
-   return  <Alert type='error' message='error'/>
+   return  <Alert type='error' message={error?.response?.data?.message || 'Error'}/>
   }
   if(isSuccess){
     return <SuccessEnroll setShow={setShow} link={link} /> 

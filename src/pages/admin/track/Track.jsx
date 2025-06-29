@@ -263,7 +263,7 @@ export default function Track() {
     return (
       <tr className="border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
         <td className="p-4 ">
-          <div className="flex items-center justify-center  space-x-4">
+          <div className="  flex flex-col items-center  space-x-4">
             <div>
               <img
                 className="w-12 h-12 object-cover rounded-lg shadow-sm"

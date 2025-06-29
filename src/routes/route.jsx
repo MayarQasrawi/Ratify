@@ -43,11 +43,11 @@ import Derivers from "@/components/applicant/dashboard/Deriver";
 const TrackStructureDetails = lazy(() =>
   import("../pages/seniorExaminer/plan/TrackStructureDetails")
 );
-import LoadingFallback, { 
-  MinimalLoadingFallback, 
-  SkeletonLoadingFallback, 
-  MorphingLoadingFallback 
-} from '@/pages/general/LoadingFallback';
+import LoadingFallback, {
+  MinimalLoadingFallback,
+  SkeletonLoadingFallback,
+  MorphingLoadingFallback,
+} from "@/pages/general/LoadingFallback";
 import AssignCreationAssignments from "../pages/seniorExaminer/assignCreation/AssignCreationAssignments";
 import AssignedWork from "../pages/examiner/AssignedWork";
 import ExaminerHome from "@/pages/examiner/ExaminerHome";
@@ -78,11 +78,7 @@ const TeamWorkload = lazy(() =>
   import("../pages/seniorExaminer/teams/TeamWorkload")
 );
 const ViewDetails = lazy(() => import("../pages/admin/ViewDetailes"));
-const SidebarLayout = lazy(() =>
-  import("../layouts/SidebarLayout")
-);
-
-
+const SidebarLayout = lazy(() => import("../layouts/SidebarLayout"));
 
 export const routes = createBrowserRouter([
   {
@@ -180,8 +176,8 @@ export const routes = createBrowserRouter([
           {
             index: true,
             element: (
-              <Suspense fallback={null}>
-                <AdminHome />
+              <Suspense fallback={<LoadingFallback />}>
+                  <Team />
               </Suspense>
             ),
           },
@@ -238,13 +234,13 @@ export const routes = createBrowserRouter([
 
       {
         path: "seniorExaminer",
-        element: <ProtectedRoute allowRole="Examiner" />,
+        element: <ProtectedRoute allowRole="SeniorExaminer" />,
         children: [
           {
             index: true,
             element: (
               <Suspense fallback={<LoadingFallback />}>
-                <SeniorHome />
+                 <SchedulingView />
               </Suspense>
             ),
           },
@@ -463,38 +459,38 @@ export const routes = createBrowserRouter([
           </Suspense>
         ),
       },
-               { path: "exam/:stageProgressId",
-                element: (
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ExamStage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: "interview/:stageProgressId",
-                element: (
-                  <Suspense fallback={<LoadingFallback />}>
-                    <InterviewStage />
-                  </Suspense>
-                ),
-              },
-              {
-                path: "task/:stageProgressId",
-            element: (
-              <Suspense fallback={<LoadingFallback />}>
-                <TaskStage />
-              </Suspense>
-            ),
-          },
-          ,
+      {
+        path: "exam/:stageProgressId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <ExamStage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "interview/:stageProgressId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <InterviewStage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "task/:stageProgressId",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <TaskStage />
+          </Suspense>
+        ),
+      },
+      ,
       { path: "ai-assistant", element: <AI /> },
       { path: "ai-courseOutline", element: <CourseOutline /> },
       { path: "ai-quiz", element: <Quiz /> },
       { path: "ai-card", element: <FlashcardPage /> },
       { path: "ai-material", element: <Material /> },
-          
-            ],
-          },
+    ],
+  },
 
   {
     path: "*",

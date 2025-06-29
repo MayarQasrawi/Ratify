@@ -23,7 +23,7 @@ export default function SchedulingView() {
           defaultValue="single"
           value={activeTab}
           onValueChange={setActiveTab}
-          className="w-full   "
+          className="w-full cursor-pointer   "
         >
           <TabsList className="flex flex-col sm:flex-row w-full mb-8  md:bg-gray-200/40 dark:bg-[var(--sidebar-icon-bg)] space-y-2 sm:space-y-0 sm:space-x-2">
             <TabsTrigger
@@ -35,7 +35,7 @@ export default function SchedulingView() {
 
             <TabsTrigger
               value="multiple"
-              className="flex items-center justify-center space-x-2"
+              className="flex items-center justify-center space-x-2 cursor-pointer"
             >
               Multiple Appointments
             </TabsTrigger>

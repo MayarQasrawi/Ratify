@@ -50,7 +50,9 @@ export default function Card({ data, setTrack, setSelected }) {
   return (
     <div className="mt-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {data.map((track) => {
-        const isMangerAssign = track.examinerId != null;
+        const isMangerAssign = track.seniorExaminerID;
+        const hasSenior = Boolean(track.seniorExaminerID);
+
         const actions = [
           ...(track.isActive
             ? [
@@ -63,8 +65,8 @@ export default function Card({ data, setTrack, setSelected }) {
                   onClick: () => handleDelete(track),
                 },
                 {
-                  name: isMangerAssign ? "Edit Manager" : "Add Manager",
-                  onClick: () => handleAssignManger(track, isMangerAssign),
+                  name: hasSenior ? "Edit Manager" : "Add Manager",
+                  onClick: () => handleAssignManger(track, hasSenior),
                 },
               ]
             : [
@@ -72,17 +74,20 @@ export default function Card({ data, setTrack, setSelected }) {
                   name: "Toggle Track",
                   onClick: () => handleToggle(track),
                 },
-                {
-                  name: "Delete Manager",
-                  onClick: () => handleDeleteManager(track),
-                },
+                ...(hasSenior
+                  ? [
+                      {
+                        name: "Delete Manager",
+                        onClick: () => handleDeleteManager(track),
+                      },
+                    ]
+                  : []),
               ]),
           {
             name: "View Details",
             onClick: () => handleViewDetails(track),
           },
         ];
-
         return (
           <div
             key={track.id}
@@ -107,7 +112,6 @@ export default function Card({ data, setTrack, setSelected }) {
                 src={`${import.meta.env.VITE_API}${track.image}`}
                 alt={track.name}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-               
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
