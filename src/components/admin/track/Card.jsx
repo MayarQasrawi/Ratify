@@ -99,7 +99,7 @@ export default function Card({ data, setTrack, setSelected }) {
                 {track.isActive ? "Active" : "Inactive"}
               </span>
             </div>
-            <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
               <Action actions={actions} icon={false} />
             </div>
             <div className="relative h-48 overflow-hidden">

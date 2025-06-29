@@ -112,12 +112,12 @@ const menue = [
     active:<FiMessageSquare  />,
     visible: ["Examiner"],
   },
-  {
-    title: "Setting",
-    icon: <HiOutlineCog />,
-    link: "setting",
-    visible: [ "Examiner"],
-  }
+  // {
+  //   title: "Setting",
+  //   icon: <HiOutlineCog />,
+  //   link: "setting",
+  //   visible: [ "Examiner"],
+  // }
  
 ];
 

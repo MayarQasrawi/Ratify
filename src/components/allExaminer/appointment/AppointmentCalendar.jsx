@@ -28,23 +28,49 @@ export default function AppointmentCalendar({ appointments, onApprove, onReject 
 
   const parseAppointmentDate = (appointment, field = "start") => {
     let dateString;
-   // ✅ اجعلها تدعم scheduledDate
-if (field === 'start') {
-  dateString = appointment.scheduledDate || appointment.startDate || appointment.localStartTime || appointment.startTime;
-} else if (field === 'end') {
-  dateString = appointment.endDate || appointment.localEndTime || appointment.endTime;
-}
-
+    
+    // ✅ الترتيب الصحيح حسب داتاك
+    if (field === 'start') {
+      dateString = appointment.localStartTime ||    // الأهم - هذا اللي بيستخدم في داتاك
+                   appointment.scheduledDate || 
+                   appointment.startDate || 
+                   appointment.startTime ||
+                   appointment.date ||
+                   appointment.appointment_date;
+    } else if (field === 'end') {
+      dateString = appointment.localEndTime ||      // الأهم - هذا اللي بيستخدم في داتاك
+                   appointment.endDate || 
+                   appointment.endTime ||
+                   appointment.end_date;
+    }
 
     if (!dateString) return null;
 
     try {
-      let date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
-      if (!isValid(date)) {
+      let date;
+      
+      // إذا كان timestamp (رقم)
+      if (typeof dateString === 'number') {
         date = new Date(dateString);
       }
+      // إذا كان string
+      else if (typeof dateString === "string") {
+        // تجربة parseISO أولاً
+        date = parseISO(dateString);
+        
+        // إذا فشل، جرب new Date
+        if (!isValid(date)) {
+          date = new Date(dateString);
+        }
+      } 
+      // إذا كان Date object
+      else {
+        date = new Date(dateString);
+      }
+      
       return isValid(date) ? date : null;
-    } catch {
+    } catch (error) {
+      console.warn("Error parsing date:", error);
       return null;
     }
   };

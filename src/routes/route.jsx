@@ -175,7 +175,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "admin",
-        // element: <ProtectedRoute allowRole="Admin" />,
+        element: <ProtectedRoute allowRole="Admin" />,
         children: [
           {
             index: true,
@@ -238,7 +238,7 @@ export const routes = createBrowserRouter([
 
       {
         path: "seniorExaminer",
-        // element: <ProtectedRoute allowRole="Examiner" />,
+        element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
             index: true,
@@ -340,7 +340,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "examiner",
-        // element: <ProtectedRoute allowRole="Examiner" />,
+        element: <ProtectedRoute allowRole="Examiner" />,
         children: [
           {
             index: true,
@@ -412,7 +412,6 @@ export const routes = createBrowserRouter([
 
     children: [
       {
-        path: "",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <AuthProvider>

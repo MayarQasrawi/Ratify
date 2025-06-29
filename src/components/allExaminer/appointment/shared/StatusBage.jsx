@@ -8,7 +8,7 @@ import { IoReload } from "react-icons/io5";
 const StatusBadge = ({ status }) => {
   const commonClasses = "flex items-center px-2.5 py-1 rounded-full text-xs font-medium max-w-24 justify-center"
 
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case "scheduled":
       return (
         <span className={`${commonClasses} bg-blue-100 text-blue-600`}>

@@ -27,6 +27,7 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
     isSuccess,
     isError,
   } = useAssignManagerToTrack();
+
   const {
     mutate: updateMangar,
     isPending: updatePending,
@@ -34,6 +35,7 @@ export default function AssignMangerModal({ onClose, track, isEdit }) {
     isError: updateIsError,
     data
   } = useUpdateManager();
+  
   const handleAssign = () => {
     if (isEdit) {
       updateMangar({ trackId: track?.id, examinerId: selectedManagerId });

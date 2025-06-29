@@ -18,7 +18,7 @@ const CandidateAssessment = () => {
   const [levels, setLevels] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showStages, setShowStages] = useState(false);
+  const [showStages, setShowStages] = useState(true);
 const location=useLocation()
 console.log(location,'location location location ///////////////////////////// driver')
   // ✅ MOCK DATA FOR TESTING (Uncomment to use when the server is down)

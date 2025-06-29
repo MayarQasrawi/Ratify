@@ -65,6 +65,7 @@ export default function CreateTask() {
     isLoading: isCriteriaLoading,
     isError: isCriteriaError,
   } = useFetchCriteria(location.state.tasksPool.stageId);
+  
   console.log(stageCriteria?.data, "stage criteria");
   const { mutate: addTask, isError, isPending, isSuccess,data } = useAddTask();
   const onSubmit = (data) => {

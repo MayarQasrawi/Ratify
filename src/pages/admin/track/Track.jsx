@@ -30,7 +30,7 @@ const cols = ["Track", "Status", " "];
 
 export default function Track() {
   const [search, setSearch] = useState("");
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState("Card");
   const [selected, setSelected] = useState(null);
   const [track, setTrack] = useState(null);
   const [statusFilter, setStatusFilter] = useState("All");
@@ -115,10 +115,12 @@ export default function Track() {
   };
 
   const handleAssignManger = (track, isMangerAssign) => {
-    if (isMangerAssign) {
-      setSelected("assign-manger");
+    if (!isMangerAssign) {
+      // إذا لم يكن هناك مدير
+      setSelected("assign-manger"); // اختر "تعيين مدير"
     } else {
-      setSelected("edit-manger");
+      // إذا كان هناك مدير
+      setSelected("edit-manger"); // اختر "تعديل مدير"
     }
     setTrack(track);
   };
@@ -190,21 +192,21 @@ export default function Track() {
               bgColor="bg-white dark:bg-gray-800"
             />
           </div>
-            <div className="flex flex-wrap gap-2 mt-4 mb-3">
-                {["All", "Active", "Inactive"].map((filter) => (
-                  <button
-                    key={filter}
-                    onClick={() => setStatusFilter(filter)}
-                    className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-lg transition-colors ${
-                      statusFilter === filter
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    {filter}
-                  </button>
-                ))}
-                </div>
+          <div className="flex flex-wrap gap-2 mt-4 mb-3">
+            {["All", "Active", "Inactive"].map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setStatusFilter(filter)}
+                className={`px-4 py-2 text-sm cursor-pointer font-medium rounded-lg transition-colors ${
+                  statusFilter === filter
+                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
               <div className="flex-1 max-w-md">
@@ -262,7 +264,7 @@ export default function Track() {
       <tr className="border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
         <td className="p-4 ">
           <div className="flex items-center justify-center  space-x-4">
-            <div >
+            <div>
               <img
                 className="w-12 h-12 object-cover rounded-lg shadow-sm"
                 src={`${import.meta.env.VITE_API}${track.image}`}
@@ -346,7 +348,7 @@ export default function Track() {
       {(selected === "assign-manger" || selected === "edit-manger") && (
         <Modal>
           <AssignMangerModal
-            isEdit={selected === "assign-manger"}
+            isEdit={selected === "edit-manger"}
             track={track}
             onClose={() => {
               setSelected(null);

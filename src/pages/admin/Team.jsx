@@ -75,6 +75,7 @@ const [activeView, setActiveView] = useState("table"); // or "card"
     >
       <td className="py-3 px-1 lg:px-3">
         <div className="flex gap-1 items-center justify-start ml-[4%] md:ml-[10%] ">
+        {/* rename imges---> image to show the image correctly */}
           {member.image && member.image !== "null" ? (
             <img
               src={`${BASE_URL}../${member.image}`}

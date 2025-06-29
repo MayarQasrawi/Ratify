@@ -79,6 +79,7 @@ function DashboardContent({ role, examinerInfo, examinerAssignment }) {
             : "w-8 p-1.5 min-w-[70px]"
         }`}
       >
+        {console.log("sidebar",examinerInfo?.data?.fullName)}
         <div
           className={`${
             isSidebarOpen ? "hidden sm:flex" : "hidden"
@@ -87,12 +88,12 @@ function DashboardContent({ role, examinerInfo, examinerAssignment }) {
           <div className="mt-1 w-16 h-16 rounded-full bg-[var(--sidebar-icon-bg)] flex items-center justify-center text-[var(--sidebar-text)] font-semibold text-[18px]">
             {role == "Examiner" || role == "SeniorExaminer"
               ? getFirstCharacter(examinerInfo?.data?.fullName)
-              : "Y"}
+              : "A"}
           </div>
           <h1 className="text-2xl text-[var(--sidebar-text)] font-medium">
             {role == "Examiner" || role == "SeniorExaminer"
               ? examinerInfo?.data?.fullName.split(" ")[0]
-              : "Abrar"}
+              : "Admin"}
           </h1>
         </div>
         <Sidebar

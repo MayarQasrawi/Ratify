@@ -19,7 +19,7 @@ export default function TrackItem({
     ) : (
       name
     );
-
+console.log(import.meta.env.VITE_API,img,':URL')
   return (
     <div className="m-h-100 shadow-sm border border-[var(--table-border)] p-4 lg:px-8 rounded-2xl md:w-full flex flex-col justify-between bg-white">
       <div className="flex mt-2.5 lg:flex-wrap gap-3">
