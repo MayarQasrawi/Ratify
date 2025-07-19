@@ -70,16 +70,15 @@ src/
 
 ## 📸 UI Preview
 
-> 📁 [View Full UI Showcase (PDF)](https://drive.google.com/file/d/1kxSAN3zyXUMjRt4Ele-sjgvy-h8vB1R5/view)
-> 🚀 [Launch Live Demo](https://www.linkedin.com/posts/mayar-qasarwa-971556219_graduationproject-techskills-edtech-activity-7347623320739098624-BjKc?utm_source=share&utm_medium=member_desktop&rcm=ACoAADcTjuUBgeHCrB2FPy81AcxS69YXdTGUMS8)
+📁 [View Full UI Showcase (PDF)](https://drive.google.com/file/d/1kxSAN3zyXUMjRt4Ele-sjgvy-h8vB1R5/view)
+🚀 [Launch Live Demo](https://www.linkedin.com/posts/mayar-qasarwa-971556219_graduationproject-techskills-edtech-activity-7347623320739098624-BjKc?utm_source=share&utm_medium=member_desktop&rcm=ACoAADcTjuUBgeHCrB2FPy81AcxS69YXdTGUMS8)
 
 ---
 
-## 📌 Status
+## 🏆 Final Grade
 
-> ✅ **Completed**
-> Ratify is now **live and functional**. Future improvements may include API enhancements, performance tuning, and advanced analytics.
+> Below is the official evaluation grade received for the graduation project:
+<img width="476" height="161" alt="image" src="https://github.com/user-attachments/assets/6581fce3-60f1-4648-9597-e6d12af8d0b4" />
 
----
-
-وَآخِرُ دَعْوَاهُمْ أَنِ ٱلْـحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ 🌿
+#### وَكَانَ فَضْلُ اللَّهِ عَلَيْكَ عَظِيمًا 
+#### وَآخِرُ دَعْوَاهُمْ أَنِ ٱلْـحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ 🌿
