@@ -23,7 +23,7 @@ It offers a secure and user-friendly environment for **verifying**, **assessing*
 
 ---
 
-## 🧹 Technology Stack
+## 🛠️ Technology Stack
 
 ### Frontend:
 
@@ -31,6 +31,8 @@ It offers a secure and user-friendly environment for **verifying**, **assessing*
 * **Tailwind CSS** — Utility-first styling
 * **Vite** — Fast build tool for modern web development
 * **React Router** — SPA routing and navigation
+* **React Query** — Efficient and declarative data fetching, caching, and synchronization with backend APIs
+* **React Hook Form + Zod** — Lightweight form handling with schema-based validation for robust and scalable forms
 * **Framer Motion** — Smooth animations and UI transitions
 * **Lottie Files** — High-quality vector animations
 * **Shadcn/ui** — Accessible, stylish UI components
