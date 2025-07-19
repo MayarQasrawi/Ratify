@@ -1,24 +1,49 @@
-# Ratify 
+# Ratify
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/MayarQasrawi/Ratify)
 
-**Ratify** is a modern **skills assessment platform** currently under active development, built using **React.js** and **Tailwind CSS**.  
-It enables users to showcase, validate, and manage their professional skills and credentials in a secure, streamlined way.
+🌐 [Live Demo](https://www.linkedin.com/posts/mayar-qasarwa-971556219_graduationproject-techskills-edtech-activity-7347623320739098624-BjKc?utm_source=share&utm_medium=member_desktop&rcm=ACoAADcTjuUBgeHCrB2FPy81AcxS69YXdTGUMS8)  |  [📁 UI Showcase (PDF)](https://drive.google.com/file/d/1kxSAN3zyXUMjRt4Ele-sjgvy-h8vB1R5/view)
+ | 📡[Backend Repository](https://github.com/AzzaEid/Skill-Assessment-Platform)
 
-This project is being developed as a **graduation project** to demonstrate full-stack application development, user experience design, and modern frontend technologies.
+**Ratify** is a dynamic **technical skills evaluation platform** built with **React.js** and **Tailwind CSS**, powered by a robust backend.
+It offers a secure and user-friendly environment for **verifying**, **assessing**, and **managing** professional skills through a structured, multi-step certification process.
+
+> 🎓 Developed as a **graduation project** to demonstrate full-stack development, user experience design, and modern web technologies.
 
 ---
 
-## 🚀 Technologies Used
+## ✨ Key Features
 
-- **React.js** — Modern JavaScript library for building interactive UIs
-- **Tailwind CSS** — Utility-first CSS framework for rapid styling
-- **Vite** — Lightning-fast build tool for modern web projects
-- **React Router** — Declarative routing for React applications
-- *(More technologies may be added as development progresses)*
+* 🔐 **User Authentication** with role-based access
+* 📝 **Skill Assessments** via Exams, Tasks, and Interviews
+* 📂 **Credential Uploads** and Management
+* 🧑‍💼 **Role-based Dashboards** for Admins, Examiners, and Applicants
+* 📊 **Real-time Scoring & Analytics**
+* 🌙 **Dark Mode Support** and full mobile responsiveness
 
+---
 
+## 🧹 Technology Stack
 
-## 📂 Project Structure
+### Frontend:
+
+* **React.js** — Component-based UI
+* **Tailwind CSS** — Utility-first styling
+* **Vite** — Fast build tool for modern web development
+* **React Router** — SPA routing and navigation
+* **Framer Motion** — Smooth animations and UI transitions
+* **Lottie Files** — High-quality vector animations
+* **Shadcn/ui** — Accessible, stylish UI components
+* **Lazy Loading** — Optimized performance with dynamic imports
+* **Axios + Axios Instance** — Consistent and scalable API requests
+
+### Backend:
+
+* [Skill-Assessment-Platform (GitHub)](https://github.com/AzzaEid/Skill-Assessment-Platform)
+
+---
+
+## 🔍 Project Structure
 
 ```bash
 src/
@@ -27,37 +52,34 @@ src/
 ├── pages/           # Application pages and layouts
 ├── hooks/           # Custom React hooks
 ├── utils/           # Helper functions and utilities
-├── App.jsx          # Main application file
+├── App.jsx          # Main application wrapper
 ├── main.jsx         # Entry point
 └── index.css        # Global Tailwind styles
 ```
 
+---
 
+## 👥 Supported User Roles
 
-## 📋 Features (Planned)
+* 👤 **Administrators** – manage users, tracks, and assessments
+* 👥 **Senior Examiners** – oversee examiners and review results
+* 🧑‍🏫 **Examiners** – create and grade assessments
+* 🙋 **Applicants** – take assessments and track progress
 
-- Skill verification and assessment tools
-- User authentication and role-based access
-- Personal profiles showcasing skills and certifications
-- Upload and manage credentials/certificates
-- Admin dashboard for managing users and assessments
-- Real-time skill scoring and analytics
-- Mobile-responsive, modern UI
-- Dark mode support
+---
 
-## 📅 Project Status
+## 📸 UI Preview
 
-> **Status:** 🛠️ In Development  
-> Ratify is actively being built as a graduation project.  
-> Major features and designs are still evolving.
+> 📁 [View Full UI Showcase (PDF)](https://drive.google.com/file/d/1kxSAN3zyXUMjRt4Ele-sjgvy-h8vB1R5/view)
+> 🚀 [Launch Live Demo](https://www.linkedin.com/posts/mayar-qasarwa-971556219_graduationproject-techskills-edtech-activity-7347623320739098624-BjKc?utm_source=share&utm_medium=member_desktop&rcm=ACoAADcTjuUBgeHCrB2FPy81AcxS69YXdTGUMS8)
 
+---
 
+## 📌 Status
 
-## ✨ Screenshots
+> ✅ **Completed**
+> Ratify is now **live and functional**. Future improvements may include API enhancements, performance tuning, and advanced analytics.
 
-*(Screenshots will be added soon as development progresses.)*
+---
 
-
-
-
-
+وَآخِرُ دَعْوَاهُمْ أَنِ ٱلْـحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ 🌿
